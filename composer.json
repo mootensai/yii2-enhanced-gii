@@ -1,0 +1,25 @@
+{
+	"name": "mootensai/yii2-relational-gii",
+	"description": "Generate Relational MVC & CRUD",
+	"keywords": ["relation", "gii", "yii2","yii"],
+	"type": "yii2-extension",
+	"authors": [
+		{
+			"name": "mootensai",
+			"email": "moo.tensai@gmail.com"
+		}
+	],
+	"require": {
+		"yiisoft/yii2": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"mootensai\\relationalgii\\": ""
+		}
+	},
+	"extra": {
+        	"branch-alias": {
+            		"dev-master": "1.0.x-dev"
+        	}
+    	}
+}
