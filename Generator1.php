@@ -22,7 +22,7 @@ use yii\base\NotSupportedException;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator_1 extends \yii\gii\Generator
+class Generator1 extends \yii\gii\Generator
 {
     public $db = 'db';
     public $nsModel = 'app\models';
