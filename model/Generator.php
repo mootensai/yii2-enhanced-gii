@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace mootensai\enhancedgii;
+namespace mootensai\enhancedgii\model;
 
 use Yii;
 use yii\db\ActiveQuery;
@@ -22,7 +22,7 @@ use yii\base\NotSupportedException;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class ModelGenerator extends \yii\gii\Generator
+class Generator extends \yii\gii\Generator
 {
     public $db = 'db';
     public $nsModel = 'app\models';
