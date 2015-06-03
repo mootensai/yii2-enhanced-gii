@@ -56,7 +56,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getDescription()
     {
-        return 'This generator generates an enhanced ActiveRecord class for the specified database table.';
+        return 'This generator generates an ActiveRecord class for the specified database table.';
     }
 
     /**
