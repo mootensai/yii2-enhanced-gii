@@ -17,9 +17,7 @@
 			"mootensai\\enhancedgii\\": ""
 		}
 	},
-	"extra": {
-        	"branch-alias": {
-            		"dev-master": "0.1.x-dev"
-        	}
-    	}
+        "extra": {
+            "bootstrap": "schmunk42\\giiant\\Bootstrap"
+        }
 }
