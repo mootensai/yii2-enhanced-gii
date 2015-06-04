@@ -18,6 +18,6 @@
 		}
 	},
         "extra": {
-            "bootstrap": "schmunk42\\giiant\\Bootstrap"
+            "bootstrap": "mootensai\\enhancedgii\\Bootstrap"
         }
 }
