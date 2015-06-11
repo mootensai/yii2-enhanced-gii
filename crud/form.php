@@ -3,6 +3,9 @@
 /* @var $form yii\widgets\ActiveForm */
 /* @var $generator yii\gii\generators\crud\Generator */
 
+echo $form->field($generator, 'db');
+echo $form->field($generator, 'tableName');
+echo $form->field($generator, 'useTablePrefix')->checkbox();
 echo $form->field($generator, 'modelClass');
 echo $form->field($generator, 'searchModelClass');
 echo $form->field($generator, 'controllerClass');
