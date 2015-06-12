@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -34,80 +35,88 @@ use \yii\web\Controller;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator
-{
+class Generator extends \yii\gii\Generator {
+
     public $db = 'db';
+    public $nsModel = 'app\models';
+    public $nsTrait = 'app\traits';
     public $tableName;
+    
     public $modelClass;
-    public $useTablePrefix;
+    public $baseClass = 'yii\db\ActiveRecord';
+    public $generateQuery;
+    public $queryClassName;
+    public $generateLabelsFromComments = false;
+    public $useTablePrefix = false;
+    public $useUUID;
+    public $isOptimisticLock = 1;
+    public $optimisticLockColumn;
+    
+    public $nsController = 'app\controllers';
     public $controllerClass;
-    public $viewPath;
+    public $viewPath = 'app\views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $searchModelClass = '';
     public $generateRelations = true;
     public $skippedRelations;
 
-
     /**
      * @inheritdoc
      */
-    public function getName()
-    {
-        return 'Enhanced CRUD Generator';
+    public function getName() {
+        return 'IO Generator';
     }
-    
+
     /**
      * 
      */
-    public function setSkippedRelations($value){
+    public function setSkippedRelations($value) {
         $this->skippedRelations = explode(',', trim($value));
     }
 
     /**
      * @inheritdoc
      */
-    public function getDescription()
-    {
-        return 'This generator generates a controller and views that implement CRUD (Create, Read, Update, Delete)
-            operations for the specified data model.';
+    public function getDescription() {
+        return 'This generator generates model, controller and views that implement CRUD (Create, Read, Update, Delete)
+            operations for the database to let you focus on the app engine.';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return array_merge(parent::rules(), [
-            [['db', 'tableName', 'controllerClass', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
-            [['modelClass', 'tableName', 'controllerClass', 'baseControllerClass', 'indexWidgetType','db'], 'required'],
+            [['db', 'nsModel','viewPath', 'nsController', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
+            [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
             [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
-            [['modelClass', 'controllerClass', 'baseControllerClass', 'searchModelClass','db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['modelClass', 'baseControllerClass', 'searchModelClass', 'db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
             [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
             [['db'], 'validateDb'],
-            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
-            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
-            [['controllerClass', 'searchModelClass'], 'validateNewClass'],
+//            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
+//            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
+            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
             [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'generateRelations'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            [['viewPath','skippedRelations'], 'safe'],
+            [['viewPath', 'skippedRelations', 'controllerClass'], 'safe'],
         ]);
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return array_merge(parent::attributeLabels(), [
             'db' => 'Database Connection ID',
             'modelClass' => 'Model Class',
-            'controllerClass' => 'Controller Class',
+            'nsModel' => 'Model Namespace',
+            'nsController' => 'Controller Namespace',
             'viewPath' => 'View Path',
             'baseControllerClass' => 'Base Controller Class',
             'indexWidgetType' => 'Widget Used in Index Page',
@@ -118,8 +127,7 @@ class Generator extends \yii\gii\Generator
     /**
      * @inheritdoc
      */
-    public function hints()
-    {
+    public function hints() {
         return array_merge(parent::hints(), [
             'db' => 'This is the ID of the DB application component.',
             'modelClass' => 'This is the ActiveRecord class associated with the table that CRUD will be built upon.
@@ -139,12 +147,11 @@ class Generator extends \yii\gii\Generator
                 qualified namespaced class name, e.g., <code>app\models\PostSearch</code>.',
         ]);
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function autoCompleteData()
-    {
+    public function autoCompleteData() {
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
@@ -160,24 +167,21 @@ class Generator extends \yii\gii\Generator
     /**
      * @inheritdoc
      */
-    public function requiredTemplates()
-    {
-        return ['controller.php'];
+    public function requiredTemplates() {
+        return ['model.php', 'controller.php'];
     }
 
     /**
      * @inheritdoc
      */
-    public function stickyAttributes()
-    {
-        return array_merge(parent::stickyAttributes(), ['db', 'baseControllerClass', 'indexWidgetType']);
+    public function stickyAttributes() {
+        return array_merge(parent::stickyAttributes(), ['db', 'nsModel', 'nsController', 'baseControllerClass', 'indexWidgetType', 'viewPath']);
     }
 
     /**
      * Checks if model class is valid
      */
-    public function validateModelClass()
-    {
+    public function validateModelClass() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         $pk = $class::primaryKey();
@@ -189,28 +193,80 @@ class Generator extends \yii\gii\Generator
     /**
      * @inheritdoc
      */
-    public function generate()
-    {
-        $controllerFile = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->controllerClass, '\\')) . '.php');
+    public function generate() {
+        $files = [];
         $relations = $this->generateRelations();
-
-        $files = [
-            new CodeFile($controllerFile, $this->render('controller.php',['relations' => $relations[$this->tableName]])),
-        ];
-
-        if (!empty($this->searchModelClass)) {
-            $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-            $files[] = new CodeFile($searchModel, $this->render('search.php',['relations' => $relations[$this->tableName]]));
-        }
-
-        $viewPath = $this->getViewPath();
-        $templatePath = $this->getTemplatePath() . '/views';
-        foreach (scandir($templatePath) as $file) {
-            if (empty($this->searchModelClass) && $file === '_search.php') {
-                continue;
+        $db = $this->getDbConnection();
+        foreach($this->getTableNames() as $tableName){
+            // model :
+            $modelClassName = $this->generateClassName($tableName);
+            $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
+            $tableSchema = $db->getTableSchema($tableName);
+            $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
+            $this->controllerClass = $this->nsController.'\\'.$modelClassName.'Controller';
+            $params = [
+                'tableName' => $tableName,
+                'className' => $modelClassName,
+                'queryClassName' => $queryClassName,
+                'tableSchema' => $tableSchema,
+                'labels' => $this->generateLabels($tableSchema),
+                'rules' => $this->generateRules($tableSchema),
+                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+            ];
+            if (!empty($this->searchModelClass)) {
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$tableName]]));
             }
-            if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file",['relations' => $relations[$this->tableName]]));
+            
+            $files[] = 
+                new CodeFile(
+                        Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $modelClassName . 'Controller.php',
+                        $this->render('controller.php', [
+                            'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                        ])
+                    );
+            
+            $files[] = new CodeFile(
+                Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php',
+                $this->render('model.php', $params)
+            );
+            $files[] = new CodeFile(
+                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php',
+                    $this->render('model-extended.php', $params)
+                );
+
+            // query :
+            if ($queryClassName) {
+                $params = [
+                    'className' => $queryClassName,
+                    'modelClassName' => $modelClassName,
+                ];
+                $files[] = new CodeFile(
+                    Yii::getAlias('@' . str_replace('\\', '/', $this->queryNs)) . '/' . $queryClassName . '.php',
+                    $this->render('query.php', $params)
+                );
+            }
+            
+            // search Model :
+            if (!empty($this->searchModelClass)) {
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$this->tableName]]));
+            }
+
+            // views :
+            $viewPath = $this->getViewPath();
+            $templatePath = $this->getTemplatePath() . '/views';
+            foreach (scandir($templatePath) as $file) {
+                if (empty($this->searchModelClass) && $file === '_search.php') {
+                    continue;
+                }
+                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                    $files[] = new CodeFile("$viewPath/$file", 
+                            $this->render("views/$file", [
+                                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                                    ])
+                            );
+                }
             }
         }
 
@@ -224,8 +280,7 @@ class Generator extends \yii\gii\Generator
      * @param array $relations
      * @return array modified $relations
      */
-    private function generateManyManyRelations($table, $fks, $relations)
-    {
+    private function generateManyManyRelations($table, $fks, $relations) {
         $db = $this->getDbConnection();
         $table0 = $fks[$table->primaryKey[0]][0];
         $table1 = $fks[$table->primaryKey[1]][0];
@@ -256,12 +311,11 @@ class Generator extends \yii\gii\Generator
 
         return $relations;
     }
-    
+
     /**
      * @return array the generated relation declarations
      */
-    protected function generateRelations()
-    {
+    protected function generateRelations() {
         if (!$this->generateRelations) {
             return [];
         }
@@ -295,10 +349,11 @@ class Generator extends \yii\gii\Generator
                     $fks = array_keys($refs);
                     $refClassName = $this->generateClassName($refTable);
 
+
                     // Add relation for this table
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
-                    $relations[$table->fullName][$relationName] = [
+                    $relations[$table->fullName][lcfirst($relationName)] = [
                         "return \$this->hasOne($refClassName::className(), $link);",
                         $refClassName,
                         false,
@@ -320,7 +375,7 @@ class Generator extends \yii\gii\Generator
                     }
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
-                    $relations[$refTableSchema->fullName][$relationName] = [
+                    $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
                         "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "($className::className(), $link);",
                         $className,
                         $hasMany,
@@ -343,8 +398,7 @@ class Generator extends \yii\gii\Generator
      * @param array $refs reference constraint
      * @return string the generated link parameter.
      */
-    protected function generateRelationLink($refs)
-    {
+    protected function generateRelationLink($refs) {
         $pairs = [];
         foreach ($refs as $a => $b) {
             $pairs[] = "'$a' => '$b'";
@@ -361,8 +415,7 @@ class Generator extends \yii\gii\Generator
      * @return array|boolean the relevant foreign key constraint information if the table is a junction table,
      * or false if the table is not a junction table.
      */
-    protected function checkPivotTable($table)
-    {
+    protected function checkPivotTable($table) {
         $pk = $table->primaryKey;
         if (count($pk) !== 2) {
             return false;
@@ -392,8 +445,7 @@ class Generator extends \yii\gii\Generator
      * @param boolean $multiple whether this is a has-many relation
      * @return string the relation name
      */
-    protected function generateRelationName($relations, $table, $key, $multiple)
-    {
+    protected function generateRelationName($relations, $table, $key, $multiple) {
         if (!empty($key) && substr_compare($key, 'id', -2, 2, true) === 0 && strcasecmp($key, 'id')) {
             $key = rtrim(substr($key, 0, -2), '_');
         }
@@ -415,16 +467,14 @@ class Generator extends \yii\gii\Generator
     /**
      * @return Connection the DB connection as specified by [[db]].
      */
-    protected function getDbConnection()
-    {
+    protected function getDbConnection() {
         return Yii::$app->get($this->db, false);
     }
 
     /**
      * @return string the controller ID (without the module ID prefix)
      */
-    public function getControllerID()
-    {
+    public function getControllerID() {
         $pos = strrpos($this->controllerClass, '\\');
         $class = substr(substr($this->controllerClass, $pos + 1), 0, -10);
 
@@ -434,17 +484,15 @@ class Generator extends \yii\gii\Generator
     /**
      * @return string the controller view path
      */
-    public function getViewPath()
-    {
+    public function getViewPath() {
         if (empty($this->viewPath)) {
             return Yii::getAlias('@app/views/' . $this->getControllerID());
         } else {
-            return Yii::getAlias($this->viewPath);
+            return Yii::getAlias($this->viewPath.'/'.$this->getControllerID());
         }
     }
 
-    public function getNameAttribute()
-    {
+    public function getNameAttribute() {
         foreach ($this->getColumnNames() as $name) {
             if (!strcasecmp($name, 'name') || !strcasecmp($name, 'title')) {
                 return $name;
@@ -458,12 +506,132 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
+     * Checks if any of the specified columns is auto incremental.
+     * @param \yii\db\TableSchema $table the table schema
+     * @param array $columns columns to check for autoIncrement property
+     * @return boolean whether any of the specified columns is auto incremental.
+     */
+    protected function isColumnAutoIncremental($table, $columns)
+    {
+        foreach ($columns as $column) {
+            if (isset($table->columns[$column]) && $table->columns[$column]->autoIncrement) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Generates the attribute labels for the specified table.
+     * @param \yii\db\TableSchema $table the table schema
+     * @return array the generated attribute labels (name => label)
+     */
+    public function generateLabels($table)
+    {
+        $labels = [];
+        foreach ($table->columns as $column) {
+            if ($this->generateLabelsFromComments && !empty($column->comment)) {
+                $labels[$column->name] = $column->comment;
+            } elseif (!strcasecmp($column->name, 'id')) {
+                $labels[$column->name] = 'ID';
+            } else {
+                $label = Inflector::camel2words($column->name);
+                if (!empty($label) && substr_compare($label, ' id', -3, 3, true) === 0) {
+                    $label = substr($label, 0, -3) . ' ID';
+                }
+                $labels[$column->name] = $label;
+            }
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Generates validation rules for the specified table.
+     * @param \yii\db\TableSchema $table the table schema
+     * @return array the generated validation rules
+     */
+    public function generateRules($table)
+    {
+        $types = [];
+        $lengths = [];
+        foreach ($table->columns as $column) {
+            if ($column->autoIncrement) {
+                continue;
+            }
+            if (!$column->allowNull && $column->defaultValue === null) {
+                $types['required'][] = $column->name;
+            }
+            switch ($column->type) {
+                case Schema::TYPE_SMALLINT:
+                case Schema::TYPE_INTEGER:
+                case Schema::TYPE_BIGINT:
+                    $types['integer'][] = $column->name;
+                    break;
+                case Schema::TYPE_BOOLEAN:
+                    $types['boolean'][] = $column->name;
+                    break;
+                case Schema::TYPE_FLOAT:
+                case 'double': // Schema::TYPE_DOUBLE, which is available since Yii 2.0.3
+                case Schema::TYPE_DECIMAL:
+                case Schema::TYPE_MONEY:
+                    $types['number'][] = $column->name;
+                    break;
+                case Schema::TYPE_DATE:
+                case Schema::TYPE_TIME:
+                case Schema::TYPE_DATETIME:
+                case Schema::TYPE_TIMESTAMP:
+                    $types['safe'][] = $column->name;
+                    break;
+                default: // strings
+                    if ($column->size > 0) {
+                        $lengths[$column->size][] = $column->name;
+                    } else {
+                        $types['string'][] = $column->name;
+                    }
+            }
+        }
+        $rules = [];
+        foreach ($types as $type => $columns) {
+            $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
+        }
+        foreach ($lengths as $length => $columns) {
+            $rules[] = "[['" . implode("', '", $columns) . "'], 'string', 'max' => $length]";
+        }
+
+        // Unique indexes rules
+        try {
+            $db = $this->getDbConnection();
+            $uniqueIndexes = $db->getSchema()->findUniqueIndexes($table);
+            foreach ($uniqueIndexes as $uniqueColumns) {
+                // Avoid validating auto incremental columns
+                if (!$this->isColumnAutoIncremental($table, $uniqueColumns)) {
+                    $attributesCount = count($uniqueColumns);
+
+                    if ($attributesCount == 1) {
+                        $rules[] = "[['" . $uniqueColumns[0] . "'], 'unique']";
+                    } elseif ($attributesCount > 1) {
+                        $labels = array_intersect_key($this->generateLabels($table), array_flip($uniqueColumns));
+                        $lastLabel = array_pop($labels);
+                        $columnsList = implode("', '", $uniqueColumns);
+                        $rules[] = "[['" . $columnsList . "'], 'unique', 'targetAttribute' => ['" . $columnsList . "'], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']";
+                    }
+                }
+            }
+        } catch (NotSupportedException $e) {
+            // doesn't support unique indexes information...do nothing
+        }
+
+        return $rules;
+    }
+
+    /**
      * Generates code for active field
      * @param string $attribute
      * @return string
      */
-    public function generateActiveField($attribute)
-    {
+    public function generateActiveField($attribute) {
         $tableSchema = $this->getTableSchema();
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -489,7 +657,7 @@ class Generator extends \yii\gii\Generator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field(\$model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
+                        . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "\$form->field(\$model, '$attribute')->$input()";
             } else {
@@ -503,8 +671,7 @@ class Generator extends \yii\gii\Generator
      * @param string $attribute
      * @return string
      */
-    public function generateActiveSearchField($attribute)
-    {
+    public function generateActiveSearchField($attribute) {
         $tableSchema = $this->getTableSchema();
         if ($tableSchema === false) {
             return "\$form->field(\$model, '$attribute')";
@@ -522,8 +689,7 @@ class Generator extends \yii\gii\Generator
      * @param ColumnSchema $column
      * @return string
      */
-    public function generateColumnFormat($column)
-    {
+    public function generateColumnFormat($column) {
         if ($column->phpType === 'boolean') {
             return 'boolean';
         } elseif ($column->type === 'text') {
@@ -543,8 +709,7 @@ class Generator extends \yii\gii\Generator
      * Generates validation rules for the search model.
      * @return array the generated validation rules
      */
-    public function generateSearchRules()
-    {
+    public function generateSearchRules() {
         if (($table = $this->getTableSchema()) === false) {
             return ["[['" . implode("', '", $this->getColumnNames()) . "'], 'safe']"];
         }
@@ -586,8 +751,7 @@ class Generator extends \yii\gii\Generator
     /**
      * @return array searchable attributes
      */
-    public function getSearchAttributes()
-    {
+    public function getSearchAttributes() {
         return $this->getColumnNames();
     }
 
@@ -595,8 +759,7 @@ class Generator extends \yii\gii\Generator
      * Generates the attribute labels for the search model.
      * @return array the generated attribute labels (name => label)
      */
-    public function generateSearchLabels()
-    {
+    public function generateSearchLabels() {
         /* @var $model Model */
         $model = new $this->modelClass();
         $attributeLabels = $model->attributeLabels();
@@ -624,8 +787,7 @@ class Generator extends \yii\gii\Generator
      * Generates search conditions
      * @return array
      */
-    public function generateSearchConditions()
-    {
+    public function generateSearchConditions() {
         $columns = [];
         if (($table = $this->getTableSchema()) === false) {
             $class = $this->modelClass;
@@ -667,8 +829,8 @@ class Generator extends \yii\gii\Generator
         $conditions = [];
         if (!empty($hashConditions)) {
             $conditions[] = "\$query->andFilterWhere([\n"
-                . str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $hashConditions)
-                . "\n" . str_repeat(' ', 8) . "]);\n";
+                    . str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $hashConditions)
+                    . "\n" . str_repeat(' ', 8) . "]);\n";
         }
         if (!empty($likeConditions)) {
             $conditions[] = "\$query" . implode("\n" . str_repeat(' ', 12), $likeConditions) . ";\n";
@@ -681,8 +843,7 @@ class Generator extends \yii\gii\Generator
      * Generates URL parameters
      * @return string
      */
-    public function generateUrlParams()
-    {
+    public function generateUrlParams() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         $pks = $class::primaryKey();
@@ -710,8 +871,7 @@ class Generator extends \yii\gii\Generator
      * Generates action parameters
      * @return string
      */
-    public function generateActionParams()
-    {
+    public function generateActionParams() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         $pks = $class::primaryKey();
@@ -726,8 +886,7 @@ class Generator extends \yii\gii\Generator
      * Generates parameter tags for phpdoc
      * @return array parameter tags for phpdoc
      */
-    public function generateActionParamComments()
-    {
+    public function generateActionParamComments() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         $pks = $class::primaryKey();
@@ -754,8 +913,7 @@ class Generator extends \yii\gii\Generator
     /**
      * Validates the [[db]] attribute.
      */
-    public function validateDb()
-    {
+    public function validateDb() {
         if (!Yii::$app->has($this->db)) {
             $this->addError('db', 'There is no application component named "db".');
         } elseif (!Yii::$app->get($this->db) instanceof Connection) {
@@ -766,8 +924,7 @@ class Generator extends \yii\gii\Generator
     /**
      * Validates the [[tableName]] attribute.
      */
-    public function validateTableName()
-    {
+    public function validateTableName() {
         if (strpos($this->tableName, '*') !== false && substr_compare($this->tableName, '*', -1, 1)) {
             $this->addError('tableName', 'Asterisk is only allowed as the last character.');
 
@@ -793,8 +950,7 @@ class Generator extends \yii\gii\Generator
     /**
      * @return array the table names that match the pattern specified by [[tableName]].
      */
-    protected function getTableNames()
-    {
+    protected function getTableNames() {
         if ($this->tableNames !== null) {
             return $this->tableNames;
         }
@@ -831,8 +987,7 @@ class Generator extends \yii\gii\Generator
      * @param string $tableName the table name (which may contain schema prefix)
      * @return string the generated table name
      */
-    public function generateTableName($tableName)
-    {
+    public function generateTableName($tableName) {
         if (!$this->useTablePrefix) {
             return $tableName;
         }
@@ -852,8 +1007,7 @@ class Generator extends \yii\gii\Generator
      * @param boolean $useSchemaName should schema name be included in the class name, if present
      * @return string the generated class name
      */
-    protected function generateClassName($tableName, $useSchemaName = null)
-    {
+    protected function generateClassName($tableName, $useSchemaName = null) {
         if (isset($this->classNames[$tableName])) {
             return $this->classNames[$tableName];
         }
@@ -886,15 +1040,14 @@ class Generator extends \yii\gii\Generator
             }
         }
 
-        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName.$className, '_');
+        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName . $className, '_');
     }
 
     /**
      * Returns table schema for current model class or false if it is not an active record
      * @return boolean|TableSchema
      */
-    public function getTableSchema()
-    {
+    public function getTableSchema() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         if (is_subclass_of($class, 'yii\db\ActiveRecord')) {
@@ -907,8 +1060,7 @@ class Generator extends \yii\gii\Generator
     /**
      * @return array model column names
      */
-    public function getColumnNames()
-    {
+    public function getColumnNames() {
         /* @var $class ActiveRecord */
         $class = $this->modelClass;
         if (is_subclass_of($class, 'yii\db\ActiveRecord')) {
@@ -920,4 +1072,5 @@ class Generator extends \yii\gii\Generator
             return $model->attributes();
         }
     }
+
 }

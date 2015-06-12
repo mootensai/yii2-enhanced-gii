@@ -29,11 +29,11 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app->hasModule('gii')) {
-            if (!isset($app->getModule('gii')->generators['enhanced-model'])) {
-                $app->getModule('gii')->generators['enhanced-model'] = 'mootensai\enhancedgii\model\Generator';
-            }
-            if (!isset($app->getModule('gii')->generators['enhanced-crud'])) {
-                $app->getModule('gii')->generators['enhanced-crud'] = 'mootensai\enhancedgii\crud\Generator';
+//            if (!isset($app->getModule('gii')->generators['enhanced-model'])) {
+//                $app->getModule('gii')->generators['enhanced-model'] = 'mootensai\enhancedgii\model\Generator';
+//            }
+            if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
+                $app->getModule('gii')->generators['enhanced-gii'] = 'mootensai\enhancedgii\crud\Generator';
             }
         }
     }

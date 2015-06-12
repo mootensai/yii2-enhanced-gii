@@ -1,11 +1,10 @@
 <?php
+
 /**
  * This is the template for generating a CRUD controller class file.
  */
-
 use yii\db\ActiveRecordInterface;
 use yii\helpers\StringHelper;
-
 
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
@@ -26,6 +25,12 @@ $actionParamComments = $generator->generateActionParamComments();
 
 /* @var $relations array list of relations (name => relation declaration) */
 print_r($relations);
+
+foreach ($relations as $name => $content) {
+    $curClass = new $generator->modelClass;
+//    $AQ = $curClass->getRelation($name);
+//    var_dump($AQ);
+}
 
 echo "<?php\n";
 ?>
@@ -173,42 +178,44 @@ if (count($pks) === 1) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-<?php foreach($relations as $rel): ?>
+}
+
+<?php foreach ($relations as $rel): ?>
+
     /**
-     * Action to load a tabular form grid
-     * for <?= $rel[1] ?>
-     *
-     * @return mixed
-     *
-     */
-     public function actionAdd<?= $rel[1] ?>()
-     {
-        if (Yii::$app->request->isAjax) {
-            $row = [];
-            if (Yii::$app->request->get('id')) { //update
-                $d = $this->findModel(Yii::$app->request->get('id'));
-                foreach ($d->penerimaanBarangDetails as $index => $data) {
-                    $row[$index] = $data->attributes;
-                    $row[$index]['kategori'] = $data->barang->kategori->nama;
-                    $row[$index]['kategori_id'] = $data->barang->kategori->id;
-                    $row[$index]['barang_string'] = $data->barang->nama;
-                }
-            } else { //create
-                if (Yii::$app->request->get('<?= $rel[1] ?>')) {
-                    $row = Yii::$app->request->get();
-                } else {
-                    $row[] = [];
-                }
-            }
-            if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
-                $row = Yii::$app->request->post('<?= $rel[1] ?>');
-                $row[] = [];
-            }
-            return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
-        } else {
-            throw new NotAcceptableHttpException(Yii::t('frontend', 'The requested does not allowed.'));
-        }
-     }
+    * Action to load a tabular form grid
+    * for <?= $rel[1] ?>
+    *
+    * @return mixed
+    *
+    */
+    public function actionAdd<?= $rel[1] ?>()
+    {
+    if (Yii::$app->request->isAjax) {
+    $row = [];
+    if (Yii::$app->request->get('id')) { //update
+    $d = $this->findModel(Yii::$app->request->get('id'));
+    foreach ($d->penerimaanBarangDetails as $index => $data) {
+    $row[$index] = $data->attributes;
+    $row[$index]['kategori'] = $data->barang->kategori->nama;
+    $row[$index]['kategori_id'] = $data->barang->kategori->id;
+    $row[$index]['barang_string'] = $data->barang->nama;
+    }
+    } else { //create
+    if (Yii::$app->request->get('<?= $rel[1] ?>')) {
+    $row = Yii::$app->request->get();
+    } else {
+    $row[] = [];
+    }
+    }
+    if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
+    $row = Yii::$app->request->post('<?= $rel[1] ?>');
+    $row[] = [];
+    }
+    return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
+    } else {
+    throw new NotAcceptableHttpException(Yii::t('frontend', 'The requested does not allowed.'));
+    }
+    }
 <?php endforeach; ?>
 }
