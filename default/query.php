@@ -4,13 +4,13 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\model\Generator */
+/* @var $generator mootensai\enhancedgii\crud\Generator */
 /* @var $className string class name */
 /* @var $modelClassName string related model class name */
 
 $modelFullClassName = $modelClassName;
-if ($generator->ns !== $generator->queryNs) {
-    $modelFullClassName = '\\' . $generator->ns . '\\' . $modelFullClassName;
+if ($generator->nsModel !== $generator->queryNs) {
+    $modelFullClassName = '\\' . $generator->queryNs . '\\' . $modelFullClassName;
 }
 
 echo "<?php\n";

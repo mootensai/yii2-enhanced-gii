@@ -3,7 +3,6 @@
 /**
  * This is the template for generating a CRUD controller class file.
  */
-use yii\db\ActiveRecordInterface;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
@@ -15,22 +14,10 @@ $searchModelClass = StringHelper::basename($generator->searchModelClass);
 if ($modelClass === $searchModelClass) {
     $searchModelAlias = $searchModelClass . 'Search';
 }
-
-/* @var $class ActiveRecordInterface */
-$class = $generator->modelClass;
-$pks = $class::primaryKey();
+$pks = $generator->tableSchema->primaryKey;
 $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
-
-/* @var $relations array list of relations (name => relation declaration) */
-print_r($relations);
-
-foreach ($relations as $name => $content) {
-    $curClass = new $generator->modelClass;
-//    $AQ = $curClass->getRelation($name);
-//    var_dump($AQ);
-}
 
 echo "<?php\n";
 ?>
@@ -97,8 +84,21 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionView(<?= $actionParams ?>)
     {
+        $model = $this->findModel(<?= $actionParams ?>);
+<?php foreach ($relations as $name => $rel): ?>
+<?php if($rel[2] && isset($rel[3])): ?>
+        $provider<?= $rel[1]?> = new ArrayDataProvider([
+            'allModels' => $model-><?= $name ?>,
+        ]);
+<?php endif; ?>
+<?php endforeach; ?>
         return $this->render('view', [
             'model' => $this->findModel(<?= $actionParams ?>),
+<?php foreach ($relations as $name => $rel): ?>
+<?php if($rel[2] && isset($rel[3])): ?>
+            'provider<?= $rel[1]?>' => $provider<?= $rel[1]?>,
+<?php endif; ?>
+<?php endforeach; ?>
         ]);
     }
 
@@ -178,44 +178,42 @@ if (count($pks) === 1) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
-
-<?php foreach ($relations as $rel): ?>
-
+<?php foreach ($relations as $name => $rel): ?>
+<?php if($rel[2] && isset($rel[3])): ?>
+    
     /**
     * Action to load a tabular form grid
-    * for <?= $rel[1] ?>
+    * for <?= $rel[1]."\n" ?>
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
     *
     * @return mixed
-    *
     */
     public function actionAdd<?= $rel[1] ?>()
     {
-    if (Yii::$app->request->isAjax) {
-    $row = [];
-    if (Yii::$app->request->get('id')) { //update
-    $d = $this->findModel(Yii::$app->request->get('id'));
-    foreach ($d->penerimaanBarangDetails as $index => $data) {
-    $row[$index] = $data->attributes;
-    $row[$index]['kategori'] = $data->barang->kategori->nama;
-    $row[$index]['kategori_id'] = $data->barang->kategori->id;
-    $row[$index]['barang_string'] = $data->barang->nama;
+        if (Yii::$app->request->isAjax) {
+            $row = [];
+            if (Yii::$app->request->get('<?= $rel[4] ?>')) { //update
+                $d = $this->findModel(Yii::$app->request->get('<?= $rel[4] ?>'));
+                foreach ($d-><?= $name ?> as $index => $data) {
+                    $row[$index] = $data->attributes;
+                }
+            } else { //create
+                if (Yii::$app->request->get('<?= $rel[4] ?>')) {
+                    $row = Yii::$app->request->get();
+                } else {
+                    $row[] = [];
+                }
+            }
+            if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
+                $row = Yii::$app->request->post('<?= $rel[1] ?>');
+                $row[] = [];
+            }
+            return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
+        } else {
+            throw new NotAcceptableHttpException(Yii::t('frontend', 'The requested does not allowed.'));
+        }
     }
-    } else { //create
-    if (Yii::$app->request->get('<?= $rel[1] ?>')) {
-    $row = Yii::$app->request->get();
-    } else {
-    $row[] = [];
-    }
-    }
-    if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
-    $row = Yii::$app->request->post('<?= $rel[1] ?>');
-    $row[] = [];
-    }
-    return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
-    } else {
-    throw new NotAcceptableHttpException(Yii::t('frontend', 'The requested does not allowed.'));
-    }
-    }
+<?php endif; ?>
 <?php endforeach; ?>
 }

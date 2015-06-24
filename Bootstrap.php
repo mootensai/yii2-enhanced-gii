@@ -33,7 +33,7 @@ class Bootstrap implements BootstrapInterface
 //                $app->getModule('gii')->generators['enhanced-model'] = 'mootensai\enhancedgii\model\Generator';
 //            }
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
-                $app->getModule('gii')->generators['enhanced-gii'] = 'mootensai\enhancedgii\crud\Generator';
+                $app->getModule('gii')->generators['enhanced-gii'] = 'mootensai\enhancedgii\Generator';
             }
         }
     }

@@ -4,7 +4,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\model\Generator */
+/* @var $generator mootensai\enhancedgii\crud\Generator */
 /* @var $tableName string full table name */
 /* @var $className string class name */
 /* @var $queryClassName string query class name */
@@ -19,6 +19,12 @@ echo "<?php\n";
 namespace <?= $generator->nsModel ?>;
 
 use Yii;
+<?php if($generator->createdAt || $generator->updatedAt): ?>
+use \yii\behaviors\TimestampBehavior;
+<?php endif; ?>
+<?php if($generator->createdBy || $generator->updatedBy): ?>
+use \yii\behaviors\BlameableBehavior;
+<?php endif; ?>
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -33,7 +39,7 @@ use Yii;
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
+class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
     /**
      * @inheritdoc
@@ -52,8 +58,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         return Yii::$app->get('<?= $generator->db ?>');
     }
 <?php endif; ?>
-
-<?php if ($generator->isOptimisticLock): ?>
+<?php if (!empty($generator->optimisticLock)): ?>
 
     /**
      * 
@@ -63,7 +68,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
      * 
      */
     public function optimisticLock() {
-        return '<?= $generator->optimisticLockColumn ?>';
+        return '<?= $generator->optimisticLock ?>';
     }
 <?php endif; ?>
     
@@ -82,7 +87,9 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return [
 <?php foreach ($labels as $name => $label): ?>
+<?php if(!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+<?php endif; ?>
 <?php endforeach; ?>
         ];
     }
@@ -96,6 +103,52 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         <?= $relation[0] . "\n" ?>
     }
 <?php endforeach; ?>
+<?php if ($generator->createdAt || $generator->updatedAt
+        || $generator->createdBy || $generator->updatedBy
+        || $generator->UUIDColumn): 
+    echo "\n";?>
+    public function behaviors()
+    {
+        return [
+<?php if($generator->createdAt || $generator->updatedAt):?>
+            [
+                'class' => TimestampBehavior::className(),
+<?php if(!empty($generator->createdAt)):?>
+                'createdAtAttribute' => '<?= $generator->createdAt?>',
+<?php endif;?>
+<?php if(!empty($generator->updatedAt)):?>
+                'updatedAtAttribute' => '<?= $generator->updatedAt?>',
+<?php endif;?>
+<?php if(!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
+                'value' => <?= $generator->timestampValue?>,
+<?php endif;?>
+            ],
+<?php endif;?>
+<?php if($generator->createdBy || $generator->updatedBy):?>
+            [
+                'class' => BlameableBehavior::className(),
+<?php if(!empty($generator->createdBy)):?>
+                'createdByAttribute' => '<?= $generator->createdBy?>',
+<?php endif;?>
+<?php if(!empty($generator->updatedBy)):?>
+                'updatedByAttribute' => '<?= $generator->updatedBy?>',
+<?php endif;?>
+<?php if(!empty($generator->blameableValue) && $generator->blameableValue != 'Yii::$app->user->id'):?>
+                'value' => <?= $generator->blameableValue?>,
+<?php endif;?>
+            ],
+<?php endif;?>
+<?php if($generator->UUIDColumn):?>
+            [
+                'class' => UUIDBehavior::className(),
+<?php if(!empty($generator->UUIDColumn)):?>
+                'column' => '<?= $generator->UUIDColumn?>',
+<?php endif;?>
+            ],
+<?php endif;?>
+        ];
+    }
+<?php endif; ?>
 <?php if ($queryClassName): ?>
 <?php
     $queryClassFullName = ($generator->nsModel === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
