@@ -79,15 +79,14 @@ class Generator extends \yii\gii\Generator {
      * @inheritdoc
      */
     public function getName() {
-        return 'IO Generator';
+        return 'IO Generator (Model)';
     }
 
     /**
      * @inheritdoc
      */
     public function getDescription() {
-        return 'This generator generates model, controller and views that implement CRUD (Create, Read, Update, Delete)
-            operations for the database to let you focus on the app engine.';
+        return 'This generator generates model operations for the database.';
     }
 
     /**
@@ -123,6 +122,8 @@ class Generator extends \yii\gii\Generator {
             'db' => 'Database Connection ID',
             'nsTraits' => 'Trait Namespace',
             'modelClass' => 'Model Class',
+            'timestampValue' => 'Value',
+            'blameableValue' => 'Value',
             'generateQuery' => 'Generate ActiveQuery',
             'queryNs' => 'ActiveQuery Namespace',
             'queryClass' => 'ActiveQuery Class',
@@ -283,7 +284,7 @@ class Generator extends \yii\gii\Generator {
      * @inheritdoc
      */
     public function requiredTemplates() {
-        return ['model.php', 'controller.php'];
+        return ['model.php'];
     }
 
     /**
@@ -302,19 +303,23 @@ class Generator extends \yii\gii\Generator {
     public function generate() {
         $files = [];
         $relations = $this->generateRelations();
+        $this->relations = $relations;
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [];
         $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [];
         foreach ($this->getTableNames() as $tableName) {
-            // model :
-            //TODO : model class name empty if not contain '*' @ this->tableName
-            $modelClassName = $this->generateClassName($tableName);
+            // preparation :
+            if (strpos($this->tableName, '*') !== false) {
+                $modelClassName = $this->generateClassName($tableName);
+            }else{
+                $modelClassName = Inflector::id2camel($tableName, '_');
+            }
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
             $this->tableSchema = $tableSchema;
-            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
+//            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
             $params = [
                 'tableName' => $tableName,
@@ -325,24 +330,13 @@ class Generator extends \yii\gii\Generator {
                 'rules' => $this->generateRules($tableSchema),
                 'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
             ];
-            if (!empty($this->searchModelClass)) {
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$tableName]]));
-            }
-
-            $files[] = new CodeFile(
-                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $modelClassName . 'Controller.php', $this->render('controller.php', [
-                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                    ])
-            );
-
+            // model :
             $files[] = new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php', $this->render('model.php', $params)
             );
             $files[] = new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
             );
-
             // query :
             if ($queryClassName) {
                 $params = [
@@ -354,40 +348,54 @@ class Generator extends \yii\gii\Generator {
                 );
             }
 
-            // search Model :
-            if (!empty($this->searchModelClass)) {
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$this->tableName]]));
-            }
-
-            // views :
-            $viewPath = $this->getViewPath();
-            $templatePath = $this->getTemplatePath() . '/views';
-            foreach (scandir($templatePath) as $file) {
-                if (empty($this->searchModelClass) && $file === '_search.php') {
-                    continue;
-                }
-                if ($file === '_formref.php' || $file === '_script.php') {
-                    continue;
-                }
-                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
-                                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                            ])
-                    );
-                }
-            }
-            if (isset($relations[$tableName])) {
-                $files[] = new CodeFile("$viewPath/_script.php", $this->render("views/_script.php"));
-                foreach ($relations[$tableName] as $name => $rel) {
-                    if ($rel[2] && isset($rel[3])) {
-                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
-                                    'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                                ])
-                        );
-                    }
-                }
-            }
+//            // controller :
+//            $files[] = new CodeFile(
+//                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $modelClassName . 'Controller.php', $this->render('controller.php', [
+//                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+//                    ])
+//            );
+//            // search :
+//            if (!empty($this->searchModelClass)) {
+//                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+//                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$tableName]]));
+//            }
+//
+            
+//
+//            // search Model :
+//            if (!empty($this->searchModelClass)) {
+//                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+//                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$this->tableName]]));
+//            }
+//
+//            // views :
+//            $viewPath = $this->getViewPath();
+//            $templatePath = $this->getTemplatePath() . '/views';
+//            foreach (scandir($templatePath) as $file) {
+//                if (empty($this->searchModelClass) && $file === '_search.php') {
+//                    continue;
+//                }
+//                if ($file === '_formref.php' || $file === '_script.php') {
+//                    continue;
+//                }
+//                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+//                    $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
+//                                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+//                            ])
+//                    );
+//                }
+//            }
+//            if (isset($relations[$tableName])) {
+//                $files[] = new CodeFile("$viewPath/_script.php", $this->render("views/_script.php"));
+//                foreach ($relations[$tableName] as $name => $rel) {
+//                    if ($rel[2] && isset($rel[3])) {
+//                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
+//                                    'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+//                                ])
+//                        );
+//                    }
+//                }
+//            }
 
             if (strpos($this->tableName, '*') !== false) {
                 $this->modelClass = '';
@@ -421,7 +429,7 @@ class Generator extends \yii\gii\Generator {
         $viaLink = $this->generateRelationLink([$table->primaryKey[0] => $fks[$table->primaryKey[0]][1]]);
         $relationName = $this->generateRelationName($relations, $table0Schema, $table->primaryKey[1], true);
         $relations[$table0Schema->fullName][$relationName] = [
-            "return \$this->hasMany($className1::className(), $link)->viaTable('"
+            "return \$this->hasMany(\\{$this->nsModel}\\$className1::className(), $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className1,
             true,
@@ -431,7 +439,7 @@ class Generator extends \yii\gii\Generator {
         $viaLink = $this->generateRelationLink([$table->primaryKey[1] => $fks[$table->primaryKey[1]][1]]);
         $relationName = $this->generateRelationName($relations, $table1Schema, $table->primaryKey[0], true);
         $relations[$table1Schema->fullName][$relationName] = [
-            "return \$this->hasMany($className0::className(), $link)->viaTable('"
+            "return \$this->hasMany(\\{$this->nsModel}\\$className0::className(), $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className0,
             true,
@@ -469,19 +477,30 @@ class Generator extends \yii\gii\Generator {
         $relations = [];
         foreach ($schemaNames as $schemaName) {
             foreach ($db->getSchema()->getTableSchemas($schemaName) as $table) {
-                $className = $this->generateClassName($table->fullName);
+//                $className = $this->generateClassName($table->fullName);
+                if (strpos($this->tableName, '*') !== false) {
+                    $className = $this->generateClassName($table->fullName);
+                }else{
+                    $className = Inflector::id2camel($table->fullName, '_');
+                }
                 foreach ($table->foreignKeys as $refs) {
                     $refTable = $refs[0];
                     $refTableSchema = $db->getTableSchema($refTable);
                     unset($refs[0]);
                     $fks = array_keys($refs);
-                    $refClassName = $this->generateClassName($refTable);
+                    
+                    if (strpos($this->tableName, '*') !== false) {
+                        $refClassName = $this->generateClassName($refTableSchema->fullName);
+                    }else{
+                        $refClassName = Inflector::id2camel($refTableSchema->fullName, '_');
+                    }
+//                    $refClassName = $this->generateClassName($refTable);
 
                     // Add relation for this table
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
                     $relations[$table->fullName][lcfirst($relationName)] = [
-                        "return \$this->hasOne($refClassName::className(), $link);",
+                        "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);",
                         $refClassName,
                         0,
                         $refTable,
@@ -506,10 +525,10 @@ class Generator extends \yii\gii\Generator {
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        "return \$this->hasOne($refClassName::className(), $link);",
+                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);",
                         $className,
                         $hasMany,
-                        $refTable,
+                        $table->fullName,
                         $refs[key($refs)],
                         key($refs)
                     ];
@@ -593,7 +612,6 @@ class Generator extends \yii\gii\Generator {
         while (isset($relations[$table->fullName][$name])) {
             $name = $rawName . ($i++);
         }
-
         return $name;
     }
 
@@ -643,14 +661,10 @@ class Generator extends \yii\gii\Generator {
     public function getNameAttributeFK($tableName) {
         $tableSchema = $this->getDbConnection()->getTableSchema($tableName);
         foreach ($tableSchema->getColumnNames() as $name) {
-            foreach ($this->nameAttribute as $nameAttr) {
-                if (!strcasecmp($name, $nameAttr)) {
-                    return $name;
-                }
+            if(in_array($name, $this->nameAttribute)){
+                return $name;
             }
         }
-        /* @var $class ActiveRecord */
-//        $class = $this->modelClass;
         $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 
         return $pk;
@@ -773,90 +787,152 @@ class Generator extends \yii\gii\Generator {
 
         return $rules;
     }
+    
+    /**
+     * Generates code for Grid View field
+     * @param string $attribute
+     * @param TableSchema $tableSchema
+     * @return string
+     */
+    public function generateGridViewField($attribute,$fk, $tableSchema = null) {
+        if(is_null($tableSchema)){
+            $tableSchema = $this->getTableSchema();
+        }
+        $humanize = Inflector::humanize($attribute, true);
+        if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
+            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+                return "";
+            } else {
+                return "'$attribute',\n";
+            }
+        }
+        $column = $tableSchema->columns[$attribute];
+        $format = $this->generateColumnFormat($column);
+//        if($column->autoIncrement){
+//            return "";
+//        } else
+        if (array_key_exists($attribute, $fk)) {
+            $rel = $fk[$attribute];
+            $labelCol = $this->getNameAttributeFK($rel[3]);
+            $humanize = Inflector::humanize($rel[3]);
+            $output = "[
+                        'attribute' => '$attribute.$labelCol',
+                        'label' => ".$this->generateString(Inflector::camel2words($rel[1])).",
+                    ],\n";
+            return $output;
+        } else {
+            return "'$attribute".($format === 'text' ? "" : ":" . $format)."',\n";
+        }
+    }
+    
+    public function generateFK($tableSchema = null){
+        if(is_null($tableSchema)){
+            $tableSchema = $this->getTableSchema();
+        }
+        $fk = [];
+        if(isset($this->relations[$tableSchema->fullName])){
+            foreach($this->relations[$tableSchema->fullName] as $relations){
+                foreach($tableSchema->foreignKeys as $value){
+                    if(isset($relations[5]) && $relations[3] == $value[0])
+                    $fk[$relations[5]] = $relations;
+                }
+            }
+        }
+        return $fk;
+    }
 
     /**
      * Generates code for Kartik Tabular Form field
      * @param string $attribute
      * @return string
      */
-    public function generateTabularFormField($attribute) {
-        $fk = [];
-        foreach($this->relations as $key => $value){
-            if(isset($value[5])){
-                $fk[$value[5]] = $value;
-                $fk[$value[5]][] = $key;
-            }
+    public function generateTabularFormField($attribute,$fk, $tableSchema = null) {
+        if(is_null($tableSchema)){
+            $tableSchema = $this->getTableSchema();
         }
-        $tableSchema = $this->getTableSchema();
-        $placeholder = Inflector::humanize($attribute, true);
+//        print_r($tableSchema->foreignKeys);
+//        print_r($fk);
+        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
-                return "\$form->field(\$model, '$attribute')->passwordInput()";
+                return "\"$attribute\" => ['type' => TabularForm::INPUT_PASSWORD]";
             } else {
-                return "\$form->field(\$model, '$attribute')";
+                return "\"$attribute\" => ['type' => TabularForm::INPUT_TEXT]";
             }
         }
         $column = $tableSchema->columns[$attribute];
         if($column->autoIncrement){
             return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions' => ['hidden' => true]]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
-            return "\$form->field(\$model, '$attribute')->checkbox()";
+            return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX]";
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
-            return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
+            return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => '$placeholder'],
-        'type' => DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'dd-M-yyyy'
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
+        'widgetClass' => \kartik\widgets\DatePicker::classname(),
+        'options' => [
+            'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
+            'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'dd-M-yyyy'
+            ]
         ]
-    ]);";
+]";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
+        'widgetClass' => \kartik\widgets\TimePicker::classname()
+]";
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => '$placeholder'],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'mm/dd/yyyy hh:ii:ss'
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
+        'widgetClass' => \kartik\widgets\DateTimePicker::classname(),
+        'options' => [
+            'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format' => 'hh:ii:ss dd-M-yyyy'
+            ]
         ]
-    ])";
+]";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
             $fkClassFQ = "\\".$this->nsModel."\\".$rel[1];
-            $output = "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),\n";
-            if($this->enableI18N){
-                $output .= "        'options' => ['placeholder' => Yii::t('$this->messageCategory','Choose $humanize')],\n";
-            }else{
-                $output .= "        'options' => ['placeholder' => 'Choose $humanize'],\n";
-            }
-            $output .= "        'pluginOptions' => [
-            'allowClear' => true
-                ],
-        ])";
+            $output = "'$attribute' => [
+            'label' => '$humanize',
+            'type' => TabularForm::INPUT_WIDGET,
+            'widgetClass' => \kartik\widgets\Select2::className(),
+            'options' => [
+                'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$labelCol')->asArray()->all(), '$rel[4]', '$labelCol'),
+                'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
+            ],
+            'columnOptions' => ['width' => '200px']
+        ],";
             return $output;
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
-                $input = 'passwordInput';
+                $input = 'INPUT_PASSWORD';
             } else {
-                $input = 'textInput';
+                $input = 'INPUT_TEXT';
             }
             if (is_array($column->enumValues) && count($column->enumValues) > 0) {
                 $dropDownOptions = [];
                 foreach ($column->enumValues as $enumValue) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
-                return "\$form->field(\$model, '$attribute')->dropDownList("
-                        . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+                return "'$attribute' => ['type' => TabularForm::INPUT_DROPDOWN_LIST,
+                    'options' => [
+                        'items' => ".preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).",
+                        'columnOptions => ['width' => '185px'],
+                        'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
+                    ]
+        ]";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field(\$model, '$attribute')->$input(['placeholder' =>])";
+                return "'$attribute' => ['type' => TabularForm::$input]";
             } else {
-                return "\$form->field(\$model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder'])";
+                return "'$attribute' => ['type' => TabularForm::$input]";//max length??
             }
         }
     }
@@ -866,15 +942,27 @@ class Generator extends \yii\gii\Generator {
      * @param string $attribute
      * @return string
      */
-    public function generateActiveField($attribute) {
-        $fk = [];
-        foreach($this->relations as $key => $value){
-            if(isset($value[5])){
-                $fk[$value[5]] = $value;
-                $fk[$value[5]][] = $key;
-            }
+    public function generateActiveField($attribute, $fk, $tableSchema = null) {
+        if(is_null($tableSchema)){
+            $tableSchema = $this->getTableSchema();
         }
-        $tableSchema = $this->getTableSchema();
+//        if(is_null($relations)){
+//            $relations = $this->relations;
+//        }
+//        $fk = [];
+//        foreach($relations as $key => $value){
+//            if(isset($value[5])){
+//                $fk[$value[5]] = $value;
+//                $fk[$value[5]][] = $key;
+//            }
+//        }
+//        foreach($tableSchema->foreignKeys as $key => $value){
+//            $rel = $this->relations[$value[0]];
+//            unset($value[0]);
+//            if(isset($rel[5]) && $rel[5] == key($value)){
+//                $fk[$rel[5]] = $rel;
+//            }
+//        }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -890,7 +978,7 @@ class Generator extends \yii\gii\Generator {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => '$placeholder'],
+        'options' => ['placeholder' => ".$this->generateString('Choose '.$placeholder)."],
         'type' => DatePicker::TYPE_COMPONENT_APPEND,
         'pluginOptions' => [
             'autoclose' => true,
@@ -901,7 +989,7 @@ class Generator extends \yii\gii\Generator {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
         } elseif ($column->dbType === 'datetime') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => '$placeholder'],
+        'options' => ['placeholder' => ".$this->generateString('Choose '.$placeholder)."],
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'mm/dd/yyyy hh:ii:ss'
@@ -914,16 +1002,12 @@ class Generator extends \yii\gii\Generator {
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
             $fkClassFQ = "\\".$this->nsModel."\\".$rel[1];
             $output = "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),\n";
-            if($this->enableI18N){
-                $output .= "        'options' => ['placeholder' => Yii::t('$this->messageCategory','Choose $humanize')],\n";
-            }else{
-                $output .= "        'options' => ['placeholder' => 'Choose $humanize'],\n";
-            }
-            $output .= "        'pluginOptions' => [
+        'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
+        'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
+        'pluginOptions' => [
             'allowClear' => true
-                ],
-        ])";
+        ],
+    ])";
             return $output;
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
@@ -939,7 +1023,7 @@ class Generator extends \yii\gii\Generator {
                 return "\$form->field(\$model, '$attribute')->dropDownList("
                         . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field(\$model, '$attribute')->$input(['placeholder' =>])";
+                return "\$form->field(\$model, '$attribute')->$input(['placeholder' => '$placeholder'])";
             } else {
                 return "\$form->field(\$model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder'])";
             }
@@ -951,8 +1035,21 @@ class Generator extends \yii\gii\Generator {
      * @param string $attribute
      * @return string
      */
-    public function generateActiveSearchField($attribute) {
-        $tableSchema = $this->getTableSchema();
+    public function generateActiveSearchField($attribute,$tableSchema = null, $relations = null) {
+        if(is_null($tableSchema)){
+            $tableSchema = $this->getTableSchema();
+        }
+        if(is_null($relations)){
+            $relations = $this->relations;
+        }
+        $fk = [];
+        foreach($relations as $key => $value){
+            if(isset($value[5])){
+                $fk[$value[5]] = $value;
+                $fk[$value[5]][] = $key;
+            }
+        }
+        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false) {
             return "\$form->field(\$model, '$attribute')";
         }
@@ -1318,7 +1415,6 @@ class Generator extends \yii\gii\Generator {
                 break;
             }
         }
-
         return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName . $className, '_');
     }
 

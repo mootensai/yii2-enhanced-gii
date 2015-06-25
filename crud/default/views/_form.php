@@ -32,7 +32,6 @@ foreach($relations as $name => $rel){
                 . "        'class' => '$modelClass', \n"
                 . "        'pk' => '$pk', \n"
                 . "        'relID' => '$relID', \n"
-                . "        'relClass' => '$rel[1]'\n"
                 . "    ]\n"
                 . "]);\n";
     }
@@ -51,8 +50,9 @@ foreach($relations as $name => $rel){
 } ?>
 <?php 
 foreach($relations as $name => $rel){
+    $relID = Inflector::camel2id($rel[1]);
     if($rel[2] && isset($rel[3])){
-        echo "    <div class=\"form-group\" id=\"add$rel[1]\"></div>\n\n";
+        echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
     }
 }
 ?>

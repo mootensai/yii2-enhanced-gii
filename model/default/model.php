@@ -98,7 +98,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function get<?= $name ?>()
+    public function get<?= ucfirst($name) ?>()
     {
         <?= $relation[0] . "\n" ?>
     }

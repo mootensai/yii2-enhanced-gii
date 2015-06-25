@@ -13,7 +13,7 @@ use yii\helpers\Url;
             url: <?= "<?php echo Url::to(['add-'.\$relID]); ?>"; ?>,
             data: data,
             success: function (data) {
-                $('#add<?= "<?= \$relClass?>"; ?>').html(data);
+                $('#add-<?= "<?= \$relID?>"; ?>').html(data);
             }
         });
     });
@@ -24,7 +24,7 @@ use yii\helpers\Url;
             url: <?= "<?php echo Url::to(['add-'.\$relID]); ?>" ?>,
             data: data,
             success: function (data) {
-                $('#add<?= "<?= \$relClass?>"; ?>').html(data);
+                $('#add-<?= "<?= \$relID?>"; ?>').html(data);
             }
         });
     }

@@ -193,20 +193,17 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = [];
+            if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
+                $row = Yii::$app->request->post('<?= $rel[1] ?>');
+                $row[] = [];
+                return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
+            }
             if (Yii::$app->request->get('<?= $rel[4] ?>')) { //update
                 $d = $this->findModel(Yii::$app->request->get('<?= $rel[4] ?>'));
                 foreach ($d-><?= $name ?> as $index => $data) {
                     $row[$index] = $data->attributes;
                 }
             } else { //create
-                if (Yii::$app->request->get('<?= $rel[4] ?>')) {
-                    $row = Yii::$app->request->get();
-                } else {
-                    $row[] = [];
-                }
-            }
-            if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
-                $row = Yii::$app->request->post('<?= $rel[1] ?>');
                 $row[] = [];
             }
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);

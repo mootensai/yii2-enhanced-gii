@@ -31,23 +31,22 @@ echo TabularForm::widget([
         echo "    [\n        " . $generator->generateTabularFormField($attribute,$fk, $tableSchema) . "\n    ],\n";
     }
 endforeach;?>
-        'del' => [
-            'type' => TabularForm::INPUT_STATIC,
-            'label' => '',
-            'value' => function($model, $key) {
+    'del' => [
+        'type' => TabularForm::INPUT_STATIC,
+        'label' => '',
+        'value' => function($model, $key) {
             return Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  Yii::t('frontend', 'Delete'), 'onClick' => 'delRow(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[1]) ?>-del-btn']);
-            },
-                ]
-            ],
-            'gridSettings' => [
-                'panel' => [
-                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> ' . Yii::t('frontend', '<?= yii\helpers\Inflector::camel2words($relations[1]) ?>') . '  </h3>',
-                    'type' => GridView::TYPE_PRIMARY,
-                    'before' => false,
-                    'footer' => false,
-                    'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . Yii::t('frontend', 'Add Row'), ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow()']),
-                ]
-            ]
+        },
+    ],
+    'gridSettings' => [
+        'panel' => [
+        'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> ' . Yii::t('frontend', '<?= yii\helpers\Inflector::camel2words($relations[1]) ?>') . '  </h3>',
+            'type' => GridView::TYPE_PRIMARY,
+            'before' => false,
+            'footer' => false,
+            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . Yii::t('frontend', 'Add Row'), ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow()']),
+        ]
+    ]
 ]);
 Pjax::end();
 ?>
