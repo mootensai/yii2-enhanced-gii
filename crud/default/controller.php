@@ -252,7 +252,7 @@ if (count($pks) === 1) {
             }
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {
-            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>));
+            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
         }
     }
 <?php endif; ?>
