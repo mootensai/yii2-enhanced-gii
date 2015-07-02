@@ -10,7 +10,7 @@ use yii\helpers\Url;
         var data = <?= "<?php echo Json::encode([ \$pk => Yii::\$app->request->get(\$pk)]) ?>;\n" ?>
         $.ajax({
             type: 'GET',
-            url: <?= "<?php echo Url::to(['add-'.\$relID]); ?>"; ?>,
+            url: '<?= "<?php echo Url::to(['add-'.\$relID]); ?>"; ?>',
             data: data,
             success: function (data) {
                 $('#add-<?= "<?= \$relID?>"; ?>').html(data);
@@ -18,10 +18,10 @@ use yii\helpers\Url;
         });
     });
     function addRow() {
-        var data = $('#<?= "<?= \$class?>"; ?>').serializeArray();
+        var data = $('#add-<?= "<?= \$relID?>"; ?>').serializeArray();
         $.ajax({
             type: 'POST',
-            url: <?= "<?php echo Url::to(['add-'.\$relID]); ?>" ?>,
+            url: '<?= "<?php echo Url::to(['add-'.\$relID]); ?>" ?>',
             data: data,
             success: function (data) {
                 $('#add-<?= "<?= \$relID?>"; ?>').html(data);

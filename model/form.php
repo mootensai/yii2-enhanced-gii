@@ -29,7 +29,7 @@ echo "<h4>Timestamp Behaviors</h4>";
     <div class="col-md-3">
 <?= $form->field($generator, 'updatedAt'); ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
 <?= $form->field($generator, 'timestampValue'); ?>
     </div>
 </div>    
@@ -43,7 +43,7 @@ echo "<h4>Blameable Behaviors</h4>";
     <div class="col-md-3">
 <?= $form->field($generator, 'updatedBy'); ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
 <?= $form->field($generator, 'blameableValue'); ?>
     </div>
 </div>    

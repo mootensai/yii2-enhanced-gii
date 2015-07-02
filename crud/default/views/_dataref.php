@@ -8,7 +8,6 @@
 
 use kartik\grid\GridView;
 use yii\data\ArrayDataProvider;
-use yii\helpers\Html;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,

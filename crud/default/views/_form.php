@@ -5,8 +5,7 @@ use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\Generator */
-//print_r($generator->generateFK());
-//print_r($generator->tableSchema->foreignKeys);
+
 echo "<?php\n";
 ?>
 
@@ -25,11 +24,10 @@ $pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getC
 $modelClass = StringHelper::basename($generator->modelClass);
 foreach($relations as $name => $rel){
     $relID = Inflector::camel2id($rel[1]);
-    if($rel[2] && isset($rel[3])){
-        echo "\mootensai\JsBlock\JsBlock::widget(['viewFile' => '_script', "
-                . "'pos'=> View::POS_END, \n"
+    if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
+        echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', "
+                . "'pos'=> \yii\web\View::POS_END, \n"
                 . "    'viewParams' => [\n"
-                . "        'class' => '$modelClass', \n"
                 . "        'pk' => '$pk', \n"
                 . "        'relID' => '$relID', \n"
                 . "    ]\n"
@@ -51,7 +49,7 @@ foreach($relations as $name => $rel){
 <?php 
 foreach($relations as $name => $rel){
     $relID = Inflector::camel2id($rel[1]);
-    if($rel[2] && isset($rel[3])){
+    if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
         echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
     }
 }

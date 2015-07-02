@@ -60,10 +60,10 @@ class Generator extends \yii\gii\Generator {
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
-    public $timestampValue = "new Expression('NOW()')";
+    public $timestampValue = "new \yii\db\Expression('NOW()')";
     public $createdBy = 'created_by';
     public $updatedBy = 'updated_by';
-    public $blameableValue = 'Yii::\$app->user->id';
+    public $blameableValue = '\Yii::$app->user->id';
     public $UUIDColumn = 'id';
     public $deletedBy = 'deleted_by';
     public $deletedAt = 'deleted_at';

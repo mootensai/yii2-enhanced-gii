@@ -34,43 +34,20 @@ use \yii\web\Controller;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator {
+class Generator2 extends \yii\gii\generators\crud\Generator {
     /* @var $tableSchema TableSchema */
 
     public $tableSchema;
     public $db = 'db';
-    public $nsTraits = 'app\traits';
     public $tableName;
     public $nameAttribute = 'name, title';
     public $hiddenColumns = 'id, lock';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
-    public $nsModel = 'app\models';
-    public $modelClass;
-    public $baseModelClass = 'yii\db\ActiveRecord';
     public $nsSearchModel = 'app\models';
     public $generateSearchModel;
     public $searchModelClass;
-    public $generateQuery = true;
-    public $queryNs = 'app\models';
-    public $queryClass;
-    public $queryBaseClass = 'yii\db\ActiveQuery';
-    public $generateLabelsFromComments = false;
-    public $useTablePrefix = false;
-    public $generateRelations = true;
-    public $generateMigrations = true;
-    public $optimisticLock = 'lock';
-    public $createdAt = 'created_at';
-    public $updatedAt = 'updated_at';
-    public $timestampValue = "new Expression('NOW()')";
-    public $createdBy = 'created_by';
-    public $updatedBy = 'updated_by';
-    public $blameableValue = 'Yii::\$app->user->id';
-    public $UUIDColumn = 'id';
-    public $deletedBy = 'deleted_by';
-    public $deletedAt = 'deleted_at';
     public $nsController = 'app\controllers';
     public $controllerClass;
-    public $pluralize;
     public $viewPath = 'app\views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
@@ -111,7 +88,7 @@ class Generator extends \yii\gii\Generator {
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations','generateSearchModel', 'pluralize'], 'boolean'],
+            [['enableI18N', 'generateRelations','generateSearchModel'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 
                 'controllerClass', 'blameableValue', 'nameAttribute', 
@@ -218,7 +195,6 @@ class Generator extends \yii\gii\Generator {
                 the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
             'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
-            'pluralize' => 'Set the generator to generate pluralize for label',
             'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
                 to <code>@app/views/ControllerID</code>',
@@ -828,7 +804,7 @@ class Generator extends \yii\gii\Generator {
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $output = "[
-            'attribute' => '$rel[6].$labelCol',
+            'attribute' => '$attribute.$labelCol',
             'label' => ".$this->generateString(Inflector::camel2words($rel[1])).",
         ],\n";
             return $output;
@@ -843,12 +819,10 @@ class Generator extends \yii\gii\Generator {
         }
         $fk = [];
         if(isset($this->relations[$tableSchema->fullName])){
-            foreach($this->relations[$tableSchema->fullName] as $name => $relations){
+            foreach($this->relations[$tableSchema->fullName] as $relations){
                 foreach($tableSchema->foreignKeys as $value){
-                    if(isset($relations[5]) && $relations[3] == $value[0]){
-                        $fk[$relations[5]] = $relations;
-                        $fk[$relations[5]][] = $name;
-                    }
+                    if(isset($relations[5]) && $relations[3] == $value[0])
+                    $fk[$relations[5]] = $relations;
                 }
             }
         }
@@ -923,7 +897,7 @@ class Generator extends \yii\gii\Generator {
                 'options' => ['placeholder' => ".$this->generateString('Choose '.$humanize)."],
             ],
             'columnOptions' => ['width' => '200px']
-        ]";
+        ],";
             return $output;
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {

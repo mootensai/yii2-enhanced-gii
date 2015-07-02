@@ -16,7 +16,7 @@
 echo "<?php\n";
 ?>
 
-namespace <?= $generator->nsModel ?>;
+namespace <?= $generator->nsModel ?>\base;
 
 use Yii;
 <?php if($generator->createdAt || $generator->updatedAt): ?>
@@ -25,9 +25,12 @@ use \yii\behaviors\TimestampBehavior;
 <?php if($generator->createdBy || $generator->updatedBy): ?>
 use \yii\behaviors\BlameableBehavior;
 <?php endif; ?>
+<?php if($generator->UUIDColumn): ?>
+use \mootensai\behaviors\UUIDBehavior;
+<?php endif; ?>
 
 /**
- * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+ * This is the base model class for table "<?= $generator->generateTableName($tableName) ?>".
  *
 <?php foreach ($tableSchema->columns as $column): ?>
  * @property <?= "{$column->phpType} \${$column->name}\n" ?>
@@ -35,12 +38,15 @@ use \yii\behaviors\BlameableBehavior;
 <?php if (!empty($relations)): ?>
  *
 <?php foreach ($relations as $name => $relation): ?>
- * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+ * @property <?= '\\'.$generator->nsModel.'\\'.$relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
+
+    use \mootensai\relation\RelationTrait;
+
     /**
      * @inheritdoc
      */
@@ -154,6 +160,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     $queryClassFullName = ($generator->nsModel === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
+    
     /**
      * @inheritdoc
      * @return <?= $queryClassFullName ?> the active query used by this AR class.

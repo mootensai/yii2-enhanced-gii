@@ -10,7 +10,15 @@
 		}
 	],
 	"require": {
-		"yiisoft/yii2": "*"
+		"yiisoft/yii2": "*",
+		"mootensai/yii2-uuid-behavior": "*",
+		"mootensai/yii2-relation-trait" : "*",
+		"kartik-v/yii2-builder" : "*",
+		"kartik-v/yii2-grid" : "*",
+		"kartik-v/yii2-widgets" : "*",
+		"kartik-v/yii2-mpdf" : "*",
+		"kartik-v/yii2-helpers" : "*",
+		"kartik-v/yii2-export" : "*"
 	},
 	"autoload": {
 		"psr-4": {

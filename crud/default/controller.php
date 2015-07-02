@@ -86,8 +86,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3])): ?>
-        $provider<?= $rel[1]?> = new ArrayDataProvider([
+<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+        $provider<?= $rel[1]?> = new \yii\data\ArrayDataProvider([
             'allModels' => $model-><?= $name ?>,
         ]);
 <?php endif; ?>
@@ -95,7 +95,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $this->render('view', [
             'model' => $this->findModel(<?= $actionParams ?>),
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3])): ?>
+<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
             'provider<?= $rel[1]?>' => $provider<?= $rel[1]?>,
 <?php endif; ?>
 <?php endforeach; ?>
@@ -111,7 +111,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -130,7 +130,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -150,6 +150,50 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $this->findModel(<?= $actionParams ?>)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * 
+     * untuk export pdf pada saat actionView
+     *  
+     * @param type $id
+     * @return type
+     */
+    public function actionPdf($id) {
+        $model = $this->findModel($id);
+<?php foreach ($relations as $name => $rel): ?>
+<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+        $provider<?= $rel[1] ?> = new \yii\data\ArrayDataProvider([
+            'allModels' => $model-><?= $name;?>,
+        ]);
+<?php endif;?>
+<?php endforeach;?>
+
+        $content = $this->renderAjax('_pdf', [
+            'model' => $model,
+<?php foreach ($relations as $name => $rel): ?>
+<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+            'provider<?= $rel[1]?>' => $provider<?= $rel[1] ?>,
+<?php endif;?>
+<?php endforeach;?>
+        ]);
+
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_CORE,
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            'content' => $content,
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            'cssInline' => '.kv-heading-1{font-size:18px}',
+            'options' => ['title' => \Yii::$app->name],
+            'methods' => [
+                'SetHeader' => [\Yii::$app->name],
+                'SetFooter' => ['{PAGENO}'],
+            ]
+        ]);
+
+        return $pdf->render();
     }
 
     /**
@@ -175,11 +219,11 @@ if (count($pks) === 1) {
         if (($model = <?= $modelClass ?>::findOne(<?= $condition ?>)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
         }
     }
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3])): ?>
+<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
     
     /**
     * Action to load a tabular form grid
@@ -208,7 +252,7 @@ if (count($pks) === 1) {
             }
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {
-            throw new NotAcceptableHttpException(Yii::t('frontend', 'The requested does not allowed.'));
+            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>));
         }
     }
 <?php endif; ?>
