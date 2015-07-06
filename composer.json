@@ -13,7 +13,7 @@
 		"yiisoft/yii2": "*",
 		"mootensai/yii2-uuid-behavior": "*",
 		"mootensai/yii2-relation-trait" : "*",
-		"mootensai/jsblock" : "*",
+		"mootensai/yii2-jsblock" : "*",
 		"kartik-v/yii2-builder" : "*",
 		"kartik-v/yii2-grid" : "*",
 		"kartik-v/yii2-widgets" : "*",
