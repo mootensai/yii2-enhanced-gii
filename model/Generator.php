@@ -19,7 +19,6 @@ use \yii\db\TableSchema;
 use \yii\gii\CodeFile;
 use \yii\helpers\Inflector;
 use \yii\helpers\VarDumper;
-use \yii\web\Controller;
 
 /**
  * Generates CRUD
@@ -56,7 +55,7 @@ class Generator extends \yii\gii\Generator {
     public $generateLabelsFromComments = false;
     public $useTablePrefix = false;
     public $generateRelations = true;
-    public $generateMigrations = true;
+//    public $generateMigrations = true;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
@@ -94,23 +93,26 @@ class Generator extends \yii\gii\Generator {
      */
     public function rules() {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'viewPath', 'nsController', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'viewPath', 'nsController', 'nsTraits', 'tableName', 'modelClass', 'searchModelClass', 'nsSearchModel', 'baseControllerClass','queryNs', 'nsController'], 'filter', 'filter' => 'trim'],
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
             [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
-            [['modelClass', 'baseControllerClass', 'searchModelClass', 'db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
+            [['modelClass', 'baseControllerClass', 'baseModelClass', 'searchModelClass', 'db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
 //            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
-            [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
+//            [['baseControllerClass','queryClass', 'queryBaseClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
             [['db'], 'validateDb'],
 //            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
 //            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
             [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateQuery', 'generateLabelsFromComments', 'useTablePrefix', 'generateMigrations'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            [['viewPath', 'skippedRelations', 'skippedColumns', 'controllerClass', 'blameableValue', 'nameAttribute', 'hiddenColumns'], 'safe'],
+            [['viewPath', 'skippedRelations', 'skippedColumns', 'controllerClass', 
+                'blameableValue', 'nameAttribute', 'hiddenColumns','timestampValue',
+                'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
+                'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedAt'], 'safe'],
         ]);
     }
 

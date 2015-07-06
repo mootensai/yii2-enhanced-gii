@@ -151,7 +151,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         return $this->redirect(['index']);
     }
-    
+<?php if($generator->pdf):?>    
     /**
      * 
      * untuk export pdf pada saat actionView
@@ -178,11 +178,11 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php endforeach;?>
         ]);
 
-        $pdf = new Pdf([
-            'mode' => Pdf::MODE_CORE,
-            'format' => Pdf::FORMAT_A4,
-            'orientation' => Pdf::ORIENT_PORTRAIT,
-            'destination' => Pdf::DEST_BROWSER,
+        $pdf = new \kartik\mpdf\Pdf([
+            'mode' => \kartik\mpdf\Pdf::MODE_CORE,
+            'format' => \kartik\mpdf\Pdf::FORMAT_A4,
+            'orientation' => \kartik\mpdf\Pdf::ORIENT_PORTRAIT,
+            'destination' => \kartik\mpdf\Pdf::DEST_BROWSER,
             'content' => $content,
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
             'cssInline' => '.kv-heading-1{font-size:18px}',
@@ -195,7 +195,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         return $pdf->render();
     }
-
+<?php endif; ?>
+    
     /**
      * Finds the <?= $modelClass ?> model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -236,23 +237,12 @@ if (count($pks) === 1) {
     public function actionAdd<?= $rel[1] ?>()
     {
         if (Yii::$app->request->isAjax) {
-            $row = [];
-            if (Yii::$app->request->post('<?= $rel[1] ?>')) { //add new row
-                $row = Yii::$app->request->post('<?= $rel[1] ?>');
+            $row = Yii::$app->request->post('<?= $rel[1] ?>');
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('action') == 'load' && empty($row)) || Yii::$app->request->post('action') == 'add')
                 $row[] = [];
-                return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
-            }
-            if (Yii::$app->request->get('<?= $rel[4] ?>')) { //update
-                $d = $this->findModel(Yii::$app->request->get('<?= $rel[4] ?>'));
-                foreach ($d-><?= $name ?> as $index => $data) {
-                    $row[$index] = $data->attributes;
-                }
-            } else { //create
-                $row[] = [];
-            }
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {
-            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>));
+            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
         }
     }
 <?php endif; ?>

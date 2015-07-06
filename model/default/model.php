@@ -121,9 +121,13 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
                 'class' => TimestampBehavior::className(),
 <?php if(!empty($generator->createdAt)):?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
+<?php else :?>
+                'createdAtAttribute' => false,
 <?php endif;?>
 <?php if(!empty($generator->updatedAt)):?>
                 'updatedAtAttribute' => '<?= $generator->updatedAt?>',
+<?php else :?>
+                'updatedAtAttribute' => false,
 <?php endif;?>
 <?php if(!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
                 'value' => <?= $generator->timestampValue?>,
@@ -135,11 +139,15 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
                 'class' => BlameableBehavior::className(),
 <?php if(!empty($generator->createdBy)):?>
                 'createdByAttribute' => '<?= $generator->createdBy?>',
+<?php else :?>
+                'createdByAttribute' => false,
 <?php endif;?>
 <?php if(!empty($generator->updatedBy)):?>
                 'updatedByAttribute' => '<?= $generator->updatedBy?>',
+<?php else :?>
+                'updatedByAttribute' => false,
 <?php endif;?>
-<?php if(!empty($generator->blameableValue) && $generator->blameableValue != 'Yii::$app->user->id'):?>
+<?php if(!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id'):?>
                 'value' => <?= $generator->blameableValue?>,
 <?php endif;?>
             ],

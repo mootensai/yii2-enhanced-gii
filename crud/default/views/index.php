@@ -14,7 +14,7 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use kartik\export\ExportMenu;
-use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView" ?>;
+use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
 
 /* @var $this yii\web\View */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
@@ -34,47 +34,40 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-<?php if ($generator->indexWidgetType === 'grid'): ?>
-    <?= "<?php \n" ?>
-    $gridColumns = [
-        ['class' => 'yii\grid\SerialColumn'],
 <?php 
-if (($tableSchema = $generator->getTableSchema()) === false) :
-    foreach ($generator->getColumnNames() as $name) {
-        if (++$count < 6) {
-            echo "            '" . $name . "',\n";
-        } else {
-            echo "            // '" . $name . "',\n";
+if ($generator->indexWidgetType === 'grid'): 
+?>
+    <?= "<?php \n" ?>
+    $gridColumn = [
+        ['class' => 'yii\grid\SerialColumn'],
+<?php   
+    if (($tableSchema = $generator->getTableSchema()) === false) :
+        foreach ($generator->getColumnNames() as $name) {
+            if (++$count < 6) {
+                echo "            '" . $name . "',\n";
+            } else {
+                echo "            // '" . $name . "',\n";
+            }
         }
-    }
-else :
-foreach($tableSchema->getColumnNames() as $attribute): 
-if(!in_array($attribute, $generator->skippedColumns)) :
+    else :
+        foreach($tableSchema->getColumnNames() as $attribute): 
+            if(!in_array($attribute, $generator->skippedColumns)) :
 ?>
         <?= $generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema)?>
 <?php
-endif;
-endforeach; ?>
+            endif;
+        endforeach; ?>
         [
             'class' => 'yii\grid\ActionColumn',
         ],
     ]; 
-    ?>
-    <?= "<?php \n" ?>
-    $fullExportMenu = ExportMenu::widget([
-<?php foreach($tableSchema->getColumnNames() as $attribute): 
-if(!in_array($attribute, $generator->skippedColumns)) :
+<?php 
+    endif; 
 ?>
-        <?= $generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema)?>
-<?php
-endif;
-endforeach;
-endif; ?>
-    ]); 
     ?>
     <?= "<?= " ?>GridView::widget([
         'dataProvider' => $dataProvider,
-        <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => \$gridColumns,\n" : "'columns' => \$gridColumns,\n"; ?>
+        <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => \$gridColumn,\n" : "'columns' => \$gridColumn,\n"; ?>
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
         'panel' => [
@@ -89,10 +82,25 @@ endif; ?>
         // your toolbar can include the additional full export menu
         'toolbar' => [
             '{export}',
-            $fullExportMenu,
+            ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumn,
+                'target' => ExportMenu::TARGET_BLANK,
+                'fontAwesome' => true,
+                'pjaxContainerId' => 'kv-pjax-container',
+                'dropdownOptions' => [
+                    'label' => 'Full',
+                    'class' => 'btn btn-default',
+                    'itemsBefore' => [
+                        '<li class="dropdown-header">Export All Data</li>',
+                    ],
+                ],
+            ]) ,
         ],
     ]); ?>
-<?php else: ?>
+<?php 
+else: 
+?>
     <?= "<?= " ?>ListView::widget([
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
@@ -100,6 +108,8 @@ endif; ?>
             return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
         },
     ]) ?>
-<?php endif; ?>
+<?php 
+endif; 
+?>
 
 </div>

@@ -2,7 +2,6 @@
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[3]);
 $fk = $generator->generateFK($tableSchema);
-//print_r($fk);
 echo "<?php\n";
 ?>
 use kartik\grid\GridView;
@@ -47,6 +46,6 @@ endforeach;?>
             'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . Yii::t('frontend', 'Add Row'), ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow()']),
         ]
     ]
-]]);
+]);
 Pjax::end();
 ?>

@@ -4,7 +4,7 @@ use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\Generator */
+/* @var $generator \mootensai\enhancedgii\crud\Generator */
 
 echo "<?php\n";
 ?>
@@ -25,11 +25,12 @@ $modelClass = StringHelper::basename($generator->modelClass);
 foreach($relations as $name => $rel){
     $relID = Inflector::camel2id($rel[1]);
     if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
-        echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', "
-                . "'pos'=> \yii\web\View::POS_END, \n"
+        echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', 'pos'=> \yii\web\View::POS_END, \n"
                 . "    'viewParams' => [\n"
-                . "        'pk' => '$pk', \n"
+                . "        'class' => '$rel[1]', \n"
                 . "        'relID' => '$relID', \n"
+                . "        'value' => \yii\helpers\Json::encode(\$model->$name),\n"
+                . "        'isNewRecord' => (\$model->isNewRecord) ? 1 : 0\n"
                 . "    ]\n"
                 . "]);\n";
     }
@@ -40,6 +41,8 @@ foreach($relations as $name => $rel){
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+    
+    <?= "<?= " ?>$form->errorSummary($model); ?>
 
 <?php foreach ($generator->tableSchema->getColumnNames() as $attribute) {
     if(!in_array($attribute, $generator->skippedColumns)) {

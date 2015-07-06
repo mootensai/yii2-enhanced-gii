@@ -1,24 +1,23 @@
 <?php echo "<?php
-
-use yii\helpers\Json;
 use yii\helpers\Url;
 
 ?>\n"
 ?>
 <script>
     $(function () {
-        var data = <?= "<?php echo Json::encode([ \$pk => Yii::\$app->request->get(\$pk)]) ?>;\n" ?>
+        var data = <?= "<?= \$value ?>" ?>;
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '<?= "<?php echo Url::to(['add-'.\$relID]); ?>"; ?>',
-            data: data,
+            data: {'<?= "<?= \$class?>"?>' : data, action : 'load', isNewRecord : <?= "<?= \$isNewRecord ?>" ?>},
             success: function (data) {
                 $('#add-<?= "<?= \$relID?>"; ?>').html(data);
             }
         });
     });
     function addRow() {
-        var data = $('#add-<?= "<?= \$relID?>"; ?>').serializeArray();
+        var data = $('#add-<?= "<?= \$relID?>"; ?> :input').serializeArray();
+        data.push({name: 'action', value : 'add'});
         $.ajax({
             type: 'POST',
             url: '<?= "<?php echo Url::to(['add-'.\$relID]); ?>" ?>',

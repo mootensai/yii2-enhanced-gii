@@ -71,6 +71,9 @@ class Generator extends \yii\gii\Generator {
     public $nsController = 'app\controllers';
     public $controllerClass;
     public $pluralize;
+    public $expandable;
+    public $exportable;
+    public $pdf;
     public $viewPath = 'app\views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
@@ -111,7 +114,7 @@ class Generator extends \yii\gii\Generator {
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations','generateSearchModel', 'pluralize'], 'boolean'],
+            [['enableI18N', 'generateRelations','generateSearchModel', 'pluralize', 'expandable', 'exportable', 'pdf'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 
                 'controllerClass', 'blameableValue', 'nameAttribute', 
@@ -139,6 +142,9 @@ class Generator extends \yii\gii\Generator {
             'baseControllerClass' => 'Base Controller Class',
             'indexWidgetType' => 'Widget Used in Index Page',
             'searchModelClass' => 'Search Model Class',
+            'expandable' => 'Expandable / Collapsible Index Grid View',
+            'exportable' => 'Exportable Index Grid View',
+            'pdf' => 'PDF Printable View'
         ]);
     }
 
@@ -219,6 +225,9 @@ class Generator extends \yii\gii\Generator {
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
             'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'pluralize' => 'Set the generator to generate pluralize for label',
+            'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
+            'exportable' => 'Set the generator to generate exportable data for Grid View at index',
+            'pdf' => 'Set the generator to generate printable PDF generator at view',
             'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
                 to <code>@app/views/ControllerID</code>',
@@ -312,12 +321,12 @@ class Generator extends \yii\gii\Generator {
         $relations = $this->generateRelations();
         $this->relations = $relations;
         $db = $this->getDbConnection();
-        $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
-        $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [];
+        $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
+        $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
 //        if (strpos($this->tableName, '*') !== false) {
 //            $this->skippedRelations = [];
 //        }else{
-            $this->skippedRelations = (strpos($this->tableName, '*') !== false) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [];
+            $this->skippedRelations = (strpos($this->tableName, '*') !== false) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
 //        }
         foreach ($this->getTableNames() as $tableName) {
             // model :
@@ -400,11 +409,13 @@ class Generator extends \yii\gii\Generator {
                                     'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                                 ])
                         );
-                        $files[] = new CodeFile("$viewPath/_data$rel[1].php", $this->render("views/_dataref.php", [
-                                    'relName' => $name,
-                                    'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                                ])
-                        );
+                        if($this->expandable){
+                            $files[] = new CodeFile("$viewPath/_data$rel[1].php", $this->render("views/_dataref.php", [
+                                        'relName' => $name,
+                                        'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                                    ])
+                            );
+                        }
                     }
                 }
             }
@@ -864,6 +875,9 @@ class Generator extends \yii\gii\Generator {
         if(is_null($tableSchema)){
             $tableSchema = $this->getTableSchema();
         }
+        if (in_array($attribute, $this->hiddenColumns)) {
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN]";
+        }
 //        print_r($tableSchema->foreignKeys);
 //        print_r($fk);
         $humanize = Inflector::humanize($attribute, true);
@@ -960,6 +974,9 @@ class Generator extends \yii\gii\Generator {
         if(is_null($tableSchema)){
             $tableSchema = $this->getTableSchema();
         }
+        if (in_array($attribute, $this->hiddenColumns)) {
+            return "\$form->field(\$model, '$attribute')->hiddenInput()";
+        }
 //        if(is_null($relations)){
 //            $relations = $this->relations;
 //        }
@@ -981,7 +998,9 @@ class Generator extends \yii\gii\Generator {
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
-            } else {
+            }else if (in_array($attribute, $this->hiddenColumns)) {
+                return "\$form->field(\$model, '$attribute')->hiddenInput()";
+            }else {
                 return "\$form->field(\$model, '$attribute')";
             }
         }

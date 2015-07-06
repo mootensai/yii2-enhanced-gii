@@ -2,7 +2,6 @@
 
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
-
 ?>
 <?= "<?php" ?>
 
@@ -15,7 +14,7 @@ use yii\data\ArrayDataProvider;
     $gridColumns = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php 
-if (($tableSchema = $generator->getTableSchema()) === false) :
+if (($tableSchema = $generator->getDbConnection()->getTableSchema($relations[3])) === false) :
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";

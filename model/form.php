@@ -18,7 +18,7 @@ echo $form->field($generator, 'queryBaseClass');
 echo $form->field($generator, 'generateLabelsFromComments')->checkbox();
 echo $form->field($generator, 'useTablePrefix')->checkbox();
 echo $form->field($generator, 'generateRelations')->checkbox();
-echo $form->field($generator, 'generateMigrations')->checkbox();
+//echo $form->field($generator, 'generateMigrations')->checkbox();
 echo $form->field($generator, 'optimisticLock');
 echo "<h4>Timestamp Behaviors</h4>";
 ?>

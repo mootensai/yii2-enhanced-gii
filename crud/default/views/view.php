@@ -27,8 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <h2><?= "<?= " ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
         </div>
         <div class="col-sm-3" style="margin-top: 15px">
-            <?= "<?php
-            echo Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) . ", 
+            <?php if($generator->pdf): ?>
+<?= "<?= " ?>
+            <?= "
+             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
                 ['pdf', 'id' => \$model['id']], 
                 [
                     'class' => 'btn btn-danger',
@@ -36,7 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data-toggle' => 'tooltip',
                     'title' => " . $generator->generateString('Will open the generated PDF file in a new window') . "
                 ]
-            );?>
+            )?>"
+            ?>
+            <?php endif;?>
+            <?= "
             <?= Html::a(" . $generator->generateString('Update') . ", ['update', 'id' => \$model['id']], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', 'id' => \$model['id']], [
                 'class' => 'btn btn-danger',
