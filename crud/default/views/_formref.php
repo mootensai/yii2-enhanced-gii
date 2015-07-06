@@ -33,17 +33,17 @@ endforeach;?>
             'type' => TabularForm::INPUT_STATIC,
             'label' => '',
             'value' => function($model, $key) {
-                return Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  Yii::t('frontend', 'Delete'), 'onClick' => 'delRow(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[1]) ?>-del-btn']);
+                return Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  <?= $generator->generateString('Delete') ?>, 'onClick' => 'delRow(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[1]) ?>-del-btn']);
             },
         ],
     ],
     'gridSettings' => [
         'panel' => [
-            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> ' . Yii::t('frontend', '<?= yii\helpers\Inflector::camel2words($relations[1]) ?>') . '  </h3>',
+            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> ' . <?= $generator->generateString(yii\helpers\Inflector::camel2words($relations[1])) ?> . '  </h3>',
             'type' => GridView::TYPE_INFO,
             'before' => false,
             'footer' => false,
-            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . Yii::t('frontend', 'Add Row'), ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow()']),
+            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Add Row') ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow()']),
         ]
     ]
 ]);

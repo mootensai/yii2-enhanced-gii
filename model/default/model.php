@@ -165,7 +165,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
 <?php endif; ?>
 <?php if ($queryClassName): ?>
 <?php
-    $queryClassFullName = ($generator->nsModel === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
+    $queryClassFullName = '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
     

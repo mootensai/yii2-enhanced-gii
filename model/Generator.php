@@ -55,7 +55,7 @@ class Generator extends \yii\gii\Generator {
     public $generateLabelsFromComments = false;
     public $useTablePrefix = false;
     public $generateRelations = true;
-//    public $generateMigrations = true;
+    public $generateMigrations = false;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';

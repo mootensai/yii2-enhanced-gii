@@ -74,7 +74,7 @@ class Generator extends \yii\gii\Generator {
     public $expandable;
     public $exportable;
     public $pdf;
-    public $viewPath = 'app\views';
+    public $viewPath = '@app/views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $skippedRelations;
@@ -322,6 +322,7 @@ class Generator extends \yii\gii\Generator {
         $this->relations = $relations;
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
+        $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
 //        if (strpos($this->tableName, '*') !== false) {
 //            $this->skippedRelations = [];
@@ -426,6 +427,7 @@ class Generator extends \yii\gii\Generator {
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
+        $this->hiddenColumns = (is_array($this->hiddenColumns)) ? implode(', ', $this->hiddenColumns) : '';
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 
@@ -821,6 +823,9 @@ class Generator extends \yii\gii\Generator {
         if(is_null($tableSchema)){
             $tableSchema = $this->getTableSchema();
         }
+        if (in_array($attribute, $this->hiddenColumns)) {
+            return "['attribute' => '$attribute', 'hidden' => true],\n";
+        }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -876,7 +881,7 @@ class Generator extends \yii\gii\Generator {
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN]";
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions'=>['hidden'=>true]]";
         }
 //        print_r($tableSchema->foreignKeys);
 //        print_r($fk);
@@ -975,7 +980,7 @@ class Generator extends \yii\gii\Generator {
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\$form->field(\$model, '$attribute')->hiddenInput()";
+            return "Html::activeHiddenInput(\$model, '$attribute')";
         }
 //        if(is_null($relations)){
 //            $relations = $this->relations;
