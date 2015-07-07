@@ -324,11 +324,8 @@ class Generator extends \yii\gii\Generator {
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
-//        if (strpos($this->tableName, '*') !== false) {
-//            $this->skippedRelations = [];
-//        }else{
-            $this->skippedRelations = (strpos($this->tableName, '*') !== false) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
-//        }
+        $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
+        
         foreach ($this->getTableNames() as $tableName) {
             // model :
             if (strpos($this->tableName, '*') !== false) {
