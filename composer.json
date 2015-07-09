@@ -1,6 +1,6 @@
 {
 	"name": "mootensai/yii2-enhanced-gii",
-	"description": "Generate Relational MVC & CRUD !UNDER DEVELOPMENT! ",
+	"description": "Generate Relational Models & CRUD",
 	"keywords": ["relation", "gii", "yii2","yii","enhanced"],
 	"type": "yii2-extension",
 	"authors": [
