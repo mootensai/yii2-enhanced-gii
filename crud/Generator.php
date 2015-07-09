@@ -977,25 +977,8 @@ class Generator extends \yii\gii\Generator {
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "Html::activeHiddenInput(\$model, '$attribute')";
+            return "\$form->field(\$model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none']);";
         }
-//        if(is_null($relations)){
-//            $relations = $this->relations;
-//        }
-//        $fk = [];
-//        foreach($relations as $key => $value){
-//            if(isset($value[5])){
-//                $fk[$value[5]] = $value;
-//                $fk[$value[5]][] = $key;
-//            }
-//        }
-//        foreach($tableSchema->foreignKeys as $key => $value){
-//            $rel = $this->relations[$value[0]];
-//            unset($value[0]);
-//            if(isset($rel[5]) && $rel[5] == key($value)){
-//                $fk[$rel[5]] = $rel;
-//            }
-//        }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
