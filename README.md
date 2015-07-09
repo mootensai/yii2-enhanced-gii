@@ -14,7 +14,7 @@ $ composer require 'mootensai/yii2-enhanced-gii:dev-master'
 or add
 
 ```
-"mootensai/yii2-relation-trait": "*"
+"mootensai/yii2-enhanced-gii": "*"
 ```
 
 to the `require` section of your `composer.json` file.
