@@ -2,6 +2,7 @@
 	"name": "mootensai/yii2-enhanced-gii",
 	"description": "Generate Relational Models & CRUD",
 	"keywords": ["relation", "gii", "yii2","yii","enhanced"],
+	"license": "BSD-3-Clause",
 	"type": "yii2-extension",
 	"authors": [
 		{
