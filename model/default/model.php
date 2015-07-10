@@ -20,13 +20,13 @@ namespace <?= $generator->nsModel ?>\base;
 
 use Yii;
 <?php if($generator->createdAt || $generator->updatedAt): ?>
-use \yii\behaviors\TimestampBehavior;
+use yii\behaviors\TimestampBehavior;
 <?php endif; ?>
 <?php if($generator->createdBy || $generator->updatedBy): ?>
-use \yii\behaviors\BlameableBehavior;
+use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
 <?php if($generator->UUIDColumn): ?>
-use \mootensai\behaviors\UUIDBehavior;
+use mootensai\behaviors\UUIDBehavior;
 <?php endif; ?>
 
 /**

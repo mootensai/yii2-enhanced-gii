@@ -87,7 +87,6 @@ if ($generator->indexWidgetType === 'grid'):
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
                 'fontAwesome' => true,
-                'pjaxContainerId' => 'kv-pjax-container',
                 'dropdownOptions' => [
                     'label' => 'Full',
                     'class' => 'btn btn-default',

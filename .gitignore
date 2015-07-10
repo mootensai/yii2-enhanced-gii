@@ -4,5 +4,4 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
-/nbproject/private/
-/nbproject
+/nbproject/*
