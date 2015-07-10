@@ -10,16 +10,15 @@
 		}
 	],
 	"require": {
-		"yiisoft/yii2": "*",
-		"mootensai/yii2-uuid-behavior": "*",
-		"mootensai/yii2-relation-trait" : "*",
-		"mootensai/yii2-jsblock" : "*",
-		"kartik-v/yii2-builder" : "*",
-		"kartik-v/yii2-grid" : "*",
-		"kartik-v/yii2-widgets" : "*",
-		"kartik-v/yii2-mpdf" : "*",
-		"kartik-v/yii2-helpers" : "*",
-		"kartik-v/yii2-export" : "*"
+		"yiisoft/yii2": "2.0.4",
+		"mootensai/yii2-uuid-behavior": "1.0.0",
+		"mootensai/yii2-relation-trait" : "1.0.5",
+		"mootensai/yii2-jsblock" : "0.0.1",
+		"kartik-v/yii2-builder" : "v1.6.1",
+		"kartik-v/yii2-grid" : "v3.0.5",
+		"kartik-v/yii2-widgets" : "v.3.4.0",
+		"kartik-v/yii2-mpdf" : "v1.0.0",
+		"kartik-v/yii2-export" : "v1.2.2"
 	},
 	"autoload": {
 		"psr-4": {
