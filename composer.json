@@ -16,7 +16,7 @@
 		"mootensai/yii2-jsblock" : "0.0.1",
 		"kartik-v/yii2-builder" : "v1.6.1",
 		"kartik-v/yii2-grid" : "v3.0.5",
-		"kartik-v/yii2-widgets" : "v.3.4.0",
+		"kartik-v/yii2-widgets" : "v3.4.0",
 		"kartik-v/yii2-mpdf" : "v1.0.0",
 		"kartik-v/yii2-export" : "v1.2.2"
 	},
