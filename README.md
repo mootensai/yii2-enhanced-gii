@@ -1,6 +1,9 @@
 # yii2-enhanced-gii
 Yii2 Gii (generator) with Relation
+
+[![Packagist Version](https://img.shields.io/packagist/v/mootensai/yii2-enhanced-gii.svg?style=flat-square)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Total Downloads](https://img.shields.io/packagist/dt/mootensai/yii2-enhanced-gii.svg?style=flat-square)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
