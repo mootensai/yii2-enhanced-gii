@@ -6,6 +6,7 @@ echo $form->errorSummary($generator);
 echo $form->field($generator, 'db');
 echo $form->field($generator, 'tableName');
 echo $form->field($generator, 'nsModel');
+echo $form->field($generator, 'modelClass');
 echo $form->field($generator, 'nameAttribute');
 echo $form->field($generator, 'hiddenColumns');
 echo $form->field($generator, 'skippedColumns');
