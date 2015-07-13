@@ -331,7 +331,7 @@ class Generator extends \yii\gii\Generator {
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
             }else{
-                $modelClassName = Inflector::id2camel($tableName, '_');
+                $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
             }
 //            $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
