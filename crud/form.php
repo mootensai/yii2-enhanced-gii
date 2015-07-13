@@ -16,7 +16,16 @@ echo $form->field($generator, 'nsController');
 echo $form->field($generator, 'controllerClass');
 echo $form->field($generator, 'baseControllerClass');
 echo $form->field($generator, 'skippedRelations');
-echo $form->field($generator, 'pluralize')->checkbox();
+?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($generator, 'pluralize')->checkbox();?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($generator, 'loggedUserOnly')->checkbox();?>
+    </div>
+</div>
+<?php
 //echo $form->field($generator, 'expandable')->checkbox();
 //echo $form->field($generator, 'exportable')->checkbox();
 echo $form->field($generator, 'pdf')->checkbox();

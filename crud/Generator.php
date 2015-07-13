@@ -71,6 +71,7 @@ class Generator extends \yii\gii\Generator {
     public $nsController = 'app\controllers';
     public $controllerClass;
     public $pluralize;
+    public $loggedUserOnly;
     public $expandable;
     public $exportable;
     public $pdf;
@@ -114,7 +115,7 @@ class Generator extends \yii\gii\Generator {
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations','generateSearchModel', 'pluralize', 'expandable', 'exportable', 'pdf'], 'boolean'],
+            [['enableI18N', 'generateRelations','generateSearchModel', 'pluralize', 'expandable', 'exportable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 
                 'controllerClass', 'blameableValue', 'nameAttribute', 
