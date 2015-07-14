@@ -15,7 +15,7 @@ use yii\base\BootstrapInterface;
 
 /**
  * Class Bootstrap
- * @package schmunk42\giiant
+ * @package mootensai\yii2-enhanced-gii
  * @author Tobias Munk <tobias@diemeisterei.de>
  */
 class Bootstrap implements BootstrapInterface
@@ -29,13 +29,9 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app->hasModule('gii')) {
-//            if (!isset($app->getModule('gii')->generators['enhanced-model'])) {
-//                $app->getModule('gii')->generators['enhanced-model'] = 'mootensai\enhancedgii\model\Generator';
-//            }
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
                 $app->getModule('gii')->generators['enhanced-gii-model'] = 'mootensai\enhancedgii\model\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-crud'] = 'mootensai\enhancedgii\crud\Generator';
-                $app->getModule('gii')->generators['enhanced-gii-nested'] = 'mootensai\enhancedgii\nested\Generator';
             }
         }
     }
