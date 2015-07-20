@@ -3,7 +3,7 @@
  * This is the template for generating the model class of a specified table.
  *
  * @var yii\web\View $this
- * @var yii\gii\generators\model\Generator $generator
+ * @var mootensai\enhancedgii\model\Generator $generator
  * @var string $tableName full table name
  * @var string $className class name
  * @var yii\db\TableSchema $tableSchema
@@ -25,4 +25,19 @@ use \<?= $generator->nsModel ?>\base\<?= $className ?> as Base<?= $className ?>;
  */
 class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
+<?php if($generator->generateAttributeHints): ?>
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+<?php foreach ($labels as $name => $label): ?>
+<?php if(!in_array($name, $generator->skippedColumns)): ?>
+            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+<?php endif; ?>
+<?php endforeach; ?>
+        ];
+    }
+<?php endif;?>
 }

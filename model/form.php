@@ -15,13 +15,25 @@ echo $form->field($generator, 'baseModelClass');
 echo $form->field($generator, 'generateQuery')->checkbox();
 echo $form->field($generator, 'queryNs');
 echo $form->field($generator, 'queryBaseClass');
-echo $form->field($generator, 'generateLabelsFromComments')->checkbox();
-echo $form->field($generator, 'useTablePrefix')->checkbox();
-echo $form->field($generator, 'generateRelations')->checkbox();
-//echo $form->field($generator, 'generateMigrations')->checkbox();
-echo $form->field($generator, 'optimisticLock');
-echo "<h4>Timestamp Behaviors</h4>";
 ?>
+<div class="row">
+    <div class="col-md-6">
+<?= $form->field($generator, 'generateLabelsFromComments')->checkbox(); ?>
+    </div>
+    <div class="col-md-6">
+<?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
+    </div>
+</div>    
+<div class="row">
+    <div class="col-md-6">
+<?= $form->field($generator, 'generateRelations')->checkbox(); ?>
+    </div>
+    <div class="col-md-6">
+<?= $form->field($generator, 'generateAttributeHints')->checkbox(); ?>
+    </div>
+</div>    
+<?= $form->field($generator, 'optimisticLock'); ?>
+<?= "<h4>Timestamp Behaviors</h4>";?>
 <div class="row">
     <div class="col-md-3">
 <?= $form->field($generator, 'createdAt'); ?>

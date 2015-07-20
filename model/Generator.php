@@ -55,6 +55,7 @@ class Generator extends \yii\gii\Generator {
     public $generateLabelsFromComments = false;
     public $useTablePrefix = false;
     public $generateRelations = true;
+    public $generateAttributeHints = false;
     public $generateMigrations = false;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
@@ -107,8 +108,11 @@ class Generator extends \yii\gii\Generator {
             [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateQuery', 'generateLabelsFromComments', 'useTablePrefix', 'generateMigrations'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateQuery', 'generateLabelsFromComments',
+                'useTablePrefix', 'generateMigrations', 'generateAttributeHints'], 'boolean'],
+            
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
+            
             [['viewPath', 'skippedRelations', 'skippedColumns', 'controllerClass', 
                 'blameableValue', 'nameAttribute', 'hiddenColumns','timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
@@ -181,6 +185,7 @@ class Generator extends \yii\gii\Generator {
             'generateRelations' => 'This indicates whether the generator should generate relations based on
                 foreign key constraints it detects in the database. Note that if your database contains too many tables,
                 you may want to uncheck this option to accelerate the code generation process.',
+            'generateAttributeHints' => 'This indicates whether the generator generate attribute hints on the extended models',
             'generateMigrations' => 'This indicates whether the generator should generate migrations based on
                 table structure.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
@@ -350,58 +355,12 @@ class Generator extends \yii\gii\Generator {
                 );
             }
 
-//            // controller :
-//            $files[] = new CodeFile(
-//                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $modelClassName . 'Controller.php', $this->render('controller.php', [
-//                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-//                    ])
-//            );
-//            // search :
-//            if (!empty($this->searchModelClass)) {
-//                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-//                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$tableName]]));
-//            }
-//
-            
-//
-//            // search Model :
-//            if (!empty($this->searchModelClass)) {
-//                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-//                $files[] = new CodeFile($searchModel, $this->render('search.php', ['relations' => $relations[$this->tableName]]));
-//            }
-//
-//            // views :
-//            $viewPath = $this->getViewPath();
-//            $templatePath = $this->getTemplatePath() . '/views';
-//            foreach (scandir($templatePath) as $file) {
-//                if (empty($this->searchModelClass) && $file === '_search.php') {
-//                    continue;
-//                }
-//                if ($file === '_formref.php' || $file === '_script.php') {
-//                    continue;
-//                }
-//                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-//                    $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
-//                                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-//                            ])
-//                    );
-//                }
-//            }
-//            if (isset($relations[$tableName])) {
-//                $files[] = new CodeFile("$viewPath/_script.php", $this->render("views/_script.php"));
-//                foreach ($relations[$tableName] as $name => $rel) {
-//                    if ($rel[2] && isset($rel[3])) {
-//                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
-//                                    'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-//                                ])
-//                        );
-//                    }
-//                }
-//            }
-
             if (strpos($this->tableName, '*') !== false) {
                 $this->modelClass = '';
                 $this->controllerClass = '';
+            }else{
+                $this->modelClass = $modelClassName;
+                $this->controllerClass = $modelClassName.'Controller';
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
