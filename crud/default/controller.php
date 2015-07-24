@@ -162,7 +162,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionDelete(<?= $actionParams ?>)
     {
-        $this->findModel(<?= $actionParams ?>)->delete();
+        $this->findModel(<?= $actionParams ?>)->deleteWithRelated();
 
         return $this->redirect(['index']);
     }
