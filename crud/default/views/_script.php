@@ -27,7 +27,7 @@ use yii\helpers\Url;
             }
         });
     }
-    function delRow(id) {
+    function delRow<?= "<?= \$class ?>" ?>(id) {
         $('tr[data-key=' + id + ']').remove();
     }
 </script>

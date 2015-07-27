@@ -74,6 +74,7 @@ class Generator extends \yii\gii\Generator {
     public $indexWidgetType = 'grid';
     public $skippedRelations;
     public $relations;
+    public $generateBaseOnly = false;
 
     /**
      * @inheritdoc
@@ -109,7 +110,7 @@ class Generator extends \yii\gii\Generator {
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'generateRelations', 'generateQuery', 'generateLabelsFromComments',
-                'useTablePrefix', 'generateMigrations', 'generateAttributeHints'], 'boolean'],
+                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly'], 'boolean'],
             
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             
@@ -141,6 +142,7 @@ class Generator extends \yii\gii\Generator {
             'baseControllerClass' => 'Base Controller Class',
             'indexWidgetType' => 'Widget Used in Index Page',
             'searchModelClass' => 'Search Model Class',
+            'generateBaseOnly' => 'Generate Base Model Only',
         ]);
     }
 
@@ -237,6 +239,8 @@ class Generator extends \yii\gii\Generator {
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
+            'generateBaseOnly' => 'This indicates whether the generator should generate extended model(where you write your code) or not. '
+            . 'You usually re-generate models when you make changes on your database.'
         ]);
     }
 
@@ -341,9 +345,11 @@ class Generator extends \yii\gii\Generator {
             $files[] = new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php', $this->render('model.php', $params)
             );
-            $files[] = new CodeFile(
-                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
-            );
+            if(!$this->generateBaseOnly){
+                $files[] = new CodeFile(
+                        Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
+                );
+            }
             // query :
             if ($queryClassName) {
                 $params = [

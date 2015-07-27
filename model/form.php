@@ -32,6 +32,11 @@ echo $form->field($generator, 'queryBaseClass');
 <?= $form->field($generator, 'generateAttributeHints')->checkbox(); ?>
     </div>
 </div>    
+<div class="row">
+    <div class="col-md-12">
+<?= $form->field($generator, 'generateBaseOnly')->checkbox(); ?>
+    </div>
+</div>
 <?= $form->field($generator, 'optimisticLock'); ?>
 <?= "<h4>Timestamp Behaviors</h4>";?>
 <div class="row">
