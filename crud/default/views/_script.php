@@ -28,6 +28,6 @@ use yii\helpers\Url;
         });
     }
     function delRow<?= "<?= \$class ?>" ?>(id) {
-        $('tr[data-key=' + id + ']').remove();
+        $('#add-<?= "<?= \$relID?>"; ?> tr[data-key=' + id + ']').remove();
     }
 </script>
