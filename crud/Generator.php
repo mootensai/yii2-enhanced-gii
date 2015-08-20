@@ -342,19 +342,17 @@ class Generator extends \yii\gii\Generator {
             $this->tableSchema = $tableSchema;
 //            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
-            
+
             // search model :
-            if($this->generateSearchModel && strpos($this->tableName, '*') !== false){
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->modelClass. 'Search.php'));
-                $files[] = new CodeFile($searchModel, $this->render('search.php',
-                    ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
-            }else if ($this->generateSearchModel) {
-                if(!empty($this->searchModelClass)){
-                    $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'.php'));
-                }else{
-                    $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $modelClassName.'Search.php'));
+            if ($this->generateSearchModel) {
+                if (empty($this->searchModelClass) || strpos($this->tableName, '*') !== false) {
+                    $searchModelClassName =  $modelClassName . 'Search';
+                } else {
+                    $searchModelClassName =  $this->searchModelClass;
                 }
-                $files[] = new CodeFile($searchModel, $this->render('search.php', 
+                $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') .'.php'));
+                $files[] = new CodeFile($searchModel, $this->render('search.php',
                     ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
             }
 
@@ -403,9 +401,13 @@ class Generator extends \yii\gii\Generator {
             if (strpos($this->tableName, '*') !== false) {
                 $this->modelClass = '';
                 $this->controllerClass = '';
+                $this->searchModelClass = '';
             }else{
                 $this->modelClass = $modelClassName;
                 $this->controllerClass = $controllerClassName;
+                if ($this->generateSearchModel) {
+                    $this->searchModelClass = $searchModelClassName;
+                }
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
