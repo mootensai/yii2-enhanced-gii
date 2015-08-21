@@ -25,6 +25,15 @@ use \<?= $generator->nsModel ?>\base\<?= $className ?> as Base<?= $className ?>;
  */
 class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
+    
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
+    }
+	
 <?php if($generator->generateAttributeHints): ?>
     /**
      * @inheritdoc

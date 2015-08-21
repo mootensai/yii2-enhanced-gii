@@ -27,7 +27,7 @@ namespace <?= StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
-use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
+use <?= $generator->nsSearchModel.'\\'.ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
 <?php else: ?>
 use yii\data\ActiveDataProvider;
 <?php endif; ?>
@@ -162,14 +162,14 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionDelete(<?= $actionParams ?>)
     {
-        $this->findModel(<?= $actionParams ?>)->deleteWithChildren();
+        $this->findModel(<?= $actionParams ?>)->deleteWithRelated();
 
         return $this->redirect(['index']);
     }
 <?php if($generator->pdf):?>    
     /**
      * 
-     * untuk export pdf pada saat actionView
+     * for export pdf at actionView
      *  
      * @param type $id
      * @return type

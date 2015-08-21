@@ -748,6 +748,10 @@ class Generator extends \yii\gii\Generator {
                     }
                 }
             }
+            if(!empty($this->optimisticLock)){
+                $rules[] = "[['" . $this->optimisticLock . "'], 'default', 'value' => '0']";
+                $rules[] = "[['" . $this->optimisticLock . "'], 'mootensai\components\OptimisticLockValidator']";
+            }
         } catch (NotSupportedException $e) {
             // doesn't support unique indexes information...do nothing
         }

@@ -17,11 +17,16 @@ use kartik\export\ExportMenu;
 use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
 
 /* @var $this yii\web\View */
-<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
+<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . $generator->nsSearchModel.'\\'.ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>;
 $this->params['breadcrumbs'][] = $this->title;
+$search = "$('.search-button').click(function(){
+	$('.search-form').toggle(1000);
+	return false;
+});";
+$this->registerJs($search);
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
 
@@ -32,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => 'btn btn-success']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-danger search-button']) ?>
     </p>
+    <div class="search-form" style="display:none">
+        <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
+    </div>
 
 <?php 
 if ($generator->indexWidgetType === 'grid'): 

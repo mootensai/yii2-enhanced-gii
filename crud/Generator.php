@@ -105,13 +105,13 @@ class Generator extends \yii\gii\Generator {
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
-            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
+//            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
             [['modelClass', 'baseControllerClass', 'searchModelClass', 'db','queryClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
 //            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
             [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::className()]],
             [['db'], 'validateDb'],
-//            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
-//            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
+            [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
+            [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
@@ -326,7 +326,6 @@ class Generator extends \yii\gii\Generator {
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
         $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
-        
         foreach ($this->getTableNames() as $tableName) {
             // model :
             if (strpos($this->tableName, '*') !== false) {
@@ -345,12 +344,15 @@ class Generator extends \yii\gii\Generator {
             
             // search model :
             if($this->generateSearchModel && strpos($this->tableName, '*') !== false){
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->modelClass. 'Search.php'));
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $modelClassName. 'Search.php'));
                 $files[] = new CodeFile($searchModel, $this->render('search.php',
                     ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
             }else if ($this->generateSearchModel) {
                 if(!empty($this->searchModelClass)){
-                    $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'.php'));
+                    if($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName)
+                        $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'Search.php'));
+                    else
+                        $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'.php'));
                 }else{
                     $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $modelClassName.'Search.php'));
                 }

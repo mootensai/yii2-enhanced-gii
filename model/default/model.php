@@ -77,14 +77,6 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
         return '<?= $generator->optimisticLock ?>';
     }
 <?php endif; ?>
-    
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
-    }
 
     /**
      * @inheritdoc
@@ -112,7 +104,10 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
         || $generator->UUIDColumn): 
-    echo "\n";?>
+    echo "\n";?>/**
+     * @inheritdoc
+     * @return type array
+     */ 
     public function behaviors()
     {
         return [
@@ -168,7 +163,6 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     $queryClassFullName = '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
-    
     /**
      * @inheritdoc
      * @return <?= $queryClassFullName ?> the active query used by this AR class.

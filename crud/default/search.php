@@ -10,7 +10,15 @@ use yii\helpers\StringHelper;
 /* @var $generator \mootensai\enhancedgii\model\Generator */
 
 $modelClass = StringHelper::basename($generator->modelClass);
-$searchModelClass = StringHelper::basename($generator->searchModelClass);
+
+if(empty($generator->searchModelClass)){
+    $searchModelClass = $modelClass.'Search';
+}else{
+    if($generator->nsSearchModel === $generator->nsModel && $generator->searchModelClass === $modelClass)
+        $searchModelClass = StringHelper::basename($generator->searchModelClass).'Search';
+    else
+        $searchModelClass = StringHelper::basename($generator->searchModelClass);
+}
 if ($modelClass === $searchModelClass) {
     $modelAlias = $modelClass . 'Model';
 }
@@ -22,12 +30,12 @@ $searchConditions = $generator->generateSearchConditions();
 echo "<?php\n";
 ?>
 
-namespace <?= StringHelper::dirname(ltrim($generator->nsSearchModel, '\\')) ?>;
+namespace <?= $generator->nsSearchModel ?>;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use <?= ltrim($generator->searchModelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
+use <?= ltrim($generator->nsModel.'\\'.$modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
 
 /**
  * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
