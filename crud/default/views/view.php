@@ -42,8 +42,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             <?php endif;?>
             <?= "
-            <?= Html::a(" . $generator->generateString('Update') . ", ['update', 'id' => \$model['id']], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', 'id' => \$model['id']], [
+            <?= Html::a(" . $generator->generateString('Update') . ", ['update', ".$generator->generateUrlParams()."], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', ".$generator->generateUrlParams()."], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => " . $generator->generateString('Are you sure you want to delete this item?') . ",
