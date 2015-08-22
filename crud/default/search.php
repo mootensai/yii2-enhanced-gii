@@ -11,15 +11,7 @@ use yii\helpers\StringHelper;
 
 $modelClass = StringHelper::basename($generator->modelClass);
 
-if(empty($generator->searchModelClass)){
-    $searchModelClass = $modelClass.'Search';
-}else{
-    if($generator->nsSearchModel === $generator->nsModel && $generator->searchModelClass === $modelClass)
-        $searchModelClass = StringHelper::basename($generator->searchModelClass).'Search';
-    else
-        $searchModelClass = StringHelper::basename($generator->searchModelClass);
-}
-if ($modelClass === $searchModelClass) {
+if ($modelClass === $generator->searchModelClass) {
     $modelAlias = $modelClass . 'Model';
 }
 $rules = $generator->generateSearchRules();
@@ -38,9 +30,9 @@ use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->nsModel.'\\'.$modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
 
 /**
- * <?= $searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
+ * <?= $generator->searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.
  */
-class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
+ class <?= StringHelper::basename($generator->searchModelClass) ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
 
 {
     /**

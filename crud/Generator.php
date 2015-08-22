@@ -343,23 +343,22 @@ class Generator extends \yii\gii\Generator {
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
             
             // search model :
-            if($this->generateSearchModel && strpos($this->tableName, '*') !== false){
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $modelClassName. 'Search.php'));
-                $files[] = new CodeFile($searchModel, $this->render('search.php',
-                    ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
-            }else if ($this->generateSearchModel) {
-                if(!empty($this->searchModelClass)){
+            if($this->generateSearchModel){
+                if(empty($this->searchModelClass) || strpos($this->tableName, '*') !== false){
+                    $searchModelClassName = $modelClassName.'Search';
+                } else {
                     if($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName)
-                        $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'Search.php'));
+                        $searchModelClassName = $this->searchModelClass.'Search';
                     else
-                        $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $this->searchModelClass.'.php'));
-                }else{
-                    $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->nsSearchModel, '\\') ."\\". $modelClassName.'Search.php'));
+                        $searchModelClassName = $this->searchModelClass;
                 }
+                $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') .'.php'));
                 $files[] = new CodeFile($searchModel, $this->render('search.php', 
                     ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
             }
-
+                
+            //controller
             $files[] = new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $controllerClassName . '.php', $this->render('controller.php', [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
@@ -405,9 +404,13 @@ class Generator extends \yii\gii\Generator {
             if (strpos($this->tableName, '*') !== false) {
                 $this->modelClass = '';
                 $this->controllerClass = '';
+                $this->searchModelClass = '';
             }else{
                 $this->modelClass = $modelClassName;
                 $this->controllerClass = $controllerClassName;
+                if ($this->generateSearchModel) {
+                    $this->searchModelClass = $searchModelClassName;
+                }
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
