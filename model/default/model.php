@@ -106,7 +106,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
         || $generator->UUIDColumn): 
     echo "\n";?>/**
      * @inheritdoc
-     * @return type array
+     * @return type mixed
      */ 
     public function behaviors()
     {

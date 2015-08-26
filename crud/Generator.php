@@ -1,11 +1,4 @@
 <?php
-
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
-
 namespace mootensai\enhancedgii\crud;
 
 use \Yii;
@@ -22,25 +15,19 @@ use \yii\helpers\VarDumper;
 use \yii\web\Controller;
 
 /**
- * Generates CRUD
+ * Generates Relational CRUD
  *
- * @property array $columnNames Model column names. This property is read-only.
- * @property string $controllerID The controller ID (without the module ID prefix). This property is
- * read-only.
- * @property array $searchAttributes Searchable attributes. This property is read-only.
- * @property string $viewPath The controller view path. This property is read-only.
- * @property TableSchema $tableSchema The TableSchema of this model.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author Yohanes Candrajaya <moo.tensai@gmail.com>
  * @since 2.0
  */
 class Generator extends \yii\gii\Generator {
     /* @var $tableSchema TableSchema */
 
-    public $tableSchema;
     public $db = 'db';
-    public $nsTraits = 'app\traits';
+    public $tableSchema;
     public $tableName;
+    public $nsTraits = 'app\traits';
     public $nameAttribute = 'name, title';
     public $hiddenColumns = 'id, lock';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
@@ -383,7 +370,6 @@ class Generator extends \yii\gii\Generator {
                 }
             }
             if (isset($relations[$tableName])) {
-//                $files[] = new CodeFile("$viewPath/_script.php", $this->render("views/_script.php"));
                 foreach ($relations[$tableName] as $name => $rel) {
                     if ($rel[2] && isset($rel[3]) && !in_array($name, $this->skippedRelations)) {
                         $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
@@ -987,7 +973,7 @@ class Generator extends \yii\gii\Generator {
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
         'options' => ['placeholder' => ".$this->generateString('Choose '.$placeholder)."],
-        'type' => DatePicker::TYPE_COMPONENT_APPEND,
+        'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'dd-M-yyyy'
