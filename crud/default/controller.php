@@ -19,6 +19,13 @@ $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
 
+$relationNames = [];
+foreach ($relations as $name => $rel) {
+    if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
+        $relationNames[] = $name;
+    }
+}
+
 echo "<?php\n";
 ?>
 
@@ -145,7 +152,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll(<?php var_export($relationNames) ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -166,11 +173,11 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         return $this->redirect(['index']);
     }
-<?php if($generator->pdf):?>    
+<?php if($generator->pdf):?>
     /**
-     * 
+     *
      * for export pdf at actionView
-     *  
+     *
      * @param type $id
      * @return type
      */
@@ -211,7 +218,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $pdf->render();
     }
 <?php endif; ?>
-    
+
     /**
      * Finds the <?= $modelClass ?> model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -240,7 +247,7 @@ if (count($pks) === 1) {
     }
 <?php foreach ($relations as $name => $rel): ?>
 <?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    
+
     /**
     * Action to load a tabular form grid
     * for <?= $rel[1]."\n" ?>
@@ -253,8 +260,11 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = Yii::$app->request->post('<?= $rel[1] ?>');
-            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('action') == 'load' && empty($row)) || Yii::$app->request->post('action') == 'add')
+            if (Yii::$app->request->post('action') == 'add') {
                 $row[] = [];
+            } elseif((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('action') == 'load' && empty($row))) {
+                $row = [];
+            }
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {
             throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
