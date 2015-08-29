@@ -849,7 +849,7 @@ class Generator extends \yii\gii\Generator {
      * @param string $attribute
      * @return string
      */
-    public function generateTabularFormField($attribute,$fk, $tableSchema = null) {
+    public function generateTabularFormField($attribute,$fk, $tableSchema = null, $forceHidden = false) {
         if(is_null($tableSchema)){
             $tableSchema = $this->getTableSchema();
         }
@@ -867,7 +867,7 @@ class Generator extends \yii\gii\Generator {
             }
         }
         $column = $tableSchema->columns[$attribute];
-        if($column->autoIncrement){
+        if($column->autoIncrement || $forceHidden){
             return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions' => ['hidden' => true]]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
             return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX]";
