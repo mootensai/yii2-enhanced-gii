@@ -39,7 +39,7 @@ endforeach;?>
     ],
     'gridSettings' => [
         'panel' => [
-            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> ' . <?= $generator->generateString(yii\helpers\Inflector::camel2words($relations[1])) ?> . '  </h3>',
+            'heading' => '<span class="glyphicon glyphicon-book"></span> ' . <?= $generator->generateString(yii\helpers\Inflector::camel2words($relations[1])) ?>,
             'type' => GridView::TYPE_INFO,
             'before' => false,
             'footer' => false,

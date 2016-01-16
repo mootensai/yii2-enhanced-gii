@@ -21,7 +21,7 @@ $ composer require mootensai/yii2-enhanced-gii:dev-master
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "@dev"
+"mootensai/yii2-enhanced-gii": "*"
 ```
 
 to the `require` section of your `composer.json` file.
@@ -60,10 +60,11 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 
 
 #To Do
-1. One-page-CRUD
-2. Expandable / collapsible row at index grid view for related data
-3. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
-4. Tabbed relations view
+1. Nested set detector & generator
+2. One-page-CRUD
+3. Expandable / collapsible row at index grid view for related data
+4. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
+5. Tabbed relations view
 
 I'm open for any improvement
 

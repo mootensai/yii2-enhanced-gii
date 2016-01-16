@@ -37,12 +37,15 @@ $this->registerJs($search);
 
     <p>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => 'btn btn-success']) ?>
+<?php if(!empty($generator->searchModelClass)): ?>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
+<?php endif; ?>
     </p>
+    <?php if(!empty($generator->searchModelClass)): ?>
     <div class="search-form" style="display:none">
         <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
     </div>
-
+    <?php endif; ?>
 <?php 
 if ($generator->indexWidgetType === 'grid'): 
 ?>
@@ -81,7 +84,7 @@ if ($generator->indexWidgetType === 'grid'):
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
-            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  ' . Html::encode($this->title) . ' </h3>',
+            'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
         ],
         // set a label for default menu
         'export' => [

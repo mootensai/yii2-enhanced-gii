@@ -4,7 +4,7 @@ use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
+/* @var $generator mootensai\enhancedgii\crud\Generator */
 
 echo "<?php\n";
 ?>
@@ -27,10 +27,12 @@ use yii\widgets\ActiveForm;
 <?php
 $count = 0;
 foreach ($generator->getColumnNames() as $attribute) {
-    if (++$count < 6) {
-        echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
-    } else {
-        echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+    if(!in_array($attribute, $generator->skippedColumns)){
+        if (++$count < 6) {
+            echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+        } else {
+            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+        }
     }
 }
 ?>
