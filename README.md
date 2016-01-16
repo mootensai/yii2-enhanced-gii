@@ -21,7 +21,7 @@ $ composer require mootensai/yii2-enhanced-gii:dev-master
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "*"
+"mootensai/yii2-enhanced-gii": "@dev"
 ```
 
 to the `require` section of your `composer.json` file.
