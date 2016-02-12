@@ -84,8 +84,8 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
         'panel' => [
-        'type' => GridView::TYPE_PRIMARY,
-        'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
+            'type' => GridView::TYPE_PRIMARY,
+            'heading' => Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
         ],
         'columns' => $gridColumn<?= $rel[1]."\n" ?>
     ]);

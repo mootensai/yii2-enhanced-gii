@@ -308,6 +308,7 @@ class Generator extends \yii\gii\Generator {
         $files = [];
         $relations = $this->generateRelations();
         $this->relations = $relations;
+//        print_r($relations);
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
