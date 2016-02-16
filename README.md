@@ -57,14 +57,13 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 6. Specify your skipped relations
 7. Set pluralize or not
 8. PDF Printable view
+9. Expandable / collapsible row at index grid view for related data
 
 
 #To Do
 1. Nested set detector & generator
 2. One-page-CRUD
-3. Expandable / collapsible row at index grid view for related data
-4. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
-5. Tabbed relations view
+3. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
 
 I'm open for any improvement
 
