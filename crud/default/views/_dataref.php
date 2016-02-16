@@ -31,7 +31,7 @@ if(!in_array($attribute, $generator->skippedColumns)) :
 endif;
 endforeach;
 endif;?>
-    ]);
+    ];
     
     echo GridView::widget([
         'dataProvider' => $dataProvider,
