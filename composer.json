@@ -24,7 +24,8 @@
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-mpdf": "*",
-        "kartik-v/yii2-export": "*"
+        "kartik-v/yii2-export": "*",
+        "kartik-v/yii2-tabs-x": "*"
     },
     "autoload": {
         "psr-4": {

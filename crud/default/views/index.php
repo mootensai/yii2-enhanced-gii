@@ -9,6 +9,7 @@ use yii\helpers\StringHelper;
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $tableSchema = $generator->getTableSchema();
+$baseModelClass = StringHelper::basename($generator->modelClass);
 echo "<?php\n";
 ?>
 
@@ -20,7 +21,7 @@ use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yi
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>;
+$this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
 $this->params['breadcrumbs'][] = $this->title;
 $search = "$('.search-button').click(function(){
 	$('.search-form').toggle(1000);
@@ -28,7 +29,7 @@ $search = "$('.search-button').click(function(){
 });";
 $this->registerJs($search);
 ?>
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
+<div class="<?= Inflector::camel2id($baseModelClass) ?>-index">
 
     <h1><?= "<?= " ?>Html::encode($this->title) ?></h1>
 <?php if(!empty($generator->searchModelClass)): ?>
@@ -36,7 +37,7 @@ $this->registerJs($search);
 <?php endif; ?>
 
     <p>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => 'btn btn-success']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
 <?php if(!empty($generator->searchModelClass)): ?>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
@@ -52,6 +53,24 @@ if ($generator->indexWidgetType === 'grid'):
     <?= "<?php \n" ?>
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
+<?php
+    if($generator->expandable):
+?>
+        [
+            'class' => 'kartik\grid\ExpandRowColumn',
+            'width' => '50px',
+            'value' => function ($model, $key, $index, $column) {
+                return GridView::ROW_COLLAPSED;
+            },
+            'detail' => function ($model, $key, $index, $column) {
+                return Yii::$app->controller->renderPartial('_data', ['model' => $model]);
+            },
+            'headerOptions' => ['class' => 'kartik-sheet-style'],
+            'expandOneOnly' => true
+        ],
+<?php
+    endif;
+?>
 <?php   
     if (($tableSchema = $generator->getTableSchema()) === false) :
         foreach ($generator->getColumnNames() as $name) {

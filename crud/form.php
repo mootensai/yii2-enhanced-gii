@@ -26,10 +26,18 @@ echo $form->field($generator, 'skippedRelations');
         <?= $form->field($generator, 'loggedUserOnly')->checkbox();?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($generator, 'expandable')->checkbox();?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($generator, 'pdf')->checkbox();?>
+    </div>
+</div>
 <?php
 //echo $form->field($generator, 'expandable')->checkbox();
 //echo $form->field($generator, 'exportable')->checkbox();
-echo $form->field($generator, 'pdf')->checkbox();
+//echo $form->field($generator, 'pdf')->checkbox();
 echo $form->field($generator, 'generateSearchModel')->checkbox();
 echo $form->field($generator, 'nsSearchModel');
 echo $form->field($generator, 'searchModelClass');
