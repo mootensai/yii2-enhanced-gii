@@ -31,28 +31,3 @@ if(!in_array($attribute, $generator->skippedColumns)) :
 endif;
 endforeach;
 endif;?>
-    ];
-    echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => $gridColumns,
-        'containerOptions' => ['style' => 'overflow: auto'],
-        'pjax' => true,
-        'beforeHeader' => [
-            [
-                'columns' => [
-                    ['content' => 'Pengeluaran Barang Detail', 'options' => ['colspan' => 5, 'class' => 'text-center warning']],
-                ],
-                'options' => ['class' => 'skip-export']
-            ]
-        ],
-        'export' => [
-            'fontAwesome' => true
-        ],
-        'bordered' => true,
-        'striped' => true,
-        'condensed' => true,
-        'responsive' => true,
-        'hover' => true,
-        'showPageSummary' => false,
-        'persistResize' => false,
-    ]);
