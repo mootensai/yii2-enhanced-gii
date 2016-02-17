@@ -35,7 +35,8 @@ endif;
 endforeach;
 endif;?>
         [
-        'class' => 'yii\grid\ActionColumn',
+            'class' => 'yii\grid\ActionColumn',
+            'controller' => '<?= \yii\helpers\Inflector::camel2id($relations[1])?>'
         ],
     ];
     
