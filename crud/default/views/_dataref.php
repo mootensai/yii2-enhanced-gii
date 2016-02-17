@@ -16,6 +16,7 @@ use yii\data\ArrayDataProvider;
 <?php 
 if (($tableSchema = $generator->getDbConnection()->getTableSchema($relations[3])) === false) :
     foreach ($generator->getColumnNames() as $name) {
+        if($name == $relations[4]) continue;
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
         } else {
@@ -24,7 +25,7 @@ if (($tableSchema = $generator->getDbConnection()->getTableSchema($relations[3])
     }
 else :
 foreach($tableSchema->getColumnNames() as $attribute): 
-if(!in_array($attribute, $generator->skippedColumns)) :
+if(!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) :
 ?>
         <?= $generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema)?>
 <?php
