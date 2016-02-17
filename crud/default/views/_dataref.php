@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
+$tableSchema = $generator->getDbConnection()->getTableSchema($relations[3]);
 ?>
 <?= "<?php" ?>
 
@@ -10,11 +11,12 @@ use yii\data\ArrayDataProvider;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,
+        'key' => '<?= $tableSchema->primaryKey[0] ?>'
     ]);
     $gridColumns = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php 
-if (($tableSchema = $generator->getDbConnection()->getTableSchema($relations[3])) === false) :
+if ($tableSchema === false) :
     foreach ($generator->getColumnNames() as $name) {
         if($name == $relations[4]) continue;
         if (++$count < 6) {
@@ -32,6 +34,9 @@ if(!in_array($attribute, $generator->skippedColumns) && $attribute != $relations
 endif;
 endforeach;
 endif;?>
+        [
+        'class' => 'yii\grid\ActionColumn',
+        ],
     ];
     
     echo GridView::widget([
