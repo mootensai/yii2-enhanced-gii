@@ -11,7 +11,18 @@ use yii\data\ArrayDataProvider;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,
+<?php if(count($tableSchema->primaryKey) > 1):
+    $key = [];
+    foreach ($tableSchema->primaryKey as $pk) {
+        $key[] = "'$pk' => \$model->$pk";
+    }
+?>
+        'key' => function($model){
+            return [<?= implode(', ',$key);?>];
+        }
+<?php else:?>
         'key' => '<?= $tableSchema->primaryKey[0] ?>'
+<?php endif; ?>
     ]);
     $gridColumns = [
         ['class' => 'yii\grid\SerialColumn'],
