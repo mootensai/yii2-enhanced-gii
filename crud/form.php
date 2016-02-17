@@ -35,7 +35,7 @@ echo $form->field($generator, 'skippedRelations');
     </div>
 </div>
 <?php
-//echo $form->field($generator, 'expandable')->checkbox();
+echo $form->field($generator, 'cancelable')->checkbox();
 //echo $form->field($generator, 'exportable')->checkbox();
 //echo $form->field($generator, 'pdf')->checkbox();
 echo $form->field($generator, 'generateSearchModel')->checkbox();
