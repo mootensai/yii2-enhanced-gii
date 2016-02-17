@@ -61,7 +61,7 @@ class Generator extends \yii\gii\Generator
     public $pluralize;
     public $loggedUserOnly;
     public $expandable;
-    public $exportable;
+    public $cancelable;
     public $pdf;
     public $viewPath = '@app/views';
     public $baseControllerClass = 'yii\web\Controller';
@@ -106,7 +106,7 @@ class Generator extends \yii\gii\Generator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'exportable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -136,7 +136,7 @@ class Generator extends \yii\gii\Generator
             'indexWidgetType' => 'Widget Used in Index Page',
             'searchModelClass' => 'Search Model Class',
             'expandable' => 'Expandable Index Grid View',
-            'exportable' => 'Exportable Index Grid View',
+            'cancelable' => 'Add Cancel Button On Form',
             'pdf' => 'PDF Printable View'
         ]);
     }
@@ -220,7 +220,7 @@ class Generator extends \yii\gii\Generator
             'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'pluralize' => 'Set the generator to generate pluralize for label',
             'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
-            'exportable' => 'Set the generator to generate exportable data for Grid View at index',
+            'cancelable' => 'Set the generator to generate cancel button to return to grid view at form',
             'pdf' => 'Set the generator to generate printable PDF generator at view',
             'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
@@ -905,31 +905,31 @@ class Generator extends \yii\gii\Generator
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-        'widgetClass' => \kartik\widgets\DatePicker::classname(),
-        'options' => [
-            'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
-            'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'dd-M-yyyy'
+            'widgetClass' => \kartik\widgets\DatePicker::classname(),
+            'options' => [
+                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
+                'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-M-yyyy'
+                ]
             ]
-        ]
-]";
+        ]";
         } elseif ($column->dbType === 'time') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-        'widgetClass' => \kartik\widgets\TimePicker::classname()
-]";
+            'widgetClass' => \kartik\widgets\TimePicker::classname()
+        ]";
         } elseif ($column->dbType === 'datetime') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
         'widgetClass' => \kartik\widgets\DateTimePicker::classname(),
-        'options' => [
-            'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'hh:ii:ss dd-M-yyyy'
+            'options' => [
+                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'hh:ii:ss dd-M-yyyy'
+                ]
             ]
-        ]
-]";
+        ]";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[3]);
