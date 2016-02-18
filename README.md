@@ -15,13 +15,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```bash
-$ composer require mootensai/yii2-enhanced-gii:dev-master
+$ composer require mootensai/yii2-enhanced-gii
 ```
 
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "@dev"
+"mootensai/yii2-enhanced-gii": "*"
 ```
 
 to the `require` section of your `composer.json` file.
