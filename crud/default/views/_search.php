@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
+<div class="form-<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
 
     <?= "<?php " ?>$form = ActiveForm::begin([
         'action' => ['index'],
@@ -29,9 +29,9 @@ $count = 0;
 foreach ($generator->getColumnNames() as $attribute) {
     if(!in_array($attribute, $generator->skippedColumns)){
         if (++$count < 6) {
-            echo "    <?= " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+            echo "    <?= " . $generator->generateActiveSearchField($attribute,$generator->generateFK()) . " ?>\n\n";
         } else {
-            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute) . " ?>\n\n";
+            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute,$generator->generateFK()) . " ?>\n\n";
         }
     }
 }

@@ -6,6 +6,8 @@ use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 $urlParams = $generator->generateUrlParams();
+$pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
+
 echo "<?php\n";
 ?>
 
@@ -31,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= "<?= " ?>
             <?= "
              Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
-                ['pdf', 'id' => \$model['id']], 
+                ['pdf', 'id' => \$model['$pk']],
                 [
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
@@ -86,35 +88,37 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     
     <div class="row">
 <?= "<?php\n" ?>
-    $gridColumn<?= $rel[1] ?> = [
-        ['class' => 'yii\grid\SerialColumn'],
+    if($provider<?= $rel[1] ?>->totalCount){
+        $gridColumn<?= $rel[1] ?> = [
+            ['class' => 'yii\grid\SerialColumn'],
 <?php
         $tableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
             if ($tableSchema === false) {
                 foreach ($tableSchema->getColumnNames() as $attribute) {
                     if (!in_array($attribute, $generator->skippedColumns)){
-                        echo "        '" . $attribute . "',\n";
+                        echo "            '" . $attribute . "',\n";
                     }
                 }
             }else {
                 foreach ($tableSchema->getColumnNames() as $attribute){
                     if (!in_array($attribute, $generator->skippedColumns)){
-                        echo '        '.$generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema);
+                        echo '            '.$generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema);
                     }
                 }
             }
 ?>
-    ];
-    echo Gridview::widget([
-        'dataProvider' => $provider<?= $rel[1] ?>,
-        'pjax' => true,
-        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
-        'panel' => [
-        'type' => GridView::TYPE_PRIMARY,
-        'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
-        ],
-        'columns' => $gridColumn<?= $rel[1]."\n" ?>
-    ]);
+        ];
+        echo Gridview::widget([
+            'dataProvider' => $provider<?= $rel[1] ?>,
+            'pjax' => true,
+            'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
+            'panel' => [
+            'type' => GridView::TYPE_PRIMARY,
+            'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
+            ],
+            'columns' => $gridColumn<?= $rel[1]."\n" ?>
+        ]);
+    }
 <?= "?>\n" ?>
     </div>
 <?php endif; ?>

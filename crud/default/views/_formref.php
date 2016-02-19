@@ -25,7 +25,8 @@ echo TabularForm::widget([
     'attributes' => [
 <?php foreach ($tableSchema->getColumnNames() as $attribute) : 
     $column = $tableSchema->getColumn($attribute);
-    if(!in_array($attribute, $generator->skippedColumns)) {
+    if(!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) {
+//        echo $attribute." ".$relations[4];
         echo "        " . $generator->generateTabularFormField($attribute,$fk, $tableSchema) . ",\n";
     }
 endforeach;?>

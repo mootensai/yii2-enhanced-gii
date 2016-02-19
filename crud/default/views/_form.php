@@ -59,6 +59,9 @@ foreach($relations as $name => $rel){
 ?>
     <div class="form-group">
         <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?php if($generator->cancelable): ?>
+        <?= "<?= " ?>Html::a(Yii::t('app', 'Cancel'),['index'],['class'=> 'btn btn-danger']) ?>
+<?php endif; ?>
     </div>
 
     <?= "<?php " ?>ActiveForm::end(); ?>
