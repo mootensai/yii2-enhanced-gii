@@ -1060,16 +1060,11 @@ class Generator extends \yii\gii\Generator
      * @param string $attribute
      * @return string
      */
-<<<<<<< HEAD
     public function generateActiveSearchField($attribute, $fk, $tableSchema = null)
-=======
-    public function generateActiveSearchField($attribute, $tableSchema = null, $relations = null)
->>>>>>> 89e8f98d985b2ca5b16f6743fefc25587941acda
     {
         if (is_null($tableSchema)) {
             $tableSchema = $this->getTableSchema();
         }
-<<<<<<< HEAD
         if (in_array($attribute, $this->hiddenColumns)) {
             return "\$form->field(\$model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none']);";
         }
@@ -1081,16 +1076,6 @@ class Generator extends \yii\gii\Generator
                 return "\$form->field(\$model, '$attribute')->hiddenInput()";
             } else {
                 return "\$form->field(\$model, '$attribute')";
-=======
-        if (is_null($relations)) {
-            $relations = $this->relations;
-        }
-        $fk = [];
-        foreach ($relations as $key => $value) {
-            if (isset($value[5])) {
-                $fk[$value[5]] = $value;
-                $fk[$value[5]][] = $key;
->>>>>>> 89e8f98d985b2ca5b16f6743fefc25587941acda
             }
         }
         $column = $tableSchema->columns[$attribute];
