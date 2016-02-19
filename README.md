@@ -15,13 +15,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```bash
-$ composer require mootensai/yii2-enhanced-gii:dev-master
+$ composer require mootensai/yii2-enhanced-gii
 ```
 
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "@dev"
+"mootensai/yii2-enhanced-gii": "*"
 ```
 
 to the `require` section of your `composer.json` file.
@@ -57,14 +57,14 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 6. Specify your skipped relations
 7. Set pluralize or not
 8. PDF Printable view
+9. Expandable / collapsible row at index grid view for related data
 
 
-#To Do
-1. Nested set detector & generator
-2. One-page-CRUD
-3. Expandable / collapsible row at index grid view for related data
-4. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
-5. Tabbed relations view
+# To Do
+1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
+2. One-page-CRUD template
+3. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
+4. RESTful template
 
 I'm open for any improvement
 
