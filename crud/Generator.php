@@ -11,6 +11,7 @@ use \yii\db\Schema;
 use \yii\db\TableSchema;
 use \yii\gii\CodeFile;
 use \yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use \yii\helpers\VarDumper;
 use \yii\web\Controller;
 
@@ -514,12 +515,12 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
                     $relations[$table->fullName][lcfirst($relationName)] = [
-                        "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);",
-                        $refClassName,
-                        0,
-                        $refTable,
-                        $refs[key($refs)],
-                        key($refs)
+                        "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
+                        $refClassName, //relclass
+                        0, //is multiple
+                        $refTable, //related table
+                        $refs[key($refs)], // related primary key
+                        key($refs) // this foreign key
                     ];
 
                     // Add relation for the referenced table
@@ -539,12 +540,12 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);",
-                        $className,
-                        $hasMany,
-                        $table->fullName,
-                        $refs[key($refs)],
-                        key($refs)
+                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
+                        $className, //rel class
+                        $hasMany, //is multiple
+                        $table->fullName, // rel table
+                        $refs[key($refs)], // rel primary key
+                        key($refs) // this foreign key
                     ];
                 }
 
@@ -844,9 +845,19 @@ class Generator extends \yii\gii\Generator
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
+            $id = 'grid-'.Inflector::camel2id(StringHelper::basename($this->searchModelClass)).'-'.$attribute;
             $output = "[
-            'attribute' => '$rel[6].$labelCol',
-            'label' => " . $this->generateString(Inflector::camel2words($rel[1])) . ",
+            'attribute' => '$attribute',
+            'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
+            'value' => function(\$model){
+                return \$model->$rel[3]->$labelCol;
+            },
+            'filterType' => GridView::FILTER_SELECT2,
+            'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '$rel[4]', '$labelCol'),
+            'filterWidgetOptions' => [
+                'pluginOptions' => ['allowClear' => true],
+            ],
+            'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
         ],\n";
             return $output;
         } else {
