@@ -1,7 +1,7 @@
 <?php
 /**
- * This is the template for generating CRUD search class of the specified model.
- */
+     * This is the template for generating CRUD search class of the specified model.
+     */
 
 use yii\helpers\StringHelper;
 
@@ -27,7 +27,7 @@ namespace <?= $generator->nsSearchModel ?>;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use <?= ltrim($generator->nsModel.'\\'.$modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
+use <?= ltrim($generator->nsModel . '\\' . $modelClass, '\\') . (isset($modelAlias) ? " as $modelAlias" : "") ?>;
 
 /**
  * <?= $generator->searchModelClass ?> represents the model behind the search form about `<?= $generator->modelClass ?>`.

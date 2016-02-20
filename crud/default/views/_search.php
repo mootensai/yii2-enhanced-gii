@@ -27,11 +27,11 @@ use yii\widgets\ActiveForm;
 <?php
 $count = 0;
 foreach ($generator->getColumnNames() as $attribute) {
-    if(!in_array($attribute, $generator->skippedColumns)){
+    if (!in_array($attribute, $generator->skippedColumns)) {
         if (++$count < 6) {
-            echo "    <?= " . $generator->generateActiveSearchField($attribute,$generator->generateFK()) . " ?>\n\n";
+            echo "    <?= " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " ?>\n\n";
         } else {
-            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute,$generator->generateFK()) . " ?>\n\n";
+            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " ?>\n\n";
         }
     }
 }

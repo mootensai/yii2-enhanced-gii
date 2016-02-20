@@ -1,7 +1,7 @@
 <?php
 /**
- * This is the template for generating the ActiveQuery class.
- */
+     * This is the template for generating the ActiveQuery class.
+     */
 
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */

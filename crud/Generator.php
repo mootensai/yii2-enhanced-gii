@@ -284,7 +284,7 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function () use ($db) {
+                'tableName' => function() use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -347,10 +347,11 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) || strpos($this->tableName, '*') !== false) {
                     $searchModelClassName = $modelClassName . 'Search';
                 } else {
-                    if ($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName)
-                        $searchModelClassName = $this->searchModelClass . 'Search';
-                    else
-                        $searchModelClassName = $this->searchModelClass;
+                    if ($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName) {
+                                            $searchModelClassName = $this->searchModelClass . 'Search';
+                    } else {
+                                            $searchModelClassName = $this->searchModelClass;
+                    }
                 }
                 $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
                 $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
@@ -372,7 +373,7 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formref.php' || $file === '_dataref.php'|| $file === '_data.php') {
+                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_data.php') {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
@@ -427,6 +428,7 @@ class Generator extends \yii\gii\Generator
      * @param TableSchema the table being checked
      * @param array $fks obtained from the checkPivotTable() method
      * @param array $relations
+     * @param TableSchema $table
      * @return array modified $relations
      */
     private function generateManyManyRelations($table, $fks, $relations)
@@ -580,6 +582,7 @@ class Generator extends \yii\gii\Generator
      * For simplicity, this method only deals with the case where the pivot contains two PK columns,
      * each referencing a column in a different table.
      * @param TableSchema the table being checked
+     * @param TableSchema $table
      * @return array|boolean the relevant foreign key constraint information if the table is a junction table,
      * or false if the table is not a junction table.
      */
@@ -845,7 +848,7 @@ class Generator extends \yii\gii\Generator
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
-            $id = 'grid-'.Inflector::camel2id(StringHelper::basename($this->searchModelClass)).'-'.$attribute;
+            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
             $output = "[
             'attribute' => '$attribute',
             'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
@@ -979,7 +982,7 @@ class Generator extends \yii\gii\Generator
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "'$attribute' => ['type' => TabularForm::$input]";
             } else {
-                return "'$attribute' => ['type' => TabularForm::$input]";//max length??
+                return "'$attribute' => ['type' => TabularForm::$input]"; //max length??
             }
         }
     }
@@ -1215,7 +1218,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @return array searchable attributes
+     * @return integer[] searchable attributes
      */
     public function getSearchAttributes()
     {
@@ -1546,7 +1549,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @return array model column names
+     * @return integer[] model column names
      */
     public function getColumnNames()
     {

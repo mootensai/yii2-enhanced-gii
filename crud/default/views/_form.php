@@ -22,9 +22,9 @@ use yii\widgets\ActiveForm;
 <?php 
 $pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
 $modelClass = StringHelper::basename($generator->modelClass);
-foreach($relations as $name => $rel){
+foreach ($relations as $name => $rel) {
     $relID = Inflector::camel2id($rel[1]);
-    if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
+    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
         echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', 'pos'=> \yii\web\View::POS_END, \n"
                 . "    'viewParams' => [\n"
                 . "        'class' => '$rel[1]', \n"
@@ -45,21 +45,21 @@ foreach($relations as $name => $rel){
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
 <?php foreach ($generator->tableSchema->getColumnNames() as $attribute) {
-    if(!in_array($attribute, $generator->skippedColumns)) {
+    if (!in_array($attribute, $generator->skippedColumns)) {
         echo "    <?= " . $generator->generateActiveField($attribute, $generator->generateFK()) . " ?>\n\n";
     }
 } ?>
 <?php 
-foreach($relations as $name => $rel){
+foreach ($relations as $name => $rel) {
     $relID = Inflector::camel2id($rel[1]);
-    if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
+    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
         echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
     }
 }
 ?>
     <div class="form-group">
         <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-<?php if($generator->cancelable): ?>
+<?php if ($generator->cancelable): ?>
         <?= "<?= " ?>Html::a(Yii::t('app', 'Cancel'),['index'],['class'=> 'btn btn-danger']) ?>
 <?php endif; ?>
     </div>

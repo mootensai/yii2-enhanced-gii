@@ -32,17 +32,17 @@ $this->registerJs($search);
 <div class="<?= Inflector::camel2id($baseModelClass) ?>-index">
 
     <h1><?= "<?= " ?>Html::encode($this->title) ?></h1>
-<?php if(!empty($generator->searchModelClass)): ?>
+<?php if (!empty($generator->searchModelClass)): ?>
 <?= "    <?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>
 
     <p>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
-<?php if(!empty($generator->searchModelClass)): ?>
+<?php if (!empty($generator->searchModelClass)): ?>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
     </p>
-    <?php if(!empty($generator->searchModelClass)): ?>
+    <?php if (!empty($generator->searchModelClass)): ?>
     <div class="search-form" style="display:none">
         <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
     </div>
@@ -54,7 +54,7 @@ if ($generator->indexWidgetType === 'grid'):
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
-    if($generator->expandable):
+    if ($generator->expandable):
 ?>
         [
             'class' => 'kartik\grid\ExpandRowColumn',
@@ -81,10 +81,10 @@ if ($generator->indexWidgetType === 'grid'):
             }
         }
     else :
-        foreach($tableSchema->getColumnNames() as $attribute): 
-            if(!in_array($attribute, $generator->skippedColumns)) :
+        foreach ($tableSchema->getColumnNames() as $attribute): 
+            if (!in_array($attribute, $generator->skippedColumns)) :
 ?>
-        <?= $generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema)?>
+        <?= $generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
 <?php
             endif;
         endforeach; ?>

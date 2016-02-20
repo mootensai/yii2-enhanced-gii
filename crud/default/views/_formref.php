@@ -16,7 +16,7 @@ $dataProvider = new ArrayDataProvider([
 ]);
 echo TabularForm::widget([
     'dataProvider' => $dataProvider,
-    'formName' => '<?= $relations[1];?>',
+    'formName' => '<?= $relations[1]; ?>',
     'checkboxColumn' => false,
     'actionColumn' => false,
     'attributeDefaults' => [
@@ -25,16 +25,16 @@ echo TabularForm::widget([
     'attributes' => [
 <?php foreach ($tableSchema->getColumnNames() as $attribute) : 
     $column = $tableSchema->getColumn($attribute);
-    if(!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) {
+    if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) {
 //        echo $attribute." ".$relations[4];
-        echo "        " . $generator->generateTabularFormField($attribute,$fk, $tableSchema) . ",\n";
+        echo "        " . $generator->generateTabularFormField($attribute, $fk, $tableSchema) . ",\n";
     }
-endforeach;?>
+endforeach; ?>
         'del' => [
             'type' => TabularForm::INPUT_STATIC,
             'label' => '',
             'value' => function($model, $key) {
-                return Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  <?= $generator->generateString('Delete') ?>, 'onClick' => 'delRow<?= $relations[1];?>(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[1]) ?>-del-btn']);
+                return Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  <?= $generator->generateString('Delete') ?>, 'onClick' => 'delRow<?= $relations[1]; ?>(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[1]) ?>-del-btn']);
             },
         ],
     ],
@@ -44,7 +44,7 @@ endforeach;?>
             'type' => GridView::TYPE_INFO,
             'before' => false,
             'footer' => false,
-            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Add Row') ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[1];?>()']),
+            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Add Row') ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[1]; ?>()']),
         ]
     ]
 ]);

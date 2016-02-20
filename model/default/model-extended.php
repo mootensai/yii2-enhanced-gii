@@ -36,7 +36,7 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
         ]);
     }
 	
-<?php if($generator->generateAttributeHints): ?>
+<?php if ($generator->generateAttributeHints): ?>
     /**
      * @inheritdoc
      */
@@ -44,11 +44,11 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
     {
         return [
 <?php foreach ($labels as $name => $label): ?>
-<?php if(!in_array($name, $generator->skippedColumns)): ?>
+<?php if (!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
         ];
     }
-<?php endif;?>
+<?php endif; ?>
 }

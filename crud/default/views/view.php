@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h2><?= "<?= " ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
         </div>
         <div class="col-sm-3" style="margin-top: 15px">
-            <?php if($generator->pdf): ?>
+            <?php if ($generator->pdf): ?>
 <?= "<?= " ?>
             <?= "
              Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
@@ -42,10 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             )?>"
             ?>
-            <?php endif;?>
+            <?php endif; ?>
             <?= "
-            <?= Html::a(" . $generator->generateString('Update') . ", ['update', ".$generator->generateUrlParams()."], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', ".$generator->generateUrlParams()."], [
+            <?= Html::a(" . $generator->generateString('Update') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', " . $generator->generateUrlParams() . "], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => " . $generator->generateString('Are you sure you want to delete this item?') . ",
@@ -68,7 +68,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
             echo "            // '" . $name . "',\n";
         }
     }
-}else{
+} else{
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
             echo "        ".$generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema);
@@ -99,7 +99,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                         echo "            '" . $attribute . "',\n";
                     }
                 }
-            }else {
+            } else {
                 foreach ($tableSchema->getColumnNames() as $attribute){
                     if (!in_array($attribute, $generator->skippedColumns)){
                         echo '            '.$generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema);
@@ -116,7 +116,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
             ],
-            'columns' => $gridColumn<?= $rel[1]."\n" ?>
+            'columns' => $gridColumn<?= $rel[1] . "\n" ?>
         ]);
     }
 <?= "?>\n" ?>

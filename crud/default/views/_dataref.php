@@ -11,14 +11,14 @@ use yii\data\ArrayDataProvider;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,
-<?php if(count($tableSchema->primaryKey) > 1):
+<?php if (count($tableSchema->primaryKey) > 1):
     $key = [];
     foreach ($tableSchema->primaryKey as $pk) {
         $key[] = "'$pk' => \$model->$pk";
     }
 ?>
         'key' => function($model){
-            return [<?= implode(', ',$key);?>];
+            return [<?= implode(', ', $key); ?>];
         }
 <?php else:?>
         'key' => '<?= $tableSchema->primaryKey[0] ?>'
@@ -29,7 +29,7 @@ use yii\data\ArrayDataProvider;
 <?php 
 if ($tableSchema === false) :
     foreach ($generator->getColumnNames() as $name) {
-        if($name == $relations[4]) continue;
+        if ($name == $relations[4]) continue;
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
         } else {
@@ -37,14 +37,14 @@ if ($tableSchema === false) :
         }
     }
 else :
-foreach($tableSchema->getColumnNames() as $attribute): 
-if(!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) :
+foreach ($tableSchema->getColumnNames() as $attribute): 
+if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) :
 ?>
-        <?= $generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema)?>
+        <?= $generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
 <?php
 endif;
 endforeach;
-endif;?>
+endif; ?>
         [
             'class' => 'yii\grid\ActionColumn',
             'controller' => '<?= \yii\helpers\Inflector::camel2id($relations[1])?>'
