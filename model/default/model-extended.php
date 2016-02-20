@@ -40,13 +40,13 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
      */
     public function attributeHints()
     {
-        return [
+        return array_replace_recursive(parent::rules(), [
 <?php foreach ($labels as $name => $label): ?>
 <?php if(!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
-        ];
+        ]);
     }
 <?php endif;?>
 }
