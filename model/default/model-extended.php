@@ -31,7 +31,9 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
      */
     public function rules()
     {
-        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
+        return array_replace_recursive(parent::rules(),
+[<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>
+        ]);
     }
 	
 <?php if($generator->generateAttributeHints): ?>
@@ -40,13 +42,13 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
      */
     public function attributeHints()
     {
-        return array_replace_recursive(parent::rules(), [
+        return [
 <?php foreach ($labels as $name => $label): ?>
 <?php if(!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
-        ]);
+        ];
     }
 <?php endif;?>
 }
