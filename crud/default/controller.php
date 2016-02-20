@@ -28,7 +28,7 @@ use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
-<?php else: ?>
+<?php else : ?>
 use yii\data\ActiveDataProvider;
 <?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
@@ -49,7 +49,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'delete' => ['post'],
                 ],
             ],
-<?php if($generator->loggedUserOnly): ?>
+<?php if ($generator->loggedUserOnly): ?>
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'rules' => [
@@ -81,7 +81,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-<?php else: ?>
+<?php else : ?>
         $dataProvider = new ActiveDataProvider([
             'query' => <?= $modelClass ?>::find(),
         ]);
@@ -101,7 +101,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
         $provider<?= $rel[1]?> = new \yii\data\ArrayDataProvider([
             'allModels' => $model-><?= $name ?>,
         ]);
@@ -110,7 +110,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $this->render('view', [
             'model' => $this->findModel(<?= $actionParams ?>),
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
             'provider<?= $rel[1]?>' => $provider<?= $rel[1]?>,
 <?php endif; ?>
 <?php endforeach; ?>
@@ -166,7 +166,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         return $this->redirect(['index']);
     }
-<?php if($generator->pdf):?>    
+<?php if ($generator->pdf):?>    
     /**
      * 
      * for export pdf at actionView
@@ -177,20 +177,20 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionPdf($id) {
         $model = $this->findModel($id);
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
         $provider<?= $rel[1] ?> = new \yii\data\ArrayDataProvider([
-            'allModels' => $model-><?= $name;?>,
+            'allModels' => $model-><?= $name; ?>,
         ]);
-<?php endif;?>
-<?php endforeach;?>
+<?php endif; ?>
+<?php endforeach; ?>
 
         $content = $this->renderAjax('_pdf', [
             'model' => $model,
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
             'provider<?= $rel[1]?>' => $provider<?= $rel[1] ?>,
-<?php endif;?>
-<?php endforeach;?>
+<?php endif; ?>
+<?php endforeach; ?>
         ]);
 
         $pdf = new \kartik\mpdf\Pdf([
@@ -239,11 +239,11 @@ if (count($pks) === 1) {
         }
     }
 <?php foreach ($relations as $name => $rel): ?>
-<?php if($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
     
     /**
     * Action to load a tabular form grid
-    * for <?= $rel[1]."\n" ?>
+    * for <?= $rel[1] . "\n" ?>
     * @author Yohanes Candrajaya <moo.tensai@gmail.com>
     * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
     *

@@ -19,13 +19,13 @@ echo "<?php\n";
 namespace <?= $generator->nsModel ?>\base;
 
 use Yii;
-<?php if($generator->createdAt || $generator->updatedAt): ?>
+<?php if ($generator->createdAt || $generator->updatedAt): ?>
 use yii\behaviors\TimestampBehavior;
 <?php endif; ?>
-<?php if($generator->createdBy || $generator->updatedBy): ?>
+<?php if ($generator->createdBy || $generator->updatedBy): ?>
 use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
-<?php if($generator->UUIDColumn): ?>
+<?php if ($generator->UUIDColumn): ?>
 use mootensai\behaviors\UUIDBehavior;
 <?php endif; ?>
 
@@ -38,7 +38,7 @@ use mootensai\behaviors\UUIDBehavior;
 <?php if (!empty($relations)): ?>
  *
 <?php foreach ($relations as $name => $relation): ?>
- * @property <?= '\\'.$generator->nsModel.'\\'.$relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+ * @property <?= '\\' . $generator->nsModel . '\\' . $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
 <?php endforeach; ?>
 <?php endif; ?>
  */
@@ -85,7 +85,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     {
         return [
 <?php foreach ($labels as $name => $label): ?>
-<?php if(!in_array($name, $generator->skippedColumns)): ?>
+<?php if (!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
@@ -104,57 +104,57 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
         || $generator->UUIDColumn): 
-    echo "\n";?>/**
+    echo "\n"; ?>/**
      * @inheritdoc
      * @return type mixed
      */ 
     public function behaviors()
     {
         return [
-<?php if($generator->createdAt || $generator->updatedAt):?>
+<?php if ($generator->createdAt || $generator->updatedAt):?>
             [
                 'class' => TimestampBehavior::className(),
-<?php if(!empty($generator->createdAt)):?>
+<?php if (!empty($generator->createdAt)):?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
 <?php else :?>
                 'createdAtAttribute' => false,
-<?php endif;?>
-<?php if(!empty($generator->updatedAt)):?>
+<?php endif; ?>
+<?php if (!empty($generator->updatedAt)):?>
                 'updatedAtAttribute' => '<?= $generator->updatedAt?>',
 <?php else :?>
                 'updatedAtAttribute' => false,
-<?php endif;?>
-<?php if(!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
+<?php endif; ?>
+<?php if (!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
                 'value' => <?= $generator->timestampValue?>,
-<?php endif;?>
+<?php endif; ?>
             ],
-<?php endif;?>
-<?php if($generator->createdBy || $generator->updatedBy):?>
+<?php endif; ?>
+<?php if ($generator->createdBy || $generator->updatedBy):?>
             [
                 'class' => BlameableBehavior::className(),
-<?php if(!empty($generator->createdBy)):?>
+<?php if (!empty($generator->createdBy)):?>
                 'createdByAttribute' => '<?= $generator->createdBy?>',
 <?php else :?>
                 'createdByAttribute' => false,
-<?php endif;?>
-<?php if(!empty($generator->updatedBy)):?>
+<?php endif; ?>
+<?php if (!empty($generator->updatedBy)):?>
                 'updatedByAttribute' => '<?= $generator->updatedBy?>',
 <?php else :?>
                 'updatedByAttribute' => false,
-<?php endif;?>
-<?php if(!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id'):?>
+<?php endif; ?>
+<?php if (!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id'):?>
                 'value' => <?= $generator->blameableValue?>,
-<?php endif;?>
+<?php endif; ?>
             ],
-<?php endif;?>
-<?php if($generator->UUIDColumn):?>
+<?php endif; ?>
+<?php if ($generator->UUIDColumn):?>
             [
                 'class' => UUIDBehavior::className(),
-<?php if(!empty($generator->UUIDColumn)):?>
+<?php if (!empty($generator->UUIDColumn)):?>
                 'column' => '<?= $generator->UUIDColumn?>',
-<?php endif;?>
+<?php endif; ?>
             ],
-<?php endif;?>
+<?php endif; ?>
         ];
     }
 <?php endif; ?>

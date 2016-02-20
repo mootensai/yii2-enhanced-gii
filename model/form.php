@@ -38,7 +38,7 @@ echo $form->field($generator, 'queryBaseClass');
     </div>
 </div>
 <?= $form->field($generator, 'optimisticLock'); ?>
-<?= "<h4>Timestamp Behaviors</h4>";?>
+<?= "<h4>Timestamp Behaviors</h4>"; ?>
 <div class="row">
     <div class="col-md-3">
 <?= $form->field($generator, 'createdAt'); ?>
