@@ -31,7 +31,7 @@ foreach ($generator->getColumnNames() as $attribute) {
         if (++$count < 6) {
             echo "    <?= " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " ?>\n\n";
         } else {
-            echo "    <?php // echo " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " ?>\n\n";
+            echo "    <?php /* echo " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " */ ?>\n\n";
         }
     }
 }
