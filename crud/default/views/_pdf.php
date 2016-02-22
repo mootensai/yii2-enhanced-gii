@@ -44,7 +44,6 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
             echo "        ".$generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema);
-
         }
     }
 }?>

@@ -823,7 +823,7 @@ class Generator extends \yii\gii\Generator
      * @param TableSchema $tableSchema
      * @return string
      */
-    public function generateGridViewField($attribute, $fk, $tableSchema = null)
+    public function generateDetailViewField($attribute, $fk, $tableSchema = null)
     {
         if (is_null($tableSchema)) {
             $tableSchema = $this->getTableSchema();
@@ -850,18 +850,108 @@ class Generator extends \yii\gii\Generator
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
             $output = "[
-            'attribute' => '$attribute',
+            'attribute' => '$rel[3].$labelCol',
             'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
-            'value' => function(\$model){
-                return \$model->$rel[3]->$labelCol;
-            },
-            'filterType' => GridView::FILTER_SELECT2,
-            'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '$rel[4]', '$labelCol'),
-            'filterWidgetOptions' => [
-                'pluginOptions' => ['allowClear' => true],
-            ],
-            'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
         ],\n";
+            return $output;
+        } else {
+            return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
+        }
+    }
+
+    /**
+     * Generates code for Grid View field
+     * @param string $attribute
+     * @param array $fk
+     * @param TableSchema $tableSchema
+     * @return string
+     */
+    public function generateGridViewField($attribute, $fk, $tableSchema = null)
+    {
+        if (is_null($tableSchema)) {
+            $tableSchema = $this->getTableSchema();
+        }
+        if (in_array($attribute, $this->hiddenColumns)) {
+            return "['attribute' => '$attribute', 'hidden' => true],\n";
+        }
+        $humanize = Inflector::humanize($attribute, true);
+        if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
+            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+                return "";
+            } else {
+                return "'$attribute',\n";
+            }
+        }
+        $column = $tableSchema->columns[$attribute];
+        $format = $this->generateColumnFormat($column);
+//        if($column->autoIncrement){
+//            return "";
+//        } else
+        if (array_key_exists($attribute, $fk) && $attribute) {
+            $rel = $fk[$attribute];
+//            print_r($rel);
+            $labelCol = $this->getNameAttributeFK($rel[3]);
+            $humanize = Inflector::humanize($rel[3]);
+            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+            $modelRel = $rel[2] ? Inflector::pluralize($rel[3]) : $rel[3];
+            $output = "[
+                'attribute' => '$modelRel.$labelCol',
+                'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
+            ],\n";
+            return $output;
+        } else {
+            return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
+        }
+    }
+
+    /**
+     * Generates code for Grid View field
+     * @param string $attribute
+     * @param array $fk
+     * @param TableSchema $tableSchema
+     * @return string
+     */
+    public function generateGridViewFieldIndex($attribute, $fk, $tableSchema = null)
+    {
+        if (is_null($tableSchema)) {
+            $tableSchema = $this->getTableSchema();
+        }
+        if (in_array($attribute, $this->hiddenColumns)) {
+            return "['attribute' => '$attribute', 'hidden' => true],\n";
+        }
+        $humanize = Inflector::humanize($attribute, true);
+        if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
+            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+                return "";
+            } else {
+                return "'$attribute',\n";
+            }
+        }
+        $column = $tableSchema->columns[$attribute];
+        $format = $this->generateColumnFormat($column);
+//        if($column->autoIncrement){
+//            return "";
+//        } else
+        if (array_key_exists($attribute, $fk) && $attribute) {
+            $rel = $fk[$attribute];
+//            print_r($rel);
+            $labelCol = $this->getNameAttributeFK($rel[3]);
+            $humanize = Inflector::humanize($rel[3]);
+            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+            $modelRel = $rel[2] ? Inflector::pluralize($rel[3]) : $rel[3];
+            $output = "[
+                'attribute' => '$attribute',
+                'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
+                'value' => function(\$model){
+                    return \$model->$modelRel->$labelCol;
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '$rel[4]', '$labelCol'),
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
+            ],\n";
             return $output;
         } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";

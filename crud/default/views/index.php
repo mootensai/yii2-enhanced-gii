@@ -84,7 +84,7 @@ if ($generator->indexWidgetType === 'grid'):
         foreach ($tableSchema->getColumnNames() as $attribute): 
             if (!in_array($attribute, $generator->skippedColumns)) :
 ?>
-        <?= $generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
+        <?= $generator->generateGridViewFieldIndex($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
 <?php
             endif;
         endforeach; ?>
