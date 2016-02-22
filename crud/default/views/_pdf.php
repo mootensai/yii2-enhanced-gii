@@ -82,7 +82,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     echo Gridview::widget([
         'dataProvider' => $provider<?= $rel[1] ?>,
         'pjax' => true,
-        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container']],
+        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id($rel[3])?>']],
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
             'heading' => Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
