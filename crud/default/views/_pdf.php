@@ -65,7 +65,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
         $tableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
             if ($tableSchema === false) {
                 foreach ($tableSchema->getColumnNames() as $attribute) {
-                    if (!in_array($attribute, $generator->skippedColumns)){
+                    if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]){
                         echo "        '" . $attribute . "',\n";
                     }
                 }

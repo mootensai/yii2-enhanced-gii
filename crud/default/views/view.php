@@ -88,9 +88,9 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     
     <div class="row">
 <?= "<?php\n" ?>
-    if($provider<?= $rel[1] ?>->totalCount){
-        $gridColumn<?= $rel[1] ?> = [
-            ['class' => 'yii\grid\SerialColumn'],
+if($provider<?= $rel[1] ?>->totalCount){
+    $gridColumn<?= $rel[1] ?> = [
+        ['class' => 'yii\grid\SerialColumn'],
 <?php
         $tableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
             if ($tableSchema === false) {
@@ -107,18 +107,18 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                 }
             }
 ?>
-        ];
-        echo Gridview::widget([
-            'dataProvider' => $provider<?= $rel[1] ?>,
-            'pjax' => true,
-            'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id($rel[3])?>']],
-            'panel' => [
-            'type' => GridView::TYPE_PRIMARY,
-            'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
-            ],
-            'columns' => $gridColumn<?= $rel[1] . "\n" ?>
-        ]);
-    }
+    ];
+    echo Gridview::widget([
+        'dataProvider' => $provider<?= $rel[1] ?>,
+        'pjax' => true,
+        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id($rel[3])?>']],
+        'panel' => [
+        'type' => GridView::TYPE_PRIMARY,
+        'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>.' '. $this->title),
+        ],
+        'columns' => $gridColumn<?= $rel[1] . "\n" ?>
+    ]);
+}
 <?= "?>\n" ?>
     </div>
 <?php endif; ?>

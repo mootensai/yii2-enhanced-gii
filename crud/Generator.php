@@ -893,11 +893,11 @@ class Generator extends \yii\gii\Generator
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
-            $modelRel = $rel[2] ? Inflector::pluralize($rel[3]) : $rel[3];
+            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
                 'attribute' => '$modelRel.$labelCol',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
-            ],\n";
+        ],\n";
             return $output;
         } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
@@ -938,7 +938,7 @@ class Generator extends \yii\gii\Generator
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
-            $modelRel = $rel[2] ? Inflector::pluralize($rel[3]) : $rel[3];
+            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[3])) : lcfirst($rel[3]);
             $output = "[
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
