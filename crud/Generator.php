@@ -849,8 +849,9 @@ class Generator extends \yii\gii\Generator
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
-            'attribute' => '$rel[3].$labelCol',
+            'attribute' => '$modelRel.$labelCol',
             'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
         ],\n";
             return $output;
