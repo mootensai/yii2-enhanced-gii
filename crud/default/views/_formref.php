@@ -13,6 +13,9 @@ use yii\widgets\Pjax;
 Pjax::begin();
 $dataProvider = new ArrayDataProvider([
     'allModels' => $row,
+    'pagination' => [
+        'pageSize' => -1
+    ]
 ]);
 echo TabularForm::widget([
     'dataProvider' => $dataProvider,
@@ -25,7 +28,7 @@ echo TabularForm::widget([
     'attributes' => [
 <?php foreach ($tableSchema->getColumnNames() as $attribute) : 
     $column = $tableSchema->getColumn($attribute);
-    if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) {
+    if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) {
         echo "        " . $generator->generateTabularFormField($attribute, $fk, $tableSchema) . ",\n";
     }
 endforeach; ?>

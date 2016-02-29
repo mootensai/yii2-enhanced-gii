@@ -38,7 +38,7 @@ if ($tableSchema === false) :
     }
 else :
 foreach ($tableSchema->getColumnNames() as $attribute): 
-if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[4]) :
+if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) :
 ?>
         <?= $generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
 <?php

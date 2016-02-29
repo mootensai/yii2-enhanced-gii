@@ -63,7 +63,7 @@ if ($generator->indexWidgetType === 'grid'):
                 return GridView::ROW_COLLAPSED;
             },
             'detail' => function ($model, $key, $index, $column) {
-                return Yii::$app->controller->renderPartial('_data', ['model' => $model]);
+                return Yii::$app->controller->renderPartial('_expand', ['model' => $model]);
             },
             'headerOptions' => ['class' => 'kartik-sheet-style'],
             'expandOneOnly' => true

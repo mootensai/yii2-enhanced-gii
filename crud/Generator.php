@@ -373,7 +373,7 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_data.php') {
+                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
@@ -384,7 +384,12 @@ class Generator extends \yii\gii\Generator
             }
             if (isset($relations[$tableName])) {
                 if ($this->expandable) {
-                    $files[] = new CodeFile("$viewPath/_data.php", $this->render("views/_data.php", [
+                    $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
+                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    ]));
+                }
+                if ($this->expandable) {
+                    $files[] = new CodeFile("$viewPath/_detail.php", $this->render("views/_detail.php", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                     ]));
                 }
@@ -847,10 +852,11 @@ class Generator extends \yii\gii\Generator
         if (array_key_exists($attribute, $fk)) {
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
-            $humanize = Inflector::humanize($rel[3]);
-            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+//            $humanize = Inflector::humanize($rel[3]);
+//            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
-            'attribute' => '$rel[3].$labelCol',
+            'attribute' => '$modelRel.$labelCol',
             'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
         ],\n";
             return $output;
@@ -938,7 +944,7 @@ class Generator extends \yii\gii\Generator
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
-            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[3])) : lcfirst($rel[3]);
+            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
