@@ -50,6 +50,15 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     /**
      * @inheritdoc
      */
+    public function rules()
+    {
+        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>
+        ];
+    }
+    
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return '<?= $generator->generateTableName($tableName) ?>';
