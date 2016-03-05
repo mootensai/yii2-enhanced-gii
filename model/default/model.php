@@ -52,8 +52,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
      */
     public function rules()
     {
-        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>
-        ];
+        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
     }
     
     /**
