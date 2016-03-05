@@ -34,15 +34,6 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
 [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>
         ]);
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>
-        ];
-    }
 	
 <?php if ($generator->generateAttributeHints): ?>
     /**
