@@ -228,6 +228,7 @@ class Generator extends \yii\gii\Generator
             'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
                 the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
+            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'pluralize' => 'Set the generator to generate pluralize for label',
             'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
             'cancelable' => 'Set the generator to generate cancel button to return to grid view at form',
@@ -237,11 +238,14 @@ class Generator extends \yii\gii\Generator
                 to <code>@app/views/ControllerID</code>',
             'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
                 You should provide a fully qualified class name, e.g., <code>yii\web\Controller</code>.',
-            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table. 
+            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
                 You can fill multiple relations, separated by comma (,). You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
             'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
                 You may choose either <code>GridView</code> or <code>ListView</code>',
+            'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
+                the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
+                if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
@@ -326,7 +330,6 @@ class Generator extends \yii\gii\Generator
         $files = [];
         $relations = $this->generateRelations();
         $this->relations = $relations;
-        $searchModelClassName = "";
 //        print_r($relations);
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
@@ -355,9 +358,9 @@ class Generator extends \yii\gii\Generator
                     $searchModelClassName = $modelClassName . 'Search';
                 } else {
                     if ($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName) {
-                                            $searchModelClassName = $this->searchModelClass . 'Search';
+                        $searchModelClassName = $this->searchModelClass . 'Search';
                     } else {
-                                            $searchModelClassName = $this->searchModelClass;
+                        $searchModelClassName = $this->searchModelClass;
                     }
                 }
                 $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
@@ -1121,21 +1124,35 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
         'displayFormat' => 'dd/MM/yyyy',
-        'autoWidget' => false,
-        'widgetClass' => 'yii\widgets\MaskedInput',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
+        'ajaxConversion'=>false,
         'options' => [
-            'cssClass' => 'form-control',
-            'mask' => '99/99/9999'
-        ],
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
+        ]
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'hh:ii:ss',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_TIME,
+        'ajaxConversion'=>false,
+        'options' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
+        ]
+    ])";
+
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'mm/dd/yyyy hh:ii:ss'
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'ajaxConversion'=>false,
+        'options' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
@@ -1202,22 +1219,37 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'dd-M-yyyy'
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'dd/MM/yyyy',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
+        'ajaxConversion'=>false,
+        'options' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
         ]
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'hh:ii:ss',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_TIME,
+        'ajaxConversion'=>false,
+        'options' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
+        ]
+    ])";
+
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'mm/dd/yyyy hh:ii:ss'
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
+        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'ajaxConversion'=>false,
+        'options' => [
+            'pluginOptions' => [
+                'autoclose' => true
+            ]
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
