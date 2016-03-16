@@ -24,6 +24,16 @@ use \yii\web\Controller;
  */
 class Generator extends \yii\gii\Generator
 {
+    const REL_TYPE = 0;
+    const REL_CLASS = 1;
+    const REL_IS_MULTIPLE = 2;
+    const REL_TABLE = 3;
+    const REL_PRIMARY_KEY = 4;
+    const REL_FOREIGN_KEY =5;
+
+    const FK_TABLE_NAME = 0;
+    const FK_FIELD_NAME = 1;
+
     /* @var $tableSchema TableSchema */
 
     public $db = 'db';
@@ -218,7 +228,6 @@ class Generator extends \yii\gii\Generator
             'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
                 the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
-            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'pluralize' => 'Set the generator to generate pluralize for label',
             'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
             'cancelable' => 'Set the generator to generate cancel button to return to grid view at form',
@@ -233,9 +242,6 @@ class Generator extends \yii\gii\Generator
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
             'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
                 You may choose either <code>GridView</code> or <code>ListView</code>',
-            'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
-                the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
-                if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
@@ -320,6 +326,7 @@ class Generator extends \yii\gii\Generator
         $files = [];
         $relations = $this->generateRelations();
         $this->relations = $relations;
+        $searchModelClassName = "";
 //        print_r($relations);
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
@@ -522,12 +529,12 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
                     $relations[$table->fullName][lcfirst($relationName)] = [
-                        "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
-                        $refClassName, //relclass
-                        0, //is multiple
-                        $refTable, //related table
-                        $refs[key($refs)], // related primary key
-                        key($refs) // this foreign key
+                        self::REL_TYPE => "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
+                        self::REL_CLASS => $refClassName, //relclass
+                        self::REL_IS_MULTIPLE => 0, //is multiple
+                        self::REL_TABLE => $refTable, //related table
+                        self::REL_PRIMARY_KEY => $refs[key($refs)], // related primary key
+                        self::REL_FOREIGN_KEY => key($refs) // this foreign key
                     ];
 
                     // Add relation for the referenced table
@@ -547,12 +554,12 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
-                        $className, //rel class
-                        $hasMany, //is multiple
-                        $table->fullName, // rel table
-                        $refs[key($refs)], // rel primary key
-                        key($refs) // this foreign key
+                        self::REL_TYPE => "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
+                        self::REL_CLASS => $className, //rel class
+                        self::REL_IS_MULTIPLE => $hasMany, //is multiple
+                        self::REL_TABLE => $table->fullName, // rel table
+                        self::REL_PRIMARY_KEY => $refs[key($refs)], // rel primary key
+                        self::REL_FOREIGN_KEY => key($refs) // this foreign key
                     ];
                 }
 
@@ -949,7 +956,7 @@ class Generator extends \yii\gii\Generator
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
                 'value' => function(\$model){
-                    return \$model->$modelRel->$labelCol;
+                    return !is_null(\$model->$modelRel)?\$model->$modelRel->$labelCol:'';
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '$rel[4]', '$labelCol'),
@@ -973,9 +980,13 @@ class Generator extends \yii\gii\Generator
         if (isset($this->relations[$tableSchema->fullName])) {
             foreach ($this->relations[$tableSchema->fullName] as $name => $relations) {
                 foreach ($tableSchema->foreignKeys as $value) {
-                    if (isset($relations[5]) && $relations[3] == $value[0]) {
-                        $fk[$relations[5]] = $relations;
-                        $fk[$relations[5]][] = $name;
+                    if (isset($relations[self::REL_FOREIGN_KEY]) && $relations[self::REL_TABLE] == $value[self::FK_TABLE_NAME]) {
+                        if ($tableSchema->fullName == $value[self::FK_TABLE_NAME] && $relations[self::REL_IS_MULTIPLE]) { // In case of self-referenced tables
+
+                        } else {
+                            $fk[$relations[self::REL_FOREIGN_KEY]] = $relations;
+                            $fk[$relations[self::REL_FOREIGN_KEY]][] = $name;
+                        }
                     }
                 }
             }
@@ -1015,14 +1026,10 @@ class Generator extends \yii\gii\Generator
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DatePicker::classname(),
+            'widgetClass' => \kartik\widgets\DateControl::classname(),
             'options' => [
-                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
-                'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd-M-yyyy'
-                ]
+                'options' => ['mask' => '99/99/9999'],
+                'type' => \kartik\widgets\DateControl::FORMAT_DATE,
             ]
         ]";
         } elseif ($column->dbType === 'time') {
@@ -1112,13 +1119,14 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'dd-M-yyyy'
-        ]
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'displayFormat' => 'dd/MM/yyyy',
+        'autoWidget' => false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
+        'options' => [
+            'cssClass' => 'form-control',
+            'mask' => '99/99/9999'
+        ],
     ]);";
         } elseif ($column->dbType === 'time') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
