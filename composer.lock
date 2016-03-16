@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4bfc009a4eadec1af67550f541d8628d",
-    "content-hash": "ea80e65d5abad083fa1b26c832bd71bc",
+    "hash": "bf5f3a9c483c4cb613489f1fcd212f81",
+    "content-hash": "5893116d0e9ba96dcfd2ef46f821ffa3",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -58,16 +58,16 @@
         },
         {
             "name": "bower-asset/jquery",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jquery/jquery-dist.git",
-                "reference": "6fc01e29bdad0964f62ef56d01297039cdcadbe5"
+                "reference": "788eaba2f83e7b7445c7a83a50c81c0704423874"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/6fc01e29bdad0964f62ef56d01297039cdcadbe5",
-                "reference": "6fc01e29bdad0964f62ef56d01297039cdcadbe5",
+                "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/788eaba2f83e7b7445c7a83a50c81c0704423874",
+                "reference": "788eaba2f83e7b7445c7a83a50c81c0704423874",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -163,16 +163,16 @@
         },
         {
             "name": "bower-asset/yii2-pjax",
-            "version": "v2.0.5",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/jquery-pjax.git",
-                "reference": "6818718408086db6bdcf33649cecb86b6b4f9b67"
+                "reference": "60728da6ade5879e807a49ce59ef9a72039b8978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/6818718408086db6bdcf33649cecb86b6b4f9b67",
-                "reference": "6818718408086db6bdcf33649cecb86b6b4f9b67",
+                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/60728da6ade5879e807a49ce59ef9a72039b8978",
+                "reference": "60728da6ade5879e807a49ce59ef9a72039b8978",
                 "shasum": ""
             },
             "require": {
@@ -185,6 +185,7 @@
                     ".travis.yml",
                     "Gemfile",
                     "Gemfile.lock",
+                    "CONTRIBUTING.md",
                     "vendor/",
                     "script/",
                     "test/"
@@ -300,22 +301,22 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v4.3.0",
+            "version": "v4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "cde72929649da55470e0a81a5e85921f80f28f29"
+                "reference": "32b0ccb2562b9c83f12222ddd1406986a45450d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/cde72929649da55470e0a81a5e85921f80f28f29",
-                "reference": "cde72929649da55470e0a81a5e85921f80f28f29",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/32b0ccb2562b9c83f12222ddd1406986a45450d1",
+                "reference": "32b0ccb2562b9c83f12222ddd1406986a45450d1",
                 "shasum": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2.x-dev"
+                    "dev-master": "4.3.x-dev"
                 }
             },
             "autoload": {
@@ -349,20 +350,20 @@
                 "progress",
                 "upload"
             ],
-            "time": "2016-01-25 16:55:20"
+            "time": "2016-02-28 02:23:49"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
-            "version": "v4.0.0",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-star-rating.git",
-                "reference": "c19be9f8bd6b29cee0110e048a2c04bb6f1c4761"
+                "reference": "d66083c14f9386ede23fccb76dea1a380db67ded"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/c19be9f8bd6b29cee0110e048a2c04bb6f1c4761",
-                "reference": "c19be9f8bd6b29cee0110e048a2c04bb6f1c4761",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/d66083c14f9386ede23fccb76dea1a380db67ded",
+                "reference": "d66083c14f9386ede23fccb76dea1a380db67ded",
                 "shasum": ""
             },
             "type": "library",
@@ -393,7 +394,7 @@
                 "star",
                 "svg"
             ],
-            "time": "2016-02-18 04:03:30"
+            "time": "2016-02-28 16:13:18"
         },
         {
             "name": "kartik-v/bootstrap-tabs-x",
@@ -525,6 +526,50 @@
             "time": "2015-05-05 07:34:49"
         },
         {
+            "name": "kartik-v/php-date-formatter",
+            "version": "v1.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/php-date-formatter.git",
+                "reference": "38984fb614f3ebc3605a8e369eee1406feea02a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/php-date-formatter/zipball/38984fb614f3ebc3605a8e369eee1406feea02a4",
+                "reference": "38984fb614f3ebc3605a8e369eee1406feea02a4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\plugins\\dateformatter\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "A Javascript datetime formatting and manipulation library using PHP date-time formats.",
+            "homepage": "https://github.com/kartik-v/php-date-formatter",
+            "keywords": [
+                "date",
+                "datetime",
+                "formatter",
+                "javascript",
+                "php",
+                "php-date-formatter.js",
+                "time"
+            ],
+            "time": "2015-12-21 18:22:51"
+        },
+        {
             "name": "kartik-v/yii2-builder",
             "version": "v1.6.1",
             "source": {
@@ -570,6 +615,53 @@
                 "yii2"
             ],
             "time": "2015-06-17 17:58:21"
+        },
+        {
+            "name": "kartik-v/yii2-datecontrol",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-datecontrol.git",
+                "reference": "4e858b5cd38130c37739b2f582b66a044f77c95c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-datecontrol/zipball/4e858b5cd38130c37739b2f582b66a044f77c95c",
+                "reference": "4e858b5cd38130c37739b2f582b66a044f77c95c",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/php-date-formatter": ">1.3",
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\datecontrol\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Date control module allowing separation of formats for View and Model for Yii Framework 2.0",
+            "homepage": "https://github.com/kartik-v/yii2-datecontrol",
+            "keywords": [
+                "control",
+                "date",
+                "extension",
+                "format",
+                "yii",
+                "yii2"
+            ],
+            "time": "2015-07-30 18:30:18"
         },
         {
             "name": "kartik-v/yii2-export",
@@ -1865,16 +1957,16 @@
         },
         {
             "name": "mootensai/yii2-relation-trait",
-            "version": "1.0.8",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mootensai/yii2-relation-trait.git",
-                "reference": "702a3ad747735ca957eb98ce17021babae9882ff"
+                "reference": "0e61e70bf67cce15533e3ba02ac5bca9c59aa917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mootensai/yii2-relation-trait/zipball/702a3ad747735ca957eb98ce17021babae9882ff",
-                "reference": "702a3ad747735ca957eb98ce17021babae9882ff",
+                "url": "https://api.github.com/repos/mootensai/yii2-relation-trait/zipball/0e61e70bf67cce15533e3ba02ac5bca9c59aa917",
+                "reference": "0e61e70bf67cce15533e3ba02ac5bca9c59aa917",
                 "shasum": ""
             },
             "require": {
@@ -1911,7 +2003,7 @@
                 "transaction",
                 "yii2"
             ],
-            "time": "2016-02-17 06:20:51"
+            "time": "2016-02-26 05:17:13"
         },
         {
             "name": "mootensai/yii2-uuid-behavior",
@@ -2220,7 +2312,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kartik-v/yii2-datecontrol": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
