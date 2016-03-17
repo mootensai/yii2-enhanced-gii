@@ -5,3 +5,6 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 /nbproject/*
+.idea
+vendor
+/composer.lock
