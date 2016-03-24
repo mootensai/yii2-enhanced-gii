@@ -57,6 +57,7 @@ class Generator extends \yii\gii\Generator
     public $useTablePrefix = false;
     public $generateRelations = true;
     public $generateMigrations = true;
+    public $generateRelationsOnCreate = true;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
@@ -117,7 +118,7 @@ class Generator extends \yii\gii\Generator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -136,6 +137,7 @@ class Generator extends \yii\gii\Generator
             'nsTraits' => 'Trait Namespace',
             'modelClass' => 'Model Class',
             'generateQuery' => 'Generate ActiveQuery',
+            'generateRelationsOnCreate' => 'Generate Relations on Create Forms',
             'queryNs' => 'ActiveQuery Namespace',
             'queryClass' => 'ActiveQuery Class',
             'nsModel' => 'Model Namespace',
@@ -198,6 +200,8 @@ class Generator extends \yii\gii\Generator
                 you may want to uncheck this option to accelerate the code generation process.',
             'generateMigrations' => 'This indicates whether the generator should generate migrations based on
                 table structure.',
+            'generateRelationsOnCreate' => 'This indicates whether the generator should include relation forms within 
+                main models form.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
                 . 'Enter this field with optimistic lock column name. '
                 . 'Empty this field if you want to disable this feature.',
@@ -1030,23 +1034,36 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->dbType === 'date') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
             'widgetClass' => \kartik\widgets\DateControl::classname(),
+            'displayFormat' => 'dd/MM/yyyy',
+            'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+            'ajaxConversion' => false,
             'options' => [
-                'options' => ['mask' => '99/99/9999'],
-                'type' => \kartik\widgets\DateControl::FORMAT_DATE,
+                'pluginOptions' => [
+                    'autoclose' => true
+                ]
             ]
         ]";
         } elseif ($column->dbType === 'time') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\TimePicker::classname()
+            'widgetClass' => \kartik\widgets\DateControl::classname(),
+            'displayFormat' => 'hh:ii:ss',
+            'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+            'ajaxConversion' => false,
+            'options' => [
+                'pluginOptions' => [
+                    'autoclose' => true
+                ]
+            ]            
         ]";
         } elseif ($column->dbType === 'datetime') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-        'widgetClass' => \kartik\widgets\DateTimePicker::classname(),
+            'widgetClass' => \kartik\widgets\DateControl::classname(),
+            'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
+            'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+            'ajaxConversion' => false,
             'options' => [
-                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
                 'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'hh:ii:ss dd-M-yyyy'
+                    'autoclose' => true
                 ]
             ]
         ]";
@@ -1124,8 +1141,8 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
         'displayFormat' => 'dd/MM/yyyy',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
-        'ajaxConversion'=>false,
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+        'ajaxConversion' => false,
         'options' => [
             'pluginOptions' => [
                 'autoclose' => true
@@ -1135,8 +1152,8 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->dbType === 'time') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
         'displayFormat' => 'hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_TIME,
-        'ajaxConversion'=>false,
+        'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+        'ajaxConversion' => false,
         'options' => [
             'pluginOptions' => [
                 'autoclose' => true
@@ -1147,8 +1164,8 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->dbType === 'datetime') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
         'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATETIME,
-        'ajaxConversion'=>false,
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'ajaxConversion' => false,
         'options' => [
             'pluginOptions' => [
                 'autoclose' => true

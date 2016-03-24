@@ -22,10 +22,11 @@ use yii\widgets\ActiveForm;
 <?php 
 $pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
 $modelClass = StringHelper::basename($generator->modelClass);
-foreach ($relations as $name => $rel) {
-    $relID = Inflector::camel2id($rel[1]);
-    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-        echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', 'pos'=> \yii\web\View::POS_END, \n"
+if ($generator->generateRelationsOnCreate){
+    foreach ($relations as $name => $rel) {
+        $relID = Inflector::camel2id($rel[1]);
+        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
+            echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', 'pos'=> \yii\web\View::POS_END, \n"
                 . "    'viewParams' => [\n"
                 . "        'class' => '$rel[1]', \n"
                 . "        'relID' => '$relID', \n"
@@ -33,6 +34,7 @@ foreach ($relations as $name => $rel) {
                 . "        'isNewRecord' => (\$model->isNewRecord) ? 1 : 0\n"
                 . "    ]\n"
                 . "]);\n";
+        }
     }
 }
 ?>
@@ -49,11 +51,13 @@ foreach ($relations as $name => $rel) {
         echo "    <?= " . $generator->generateActiveField($attribute, $generator->generateFK()) . " ?>\n\n";
     }
 } ?>
-<?php 
-foreach ($relations as $name => $rel) {
-    $relID = Inflector::camel2id($rel[1]);
-    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-        echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
+<?php
+if ($generator->generateRelationsOnCreate) {
+    foreach ($relations as $name => $rel) {
+        $relID = Inflector::camel2id($rel[1]);
+        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
+            echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
+        }
     }
 }
 ?>

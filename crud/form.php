@@ -42,8 +42,15 @@ echo $form->field($generator, 'skippedRelations');
             <?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($generator, 'generateSearchModel')->checkbox(); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($generator, 'generateRelationsOnCreate')->checkbox(); ?>
+        </div>
+    </div>
 <?php
-echo $form->field($generator, 'generateSearchModel')->checkbox();
 echo $form->field($generator, 'nsSearchModel');
 echo $form->field($generator, 'searchModelClass');
 //echo $form->field($generator, 'indexWidgetType')->dropDownList([
