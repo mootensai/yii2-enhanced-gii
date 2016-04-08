@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Inflector;
+use mootensai\enhancedgii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
@@ -83,6 +83,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     ]); 
 ?>
     </div>
+<?php if ($generator->generateRelationsOnView) {  ?>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
     
@@ -123,4 +124,5 @@ if($provider<?= $rel[1] ?>->totalCount){
     </div>
 <?php endif; ?>
 <?php endforeach; ?>
+<?php } ?>
 </div>

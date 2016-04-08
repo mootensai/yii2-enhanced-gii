@@ -126,7 +126,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+        if ($model->load<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>(Yii::$app->request->post()) && $model->save<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>()) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -145,7 +145,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+        if ($model->load<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>(Yii::$app->request->post()) && $model->save<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>()) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -162,7 +162,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionDelete(<?= $actionParams ?>)
     {
-        $this->findModel(<?= $actionParams ?>)->deleteWithRelated();
+        $this->findModel(<?= $actionParams ?>)->delete<?= $generator->generateRelationsOnCreate ? 'WithRelated' : '' ?>();
 
         return $this->redirect(['index']);
     }

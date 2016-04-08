@@ -10,7 +10,7 @@ use \yii\db\Connection;
 use \yii\db\Schema;
 use \yii\db\TableSchema;
 use \yii\gii\CodeFile;
-use \yii\helpers\Inflector;
+use mootensai\enhancedgii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use \yii\helpers\VarDumper;
 use \yii\web\Controller;
@@ -47,7 +47,7 @@ class Generator extends \yii\gii\Generator
     public $modelClass;
     public $baseModelClass = 'yii\db\ActiveRecord';
     public $nsSearchModel = 'app\models';
-    public $generateSearchModel;
+    public $generateSearchModel = true;
     public $searchModelClass;
     public $generateQuery = true;
     public $queryNs = 'app\models';
@@ -57,7 +57,8 @@ class Generator extends \yii\gii\Generator
     public $useTablePrefix = false;
     public $generateRelations = true;
     public $generateMigrations = true;
-    public $generateRelationsOnCreate = true;
+    public $generateRelationsOnCreate = false;
+    public $generateRelationsOnView = false;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
@@ -70,7 +71,7 @@ class Generator extends \yii\gii\Generator
     public $deletedAt = 'deleted_at';
     public $nsController = 'app\controllers';
     public $controllerClass;
-    public $pluralize;
+    public $pluralize = true;
     public $loggedUserOnly;
     public $expandable;
     public $cancelable;
@@ -118,7 +119,7 @@ class Generator extends \yii\gii\Generator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateRelationsOnView', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -138,6 +139,7 @@ class Generator extends \yii\gii\Generator
             'modelClass' => 'Model Class',
             'generateQuery' => 'Generate ActiveQuery',
             'generateRelationsOnCreate' => 'Generate Relations on Create Forms',
+            'generateRelationsOnView' => 'Generate Relations Below DetailView',
             'queryNs' => 'ActiveQuery Namespace',
             'queryClass' => 'ActiveQuery Class',
             'nsModel' => 'Model Namespace',
@@ -202,6 +204,8 @@ class Generator extends \yii\gii\Generator
                 table structure.',
             'generateRelationsOnCreate' => 'This indicates whether the generator should include relation forms within 
                 main models form.',
+            'generateRelationsOnView' => 'This indicates whether the generator should include a grid for each relation  
+                below the main models detailview.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
                 . 'Enter this field with optimistic lock column name. '
                 . 'Empty this field if you want to disable this feature.',
@@ -1032,40 +1036,28 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'dd/MM/yyyy',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,                     
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
+                'mask' => 'd/m/y',
+                'options' => ['class'=>'form-control'],
             ]
         ]";
         } elseif ($column->dbType === 'time') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'hh:ii:ss',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,                    
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]            
+                'mask' => 'h:i:s',
+                'options' => ['class'=>'form-control'],
+            ]        
         ]";
         } elseif ($column->dbType === 'datetime') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,           
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]
+                'mask' => 'd/m/y h:i:s',
+                'options' => ['class'=>'form-control'],
+            ]   
         ]";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
@@ -1139,37 +1131,27 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [        
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y',
+            'options' => ['class'=>'form-control'],
         ]
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'hh:ii:ss',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [      
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
-
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [        
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
@@ -1237,36 +1219,26 @@ class Generator extends \yii\gii\Generator
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y',
+            'options' => ['class'=>'form-control'],
         ]
     ]);";
         } elseif ($column->dbType === 'time') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_TIME,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
-
         } elseif ($column->dbType === 'datetime') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATETIME,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {

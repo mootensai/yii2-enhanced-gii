@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Inflector;
+use mootensai\enhancedgii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
@@ -39,7 +39,7 @@ $this->registerJs($search);
     <p>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
 <?php if (!empty($generator->searchModelClass)): ?>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advanced Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
     </p>
     <?php if (!empty($generator->searchModelClass)): ?>
@@ -107,7 +107,7 @@ if ($generator->indexWidgetType === 'grid'):
         ],
         // set a label for default menu
         'export' => [
-            'label' => 'Page',
+            'label' => <?= $generator->generateString('Page')?>,
             'fontAwesome' => true,
         ],
         // your toolbar can include the additional full export menu
@@ -119,10 +119,10 @@ if ($generator->indexWidgetType === 'grid'):
                 'target' => ExportMenu::TARGET_BLANK,
                 'fontAwesome' => true,
                 'dropdownOptions' => [
-                    'label' => 'Full',
+                    'label' => <?= $generator->generateString('Full')?>,
                     'class' => 'btn btn-default',
                     'itemsBefore' => [
-                        '<li class="dropdown-header">Export All Data</li>',
+                        '<li class="dropdown-header">'.<?= $generator->generateString('Export All Data')?>.'</li>',
                     ],
                 ],
             ]) ,
