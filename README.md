@@ -68,6 +68,26 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 
 I'm open for any improvement
 
+
+# Screenshot
+
+## Model Generator
+
+![new enhanced gii - model](https://cloud.githubusercontent.com/assets/5844149/13099130/db81fc46-d561-11e5-85ca-a9f3c38e68d8.PNG)
+
+## CRUD Generator
+
+![new enhanced gii - crud](https://cloud.githubusercontent.com/assets/5844149/13099135/ebd8537e-d561-11e5-8d2e-c303e2e63bc3.PNG)
+
+## Index 
+![new enhanced gii - index new](https://cloud.githubusercontent.com/assets/5844149/13103300/df47cdbc-d587-11e5-8435-21b47759cbd8.PNG)
+
+## View
+![new enhanced gii - view](https://cloud.githubusercontent.com/assets/5844149/13099144/035c0d92-d562-11e5-940f-b36c6b051f92.PNG)
+
+## Form
+![new enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/13099149/0bf2ca40-d562-11e5-8ea5-51711be9ed48.PNG)
+
 # Thanks To
 1. Jiwanndaru (jiwanndaru@gmail.com) for creating the tradition
 2. kartik-v (https://github.com/kartik-v) for most of widgets
