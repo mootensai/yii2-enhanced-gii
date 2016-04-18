@@ -238,6 +238,8 @@ if (count($pks) === 1) {
             throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
         }
     }
+
+<?php if ($generator->generateRelationsOnCreate): ?>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
     
@@ -262,4 +264,5 @@ if (count($pks) === 1) {
     }
 <?php endif; ?>
 <?php endforeach; ?>
+<?php endif; ?>
 }

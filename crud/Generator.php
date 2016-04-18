@@ -391,10 +391,16 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
+                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php' || $file === '_detail.php') {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                    if (($file === '_script.php') && !($this->generateRelationsOnCreate)) {
+                        continue;
+                    }
+                    if (($file === '_pdf.php') && !($this->pdf)) {
+                        continue;
+                    }
                     $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                     ]));
@@ -413,9 +419,11 @@ class Generator extends \yii\gii\Generator
                 }
                 foreach ($relations[$tableName] as $name => $rel) {
                     if ($rel[2] && isset($rel[3]) && !in_array($name, $this->skippedRelations)) {
-                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
-                            'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                        ]));
+                        if ($this->generateRelationsOnCreate) {
+                            $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
+                                'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            ]));
+                        }
                         if ($this->expandable) {
                             $files[] = new CodeFile("$viewPath/_data$rel[1].php", $this->render("views/_dataref.php", [
                                 'relName' => $name,

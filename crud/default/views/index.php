@@ -108,7 +108,7 @@ if ($generator->indexWidgetType === 'grid'):
         // set a label for default menu
         'export' => [
             'label' => <?= $generator->generateString('Page')?>,
-            'fontAwesome' => true,
+            'fontAwesome' => false,
         ],
         // your toolbar can include the additional full export menu
         'toolbar' => [
@@ -117,7 +117,7 @@ if ($generator->indexWidgetType === 'grid'):
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
-                'fontAwesome' => true,
+                'fontAwesome' => false,
                 'dropdownOptions' => [
                     'label' => <?= $generator->generateString('Full')?>,
                     'class' => 'btn btn-default',
