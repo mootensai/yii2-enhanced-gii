@@ -75,3 +75,4 @@ I'm open for any improvement
 2. kartik-v (https://github.com/kartik-v) for most of widgets
 3. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
 4. mdmunir (https://github.com/mdmunir) for JsBlock
+5. iurijacob (https://github.com/iurijacob/yii2-enhanced-gii) for the first changes and inspiration
