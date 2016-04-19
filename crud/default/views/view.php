@@ -23,12 +23,23 @@ $this->params['breadcrumbs'][] = ['label' => <?= ($generator->pluralize) ? $gene
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
+    <h2><?= '<?= Html::encode($this->title)' ?> ?></h2>
+    <br/>
 
-    <div class="row">
-        <div class="col-sm-9">
-            <h2><?= "<?= " ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
-        </div>
-        <div class="col-sm-3" style="margin-top: 15px">
+    <div class="clearfix crud-navigation">
+        <!-- menu buttons -->
+        <div class='pull-left'>
+            <?= "
+            <?= Html::a('<span class=\"glyphicon glyphicon-plus\"></span> '." . $generator->generateString('Create') . ", ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class=\"glyphicon glyphicon-pencil\"></span> '." . $generator->generateString('Edit') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class=\"glyphicon glyphicon-trash\"></span> '." . $generator->generateString('Delete') . ", ['delete', " . $generator->generateUrlParams() . "], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => " . $generator->generateString('Are you sure you want to delete this item?') . ",
+                    'method' => 'post',
+                ],
+            ])
+            ?>\n" ?>
             <?php if ($generator->pdf): ?>
 <?= "<?= " ?>
             <?= "
@@ -43,18 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
             )?>"
             ?>
             <?php endif; ?>
-            <?= "
-            <?= Html::a(" . $generator->generateString('Update') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', " . $generator->generateUrlParams() . "], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => " . $generator->generateString('Are you sure you want to delete this item?') . ",
-                    'method' => 'post',
-                ],
-            ])
-            ?>\n" ?>
+</div>
+        <div class="pull-right">
+            <?= "            
+            <?= Html::a('<span class=\"glyphicon glyphicon-list\"></span> '.". $generator->generateString('List') . ", ['index'], ['class' => 'btn btn-default']) ?>
+            \n" ?>
         </div>
     </div>
+    <br/>
 
     <div class="row">
 <?= "<?php \n" ?>

@@ -864,7 +864,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -908,7 +908,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -953,7 +953,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -964,7 +964,15 @@ class Generator extends \yii\gii\Generator
 //        if($column->autoIncrement){
 //            return "";
 //        } else
-        if (array_key_exists($attribute, $fk) && $attribute) {
+        if ($format === 'boolean') {
+            $output = "[
+                'class'=>'kartik\\grid\\BooleanColumn',
+                'trueLabel'  =>  {$this->generateString('Yes')},
+                'falseLabel' => {$this->generateString('No')},
+                'attribute'  => '$attribute',
+        ],\n";
+            return $output;
+        } else if (array_key_exists($attribute, $fk) && $attribute) {
             $rel = $fk[$attribute];
 //            print_r($rel);
             $labelCol = $this->getNameAttributeFK($rel[3]);
@@ -983,7 +991,7 @@ class Generator extends \yii\gii\Generator
                     'pluginOptions' => ['allowClear' => true],
                 ],
                 'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
-            ],\n";
+        ],\n";
             return $output;
         } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
@@ -1030,7 +1038,7 @@ class Generator extends \yii\gii\Generator
 //        print_r($fk);
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\"$attribute\" => ['type' => TabularForm::INPUT_PASSWORD]";
             } else {
                 return "\"$attribute\" => ['type' => TabularForm::INPUT_TEXT]";
@@ -1085,7 +1093,7 @@ class Generator extends \yii\gii\Generator
         ]";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'INPUT_PASSWORD';
             } else {
                 $input = 'INPUT_TEXT';
@@ -1125,7 +1133,7 @@ class Generator extends \yii\gii\Generator
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
             } else if (in_array($attribute, $this->hiddenColumns)) {
                 return "\$form->field(\$model, '$attribute')->hiddenInput()";
@@ -1177,7 +1185,7 @@ class Generator extends \yii\gii\Generator
     ])";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'passwordInput';
             } else {
                 $input = 'textInput';
@@ -1212,7 +1220,7 @@ class Generator extends \yii\gii\Generator
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
             } else if (in_array($attribute, $this->hiddenColumns)) {
                 return "\$form->field(\$model, '$attribute')->hiddenInput()";
@@ -1264,7 +1272,7 @@ class Generator extends \yii\gii\Generator
     ])";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'passwordInput';
             } else {
                 $input = 'textInput';
@@ -1291,10 +1299,12 @@ class Generator extends \yii\gii\Generator
      */
     public function generateColumnFormat($column)
     {
-        if ($column->phpType === 'boolean') {
+        if (($column->phpType === 'boolean') || ($column->dbType === 'tinyint(1)')) {
             return 'boolean';
         } elseif ($column->type === 'text') {
             return 'ntext';
+        } elseif ($column->type === 'date') {
+            return 'date';
         } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
             return 'datetime';
         } elseif (stripos($column->name, 'email') !== false) {
