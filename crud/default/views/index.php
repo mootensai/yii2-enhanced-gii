@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Inflector;
+use mootensai\enhancedgii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
@@ -27,30 +27,30 @@ $search = "$('.search-button').click(function(){
 	$('.search-form').toggle(1000);
 	return false;
 });";
-$this->registerJs($search);
+//$this->registerJs($search);
 ?>
 <div class="<?= Inflector::camel2id($baseModelClass) ?>-index">
 
-    <h1><?= "<?= " ?>Html::encode($this->title) ?></h1>
 <?php if (!empty($generator->searchModelClass)): ?>
 <?= "    <?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>
 
     <p>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
 <?php if (!empty($generator->searchModelClass)): ?>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
+        <!--Remove hide class to display-->
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advanced Search')?>, '#', ['class' => 'btn btn-info search-button hide']) ?>
 <?php endif; ?>
     </p>
     <?php if (!empty($generator->searchModelClass)): ?>
     <div class="search-form" style="display:none">
-        <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
+        <?= "<?php //echo " ?> $this->render('_search', ['model' => $searchModel]); ?>
     </div>
     <?php endif; ?>
 <?php 
 if ($generator->indexWidgetType === 'grid'): 
 ?>
     <?= "<?php \n" ?>
+
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
@@ -104,25 +104,34 @@ if ($generator->indexWidgetType === 'grid'):
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
+            'before'  => Html::a('<i class="glyphicon glyphicon-plus"></i> '.<?= $generator->generateString('Create') ?>, ['create'], ['class' => 'btn btn-success', 'data-pjax'=>0]),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> '.<?= $generator->generateString('Reset Filters')?>, ['index'], ['class' => 'btn btn-info']),
         ],
         // set a label for default menu
         'export' => [
-            'label' => 'Page',
-            'fontAwesome' => true,
+            'label' => <?= $generator->generateString('Page')?>,
+            'fontAwesome' => false,
         ],
         // your toolbar can include the additional full export menu
         'toolbar' => [
+            [
+                'content'=>
+                Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['index'], [
+                'class' => 'btn btn-default',
+                'title' => <?= $generator->generateString('Reset Filters')?>
+                ]),
+            ],
             '{export}',
             ExportMenu::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
-                'fontAwesome' => true,
+                'fontAwesome' => false,
                 'dropdownOptions' => [
-                    'label' => 'Full',
+                    'label' => <?= $generator->generateString('Full')?>,
                     'class' => 'btn btn-default',
                     'itemsBefore' => [
-                        '<li class="dropdown-header">Export All Data</li>',
+                        '<li class="dropdown-header">'.<?= $generator->generateString('Export All Data')?>.'</li>',
                     ],
                 ],
             ]) ,

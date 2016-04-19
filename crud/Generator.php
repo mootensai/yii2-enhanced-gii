@@ -10,7 +10,7 @@ use \yii\db\Connection;
 use \yii\db\Schema;
 use \yii\db\TableSchema;
 use \yii\gii\CodeFile;
-use \yii\helpers\Inflector;
+use mootensai\enhancedgii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use \yii\helpers\VarDumper;
 use \yii\web\Controller;
@@ -47,7 +47,7 @@ class Generator extends \yii\gii\Generator
     public $modelClass;
     public $baseModelClass = 'yii\db\ActiveRecord';
     public $nsSearchModel = 'app\models';
-    public $generateSearchModel;
+    public $generateSearchModel = true;
     public $searchModelClass;
     public $generateQuery = true;
     public $queryNs = 'app\models';
@@ -57,7 +57,8 @@ class Generator extends \yii\gii\Generator
     public $useTablePrefix = false;
     public $generateRelations = true;
     public $generateMigrations = true;
-    public $generateRelationsOnCreate = true;
+    public $generateRelationsOnCreate = false;
+    public $generateRelationsOnView = false;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
@@ -70,7 +71,7 @@ class Generator extends \yii\gii\Generator
     public $deletedAt = 'deleted_at';
     public $nsController = 'app\controllers';
     public $controllerClass;
-    public $pluralize;
+    public $pluralize = true;
     public $loggedUserOnly;
     public $expandable;
     public $cancelable;
@@ -118,7 +119,7 @@ class Generator extends \yii\gii\Generator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateRelationsOnView', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -138,6 +139,7 @@ class Generator extends \yii\gii\Generator
             'modelClass' => 'Model Class',
             'generateQuery' => 'Generate ActiveQuery',
             'generateRelationsOnCreate' => 'Generate Relations on Create Forms',
+            'generateRelationsOnView' => 'Generate Relations Below DetailView',
             'queryNs' => 'ActiveQuery Namespace',
             'queryClass' => 'ActiveQuery Class',
             'nsModel' => 'Model Namespace',
@@ -202,6 +204,8 @@ class Generator extends \yii\gii\Generator
                 table structure.',
             'generateRelationsOnCreate' => 'This indicates whether the generator should include relation forms within 
                 main models form.',
+            'generateRelationsOnView' => 'This indicates whether the generator should include a grid for each relation  
+                below the main models detailview.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
                 . 'Enter this field with optimistic lock column name. '
                 . 'Empty this field if you want to disable this feature.',
@@ -387,10 +391,16 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
+                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php' || $file === '_detail.php') {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                    if (($file === '_script.php') && !($this->generateRelationsOnCreate)) {
+                        continue;
+                    }
+                    if (($file === '_pdf.php') && !($this->pdf)) {
+                        continue;
+                    }
                     $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                     ]));
@@ -409,9 +419,11 @@ class Generator extends \yii\gii\Generator
                 }
                 foreach ($relations[$tableName] as $name => $rel) {
                     if ($rel[2] && isset($rel[3]) && !in_array($name, $this->skippedRelations)) {
-                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
-                            'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                        ]));
+                        if ($this->generateRelationsOnCreate) {
+                            $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
+                                'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            ]));
+                        }
                         if ($this->expandable) {
                             $files[] = new CodeFile("$viewPath/_data$rel[1].php", $this->render("views/_dataref.php", [
                                 'relName' => $name,
@@ -852,7 +864,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -896,7 +908,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -941,7 +953,7 @@ class Generator extends \yii\gii\Generator
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "";
             } else {
                 return "'$attribute',\n";
@@ -952,7 +964,15 @@ class Generator extends \yii\gii\Generator
 //        if($column->autoIncrement){
 //            return "";
 //        } else
-        if (array_key_exists($attribute, $fk) && $attribute) {
+        if ($format === 'boolean') {
+            $output = "[
+                'class'=>'kartik\\grid\\BooleanColumn',
+                'trueLabel'  =>  {$this->generateString('Yes')},
+                'falseLabel' => {$this->generateString('No')},
+                'attribute'  => '$attribute',
+        ],\n";
+            return $output;
+        } else if (array_key_exists($attribute, $fk) && $attribute) {
             $rel = $fk[$attribute];
 //            print_r($rel);
             $labelCol = $this->getNameAttributeFK($rel[3]);
@@ -971,7 +991,7 @@ class Generator extends \yii\gii\Generator
                     'pluginOptions' => ['allowClear' => true],
                 ],
                 'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
-            ],\n";
+        ],\n";
             return $output;
         } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
@@ -1018,7 +1038,7 @@ class Generator extends \yii\gii\Generator
 //        print_r($fk);
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\"$attribute\" => ['type' => TabularForm::INPUT_PASSWORD]";
             } else {
                 return "\"$attribute\" => ['type' => TabularForm::INPUT_TEXT]";
@@ -1032,40 +1052,28 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'dd/MM/yyyy',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,                     
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
+                'mask' => 'd/m/y',
+                'options' => ['class'=>'form-control'],
             ]
         ]";
         } elseif ($column->dbType === 'time') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'hh:ii:ss',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,                    
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]            
+                'mask' => 'h:i:s',
+                'options' => ['class'=>'form-control'],
+            ]        
         ]";
         } elseif ($column->dbType === 'datetime') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DateControl::classname(),
-            'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-            'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
-            'ajaxConversion' => false,
+            return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,           
+            'widgetClass' => 'yii\widgets\MaskedInput',
             'options' => [
-                'pluginOptions' => [
-                    'autoclose' => true
-                ]
-            ]
+                'mask' => 'd/m/y h:i:s',
+                'options' => ['class'=>'form-control'],
+            ]   
         ]";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
@@ -1085,7 +1093,7 @@ class Generator extends \yii\gii\Generator
         ]";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'INPUT_PASSWORD';
             } else {
                 $input = 'INPUT_TEXT';
@@ -1125,7 +1133,7 @@ class Generator extends \yii\gii\Generator
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
             } else if (in_array($attribute, $this->hiddenColumns)) {
                 return "\$form->field(\$model, '$attribute')->hiddenInput()";
@@ -1139,37 +1147,27 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [        
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y',
+            'options' => ['class'=>'form-control'],
         ]
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'hh:ii:ss',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [      
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
-
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
-        'ajaxConversion' => false,
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [        
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
@@ -1187,7 +1185,7 @@ class Generator extends \yii\gii\Generator
     ])";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'passwordInput';
             } else {
                 $input = 'textInput';
@@ -1222,7 +1220,7 @@ class Generator extends \yii\gii\Generator
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $attribute)) {
                 return "\$form->field(\$model, '$attribute')->passwordInput()";
             } else if (in_array($attribute, $this->hiddenColumns)) {
                 return "\$form->field(\$model, '$attribute')->hiddenInput()";
@@ -1237,36 +1235,26 @@ class Generator extends \yii\gii\Generator
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y',
+            'options' => ['class'=>'form-control'],
         ]
     ]);";
         } elseif ($column->dbType === 'time') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_TIME,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
-
         } elseif ($column->dbType === 'datetime') {
             return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'displayFormat' => 'dd/MM/yyyy hh:ii:ss',
-        'type'=>\kartik\datecontrol\DateControl::FORMAT_DATETIME,
-        'ajaxConversion'=>false,
+        'widgetClass' => 'yii\widgets\MaskedInput',
         'options' => [
-            'pluginOptions' => [
-                'autoclose' => true
-            ]
+            'mask' => 'd/m/y h:i:s',
+            'options' => ['class'=>'form-control'],
         ]
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
@@ -1284,7 +1272,7 @@ class Generator extends \yii\gii\Generator
     ])";
             return $output;
         } else {
-            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
+            if (preg_match('/^(password|pass|passwd|passcode|senha)$/i', $column->name)) {
                 $input = 'passwordInput';
             } else {
                 $input = 'textInput';
@@ -1311,10 +1299,12 @@ class Generator extends \yii\gii\Generator
      */
     public function generateColumnFormat($column)
     {
-        if ($column->phpType === 'boolean') {
+        if (($column->phpType === 'boolean') || ($column->dbType === 'tinyint(1)')) {
             return 'boolean';
         } elseif ($column->type === 'text') {
             return 'ntext';
+        } elseif ($column->type === 'date') {
+            return 'date';
         } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
             return 'datetime';
         } elseif (stripos($column->name, 'email') !== false) {

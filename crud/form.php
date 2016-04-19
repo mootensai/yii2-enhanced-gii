@@ -50,6 +50,11 @@ echo $form->field($generator, 'skippedRelations');
             <?= $form->field($generator, 'generateRelationsOnCreate')->checkbox(); ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-7">
+            <?= $form->field($generator, 'generateRelationsOnView')->checkbox(); ?>
+        </div>
+    </div>
 <?php
 echo $form->field($generator, 'nsSearchModel');
 echo $form->field($generator, 'searchModelClass');
