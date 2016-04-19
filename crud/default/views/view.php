@@ -62,8 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <br/>
-
+    <?php if ($generator->generateRelationsOnView): ?>
     <div class="row">
+    <?php endif ?>
 <?= "<?php \n" ?>
     $gridColumn = [
 <?php 
@@ -89,11 +90,11 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
         'attributes' => $gridColumn
     ]); 
 ?>
-    </div>
+
 <?php if ($generator->generateRelationsOnView) {  ?>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    
+    </div>
     <div class="row">
 <?= "<?php\n" ?>
 if($provider<?= $rel[1] ?>->totalCount){
