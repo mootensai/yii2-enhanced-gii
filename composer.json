@@ -27,7 +27,8 @@
         "kartik-v/yii2-export": "*",
         "kartik-v/yii2-tabs-x": "*",
         "kartik-v/yii2-datecontrol": "*",
-        "almirb/yii2-inflector-br": "dev-master"
+        "almirb/yii2-inflector-br": "dev-master",
+        "almirb/yii2-bt-actioncolumn": "*"
     },
     "autoload": {
         "psr-4": {
