@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
 
-use mootensai\enhancedgii\helpers\Inflector;
+use almirb\inflectorbr\Inflector;
 use yii\helpers\StringHelper;
 ?>
 <?= "<?php" ?>

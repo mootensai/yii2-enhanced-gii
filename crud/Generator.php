@@ -10,7 +10,7 @@ use \yii\db\Connection;
 use \yii\db\Schema;
 use \yii\db\TableSchema;
 use \yii\gii\CodeFile;
-use mootensai\enhancedgii\helpers\Inflector;
+use \almirb\inflectorbr\Inflector;
 use yii\helpers\StringHelper;
 use \yii\helpers\VarDumper;
 use \yii\web\Controller;

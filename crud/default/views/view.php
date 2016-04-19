@@ -1,6 +1,6 @@
 <?php
 
-use mootensai\enhancedgii\helpers\Inflector;
+use almirb\inflectorbr\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
