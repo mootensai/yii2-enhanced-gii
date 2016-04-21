@@ -135,6 +135,7 @@ if ($generator->indexWidgetType === 'grid'):
                     ],
                 ],
             ]) ,
+            '{toggleData}',
         ],
     ]); ?>
 <?php 
