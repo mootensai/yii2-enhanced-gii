@@ -127,6 +127,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $model = new <?= $modelClass ?>();
 
         if ($model->load<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>(Yii::$app->request->post()) && $model->save<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>()) {
+<?php if ($generator->generateFlashMessages) : ?>
+            Yii::$app->session->setFlash('success', <?= $generator->generateString('Item successfully created!')?>);
+<?php endif; ?>
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -146,6 +149,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $model = $this->findModel(<?= $actionParams ?>);
 
         if ($model->load<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>(Yii::$app->request->post()) && $model->save<?= $generator->generateRelationsOnCreate ? 'All' : '' ?>()) {
+<?php if ($generator->generateFlashMessages) : ?>
+            Yii::$app->session->setFlash('success', <?= $generator->generateString('Item successfully updated!')?>);
+<?php endif; ?>
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -162,7 +168,21 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionDelete(<?= $actionParams ?>)
     {
-        $this->findModel(<?= $actionParams ?>)->delete<?= $generator->generateRelationsOnCreate ? 'WithRelated' : '' ?>();
+        $model = $this->findModel(<?= $actionParams ?>);
+
+        try {
+            $model->delete<?= $generator->generateRelationsOnCreate ? 'WithRelated' : '' ?>();
+        } catch (yii\db\Exception $e) {
+            if($e->errorInfo[1] == 1451) {
+<?php if ($generator->generateFlashMessages) : ?>
+            Yii::$app->session->setFlash('danger', <?= $generator->generateString('Couldn\'t erase this item because It has related items!')?>);
+<?php endif; ?>
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+<?php if ($generator->generateFlashMessages) : ?>
+        Yii::$app->session->setFlash('success', <?= $generator->generateString('Item successfully erased!') ?>);
+<?php endif; ?>
 
         return $this->redirect(['index']);
     }

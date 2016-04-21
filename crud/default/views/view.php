@@ -25,6 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
     <h2><?= '<?= Html::encode($this->title)' ?> ?></h2>
     <br/>
+<?php if ($generator->generateFlashMessages) : ?>
+    <?='<?php ' ?>\mootensai\enhancedgii\components\FlashHelper::showFlashMessages(); <?='?>' ?>
+<?php endif; ?>
 
     <div class="clearfix crud-navigation">
         <!-- menu buttons -->
