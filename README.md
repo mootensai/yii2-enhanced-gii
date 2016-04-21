@@ -62,6 +62,29 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 9. Expandable / collapsible row at index grid view for related data
 
 
+## CSS :
+Add this code to your css file to enhance you gridview header style:
+ ```
+ .kartik-sheet-style {
+     background: #ffffff;
+     background: -moz-linear-gradient(top,  #ffffff 0%, #f5f5f5 100%);
+     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f5f5f5));
+     background: -webkit-linear-gradient(top,  #ffffff 0%,#f5f5f5 100%);
+     background: -o-linear-gradient(top,  #ffffff 0%,#f5f5f5 100%);
+     background: -ms-linear-gradient(top,  #ffffff 0%,#f5f5f5 100%);
+     background: linear-gradient(to bottom,  #ffffff 0%,#f5f5f5 100%);
+     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f5f5f5',GradientType=0 );
+ }
+ ```
+
+And this code to fix the grid overflow issue:
+ ```
+ div.rc-handle-container {
+     overflow: hidden;
+ }
+ ```
+
+
 # To Do
 1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
 2. One-page-CRUD template

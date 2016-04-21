@@ -101,18 +101,21 @@ if ($generator->indexWidgetType === 'grid'):
         <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => \$gridColumn,\n" : "'columns' => \$gridColumn,\n"; ?>
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id(StringHelper::basename($generator->modelClass))?>']],
+        'hover' => true,
+        'responsiveWrap' => false,
+        'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+        'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+        // set a label for default menu
+        /*'export' => [
+            'label' => <?= $generator->generateString('Page')?>,
+            'fontAwesome' => false,
+        ],*/
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
             'before'  => Html::a('<i class="glyphicon glyphicon-plus"></i> '.<?= $generator->generateString('Create') ?>, ['create'], ['class' => 'btn btn-success', 'data-pjax'=>0]),
-            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> '.<?= $generator->generateString('Reset Filters')?>, ['index'], ['class' => 'btn btn-info']),
+            'after'   => Html::a('<i class="glyphicon glyphicon-repeat"></i> '.<?= $generator->generateString('Reset Filters')?>, ['index'], ['class' => 'btn btn-info']),
         ],
-        // set a label for default menu
-        'export' => [
-            'label' => <?= $generator->generateString('Page')?>,
-            'fontAwesome' => false,
-        ],
-        // your toolbar can include the additional full export menu
         'toolbar' => [
             [
                 'content'=>
@@ -122,7 +125,8 @@ if ($generator->indexWidgetType === 'grid'):
                 ]),
             ],
             '{export}',
-            ExportMenu::widget([
+            // your toolbar can include the additional full export menu
+            /*ExportMenu::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
@@ -134,7 +138,7 @@ if ($generator->indexWidgetType === 'grid'):
                         '<li class="dropdown-header">'.<?= $generator->generateString('Export All Data')?>.'</li>',
                     ],
                 ],
-            ]) ,
+            ]) ,*/
             '{toggleData}',
         ],
     ]); ?>
