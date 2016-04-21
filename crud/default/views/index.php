@@ -30,7 +30,11 @@ $search = "$('.search-button').click(function(){
 //$this->registerJs($search);
 ?>
 <div class="<?= Inflector::camel2id($baseModelClass) ?>-index">
+<?php if ($generator->generateFlashMessages) : ?>
+    <?='<?php ' ?>\mootensai\enhancedgii\components\FlashHelper::showFlashMessages(); <?='?>' ?>
+<?php endif; ?>
 
+    
 <?php if (!empty($generator->searchModelClass)): ?>
 <?= "    <?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>

@@ -51,8 +51,11 @@ echo $form->field($generator, 'skippedRelations');
         </div>
     </div>
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <?= $form->field($generator, 'generateRelationsOnView')->checkbox(); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($generator, 'generateFlashMessages')->checkbox(); ?>
         </div>
     </div>
 <?php

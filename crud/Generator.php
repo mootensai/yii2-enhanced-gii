@@ -59,6 +59,7 @@ class Generator extends \yii\gii\Generator
     public $generateMigrations = true;
     public $generateRelationsOnCreate = false;
     public $generateRelationsOnView = false;
+    public $generateFlashMessages = true;
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
@@ -119,7 +120,7 @@ class Generator extends \yii\gii\Generator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateRelationsOnView', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateRelationsOnCreate', 'generateRelationsOnView', 'generateFlashMessages','generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -140,6 +141,7 @@ class Generator extends \yii\gii\Generator
             'generateQuery' => 'Generate ActiveQuery',
             'generateRelationsOnCreate' => 'Generate Relations on Create Forms',
             'generateRelationsOnView' => 'Generate Relations Below DetailView',
+            'generateFlashMessages' => 'Generate Flash Messages',
             'queryNs' => 'ActiveQuery Namespace',
             'queryClass' => 'ActiveQuery Class',
             'nsModel' => 'Model Namespace',
@@ -206,6 +208,8 @@ class Generator extends \yii\gii\Generator
                 main models form.',
             'generateRelationsOnView' => 'This indicates whether the generator should include a grid for each relation  
                 below the main models detailview.',
+            'generateFlashMessages' => 'This indicates whether the generator should create flash messages after each CRUD  
+                 operation in controller.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
                 . 'Enter this field with optimistic lock column name. '
                 . 'Empty this field if you want to disable this feature.',
