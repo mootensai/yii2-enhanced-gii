@@ -40,7 +40,7 @@ class Generator extends \yii\gii\Generator {
     public $db = 'db';
     public $nsTraits = 'app\traits';
     public $tableName;
-    public $nameAttribute = 'name, nome, title, título, descrição';
+    public $nameAttribute = 'name, nome, title, titulo, descricao';
     public $hiddenColumns;
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
