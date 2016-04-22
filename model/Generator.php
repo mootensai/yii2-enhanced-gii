@@ -40,7 +40,7 @@ class Generator extends \yii\gii\Generator {
     public $db = 'db';
     public $nsTraits = 'app\traits';
     public $tableName;
-    public $nameAttribute = 'name, title';
+    public $nameAttribute = 'name, nome, title, título, descrição';
     public $hiddenColumns;
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
@@ -58,11 +58,11 @@ class Generator extends \yii\gii\Generator {
     public $generateAttributeHints = false;
     public $generateMigrations = false;
     public $optimisticLock = 'lock';
-    public $createdAt = 'created_at';
-    public $updatedAt = 'updated_at';
+    public $createdAt;// = 'created_at';
+    public $updatedAt;// = 'updated_at';
     public $timestampValue;
-    public $createdBy = 'created_by';
-    public $updatedBy = 'updated_by';
+    public $createdBy;// = 'created_by';
+    public $updatedBy;// = 'updated_by';
     public $blameableValue;
     public $UUIDColumn;
     public $deletedBy = 'deleted_by';

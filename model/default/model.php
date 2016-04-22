@@ -19,6 +19,37 @@ echo "<?php\n";
 namespace <?= $generator->nsModel ?>\base;
 
 use Yii;
+<?php
+
+$columns = array_column($tableSchema->columns,'name');
+
+    if ((!$generator->createdAt) && in_array('created_at',$columns)) {
+        $generator->createdAt = 'created_at';
+    }
+    if ((!$generator->updatedAt) && in_array('updated_at',$columns)) {
+        $generator->updatedAt = 'updated_at';
+    }
+    if ((!$generator->createdBy) && in_array('created_by',$columns)) {
+        $generator->createdBy = 'created_by';
+    }
+    if ((!$generator->updatedBy) && in_array('updated_by',$columns)) {
+        $generator->updatedBy = 'updated_by';
+    }
+
+    if (($generator->createdAt) && !in_array($generator->createdAt,$columns)) {
+        $generator->createdAt = null;
+    }
+    if (($generator->updatedAt) && !in_array($generator->updatedAt,$columns)) {
+        $generator->updatedAt = null;
+    }
+    if (($generator->createdBy) && !in_array($generator->createdBy,$columns)) {
+        $generator->createdBy = null;
+    }
+    if (($generator->updatedBy) && !in_array($generator->updatedBy,$columns)) {
+        $generator->updatedBy = null;
+    }
+?>
+
 <?php if ($generator->createdAt || $generator->updatedAt): ?>
 use yii\behaviors\TimestampBehavior;
 <?php endif; ?>

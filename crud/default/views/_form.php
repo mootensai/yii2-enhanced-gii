@@ -40,7 +40,7 @@ if ($generator->generateRelationsOnCreate){
 ?>
 ?>
 
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
+<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form well">
 
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
     
