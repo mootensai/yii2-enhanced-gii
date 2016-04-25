@@ -711,6 +711,13 @@ class Generator extends \yii\gii\Generator
                 }
             }
         }
+        //Method used on Giix (Yii1 Gii enhancer) to discover the representing column
+        foreach ($this->tableSchema->columns as $column) {
+            if ($column->type === 'string' && !$column->allowNull && !$column->isPrimaryKey && stripos($column->dbType, 'int') === false) {
+                return $column->name;
+            }
+        }
+
         /* @var $class ActiveRecord */
 //        $class = $this->modelClass;
         $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
