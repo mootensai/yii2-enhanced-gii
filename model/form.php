@@ -12,6 +12,7 @@ echo $form->field($generator, 'messageCategory');
 echo $form->field($generator, 'nsModel');
 echo $form->field($generator, 'modelClass');
 echo $form->field($generator, 'baseModelClass');
+echo $form->field($generator, 'skippedColumns');
 echo $form->field($generator, 'generateQuery')->checkbox();
 echo $form->field($generator, 'queryNs');
 echo $form->field($generator, 'queryBaseClass');

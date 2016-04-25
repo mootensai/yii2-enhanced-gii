@@ -42,9 +42,10 @@ class Generator extends \yii\gii\Generator {
     public $tableName;
     public $nameAttribute = 'name, nome, title, titulo, descricao';
     public $hiddenColumns;
-    public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
+    public $skippedColumns = 'deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
     public $modelClass;
+    public $enableI18N = true;
     public $baseModelClass = 'yii\db\ActiveRecord';
     public $nsSearchModel = 'app\models';
     public $searchModelClass;
@@ -57,7 +58,7 @@ class Generator extends \yii\gii\Generator {
     public $generateRelations = true;
     public $generateAttributeHints = false;
     public $generateMigrations = false;
-    public $optimisticLock = 'lock';
+    public $optimisticLock;// = 'lock';
     public $createdAt;// = 'created_at';
     public $updatedAt;// = 'updated_at';
     public $timestampValue;

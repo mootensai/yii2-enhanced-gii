@@ -42,7 +42,7 @@ class Generator extends \yii\gii\Generator
     public $nsTraits = 'app\traits';
     public $nameAttribute = 'name, nome, title, titulo, descricao';
     public $hiddenColumns = 'id, lock';
-    public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
+    public $skippedColumns = 'deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
     public $modelClass;
     public $baseModelClass = 'yii\db\ActiveRecord';
@@ -894,6 +894,13 @@ class Generator extends \yii\gii\Generator
 //        if($column->autoIncrement){
 //            return "";
 //        } else
+        if (in_array($attribute,['created_by','updated_by'])) {
+            $output = "[
+            'attribute' => '$attribute',
+            'value' => (\$model->$attribute) ? \app\models\User::findOne(\$model->$attribute)->name : null, 
+        ],\n";
+            return $output;
+        }
         if (array_key_exists($attribute, $fk)) {
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
@@ -1325,7 +1332,7 @@ class Generator extends \yii\gii\Generator
             return 'ntext';
         } elseif ($column->type === 'date') {
             return 'date';
-        } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
+        } elseif ((stripos($column->name, 'time') !== false && $column->phpType === 'integer') || (in_array($column->name, ['created_at','updated_at']))) {
             return 'datetime';
         } elseif (stripos($column->name, 'email') !== false) {
             return 'email';

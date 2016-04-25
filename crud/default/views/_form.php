@@ -46,9 +46,13 @@ if ($generator->generateRelationsOnCreate){
     
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
-<?php foreach ($generator->tableSchema->getColumnNames() as $attribute) {
-    if (!in_array($attribute, $generator->skippedColumns)) {
-        echo "    <?= " . $generator->generateActiveField($attribute, $generator->generateFK()) . " ?>\n\n";
+<?php $behaviorColumns = ['created_at','created_by','updated_at','updated_by']; ?>
+
+    <?php foreach ($generator->tableSchema->columns as $column) {
+    if ((!in_array($column->name, $generator->skippedColumns)) &&
+        (!in_array($column->name, $behaviorColumns)) &&
+            !(($column->autoIncrement) && ($column->name === $pk))) {
+        echo "    <?= " . $generator->generateActiveField($column->name, $generator->generateFK()) . " ?>\n\n";
     }
 } ?>
 <?php
