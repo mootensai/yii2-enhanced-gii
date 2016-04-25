@@ -39,32 +39,7 @@ echo $form->field($generator, 'queryBaseClass');
     </div>
 </div>
 <?= $form->field($generator, 'optimisticLock'); ?>
-<?= "<h4>Timestamp Behaviors</h4>"; ?>
-<div class="row">
-    <div class="col-md-3">
-<?= $form->field($generator, 'createdAt'); ?>
-    </div>
-    <div class="col-md-3">
-<?= $form->field($generator, 'updatedAt'); ?>
-    </div>
-    <div class="col-md-6">
-<?= $form->field($generator, 'timestampValue'); ?>
-    </div>
-</div>    
-<?php
-echo "<h4>Blameable Behaviors</h4>";
-?>
-<div class="row">
-    <div class="col-md-3">
-<?= $form->field($generator, 'createdBy'); ?>
-    </div>
-    <div class="col-md-3">
-<?= $form->field($generator, 'updatedBy'); ?>
-    </div>
-    <div class="col-md-6">
-<?= $form->field($generator, 'blameableValue'); ?>
-    </div>
-</div>    
+
 <?php
 echo $form->field($generator, 'UUIDColumn');
 //echo "<h4>Soft Delete Trait</h4>";
