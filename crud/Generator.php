@@ -733,6 +733,14 @@ class Generator extends \yii\gii\Generator
                 return $name;
             }
         }
+
+        //Method used on Giix (Yii1 Gii enhancer) to discover the representing column
+        foreach ($tableSchema->columns as $column) {
+            if ($column->type === 'string' && !$column->allowNull && !$column->isPrimaryKey && stripos($column->dbType, 'int') === false) {
+                return $column->name;
+            }
+        }
+
         $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 
         return $pk;
@@ -1184,6 +1192,7 @@ class Generator extends \yii\gii\Generator
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[3]);
+            $nullable = ($column->allowNull) ? 'true' : 'false';
             $humanize = Inflector::humanize($rel[3]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
             $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[1];
@@ -1191,7 +1200,7 @@ class Generator extends \yii\gii\Generator
         'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
         'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
         'pluginOptions' => [
-            'allowClear' => true
+            'allowClear' => $nullable
         ],
     ])";
             return $output;
