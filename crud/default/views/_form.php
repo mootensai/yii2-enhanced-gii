@@ -53,7 +53,9 @@ foreach ($relations as $name => $rel) {
 foreach ($relations as $name => $rel) {
     $relID = Inflector::camel2id($rel[1]);
     if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-        echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
+        echo "    <div class=\"form-group\" id=\"add-$relID\">\n"
+            . "        <?= \$this->render('_form".$rel[1]."', ['row'=>\yii\helpers\ArrayHelper::toArray(\$model->$name)]); ?>\n"
+            . "    </div>\n\n";
     }
 }
 ?>
