@@ -162,7 +162,7 @@ class Generator extends \yii\gii\Generator
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
-            'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table. 
+            'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
             'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',

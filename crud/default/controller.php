@@ -126,7 +126,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $generator->skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $generator->skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -145,7 +145,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $generator->skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $generator->skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
