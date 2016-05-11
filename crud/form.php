@@ -17,7 +17,6 @@ echo $form->field($generator, 'messageCategory');
 echo $form->field($generator, 'nsController');
 echo $form->field($generator, 'controllerClass');
 echo $form->field($generator, 'baseControllerClass');
-echo $form->field($generator, 'skippedRelations');
 ?>
 <div class="row">
     <div class="col-md-6">

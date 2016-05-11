@@ -18,7 +18,9 @@ $pks = $generator->tableSchema->primaryKey;
 $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
-
+$skippedRelations = array_map(function($value){
+    return "'$value'";
+},$generator->skippedRelations);
 echo "<?php\n";
 ?>
 
@@ -49,13 +51,23 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     'delete' => ['post'],
                 ],
             ],
-<?php if ($generator->loggedUserOnly): ?>
+<?php if ($generator->loggedUserOnly):
+    $actions = ["'index'", "'view'", "'create'", "'update'","'delete'"];
+    if($generator->pdf){
+        array_push($actions,"'pdf'");
+    }
+    foreach ($relations as $name => $rel){
+        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
+            array_push($actions,"'".\yii\helpers\Inflector::camel2id('add'.$rel[1])."'");
+        }
+    }
+?>
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update','delete'],
+                        'actions' => [<?= implode(', ',$actions)?>],
                         'roles' => ['@']
                     ],
                     [
@@ -126,7 +138,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $generator->skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $generator->skippedRelations)."]" : ""; ?>)) {
+        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -145,7 +157,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $generator->skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $generator->skippedRelations)."]" : ""; ?>)) {
+        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
