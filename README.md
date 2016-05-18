@@ -59,6 +59,8 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 8. PDF Printable view
 9. Expandable / collapsible row at index grid view for related data
 
+## Migration Generator :
+1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
 
 # To Do
 1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
