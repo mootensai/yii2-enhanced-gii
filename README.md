@@ -65,7 +65,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 # To Do
 1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
 2. One-page-CRUD template
-3. Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)
+3. ~~Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)~~
 4. RESTful template
 
 I'm open for any improvement
