@@ -91,10 +91,11 @@ I'm open for any improvement
 ![new enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/13099149/0bf2ca40-d562-11e5-8ea5-51711be9ed48.PNG)
 
 # Migration Generator
+![migration form](https://cloud.githubusercontent.com/assets/5844149/15350030/08ab4d58-1d01-11e6-87b7-4dd621a5bef6.JPG)
 
 
 # Thanks To
 1. Jiwanndaru (jiwanndaru@gmail.com) for creating the tradition
 2. kartik-v (https://github.com/kartik-v) for most of widgets
 3. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
-4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from github.com/deesoft/yii2-gii)
+4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
