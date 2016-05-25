@@ -120,7 +120,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     {
         return [
 <?php if ($generator->createdAt || $generator->updatedAt):?>
-            [
+            'timestamp' => [
                 'class' => TimestampBehavior::className(),
 <?php if (!empty($generator->createdAt)):?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
@@ -138,7 +138,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
             ],
 <?php endif; ?>
 <?php if ($generator->createdBy || $generator->updatedBy):?>
-            [
+            'blameable' => [
                 'class' => BlameableBehavior::className(),
 <?php if (!empty($generator->createdBy)):?>
                 'createdByAttribute' => '<?= $generator->createdBy?>',
@@ -156,7 +156,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
             ],
 <?php endif; ?>
 <?php if ($generator->UUIDColumn):?>
-            [
+            'uuid' => [
                 'class' => UUIDBehavior::className(),
 <?php if (!empty($generator->UUIDColumn)):?>
                 'column' => '<?= $generator->UUIDColumn?>',
