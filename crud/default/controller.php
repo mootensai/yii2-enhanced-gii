@@ -101,7 +101,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
-<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations) && $generator->generateRelationsOnView): ?>
         $provider<?= $rel[1]?> = new \yii\data\ArrayDataProvider([
             'allModels' => $model-><?= $name ?>,
         ]);
@@ -110,7 +110,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $this->render('view', [
             'model' => $this->findModel(<?= $actionParams ?>),
 <?php foreach ($relations as $name => $rel): ?>
-<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations) && $generator->generateRelationsOnView): ?>
             'provider<?= $rel[1]?>' => $provider<?= $rel[1]?>,
 <?php endif; ?>
 <?php endforeach; ?>
@@ -197,7 +197,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionPdf($id) {
         $model = $this->findModel($id);
 <?php foreach ($relations as $name => $rel): ?>
-<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations) && $generator->generateRelationsOnView): ?>
         $provider<?= $rel[1] ?> = new \yii\data\ArrayDataProvider([
             'allModels' => $model-><?= $name; ?>,
         ]);
@@ -207,7 +207,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $content = $this->renderAjax('_pdf', [
             'model' => $model,
 <?php foreach ($relations as $name => $rel): ?>
-<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
+<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations && $generator->generateRelationsOnView)): ?>
             'provider<?= $rel[1]?>' => $provider<?= $rel[1] ?>,
 <?php endif; ?>
 <?php endforeach; ?>
