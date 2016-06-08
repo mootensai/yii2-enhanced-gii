@@ -99,3 +99,7 @@ I'm open for any improvement
 2. kartik-v (https://github.com/kartik-v) for most of widgets
 3. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
 4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mootensai/yii2-enhanced-gii/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
