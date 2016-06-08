@@ -7,7 +7,7 @@ Yii2 Gii (generator) with Relation
 [![Monthly Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/monthly)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Daily Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/daily)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Join the chat at https://gitter.im/mootensai/yii2-enhanced-gii](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootensai/yii2-enhanced-gii?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mootensai/yii2-enhanced-gii/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
@@ -101,5 +101,4 @@ I'm open for any improvement
 4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mootensai/yii2-enhanced-gii/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
