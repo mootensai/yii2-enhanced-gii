@@ -1069,8 +1069,8 @@ class Generator extends \yii\gii\Generator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "'$attribute' => ['type' => TabularForm::INPUT_DROPDOWN_LIST,
+                    'items' => " . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ",
                     'options' => [
-                        'items' => " . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ",
                         'columnOptions => ['width' => '185px'],
                         'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
                     ]
