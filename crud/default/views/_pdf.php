@@ -59,6 +59,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     
     <div class="row">
 <?= "<?php\n" ?>
+if($provider<?= $rel[1] ?>->totalCount){
     $gridColumn<?= $rel[1] ?> = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
@@ -88,6 +89,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
         'toggleData' => false,
         'columns' => $gridColumn<?= $rel[1]."\n" ?>
     ]);
+}
 <?= "?>\n" ?>
     </div>
 <?php endif; ?>
