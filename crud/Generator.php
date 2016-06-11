@@ -31,7 +31,7 @@ class Generator extends \yii\gii\Generator
     const REL_IS_MULTIPLE = 2;
     const REL_TABLE = 3;
     const REL_PRIMARY_KEY = 4;
-    const REL_FOREIGN_KEY =5;
+    const REL_FOREIGN_KEY = 5;
 
     const FK_TABLE_NAME = 0;
     const FK_FIELD_NAME = 1;
@@ -171,7 +171,7 @@ class Generator extends \yii\gii\Generator
             'nsTraits' => 'This is the namespace of the traits to be generated, e.g., <code>app\traits</code>',
             'nameAttribute' => 'This is the (set) of name column that you use to show as label, '
                 . 'separated by comma (,) for multiple table(asterisk on Table Name).',
-            'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
+            'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
             'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
@@ -240,7 +240,7 @@ class Generator extends \yii\gii\Generator
                 to <code>@app/views/ControllerID</code>',
             'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
                 You should provide a fully qualified class name, e.g., <code>yii\web\Controller</code>.',
-            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table. 
+            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
                 You can fill multiple relations, separated by comma (,). You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
             'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
@@ -296,7 +296,7 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function() use ($db) {
+                'tableName' => function () use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -360,9 +360,9 @@ class Generator extends \yii\gii\Generator
                     $searchModelClassName = $modelClassName . 'Search';
                 } else {
                     if ($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName) {
-                                            $searchModelClassName = $this->searchModelClass . 'Search';
+                        $searchModelClassName = $this->searchModelClass . 'Search';
                     } else {
-                                            $searchModelClassName = $this->searchModelClass;
+                        $searchModelClassName = $this->searchModelClass;
                     }
                 }
                 $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
@@ -892,7 +892,6 @@ class Generator extends \yii\gii\Generator
         if (in_array($attribute, $this->hiddenColumns)) {
             return "['attribute' => '$attribute', 'hidden' => true],\n";
         }
-        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "";
@@ -902,23 +901,20 @@ class Generator extends \yii\gii\Generator
         }
         $column = $tableSchema->columns[$attribute];
         $format = $this->generateColumnFormat($column);
-//        if($column->autoIncrement){
-//            return "";
-//        } else
-        if (array_key_exists($attribute, $fk) && $attribute) {
+        $baseClass = StringHelper::basename($this->modelClass);
+        if (array_key_exists($attribute, $fk)) {
             $rel = $fk[$attribute];
-//            print_r($rel);
+            if ($rel[self::REL_CLASS] == $baseClass) {
+                return "";
+            }
             $labelCol = $this->getNameAttributeFK($rel[3]);
-            $humanize = Inflector::humanize($rel[3]);
-            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
             $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
                 'attribute' => '$modelRel.$labelCol',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
-        ],\n";
+            ],\n";
             return $output;
-        }
-        else {
+        } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
         }
     }
@@ -987,9 +983,9 @@ class Generator extends \yii\gii\Generator
             foreach ($this->relations[$tableSchema->fullName] as $name => $relations) {
                 foreach ($tableSchema->foreignKeys as $value) {
                     if (isset($relations[self::REL_FOREIGN_KEY]) && $relations[self::REL_TABLE] == $value[self::FK_TABLE_NAME]) {
-                        if ($tableSchema->fullName == $value[self::FK_TABLE_NAME] && $relations[self::REL_IS_MULTIPLE]){ // In case of self-referenced tables (credit to : github.com/iurijacob)
+                        if ($tableSchema->fullName == $value[self::FK_TABLE_NAME] && $relations[self::REL_IS_MULTIPLE]) { // In case of self-referenced tables (credit to : github.com/iurijacob)
 
-                        }else{
+                        } else {
                             $fk[$relations[5]] = $relations;
                             $fk[$relations[5]][] = $name;
                         }
