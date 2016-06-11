@@ -889,8 +889,10 @@ class Generator extends \yii\gii\Generator
         if (is_null($tableSchema)) {
             $tableSchema = $this->getTableSchema();
         }
+
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "['attribute' => '$attribute', 'hidden' => true],\n";
+//            return "['attribute' => '$attribute', 'hidden' => true],\n";
+            return "";
         }
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -902,6 +904,7 @@ class Generator extends \yii\gii\Generator
         $column = $tableSchema->columns[$attribute];
         $format = $this->generateColumnFormat($column);
         $baseClass = StringHelper::basename($this->modelClass);
+
         if (array_key_exists($attribute, $fk)) {
             $rel = $fk[$attribute];
             if ($rel[self::REL_CLASS] == $baseClass) {
