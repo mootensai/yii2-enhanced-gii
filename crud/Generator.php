@@ -24,13 +24,25 @@ use \yii\web\Controller;
  */
 class Generator extends \yii\gii\Generator
 {
-    /* @var $tableSchema TableSchema */
+
+    // thanks to github.com/iurijacob for simplify the relation array
+    const REL_TYPE = 0;
+    const REL_CLASS = 1;
+    const REL_IS_MULTIPLE = 2;
+    const REL_TABLE = 3;
+    const REL_PRIMARY_KEY = 4;
+    const REL_FOREIGN_KEY =5;
+
+    const FK_TABLE_NAME = 0;
+    const FK_FIELD_NAME = 1;
+
 
     public $db = 'db';
+    /* @var $tableSchema TableSchema */
     public $tableSchema;
     public $tableName;
     public $nsTraits = 'app\traits';
-    public $nameAttribute = 'name, title';
+    public $nameAttribute = 'name, title, username';
     public $hiddenColumns = 'id, lock';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
@@ -547,12 +559,12 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
-                        $className, //rel class
-                        $hasMany, //is multiple
-                        $table->fullName, // rel table
-                        $refs[key($refs)], // rel primary key
-                        key($refs) // this foreign key
+                        self::REL_TYPE => "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
+                        self::REL_CLASS => $className, //rel class
+                        self::REL_IS_MULTIPLE => $hasMany, //is multiple
+                        self::REL_TABLE => $table->fullName, // rel table
+                        self::REL_PRIMARY_KEY => $refs[key($refs)], // rel primary key
+                        self::REL_FOREIGN_KEY => key($refs) // this foreign key
                     ];
                 }
 
@@ -905,7 +917,8 @@ class Generator extends \yii\gii\Generator
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
         ],\n";
             return $output;
-        } else {
+        }
+        else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
         }
     }
@@ -973,9 +986,14 @@ class Generator extends \yii\gii\Generator
         if (isset($this->relations[$tableSchema->fullName])) {
             foreach ($this->relations[$tableSchema->fullName] as $name => $relations) {
                 foreach ($tableSchema->foreignKeys as $value) {
-                    if (isset($relations[5]) && $relations[3] == $value[0]) {
-                        $fk[$relations[5]] = $relations;
-                        $fk[$relations[5]][] = $name;
+                    if (isset($relations[self::REL_FOREIGN_KEY]) && $relations[self::REL_TABLE] == $value[self::FK_TABLE_NAME]) {
+                        if ($tableSchema->fullName == $value[self::FK_TABLE_NAME] && $relations[self::REL_IS_MULTIPLE]){ // In case of self-referenced tables (credit to : github.com/iurijacob)
+
+                        }else{
+                            $fk[$relations[5]] = $relations;
+                            $fk[$relations[5]][] = $name;
+                        }
+
                     }
                 }
             }
@@ -1071,7 +1089,7 @@ class Generator extends \yii\gii\Generator
                 return "'$attribute' => ['type' => TabularForm::INPUT_DROPDOWN_LIST,
                     'items' => " . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ",
                     'options' => [
-                        'columnOptions => ['width' => '185px'],
+                        'columnOptions' => ['width' => '185px'],
                         'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
                     ]
         ]";
