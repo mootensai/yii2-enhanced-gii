@@ -32,6 +32,7 @@ class Generator extends \yii\gii\Generator
     const REL_TABLE = 3;
     const REL_PRIMARY_KEY = 4;
     const REL_FOREIGN_KEY = 5;
+    const REL_IS_MASTER = 6;
 
     const FK_TABLE_NAME = 0;
     const FK_FIELD_NAME = 1;
@@ -332,7 +333,6 @@ class Generator extends \yii\gii\Generator
         $files = [];
         $relations = $this->generateRelations();
         $this->relations = $relations;
-//        print_r($relations);
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
@@ -385,7 +385,7 @@ class Generator extends \yii\gii\Generator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formref.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
+                if ($file === '_formrefmany.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
@@ -406,12 +406,12 @@ class Generator extends \yii\gii\Generator
                     ]));
                 }
                 foreach ($relations[$tableName] as $name => $rel) {
-                    if ($rel[2] && isset($rel[3]) && !in_array($name, $this->skippedRelations)) {
-                        $files[] = new CodeFile("$viewPath/_form$rel[1].php", $this->render("views/_formref.php", [
+                    if ($rel[self::REL_IS_MULTIPLE] && isset($rel[self::REL_TABLE]) && !in_array($name, $this->skippedRelations)) {
+                        $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefmany.php", [
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                         ]));
                         if ($this->expandable) {
-                            $files[] = new CodeFile("$viewPath/_data$rel[1].php", $this->render("views/_dataref.php", [
+                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_dataref.php", [
                                 'relName' => $name,
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                             ]));
@@ -511,7 +511,6 @@ class Generator extends \yii\gii\Generator
         $relations = [];
         foreach ($schemaNames as $schemaName) {
             foreach ($db->getSchema()->getTableSchemas($schemaName) as $table) {
-//                $className = $this->generateClassName($table->fullName);
                 if (strpos($this->tableName, '*') !== false) {
                     $className = $this->generateClassName($table->fullName);
                 } else {
@@ -528,18 +527,19 @@ class Generator extends \yii\gii\Generator
                     } else {
                         $refClassName = Inflector::id2camel($refTableSchema->fullName, '_');
                     }
-//                    $refClassName = $this->generateClassName($refTable);
 
                     // Add relation for this table
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
+                    $relFK = key($refs);
                     $relations[$table->fullName][lcfirst($relationName)] = [
-                        "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
-                        $refClassName, //relclass
-                        0, //is multiple
-                        $refTable, //related table
-                        $refs[key($refs)], // related primary key
-                        key($refs) // this foreign key
+                        self::REL_TYPE => "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
+                        self::REL_CLASS => $refClassName, //relclass
+                        self::REL_IS_MULTIPLE => 0, //is multiple
+                        self::REL_TABLE => $refTable, //related table
+                        self::REL_PRIMARY_KEY => $refs[$relFK], // related primary key
+                        self::REL_FOREIGN_KEY => $relFK, // this foreign key
+                        self::REL_IS_MASTER => in_array($relFK, $table->getColumnNames()) ? 1 : 0
                     ];
 
                     // Add relation for the referenced table
@@ -564,7 +564,8 @@ class Generator extends \yii\gii\Generator
                         self::REL_IS_MULTIPLE => $hasMany, //is multiple
                         self::REL_TABLE => $table->fullName, // rel table
                         self::REL_PRIMARY_KEY => $refs[key($refs)], // rel primary key
-                        self::REL_FOREIGN_KEY => key($refs) // this foreign key
+                        self::REL_FOREIGN_KEY => key($refs), // this foreign key
+                        self::REL_IS_MASTER => in_array($relFK, $refTableSchema->getColumnNames()) ? 1 : 0
                     ];
                 }
 
@@ -952,7 +953,6 @@ class Generator extends \yii\gii\Generator
 //        } else
         if (array_key_exists($attribute, $fk) && $attribute) {
             $rel = $fk[$attribute];
-//            print_r($rel);
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
@@ -1013,8 +1013,6 @@ class Generator extends \yii\gii\Generator
         if (in_array($attribute, $this->hiddenColumns)) {
             return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions'=>['hidden'=>true]]";
         }
-//        print_r($tableSchema->foreignKeys);
-//        print_r($fk);
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -1032,29 +1030,47 @@ class Generator extends \yii\gii\Generator
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\DatePicker::classname(),
+            'widgetClass' => \kartik\datecontrol\DateControl::classname(),
             'options' => [
-                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
-                'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd-M-yyyy'
-                ]
+                'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+                'saveFormat' => 'php:Y-m-d',
+                'ajaxConversion' => true,
+                'options' => [
+                    'pluginOptions' => [
+                        'placeholder' => " . $this->generateString('Choose ' . $humanize) . ",
+                        'autoclose' => true
+                    ]
+                ],
             ]
         ]";
         } elseif ($column->dbType === 'time') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\TimePicker::classname()
+            'widgetClass' => \kartik\datecontrol\DateControl::classname()
+            'options' => [
+                'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+                'saveFormat' => 'php:H:i:s',
+                'ajaxConversion' => true,
+                'options' => [
+                    'pluginOptions' => [
+                        'placeholder' => " . $this->generateString('Choose ' . $humanize) . ",
+                        'autoclose' => true
+                    ]
+                ]
+            ]
         ]";
         } elseif ($column->dbType === 'datetime') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-        'widgetClass' => \kartik\widgets\DateTimePicker::classname(),
+            'widgetClass' => \kartik\datecontrol\DateControl::classname(),
             'options' => [
-                'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'hh:ii:ss dd-M-yyyy'
-                ]
+                'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+                'saveFormat' => 'php:Y-m-d H:i:s',
+                'ajaxConversion' => true,
+                'options' => [
+                    'pluginOptions' => [
+                        'placeholder' => " . $this->generateString('Choose ' . $humanize) . ",
+                        'autoclose' => true,
+                    ]
+                ],
             ]
         ]";
         } elseif (array_key_exists($column->name, $fk)) {
@@ -1129,23 +1145,40 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'dd-M-yyyy'
-        ]
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+        'saveFormat' => 'php:Y-m-d',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => \" . $this->generateString('Choose ' . $placeholder) . \",
+                'autoclose' => true
+            ]
+        ],
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
-        } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'mm/dd/yyyy hh:ii:ss'
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::className(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+        'saveFormat' => 'php:H:i:s',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => \" . $this->generateString('Choose ' . $placeholder) . \",
+                'autoclose' => true
+            ]
         ]
+    ]);";
+        } elseif ($column->dbType === 'datetime') {
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'saveFormat' => 'php:Y-m-d H:i:s',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => " . $this->generateString('Choose ' . $placeholder) . ",
+                'autoclose' => true,
+            ]
+        ],
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
@@ -1211,23 +1244,40 @@ class Generator extends \yii\gii\Generator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DatePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'type' => \kartik\widgets\DatePicker::TYPE_COMPONENT_APPEND,
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'dd-M-yyyy'
-        ]
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+        'saveFormat' => 'php:Y-m-d',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => " . $this->generateString('Choose ' . $placeholder) . ",
+                'autoclose' => true
+            ]
+        ],
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\TimePicker::className());";
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'saveFormat' => 'php:Y-m-d H:i:s',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => " . $this->generateString('Choose ' . $placeholder) . ",
+                'autoclose' => true,
+            ]
+        ],
+    ])";
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field(\$model, '$attribute')->widget(\kartik\widgets\DateTimePicker::classname(), [
-        'options' => ['placeholder' => " . $this->generateString('Choose ' . $placeholder) . "],
-        'pluginOptions' => [
-            'autoclose' => true,
-            'format' => 'mm/dd/yyyy hh:ii:ss'
-        ]
+            return "\$form->field(\$model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
+        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+        'saveFormat' => 'php:Y-m-d H:i:s',
+        'ajaxConversion' => true,
+        'options' => [
+            'pluginOptions' => [
+                'placeholder' => " . $this->generateString('Choose ' . $placeholder) . ",
+                'autoclose' => true,
+            ]
+        ],
     ])";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
