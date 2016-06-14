@@ -7,7 +7,7 @@ Yii2 Gii (generator) with Relation
 [![Monthly Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/monthly)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Daily Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/daily)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Join the chat at https://gitter.im/mootensai/yii2-enhanced-gii](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootensai/yii2-enhanced-gii?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mootensai/yii2-enhanced-gii/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
@@ -27,12 +27,18 @@ or add
 to the `require` section of your `composer.json` file.
 
 Then you must add this code at your config\main.php.
+
+See datecontrol settings on http://demos.krajee.com/datecontrol#module
 ```php
 'modules' => [
 ... //your another module
       'gridview' => [
           'class' => '\kartik\grid\Module',
       ],
+      'datecontrol' => [
+          'class' => '\kartik\datecontrol\Module',
+          // see settings on http://demos.krajee.com/datecontrol#module
+      ]
 ... // your another module
     ],
 ```
@@ -99,6 +105,3 @@ I'm open for any improvement
 2. kartik-v (https://github.com/kartik-v) for most of widgets
 3. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
 4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
-
-
-
