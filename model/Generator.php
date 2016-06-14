@@ -569,6 +569,8 @@ class Generator extends \yii\gii\Generator {
     protected function generateRelationName($relations, $table, $key, $multiple) {
         if (!empty($key) && substr_compare($key, 'id', -2, 2, true) === 0 && strcasecmp($key, 'id')) {
             $key = rtrim(substr($key, 0, -2), '_');
+        }else if (!empty($key) && substr_compare($key, 'id', 0, 2, true) === 0 && strcasecmp($key, 'id')) {
+            $key = ltrim(substr($key, 2, strlen($key)), '_');
         }
         if ($multiple) {
             $key = Inflector::pluralize($key);
