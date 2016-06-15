@@ -6,6 +6,8 @@ use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 
+$fk = $generator->generateFK();
+
 echo "<?php\n";
 ?>
 
@@ -29,9 +31,9 @@ $count = 0;
 foreach ($generator->getColumnNames() as $attribute) {
     if (!in_array($attribute, $generator->skippedColumns)) {
         if (++$count < 6) {
-            echo "    <?= " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " ?>\n\n";
+            echo "    <?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
         } else {
-            echo "    <?php /* echo " . $generator->generateActiveSearchField($attribute, $generator->generateFK()) . " */ ?>\n\n";
+            echo "    <?php /* echo " . $generator->generateActiveField($attribute, $fk) . " */ ?>\n\n";
         }
     }
 }

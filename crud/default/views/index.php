@@ -10,6 +10,7 @@ $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $tableSchema = $generator->getTableSchema();
 $baseModelClass = StringHelper::basename($generator->modelClass);
+$fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
@@ -72,7 +73,7 @@ if ($generator->indexWidgetType === 'grid'):
     endif;
 ?>
 <?php   
-    if (($tableSchema = $generator->getTableSchema()) === false) :
+    if ($tableSchema === false) :
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
                 echo "            '" . $name . "',\n";
@@ -84,7 +85,7 @@ if ($generator->indexWidgetType === 'grid'):
         foreach ($tableSchema->getColumnNames() as $attribute): 
             if (!in_array($attribute, $generator->skippedColumns)) :
 ?>
-        <?= $generator->generateGridViewFieldIndex($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
+        <?= $generator->generateGridViewFieldIndex($attribute, $fk, $tableSchema)?>
 <?php
             endif;
         endforeach; ?>

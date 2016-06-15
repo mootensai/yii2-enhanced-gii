@@ -6,8 +6,9 @@ use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 $urlParams = $generator->generateUrlParams();
-$pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
-
+$tableSchema = $generator->getTableSchema();
+$pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
+$fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
@@ -31,7 +32,7 @@ use kartik\grid\GridView;
 <?= "<?php \n" ?>
     $gridColumn = [
 <?php 
-if (($tableSchema = $generator->getTableSchema()) === false) {
+if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
@@ -42,7 +43,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 } else{
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
-            echo "        ".$generator->generateDetailViewField($attribute,$generator->generateFK($tableSchema), $tableSchema);
+            echo "        ".$generator->generateDetailViewField($attribute,$fk, $tableSchema);
 
         }
     }

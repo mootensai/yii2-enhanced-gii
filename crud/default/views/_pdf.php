@@ -6,6 +6,8 @@ use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 $urlParams = $generator->generateUrlParams();
+$tableSchema = $generator->getTableSchema();
+$fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
@@ -32,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= "<?php \n" ?>
     $gridColumn = [
 <?php 
-if (($tableSchema = $generator->getTableSchema()) === false) {
+if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
@@ -43,7 +45,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 }else{
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
-            echo "        ".$generator->generateGridViewField($attribute,$generator->generateFK($tableSchema), $tableSchema);
+            echo "        ".$generator->generateGridViewField($attribute,$fk, $tableSchema);
         }
     }
 }?>
@@ -63,20 +65,21 @@ if($provider<?= $rel[1] ?>->totalCount){
     $gridColumn<?= $rel[1] ?> = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
-        $tableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
-            if ($tableSchema === false) {
-                foreach ($tableSchema->getColumnNames() as $attribute) {
-                    if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]){
-                        echo "        '" . $attribute . "',\n";
-                    }
-                }
-            }else {
-                foreach ($tableSchema->getColumnNames() as $attribute){
-                    if (!in_array($attribute, $generator->skippedColumns)){
-                        echo '        '.$generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema);
-                    }
+        $relTableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
+        $fkRel = $generator->generateFK($relTableSchema);
+        if ($relTableSchema === false) {
+            foreach ($relTableSchema->getColumnNames() as $attribute) {
+                if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]){
+                    echo "        '" . $attribute . "',\n";
                 }
             }
+        }else {
+            foreach ($relTableSchema->getColumnNames() as $attribute){
+                if (!in_array($attribute, $generator->skippedColumns)){
+                    echo '        '.$generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
+                }
+            }
+        }
 ?>
     ];
     echo Gridview::widget([

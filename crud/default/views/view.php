@@ -6,8 +6,9 @@ use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 $urlParams = $generator->generateUrlParams();
-$pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
-
+$tableSchema = $generator->getTableSchema();
+$pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
+$fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
@@ -60,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= "<?php \n" ?>
     $gridColumn = [
 <?php 
-if (($tableSchema = $generator->getTableSchema()) === false) {
+if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
@@ -71,7 +72,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 } else{
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
-            echo "        ".$generator->generateDetailViewField($attribute,$generator->generateFK($tableSchema), $tableSchema);
+            echo "        ".$generator->generateDetailViewField($attribute,$fk, $tableSchema);
 
         }
     }
@@ -92,17 +93,18 @@ if($provider<?= $rel[1] ?>->totalCount){
     $gridColumn<?= $rel[1] ?> = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
-        $tableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
+        $relTableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
+        $fkRel = $generator->generateFK($relTableSchema);
             if ($tableSchema === false) {
-                foreach ($tableSchema->getColumnNames() as $attribute) {
+                foreach ($relTableSchema->getColumnNames() as $attribute) {
                     if (!in_array($attribute, $generator->skippedColumns)){
                         echo "            '" . $attribute . "',\n";
                     }
                 }
             } else {
-                foreach ($tableSchema->getColumnNames() as $attribute){
+                foreach ($relTableSchema->getColumnNames() as $attribute){
                     if (!in_array($attribute, $generator->skippedColumns)){
-                        echo '            '.$generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema);
+                        echo '            '.$generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
                     }
                 }
             }

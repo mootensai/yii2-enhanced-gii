@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[3]);
+$fk = $generator->generateFK($tableSchema);
 ?>
 <?= "<?php" ?>
 
@@ -40,7 +41,7 @@ else :
 foreach ($tableSchema->getColumnNames() as $attribute): 
 if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) :
 ?>
-        <?= $generator->generateGridViewField($attribute, $generator->generateFK($tableSchema), $tableSchema)?>
+        <?= $generator->generateGridViewField($attribute, $fk, $tableSchema)?>
 <?php
 endif;
 endforeach;

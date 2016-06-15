@@ -5,7 +5,9 @@ use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $generator \mootensai\enhancedgii\crud\Generator */
-
+/* @var $relations array */
+$tableSchema = $generator->getTableSchema();
+$fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
@@ -19,8 +21,8 @@ use yii\widgets\ActiveForm;
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
 /* @var $form yii\widgets\ActiveForm */
 
-<?php 
-$pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
+<?php
+$pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 $modelClass = StringHelper::basename($generator->modelClass);
 foreach ($relations as $name => $rel) {
     $relID = Inflector::camel2id($rel[1]);
@@ -41,20 +43,52 @@ foreach ($relations as $name => $rel) {
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
-    
+
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
-<?php foreach ($generator->tableSchema->getColumnNames() as $attribute) {
+<?php
+foreach ($tableSchema->getColumnNames() as $attribute) {
     if (!in_array($attribute, $generator->skippedColumns)) {
-        echo "    <?= " . $generator->generateActiveField($attribute, $generator->generateFK()) . " ?>\n\n";
+        echo "    <?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
     }
-} ?>
-<?php 
+}
+
+$forms = "";
 foreach ($relations as $name => $rel) {
-    $relID = Inflector::camel2id($rel[1]);
-    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-        echo "    <div class=\"form-group\" id=\"add-$relID\"></div>\n\n";
+    $relID = Inflector::camel2id($rel[$generator::FK_FIELD_NAME]);
+    if ($rel[$generator::REL_IS_MULTIPLE] && isset($rel[$generator::REL_TABLE]) && !in_array($name, $generator->skippedRelations)) {
+        $forms .= "        [\n".
+            "            'label' => '<i class=\"glyphicon glyphicon-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
+            "            'content' => \$this->render('_form".$rel[$generator::FK_FIELD_NAME]."', [\n".
+            "                'row' => \\yii\\helpers\\ArrayHelper::toArray(\$model->$name),\n".
+            "            ]),\n".
+            "        ],\n";
+    }else if(isset($rel[$generator::REL_IS_MASTER]) && !$rel[$generator::REL_IS_MASTER]){
+        $forms .= "        [\n".
+            "            'label' => '<i class=\"glyphicon glyphicon-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
+            "            'content' => \$this->render('_form".$rel[$generator::FK_FIELD_NAME]."', [\n" .
+            "                'form' => \$form,\n".
+            "                '".$rel[$generator::REL_CLASS]."' => is_null(\$model->$name) ? new ".$generator->nsModel."\\".$rel[$generator::REL_CLASS]."() : \$model->$name,\n".
+            "            ]),\n".
+            "        ],\n";
     }
+}
+if(!empty($forms)){
+    echo "    <?php\n";
+    echo "    \$forms = [\n";
+    echo $forms;
+    echo "    ];\n";
+    echo "    echo kartik\\tabs\\TabsX::widget([\n" .
+        "        'items' => \$forms,\n" .
+        "        'position' => kartik\\tabs\\TabsX::POS_ABOVE,\n" .
+        "        'encodeLabels' => false,\n" .
+        "        'pluginOptions' => [\n" .
+        "            'bordered' => true,\n" .
+        "            'sideways' => true,\n" .
+        "            'enableCache' => false,\n" .
+        "        ],\n" .
+        "    ]);\n" .
+        "    ?>\n";
 }
 ?>
     <div class="form-group">
