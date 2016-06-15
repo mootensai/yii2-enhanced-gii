@@ -94,7 +94,9 @@ I'm open for any improvement
 ![new enhanced gii - view](https://cloud.githubusercontent.com/assets/5844149/13099144/035c0d92-d562-11e5-940f-b36c6b051f92.PNG)
 
 ## Form
-![new enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/13099149/0bf2ca40-d562-11e5-8ea5-51711be9ed48.PNG)
+![new enhanced gii - create](https://cloud.githubusercontent.com/assets/5844149/16084378/cf670340-3342-11e6-8442-73240e930fc9.png)
+
+![new enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/16084322/93a48a9e-3342-11e6-8b15-1b1ed49e5cfd.png)
 
 # Migration Generator
 ![migration form](https://cloud.githubusercontent.com/assets/5844149/15350030/08ab4d58-1d01-11e6-87b7-4dd621a5bef6.JPG)
