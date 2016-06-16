@@ -335,6 +335,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
                     continue;
                 }
+                if($this->indexWidgetType != 'list' && $file === '_listIndex.php') {
+                    continue;
+                }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
                     $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],

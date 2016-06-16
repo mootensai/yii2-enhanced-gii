@@ -46,8 +46,8 @@ echo $form->field($generator, 'baseControllerClass');
 echo $form->field($generator, 'generateSearchModel')->checkbox();
 echo $form->field($generator, 'nsSearchModel');
 echo $form->field($generator, 'searchModelClass');
-//echo $form->field($generator, 'indexWidgetType')->dropDownList([
-//    'grid' => 'GridView',
-//    'list' => 'ListView',
-//]);
+echo $form->field($generator, 'indexWidgetType')->dropDownList([
+    'grid' => 'GridView',
+    'list' => 'ListView',
+]);
 echo $form->field($generator, 'viewPath');
