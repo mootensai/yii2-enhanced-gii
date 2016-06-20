@@ -18,38 +18,40 @@ echo $form->field($generator, 'nsController');
 echo $form->field($generator, 'controllerClass');
 echo $form->field($generator, 'baseControllerClass');
 ?>
-<div class="row">
-    <div class="col-md-6">
-        <?= $form->field($generator, 'pluralize')->checkbox(); ?>
-    </div>
-    <div class="col-md-6">
-        <?= $form->field($generator, 'loggedUserOnly')->checkbox(); ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <?= $form->field($generator, 'expandable')->checkbox(); ?>
-    </div>
-    <div class="col-md-6">
-        <?= $form->field($generator, 'pdf')->checkbox(); ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <?= $form->field($generator, 'cancelable')->checkbox(); ?>
-    </div>
-    <div class="col-md-6">
-        <?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
-    </div>
-</div>
     <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($generator, 'pluralize')->checkbox(); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($generator, 'loggedUserOnly')->checkbox(); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($generator, 'expandable')->checkbox(); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($generator, 'pdf')->checkbox(); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($generator, 'cancelable')->checkbox(); ?>
+        </div>
         <div class="col-md-6">
             <?= $form->field($generator, 'saveAsNew')->checkbox(); ?>
         </div>
-        <div class="col-md-6">
-            <?php // $form->field($generator, 'useTablePrefix')->checkbox(); ?>
-        </div>
     </div>
+    <!--
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($generator, 'saveAsNew')->checkbox(); ?>
+    </div>
+    <div class="col-md-6">
+        <?php // $form->field($generator, 'useTablePrefix')->checkbox(); ?>
+    </div>
+</div>
+-->
 <?php
 echo $form->field($generator, 'generateSearchModel')->checkbox();
 echo $form->field($generator, 'nsSearchModel');
