@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= "<?= " ?>
             <?= "
              Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
-                ['pdf', <?= $urlParams ?>],
+                ['pdf', $urlParams],
                 [
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
