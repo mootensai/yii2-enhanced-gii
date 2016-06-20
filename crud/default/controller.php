@@ -159,7 +159,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionUpdate(<?= $actionParams ?>)
     {
 <?php if($generator->saveAsNew) : ?>
-        if (Yii::$app->request->post('_action') == 'saveAsNew') {
+        if (Yii::$app->request->post('_asnew') == '1') {
             $model = new <?= $modelClass ?>();
         }else{
             $model = $this->findModel(<?= $actionParams ?>);
@@ -247,7 +247,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionSaveAsNew(<?= $actionParams; ?>) {
         $model = new <?= $modelClass ?>();
 
-        if (Yii::$app->request->post('_action') != 'saveAsNew') {
+        if (Yii::$app->request->post('_asnew') != '1') {
             $model = $this->findModel(<?= $actionParams; ?>);
         }
     

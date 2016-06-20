@@ -6,7 +6,7 @@ use yii\helpers\Url;
 <script>
     function addRow<?= "<?= \$class ?>" ?>() {
         var data = $('#add-<?= "<?= \$relID?>"; ?> :input').serializeArray();
-        data.push({name: 'action', value : 'add'});
+        data.push({name: '_action', value : 'add'});
         $.ajax({
             type: 'POST',
             url: '<?= "<?php echo Url::to(['add-'.\$relID]); ?>" ?>',
