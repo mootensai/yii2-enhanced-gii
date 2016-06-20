@@ -5,6 +5,7 @@ use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
+
 $urlParams = $generator->generateUrlParams();
 $tableSchema = $generator->getTableSchema();
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
@@ -26,24 +27,27 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
 
     <div class="row">
-        <div class="col-sm-9">
+        <div class="<?= ($generator->saveAsNew) ? "col-sm-8" : "col-sm-9";?>">
             <h2><?= "<?= " ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
         </div>
-        <div class="col-sm-3" style="margin-top: 15px">
-            <?php if ($generator->pdf): ?>
+        <div class="<?= ($generator->saveAsNew) ? "col-sm-4" : "col-sm-3";?>" style="margin-top: 15px">
+<?php if ($generator->pdf): ?>
 <?= "<?= " ?>
             <?= "
              Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
-                ['pdf', 'id' => \$model['$pk']],
+                ['pdf', <?= $urlParams ?>],
                 [
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
                     'data-toggle' => 'tooltip',
                     'title' => " . $generator->generateString('Will open the generated PDF file in a new window') . "
                 ]
-            )?>"
+            )?>\n"
             ?>
-            <?php endif; ?>
+<?php endif; ?>
+<?php if($generator->saveAsNew): ?>
+<?= "            <?= Html::a(" . $generator->generateString('Save As New') . ", ['save-as-new', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-info']) ?>" ?>
+<?php endif;?>
             <?= "
             <?= Html::a(" . $generator->generateString('Update') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', " . $generator->generateUrlParams() . "], [

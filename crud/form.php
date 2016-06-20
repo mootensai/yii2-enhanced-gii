@@ -34,12 +34,20 @@ echo $form->field($generator, 'baseControllerClass');
         <?= $form->field($generator, 'pdf')->checkbox(); ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($generator, 'cancelable')->checkbox(); ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
+    </div>
+</div>
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($generator, 'cancelable')->checkbox(); ?>
+            <?= $form->field($generator, 'saveAsNew')->checkbox(); ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
+            <?php // $form->field($generator, 'useTablePrefix')->checkbox(); ?>
         </div>
     </div>
 <?php

@@ -92,9 +92,18 @@ if(!empty($forms)){
 }
 ?>
     <div class="form-group">
-        <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?php if($generator->saveAsNew): ?>
+<?= "    <?php if(Yii::\$app->controller->action->id != 'save-as-new'): ?>\n" ?>
+<?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?= "    <?php endif; ?>\n" ?>
+<?= "    <?php if(Yii::\$app->controller->action->id == 'update'): ?>\n" ?>
+<?= "        <?= " ?>Html::submitButton(<?=$generator->generateString('Save As New')?>, ['class' => 'btn btn-info', 'value' => 'saveAsNew', 'name' => '_action']) ?>
+<?= "    <?php endif; ?>\n" ?>
+<?php else: ?>
+<?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Create') ?> : <?= $generator->generateString('Update') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<?php endif; ?>
 <?php if ($generator->cancelable): ?>
-        <?= "<?= " ?>Html::a(Yii::t('app', 'Cancel'),['index'],['class'=> 'btn btn-danger']) ?>
+        <?= "<?= " ?>Html::a(Yii::t('app', 'Cancel'), Yii::$app->request->referrer , ['class'=> 'btn btn-danger']) ?>
 <?php endif; ?>
     </div>
 

@@ -91,6 +91,14 @@ if ($generator->indexWidgetType === 'grid'):
         endforeach; ?>
         [
             'class' => 'yii\grid\ActionColumn',
+<?php if($generator->saveAsNew): ?>
+            'template' => '{save-as-new} {view} {update} {delete}',
+            'buttons' => [
+                'save-as-new' => function ($url) {
+                    return Html::a('<span class="glyphicon glyphicon-copy"></span>', $url, ['title' => 'Save As New']);
+                },
+            ],
+<?php endif; ?>
         ],
     ]; 
 <?php 

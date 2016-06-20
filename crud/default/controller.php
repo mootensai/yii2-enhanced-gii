@@ -56,6 +56,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     if($generator->pdf){
         array_push($actions,"'pdf'");
     }
+    if($generator->saveAsNew){
+        array_push($actions,"'save-as-new'");
+    }
     foreach ($relations as $name => $rel){
         if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
             array_push($actions,"'".\yii\helpers\Inflector::camel2id('add'.$rel[1])."'");
@@ -138,7 +141,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
+        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -155,9 +158,18 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionUpdate(<?= $actionParams ?>)
     {
+<?php if($generator->saveAsNew) : ?>
+        if (Yii::$app->request->post('_action') == 'saveAsNew') {
+            $model = new <?= $modelClass ?>();
+        }else{
+            $model = $this->findModel(<?= $actionParams ?>);
+        }
+
+<?php else: ?>
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->loadAll(Yii::$app->request->post()<?= isset($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= isset($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
+<?php endif; ?>
+        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -181,13 +193,12 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php if ($generator->pdf):?>    
     /**
      * 
-     * for export pdf at actionView
-     *  
-     * @param type $id
-     * @return type
+     * Export <?= $modelClass ?> information into PDF format.
+     * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
+     * @return mixed
      */
-    public function actionPdf($id) {
-        $model = $this->findModel($id);
+    public function actionPdf(<?= $actionParams ?>) {
+        $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
         $provider<?= $rel[1] ?> = new \yii\data\ArrayDataProvider([
@@ -221,6 +232,32 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         ]);
 
         return $pdf->render();
+    }
+<?php endif; ?>
+
+<?php if($generator->saveAsNew):?>
+    /**
+    * Creates a new <?= $modelClass ?> model by another data,
+    * so user don't need to input all field from scratch.
+    * If creation is successful, the browser will be redirected to the 'view' page.
+    *
+    * @param type $id
+    * @return type
+    */
+    public function actionSaveAsNew(<?= $actionParams; ?>) {
+        $model = new <?= $modelClass ?>();
+
+        if (Yii::$app->request->post('_action') != 'saveAsNew') {
+            $model = $this->findModel(<?= $actionParams; ?>);
+        }
+    
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', <?= $urlParams ?>]);
+        } else {
+            return $this->render('saveAsNew', [
+                'model' => $model,
+            ]);
+        }
     }
 <?php endif; ?>
     
@@ -265,7 +302,7 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = Yii::$app->request->post('<?= $rel[1] ?>');
-            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('action') == 'load' && empty($row)) || Yii::$app->request->post('action') == 'add')
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
                 $row[] = [];
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {

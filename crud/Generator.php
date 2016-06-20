@@ -53,6 +53,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     public $loggedUserOnly;
     public $expandable;
     public $cancelable;
+    public $saveAsNew;
     public $pdf;
     public $viewPath = '@app/views';
     public $baseControllerClass = 'yii\web\Controller';
@@ -103,7 +104,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             [['viewPath', 'skippedRelations', 'skippedColumns',
                 'controllerClass', 'blameableValue', 'nameAttribute',
                 'hiddenColumns', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
-                'UUIDColumn'], 'safe'],
+                'UUIDColumn', 'saveAsNew'], 'safe'],
         ]);
     }
 
@@ -230,6 +231,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
+            'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.'
         ]);
     }
 
@@ -285,6 +287,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
         $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
+        $this->skippedColumns = array_filter($this->skippedColumns);
+        $this->skippedRelations = array_filter($this->skippedRelations);
         foreach ($this->getTableNames() as $tableName) {
             // model :
             if (strpos($this->tableName, '*') !== false) {
