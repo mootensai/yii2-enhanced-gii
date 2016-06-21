@@ -34,7 +34,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     public $queryClass;
     public $queryBaseClass = 'yii\db\ActiveQuery';
     public $generateLabelsFromComments = false;
-//    public $useTablePrefix = false;
+    public $useTablePrefix = false;
     public $generateRelations = true;
     public $generateMigrations = true;
     public $optimisticLock = 'lock';
