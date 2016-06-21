@@ -15,13 +15,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```bash
-$ composer require mootensai/yii2-enhanced-gii:@dev
+$ composer require mootensai/yii2-enhanced-gii:dev-master
 ```
 
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "@dev"
+"mootensai/yii2-enhanced-gii": "dev-master"
 ```
 
 to the `require` section of your `composer.json` file.
@@ -81,22 +81,26 @@ I'm open for any improvement
 
 ## Model Generator
 
-![new enhanced gii - model](https://cloud.githubusercontent.com/assets/5844149/13099130/db81fc46-d561-11e5-85ca-a9f3c38e68d8.PNG)
+![enhanced gii - model](https://cloud.githubusercontent.com/assets/5844149/13099130/db81fc46-d561-11e5-85ca-a9f3c38e68d8.PNG)
 
 ## CRUD Generator
 
-![new enhanced gii - crud](https://cloud.githubusercontent.com/assets/5844149/13099135/ebd8537e-d561-11e5-8d2e-c303e2e63bc3.PNG)
+![enhanced gii - crud](https://cloud.githubusercontent.com/assets/5844149/16199521/10efff98-3734-11e6-8bab-2fc6e85c0b38.png)
 
 ## Index 
-![new enhanced gii - index new](https://cloud.githubusercontent.com/assets/5844149/13103300/df47cdbc-d587-11e5-8435-21b47759cbd8.PNG)
+### Grid View
+![enhanced gii - index grid](https://cloud.githubusercontent.com/assets/5844149/16200077/0f478092-3736-11e6-9c85-873ea463816d.png)
+### List View
+![enhanced gii - index list](https://cloud.githubusercontent.com/assets/5844149/16200165/5911c818-3736-11e6-9f85-38b8c0dbc65d.png)
 
 ## View
-![new enhanced gii - view](https://cloud.githubusercontent.com/assets/5844149/13099144/035c0d92-d562-11e5-940f-b36c6b051f92.PNG)
+![enhanced gii - view](https://cloud.githubusercontent.com/assets/5844149/16200282/ddf2f1b0-3736-11e6-8792-a541a5571adb.png)
 
 ## Form
-![new enhanced gii - create](https://cloud.githubusercontent.com/assets/5844149/16084378/cf670340-3342-11e6-8442-73240e930fc9.png)
+![enhanced gii - create](https://cloud.githubusercontent.com/assets/5844149/16201809/39ce715c-373d-11e6-86cd-bf80b37fafd6.png)
 
-![new enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/16084322/93a48a9e-3342-11e6-8b15-1b1ed49e5cfd.png)
+![enhanced gii - update](https://cloud.githubusercontent.com/assets/5844149/16201857/61b09bd2-373d-11e6-9a46-bb6c82bb183f.png)
+
 
 # Migration Generator
 ![migration form](https://cloud.githubusercontent.com/assets/5844149/15350030/08ab4d58-1d01-11e6-87b7-4dd621a5bef6.JPG)
