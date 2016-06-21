@@ -27,6 +27,13 @@ $items = [
             'row' => $model-><?= $name ?>,
         ]),
     ],
+    <?php elseif(isset($rel[$generator::REL_IS_MASTER]) && !$rel[$generator::REL_IS_MASTER]): ?>
+    [
+        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+        'content' => $this->render('_data<?= $rel[1] ?>', [
+        'model' => $model-><?= $name ?>
+        ]),
+    ],
     <?php endif; ?>
 <?php endforeach; ?>
 ];
@@ -39,22 +46,6 @@ echo TabsX::widget([
         'bordered' => true,
         'sideways' => true,
         'enableCache' => false
-        //        'height' => TabsX::SIZE_TINY
-    ],
-    'pluginEvents' => [
-        "tabsX.click" => "function(e) {setTimeout(function(e){
-                if ($('.nav-tabs > .active').next('li').length == 0) {
-                    $('#prev').show();
-                    $('#next').hide();
-                } else if($('.nav-tabs > .active').prev('li').length == 0){
-                    $('#next').show();
-                    $('#prev').hide();
-                }else{
-                    $('#next').show();
-                    $('#prev').show();
-                };
-                console.log(JSON.stringify($('.active', '.nav-tabs').html()));
-            },10)}",
     ],
 ]);
 ?>

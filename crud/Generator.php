@@ -34,7 +34,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     public $queryClass;
     public $queryBaseClass = 'yii\db\ActiveQuery';
     public $generateLabelsFromComments = false;
-//    public $useTablePrefix = false;
+    public $useTablePrefix = false;
     public $generateRelations = true;
     public $generateMigrations = true;
     public $optimisticLock = 'lock';
@@ -336,7 +336,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_dataref.php' || $file === '_expand.php' || $file === '_data.php') {
+                if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php' 
+                    || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_data.php') {
                     continue;
                 }
                 if($this->indexWidgetType != 'list' && $file === '_index.php') {
@@ -365,7 +366,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                         ]));
                         if ($this->expandable) {
-                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_dataref.php", [
+                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefmany.php", [
                                 'relName' => $name,
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                             ]));
@@ -375,6 +376,12 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                             'relName' => $name,
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                         ]));
+                        if ($this->expandable) {
+                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefone.php", [
+                                'relName' => $name,
+                                'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            ]));
+                        }
                     }
                 }
             }
