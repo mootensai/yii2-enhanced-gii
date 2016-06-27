@@ -58,7 +58,6 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     public $viewPath = '@app/views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
-    public $skippedRelations;
     public $relations;
 
 
@@ -371,7 +370,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                             ]));
                         }
-                    }else if(isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER]){
+                    }else if(isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)){
                         $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefone.php", [
                             'relName' => $name,
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],

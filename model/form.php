@@ -23,17 +23,28 @@ echo $form->field($generator, 'queryBaseClass');
     <div class="col-md-6">
 <?= $form->field($generator, 'useTablePrefix')->checkbox(); ?>
     </div>
-</div>    
-<div class="row">
-    <div class="col-md-6">
-<?= $form->field($generator, 'generateRelations')->checkbox(); ?>
-    </div>
-    <div class="col-md-6">
-<?= $form->field($generator, 'generateAttributeHints')->checkbox(); ?>
-    </div>
-</div>    
+</div>
 <div class="row">
     <div class="col-md-12">
+        <?php
+            echo $form->field($generator, 'generateRelations')->dropDownList([
+                $generator::RELATIONS_NONE => 'No relations',
+                $generator::RELATIONS_ALL => 'All relations',
+                $generator::RELATIONS_ALL_INVERSE => 'All relations with inverse',
+            ]);
+        ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <?= $form->field($generator, 'skippedRelations');?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($generator, 'generateAttributeHints')->checkbox(); ?>
+    </div>
+    <div class="col-md-6">
 <?= $form->field($generator, 'generateBaseOnly')->checkbox(); ?>
     </div>
 </div>
@@ -49,7 +60,7 @@ echo $form->field($generator, 'queryBaseClass');
     <div class="col-md-6">
 <?= $form->field($generator, 'timestampValue'); ?>
     </div>
-</div>    
+</div>
 <?php
 echo "<h4>Blameable Behaviors</h4>";
 ?>
@@ -63,7 +74,7 @@ echo "<h4>Blameable Behaviors</h4>";
     <div class="col-md-6">
 <?= $form->field($generator, 'blameableValue'); ?>
     </div>
-</div>    
+</div>
 <?php
 echo $form->field($generator, 'UUIDColumn');
 //echo "<h4>Soft Delete Trait</h4>";

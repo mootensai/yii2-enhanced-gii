@@ -30,6 +30,7 @@ use yii\helpers\Inflector;
  * @since 2.0
  */
 class Generator extends \mootensai\enhancedgii\BaseGenerator {
+
     /* @var $tableSchema TableSchema */
 
     public $nsModel = 'app\models';
@@ -42,7 +43,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
     public $queryBaseClass = 'yii\db\ActiveQuery';
     public $generateLabelsFromComments = false;
     public $useTablePrefix = false;
-    public $generateRelations = true;
+    public $generateRelations = self::RELATIONS_ALL;
     public $generateAttributeHints = false;
     public $generateMigrations = false;
     public $optimisticLock = 'lock';
@@ -90,12 +91,12 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
 //            [['searchModelClass'], 'validateNewClass'],
 //            [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateQuery', 'generateLabelsFromComments',
+            [['enableI18N', 'generateQuery', 'generateLabelsFromComments',
                 'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly'], 'boolean'],
-            
+            [['generateRelations'], 'in', 'range' => [self::RELATIONS_NONE, self::RELATIONS_ALL, self::RELATIONS_ALL_INVERSE]],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             
-            [['skippedColumns',
+            [['skippedColumns', 'skippedRelations',
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedAt'], 'safe'],
@@ -143,6 +144,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
+            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
+                You can fill multiple relations, separated by comma (,). You do not need to specify the class name
+                if "Table Name" ends with asterisk, in which case all relations will be generated.',
             'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table. 
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
@@ -267,6 +271,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
         $db = $this->getDbConnection();
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [];
+        $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
+        $this->skippedColumns = array_filter($this->skippedColumns);
+        $this->skippedRelations = array_filter($this->skippedRelations);
 //        $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [];
         foreach ($this->getTableNames() as $tableName) {
             // preparation :
@@ -319,7 +326,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
-//        $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
+        $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 
         return $files;
     }

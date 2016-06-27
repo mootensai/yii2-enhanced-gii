@@ -17,6 +17,10 @@ use yii\helpers\Inflector;
 
 abstract class BaseGenerator extends \yii\gii\Generator
 {
+    const RELATIONS_NONE = 'none';
+    const RELATIONS_ALL = 'all';
+    const RELATIONS_ALL_INVERSE = 'all-inverse';
+
     // thanks to github.com/iurijacob for simplify the relation array
     const REL_TYPE = 0;
     const REL_CLASS = 1;
@@ -37,6 +41,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     public $baseModelClass = 'yii\db\ActiveRecord';
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
+    public $skippedRelations;
 
 
     /**
@@ -178,7 +183,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
      */
     protected function generateRelations()
     {
-        if (!$this->generateRelations) {
+        if (!$this->generateRelations === self::RELATIONS_NONE) {
             return [];
         }
 
@@ -187,22 +192,17 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $relations = [];
         foreach ($this->getSchemaNames() as $schemaName) {
             foreach ($db->getSchema()->getTableSchemas($schemaName) as $table) {
-                if (strpos($this->tableName, '*') !== false) {
-                    $className = $this->generateClassName($table->fullName);
-                } else {
-                    $className = Inflector::id2camel($table->fullName, '_');
-                }
+                $className = $this->generateClassName($table->fullName);
                 foreach ($table->foreignKeys as $refs) {
                     $refTable = $refs[0];
                     $refTableSchema = $db->getTableSchema($refTable);
+                    if ($refTableSchema === null) {
+                        // Foreign key could point to non-existing table: https://github.com/yiisoft/yii2-gii/issues/34
+                        continue;
+                    }
                     unset($refs[0]);
                     $fks = array_keys($refs);
-
-                    if (strpos($this->tableName, '*') !== false) {
-                        $refClassName = $this->generateClassName($refTableSchema->fullName);
-                    } else {
-                        $refClassName = Inflector::id2camel($refTableSchema->fullName, '_');
-                    }
+                    $refClassName = $this->generateClassName($refTable);
 
                     // Add relation for this table
                     $link = $this->generateRelationLink(array_flip($refs));
@@ -219,19 +219,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
                     ];
 
                     // Add relation for the referenced table
-                    $uniqueKeys = [$table->primaryKey];
-                    try {
-                        $uniqueKeys = array_merge($uniqueKeys, $db->getSchema()->findUniqueIndexes($table));
-                    } catch (NotSupportedException $e) {
-                        // ignore
-                    }
-                    $hasMany = 1;
-                    foreach ($uniqueKeys as $uniqueKey) {
-                        if (count(array_diff(array_merge($uniqueKey, $fks), array_intersect($uniqueKey, $fks))) === 0) {
-                            $hasMany = 0;
-                            break;
-                        }
-                    }
+                    $hasMany = $this->isHasManyRelation($table, $fks);
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
@@ -245,14 +233,84 @@ abstract class BaseGenerator extends \yii\gii\Generator
                     ];
                 }
 
-                if (($fks = $this->checkPivotTable($table)) === false) {
+                if (($junctionFks = $this->checkPivotTable($table)) === false) {
                     continue;
                 }
 
-                $relations = $this->generateManyManyRelations($table, $fks, $relations);
+                $relations = $this->generateManyManyRelations($table, $junctionFks, $relations);
             }
         }
 
+        if ($this->generateRelations === self::RELATIONS_ALL_INVERSE) {
+            return $this->addInverseRelations($relations);
+        }
+
+        return $relations;
+    }
+
+    /**
+     * Determines if relation is of has many type
+     *
+     * @param TableSchema $table
+     * @param array $fks
+     * @return boolean
+     * @since 2.0.5
+     */
+    protected function isHasManyRelation($table, $fks)
+    {
+        $uniqueKeys = [$table->primaryKey];
+        try {
+            $uniqueKeys = array_merge($uniqueKeys, $this->getDbConnection()->getSchema()->findUniqueIndexes($table));
+        } catch (NotSupportedException $e) {
+            // ignore
+        }
+        foreach ($uniqueKeys as $uniqueKey) {
+            if (count(array_diff(array_merge($uniqueKey, $fks), array_intersect($uniqueKey, $fks))) === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Adds inverse relations
+     *
+     * @param array $relations relation declarations
+     * @return array relation declarations extended with inverse relation names
+     * @since 2.0.5
+     */
+    protected function addInverseRelations($relations)
+    {
+        $relationNames = [];
+        foreach ($this->getSchemaNames() as $schemaName) {
+            foreach ($this->getDbConnection()->getSchema()->getTableSchemas($schemaName) as $table) {
+                $className = $this->generateClassName($table->fullName);
+                foreach ($table->foreignKeys as $refs) {
+                    $refTable = $refs[0];
+                    $refTableSchema = $this->getDbConnection()->getTableSchema($refTable);
+                    unset($refs[0]);
+                    $fks = array_keys($refs);
+
+                    $leftRelationName = $this->generateRelationName($relationNames, $table, $fks[0], false);
+                    $relationNames[$table->fullName][$leftRelationName] = true;
+                    $hasMany = $this->isHasManyRelation($table, $fks);
+                    $rightRelationName = $this->generateRelationName(
+                        $relationNames,
+                        $refTableSchema,
+                        $className,
+                        $hasMany
+                    );
+                    $relationNames[$refTableSchema->fullName][$rightRelationName] = true;
+
+                    $relations[$table->fullName][$leftRelationName][0] =
+                        rtrim($relations[$table->fullName][$leftRelationName][0], ';')
+                        . "->inverseOf('".lcfirst($rightRelationName)."');";
+                    $relations[$refTableSchema->fullName][$rightRelationName][0] =
+                        rtrim($relations[$refTableSchema->fullName][$rightRelationName][0], ';')
+                        . "->inverseOf('".lcfirst($leftRelationName)."');";
+                }
+            }
+        }
         return $relations;
     }
 

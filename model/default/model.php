@@ -38,7 +38,9 @@ use mootensai\behaviors\UUIDBehavior;
 <?php if (!empty($relations)): ?>
  *
 <?php foreach ($relations as $name => $relation): ?>
- * @property <?= '\\' . $generator->nsModel . '\\' . $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+    <?php if(!in_array($name, $generator->skippedRelations)): ?>
+ * @property <?= '\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+    <?php endif; ?>
 <?php endforeach; ?>
 <?php endif; ?>
  */
@@ -100,6 +102,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
         ];
     }
 <?php foreach ($relations as $name => $relation): ?>
+    <?php if(!in_array($name, $generator->skippedRelations)): ?>
 
     /**
      * @return \yii\db\ActiveQuery
@@ -108,6 +111,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\
     {
         <?= $relation[0] . "\n" ?>
     }
+    <?php endif; ?>
 <?php endforeach; ?>
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
