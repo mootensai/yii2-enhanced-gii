@@ -37,11 +37,6 @@ to the `require` section of your `composer.json` file.
 
 Then you must add this code at your config\main.php.
 
-See gridview settings on http://demos.krajee.com/grid#module
-
-See datecontrol settings on http://demos.krajee.com/datecontrol#module
-
-See treemanager settings on http://demos.krajee.com/tree-manager#module (If you use tree/nested relation table)
 ```php
 'modules' => [
 ... //your another module
@@ -61,6 +56,11 @@ See treemanager settings on http://demos.krajee.com/tree-manager#module (If you 
 ... // your another module
     ],
 ```
+See gridview settings on http://demos.krajee.com/grid#module
+
+See datecontrol settings on http://demos.krajee.com/datecontrol#module
+
+See treemanager settings on http://demos.krajee.com/tree-manager#module (If you use tree/nested relation table)
 
 ## Usage :
 Go to your gii tools, and notice the new IO Generator for models & CRUD
