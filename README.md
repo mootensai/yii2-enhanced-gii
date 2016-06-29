@@ -16,8 +16,8 @@ Either run
 
 ```bash
 $ composer require mootensai/yii2-enhanced-gii:dev-master
-$ composer require kartik-v/yii2-mpdf:dev-master // if you want to use pdf exporter 
-$ composer require kartik-v/yii2-tree-manager:dev-master // if you want to use tree/nested relation table
+$ composer require kartik-v/yii2-mpdf:dev-master # if you want to use pdf exporter 
+$ composer require kartik-v/yii2-tree-manager:dev-master # if you want to use tree/nested relation table
 ```
 
 or add
