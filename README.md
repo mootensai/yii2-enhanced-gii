@@ -27,9 +27,9 @@ or add
 "kartik-v/yii2-mpdf": "dev-master",
 "kartik-v/yii2-tree-manager": "dev-master"
 ```
-add `"kartik-v/yii2-mpdf": "dev-master",` if you want to use pdf exporter 
+>add `"kartik-v/yii2-mpdf": "dev-master",` if you want to use pdf exporter 
 
-add `"kartik-v/yii2-tree-manager": "dev-master",` if you want to use tree/nested relation table
+>add `"kartik-v/yii2-tree-manager": "dev-master",` if you want to use tree/nested relation table
 
 to the `require` section of your `composer.json` file.
 
