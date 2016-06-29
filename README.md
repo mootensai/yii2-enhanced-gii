@@ -16,15 +16,21 @@ Either run
 
 ```bash
 $ composer require mootensai/yii2-enhanced-gii:dev-master
+$ composer require kartik-v/yii2-mpdf:dev-master // if you want to use pdf exporter 
+$ composer require kartik-v/yii2-tree-manager:dev-master // if you want to use tree/nested table
 ```
 
 or add
 
 ```
 "mootensai/yii2-enhanced-gii": "dev-master"
+"kartik-v/yii2-mpdf": "dev-master"        // if you want to use pdf exporter 
+"kartik-v/yii2-tree-manager": "dev-master"      // if you want to use tree/nested table
 ```
 
 to the `require` section of your `composer.json` file.
+
+> I separate the mpdf & tree-manager because the package is big & not everyone will use it.
 
 Then you must add this code at your config\main.php.
 
@@ -69,7 +75,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
 
 # To Do
-1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
+1. Nested set generator -> on progress in this package
 2. One-page-CRUD template
 3. ~~Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)~~
 4. RESTful template
