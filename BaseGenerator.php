@@ -183,7 +183,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
      */
     protected function generateRelations()
     {
-        if (!$this->generateRelations === self::RELATIONS_NONE) {
+        if ($this->generateRelations === self::RELATIONS_NONE) {
             return [];
         }
 
