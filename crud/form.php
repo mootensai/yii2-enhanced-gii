@@ -51,7 +51,7 @@ echo $form->field($generator, 'baseControllerClass');
 </div>
 <div class="row">
     <div class="col-md-12">
-        <?php  $form->field($generator, 'useTablePrefix')->checkbox(); ?>
+        <?=  $form->field($generator, 'useTablePrefix')->checkbox(); ?>
     </div>
 </div>
 

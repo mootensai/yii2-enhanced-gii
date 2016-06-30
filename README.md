@@ -16,32 +16,51 @@ Either run
 
 ```bash
 $ composer require mootensai/yii2-enhanced-gii:dev-master
+$ composer require kartik-v/yii2-mpdf:dev-master # if you want to use pdf exporter 
+$ composer require kartik-v/yii2-tree-manager:dev-master # if you want to use tree/nested relation table
 ```
 
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "dev-master"
+"mootensai/yii2-enhanced-gii": "dev-master",
+"kartik-v/yii2-mpdf": "dev-master",
+"kartik-v/yii2-tree-manager": "dev-master"
 ```
+>add `"kartik-v/yii2-mpdf": "dev-master",` if you want to use pdf exporter 
+
+>add `"kartik-v/yii2-tree-manager": "dev-master",` if you want to use tree/nested relation table
 
 to the `require` section of your `composer.json` file.
 
+> I separate the mpdf & tree-manager because the package is big & not everyone will use it.
+
 Then you must add this code at your config\main.php.
 
-See datecontrol settings on http://demos.krajee.com/datecontrol#module
 ```php
 'modules' => [
 ... //your another module
       'gridview' => [
           'class' => '\kartik\grid\Module',
+          // see settings on http://demos.krajee.com/grid#module
       ],
       'datecontrol' => [
           'class' => '\kartik\datecontrol\Module',
           // see settings on http://demos.krajee.com/datecontrol#module
+      ],
+      // If you use tree table
+      'treemanager' =>  [
+          'class' => '\kartik\tree\Module',
+          // see settings on http://demos.krajee.com/tree-manager#module
       ]
 ... // your another module
     ],
 ```
+See gridview settings on http://demos.krajee.com/grid#module
+
+See datecontrol settings on http://demos.krajee.com/datecontrol#module
+
+See treemanager settings on http://demos.krajee.com/tree-manager#module (If you use tree/nested relation table)
 
 ## Usage :
 Go to your gii tools, and notice the new IO Generator for models & CRUD
@@ -69,10 +88,9 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
 
 # To Do
-1. Nested set detector & generator -> cancelled, move to -> https://github.com/mootensai/yii2-enhanced-gii-nested (unfinished)
+1. Nested set generator -> on progress in this feature
 2. One-page-CRUD template
-3. ~~Generate migrations for tables (like  https://github.com/mdmsoft/yii2-gii)~~
-4. RESTful template
+3. RESTful template
 
 I'm open for any improvement
 
