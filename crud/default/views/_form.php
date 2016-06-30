@@ -13,9 +13,6 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-<?php
-// @TODO : use namespace of foreign keys & widgets
-?>
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
@@ -25,13 +22,13 @@ use yii\widgets\ActiveForm;
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 $modelClass = StringHelper::basename($generator->modelClass);
 foreach ($relations as $name => $rel) {
-    $relID = Inflector::camel2id($rel[1]);
-    if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-        echo "\mootensai\components\JsBlock::widget(['viewFile' => '_script', 'pos'=> \yii\web\View::POS_END, \n"
+    $relID = Inflector::camel2id($rel[$generator::REL_CLASS]);
+    if ($rel[$generator::REL_IS_MULTIPLE] && isset($rel[$generator::REL_TABLE]) && !in_array($name, $generator->skippedRelations)) {
+        echo "\\mootensai\\components\\JsBlock::widget(['viewFile' => '_script', 'pos'=> \\yii\\web\\View::POS_END, \n"
                 . "    'viewParams' => [\n"
-                . "        'class' => '$rel[1]', \n"
+                . "        'class' => '{$rel[$generator::REL_CLASS]}', \n"
                 . "        'relID' => '$relID', \n"
-                . "        'value' => \yii\helpers\Json::encode(\$model->$name),\n"
+                . "        'value' => \\yii\\helpers\\Json::encode(\$model->$name),\n"
                 . "        'isNewRecord' => (\$model->isNewRecord) ? 1 : 0\n"
                 . "    ]\n"
                 . "]);\n";

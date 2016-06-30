@@ -49,7 +49,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
-    public $timestampValue = "new \yii\db\Expression('NOW()')";
+    public $timestampValue = "new \\yii\\db\\Expression('NOW()')";
     public $createdBy = 'created_by';
     public $updatedBy = 'updated_by';
     public $blameableValue = '\Yii::$app->user->id';
@@ -77,7 +77,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
      */
     public function rules() {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'tableName', 'modelClass', 'nsSearchModel', 'queryNs'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs'], 'filter', 'filter' => 'trim'],
             [['tableName', 'db'], 'required'],
             [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -286,6 +286,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
             $this->tableSchema = $tableSchema;
+            $isTree = !array_diff(self::TREE_COLUMNS, $tableSchema->columnNames);
 //            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
             $params = [
                 'tableName' => $tableName,
@@ -295,6 +296,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
                 'labels' => $this->generateLabels($tableSchema),
                 'rules' => $this->generateRules($tableSchema),
                 'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                'isTree' => $isTree
             ];
             // model :
             $files[] = new CodeFile(
@@ -458,7 +460,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             }
             if (!empty($this->optimisticLock)) {
                 $rules[] = "[['" . $this->optimisticLock . "'], 'default', 'value' => '0']";
-                $rules[] = "[['" . $this->optimisticLock . "'], 'mootensai\components\OptimisticLockValidator']";
+                $rules[] = "[['" . $this->optimisticLock . "'], 'mootensai\\components\\OptimisticLockValidator']";
             }
         } catch (NotSupportedException $e) {
             // doesn't support unique indexes information...do nothing

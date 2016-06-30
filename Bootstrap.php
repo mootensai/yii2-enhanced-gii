@@ -28,10 +28,15 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+//        \Yii::setAlias('@mtengii','@vendor/mootensai/yii2-enhanced-gii');
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
                 $app->getModule('gii')->generators['enhanced-gii-model'] = 'mootensai\enhancedgii\model\Generator';
-                $app->getModule('gii')->generators['enhanced-gii-crud'] = 'mootensai\enhancedgii\crud\Generator';
+                $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'mootensai\enhancedgii\crud\Generator';
+//                $app->getModule('gii')->generators['enhanced-gii-crud']['templates'] = [
+//                    'default' => '@mtengii/crud/default',
+//                    'nested' => '@mtengii/crud/nested'
+//                ];
                 $app->getModule('gii')->generators['enhanced-gii-migration'] = 'mootensai\enhancedgii\migration\Generator';
             }
         }

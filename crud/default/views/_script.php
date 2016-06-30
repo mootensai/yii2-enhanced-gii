@@ -1,5 +1,5 @@
 <?php echo "<?php
-use yii\helpers\Url;
+use yii\\helpers\\Url;
 
 ?>\n"
 ?>

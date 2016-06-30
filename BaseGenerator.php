@@ -33,6 +33,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     const FK_TABLE_NAME = 0;
     const FK_FIELD_NAME = 1;
 
+    const TREE_COLUMNS = ['id', 'root', 'lft', 'rgt', 'lvl', 'name', 'icon', 'icon_type', 'active', 'selected', 'disabled', 'readonly',
+        'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all'];
+
     public $db = 'db';
     /* @var $tableSchema TableSchema */
     public $tableSchema;

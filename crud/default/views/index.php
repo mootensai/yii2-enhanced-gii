@@ -14,13 +14,14 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
+/* @var $this yii\web\View */
+<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
 use yii\helpers\Html;
 use kartik\export\ExportMenu;
 use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
 
-/* @var $this yii\web\View */
-<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
 $this->params['breadcrumbs'][] = $this->title;

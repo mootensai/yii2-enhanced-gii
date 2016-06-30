@@ -38,16 +38,15 @@ use mootensai\behaviors\UUIDBehavior;
 <?php if (!empty($relations)): ?>
  *
 <?php foreach ($relations as $name => $relation): ?>
-    <?php if(!in_array($name, $generator->skippedRelations)): ?>
+<?php if(!in_array($name, $generator->skippedRelations)): ?>
  * @property <?= '\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-    <?php endif; ?>
+<?php endif; ?>
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
+class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
-
-    use \mootensai\relation\RelationTrait;
+<?= (!$isTree) ? "    use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
 
     /**
      * @inheritdoc

@@ -303,9 +303,10 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $this->tableSchema = $tableSchema;
 //            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
+            $isTree = !array_diff(self::TREE_COLUMNS, $tableSchema->columnNames);
 
             // search model :
-            if ($this->generateSearchModel) {
+            if ($this->generateSearchModel && !$isTree) {
                 if (empty($this->searchModelClass) || strpos($this->tableName, '*') !== false) {
                     $searchModelClassName = $modelClassName . 'Search';
                 } else {
@@ -323,9 +324,15 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
 
             //controller
             $files[] = new CodeFile(
-                Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $controllerClassName . '.php', $this->render('controller.php', [
-                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-            ])
+                Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $controllerClassName . '.php',
+                ($isTree) ?
+                    $this->render('controllerNested.php', [
+                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    ])
+                    :
+                    $this->render('controller.php', [
+                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    ])
             );
 
             // views :
@@ -335,20 +342,31 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }
-                if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php' 
+                if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php'
                     || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_data.php') {
                     continue;
                 }
                 if($this->indexWidgetType != 'list' && $file === '_index.php') {
                     continue;
                 }
+                if($isTree && $file === 'index.php' || $file === 'view.php' || $file === '_detail.php' || $file === '_form.php'
+                    || $file === '_pdf.php' || $file === 'create.php' || $file === 'saveAsNew.php' || $file === 'update.php'
+                  ){
+                    continue;
+                }
+                if(!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')){
+                    continue;
+                }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    $files[] = new CodeFile("$viewPath/$file", $this->render("views/$file", [
+                    $fileName = ($isTree) ? str_replace('Nested','',$file) : $file;
+                    $files[] = new CodeFile("$viewPath/$fileName", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                        'isTree' => $isTree
                     ]));
                 }
             }
-            if (isset($relations[$tableName])) {
+            
+            if (isset($relations[$tableName]) && !$isTree) {
                 if ($this->expandable) {
                     $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
@@ -610,7 +628,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                     return \$model->$modelRel->$labelCol;
                 },
                 'filterType' => GridView::FILTER_SELECT2,
-                'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '$rel[4]', '$labelCol'),
+                'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '{$rel[self::REL_PRIMARY_KEY]}', '$labelCol'),
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
@@ -652,9 +670,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\datecontrol\DateControl::classname(),
+            'widgetClass' => \\kartik\\datecontrol\\DateControl::classname(),
             'options' => [
-                'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+                'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATE,
                 'saveFormat' => 'php:Y-m-d',
                 'ajaxConversion' => true,
                 'options' => [
@@ -667,9 +685,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ]";
         } elseif ($column->dbType === 'time') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\datecontrol\DateControl::classname()
+            'widgetClass' => \\kartik\\datecontrol\\DateControl::classname()
             'options' => [
-                'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+                'type' => \\kartik\\datecontrol\\DateControl::FORMAT_TIME,
                 'saveFormat' => 'php:H:i:s',
                 'ajaxConversion' => true,
                 'options' => [
@@ -682,9 +700,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ]";
         } elseif ($column->dbType === 'datetime') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\datecontrol\DateControl::classname(),
+            'widgetClass' => \\kartik\\datecontrol\\DateControl::classname(),
             'options' => [
-                'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+                'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATETIME,
                 'saveFormat' => 'php:Y-m-d H:i:s',
                 'ajaxConversion' => true,
                 'options' => [
@@ -697,16 +715,16 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ]";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
-            $labelCol = $this->getNameAttributeFK($rel[3]);
-            $humanize = Inflector::humanize($rel[3]);
+            $labelCol = $this->getNameAttributeFK($rel[self::REL_TABLE]);
+            $humanize = Inflector::humanize($rel[self::REL_TABLE]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
-            $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[1];
+            $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[self::REL_CLASS];
             $output = "'$attribute' => [
             'label' => '$humanize',
             'type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \kartik\widgets\Select2::className(),
+            'widgetClass' => \\kartik\\widgets\\Select2::className(),
             'options' => [
-                'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$labelCol')->asArray()->all(), '$rel[4]', '$labelCol'),
+                'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$labelCol')->asArray()->all(), '{$rel[self::REL_PRIMARY_KEY]}', '$labelCol'),
                 'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
             ],
             'columnOptions' => ['width' => '200px']
@@ -743,13 +761,16 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
      * @param string $attribute
      * @return string
      */
-    public function generateActiveField($attribute, $fk, $tableSchema = null, $relations = null)
+    public function generateActiveField($attribute, $fk, $tableSchema = null, $relations = null, $isTree = false)
     {
-        if (is_null($relations)){
+        if ($isTree){
+            $model = "\$node";
+        } else if (is_null($relations)){
             $model = "\$model";
         }else{
             $model = '$'.$relations[self::REL_CLASS];
         }
+
         if (is_null($tableSchema)) {
             $tableSchema = $this->getTableSchema();
         }
@@ -772,8 +793,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "\$form->field($model, '$attribute')->textarea(['rows' => 6])";
         } elseif ($column->dbType === 'date') {
-            return "\$form->field($model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATE,
+            return "\$form->field($model, '$attribute')->widget(\\kartik\\datecontrol\\DateControl::classname(), [
+        'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATE,
         'saveFormat' => 'php:Y-m-d',
         'ajaxConversion' => true,
         'options' => [
@@ -784,8 +805,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ],
     ]);";
         } elseif ($column->dbType === 'time') {
-            return "\$form->field($model, '$attribute')->widget(\kartik\datecontrol\DateControl::className(), [
-        'type' => \kartik\datecontrol\DateControl::FORMAT_TIME,
+            return "\$form->field($model, '$attribute')->widget(\\kartik\\datecontrol\\DateControl::className(), [
+        'type' => \\kartik\\datecontrol\\DateControl::FORMAT_TIME,
         'saveFormat' => 'php:H:i:s',
         'ajaxConversion' => true,
         'options' => [
@@ -796,8 +817,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ]
     ]);";
         } elseif ($column->dbType === 'datetime') {
-            return "\$form->field($model, '$attribute')->widget(\kartik\datecontrol\DateControl::classname(), [
-        'type' => \kartik\datecontrol\DateControl::FORMAT_DATETIME,
+            return "\$form->field($model, '$attribute')->widget(\\kartik\\datecontrol\\DateControl::classname(), [
+        'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATETIME,
         'saveFormat' => 'php:Y-m-d H:i:s',
         'ajaxConversion' => true,
         'options' => [
@@ -813,8 +834,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $humanize = Inflector::humanize($rel[3]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
             $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[1];
-            $output = "\$form->field($model, '$attribute')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
+            $output = "\$form->field($model, '$attribute')->widget(\\kartik\\widgets\\Select2::classname(), [
+        'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
         'options' => ['placeholder' => " . $this->generateString('Choose ' . $humanize) . "],
         'pluginOptions' => [
             'allowClear' => true
