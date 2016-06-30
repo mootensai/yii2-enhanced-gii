@@ -88,7 +88,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
 
 # To Do
-1. Nested set generator -> on progress in this feature
+1. Nested set generator -> FINISHED!! PLEASE TRY
 2. One-page-CRUD template
 3. RESTful template
 
