@@ -90,7 +90,6 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 # To Do
 1. Nested set generator -> FINISHED!! PLEASE TRY
 2. One-page-CRUD template
-3. RESTful template
 
 I'm open for any improvement
 
