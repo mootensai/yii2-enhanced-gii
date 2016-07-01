@@ -351,9 +351,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 if($this->indexWidgetType != 'list' && $file === '_index.php') {
                     continue;
                 }
-                if($isTree && $file === 'index.php' || $file === 'view.php' || $file === '_detail.php' || $file === '_form.php'
+                if($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_detail.php' || $file === '_form.php'
                     || $file === '_pdf.php' || $file === 'create.php' || $file === 'saveAsNew.php' || $file === 'update.php'
-                  ){
+                    )){
                     continue;
                 }
                 if(!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')){
