@@ -303,7 +303,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $this->tableSchema = $tableSchema;
 //            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
-            $isTree = !array_diff(self::TREE_COLUMNS, $tableSchema->columnNames);
+            $isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 
             // search model :
             if ($this->generateSearchModel && !$isTree) {
@@ -339,6 +339,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $viewPath = $this->getViewPath();
             $templatePath = $this->getTemplatePath() . '/views';
             foreach (scandir($templatePath) as $file) {
+//                if($file === '_formNested.php')
+//                    echo  $file;
                 if (empty($this->searchModelClass) && $file === '_search.php') {
                     continue;
                 }

@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
 
 <?php
 foreach ($tableSchema->getColumnNames() as $attribute) {
-    if (!in_array($attribute, $generator->skippedColumns) && !in_array($attribute, $generator::TREE_COLUMNS)) {
+    if (!in_array($attribute, $generator->skippedColumns) && !in_array($attribute, $generator::getTreeColumns())) {
         echo "    <?= " . $generator->generateActiveField($attribute, $fk, null, null, $isTree) . " ?>\n\n";
     }
 }
