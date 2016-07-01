@@ -262,6 +262,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
         return ['model.php'];
     }
 
+    public $isTree;
+
     /**
      * @inheritdoc
      */
@@ -286,7 +288,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
             $this->tableSchema = $tableSchema;
-            $isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
+            $this->isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 //            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
             $params = [
                 'tableName' => $tableName,
@@ -296,7 +298,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
                 'labels' => $this->generateLabels($tableSchema),
                 'rules' => $this->generateRules($tableSchema),
                 'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                'isTree' => $isTree
+                'isTree' => $this->isTree
             ];
             // model :
             $files[] = new CodeFile(
@@ -400,7 +402,11 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
                 continue;
             }
             if (!$column->allowNull && $column->defaultValue === null) {
-                $types['required'][] = $column->name;
+                if($this->isTree && in_array($column->name,['lft', 'rgt', 'lvl'])){
+
+                }else{
+                    $types['required'][] = $column->name;
+                }
             }
             switch ($column->type) {
                 case Schema::TYPE_SMALLINT:
