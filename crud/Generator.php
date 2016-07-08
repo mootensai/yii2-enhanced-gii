@@ -367,7 +367,6 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                     ]));
                 }
             }
-            
             if ($this->expandable) {
                 $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
@@ -534,9 +533,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $labelCol = $this->getNameAttributeFK($rel[3]);
 //            $humanize = Inflector::humanize($rel[3]);
 //            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
-            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
+//            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
-            'attribute' => '$modelRel.$labelCol',
+            'attribute' => '$rel[7].$labelCol',
             'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
         ],\n";
             return $output;
@@ -579,9 +578,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 return "";
             }
             $labelCol = $this->getNameAttributeFK($rel[3]);
-            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
+//            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
-                'attribute' => '$modelRel.$labelCol',
+                'attribute' => '$rel[7].$labelCol',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
             ],\n";
             return $output;
@@ -605,7 +604,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         if (in_array($attribute, $this->hiddenColumns)) {
             return "['attribute' => '$attribute', 'hidden' => true],\n";
         }
-        $humanize = Inflector::humanize($attribute, true);
+//        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "";
@@ -623,12 +622,12 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
-            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
+//            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
                 'value' => function(\$model){
-                    return \$model->$modelRel->$labelCol;
+                    return \$model->$rel[7]->$labelCol;
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => \\yii\\helpers\\ArrayHelper::map(\\$this->nsModel\\$rel[1]::find()->asArray()->all(), '{$rel[self::REL_PRIMARY_KEY]}', '$labelCol'),
