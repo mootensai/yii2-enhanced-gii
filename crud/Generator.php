@@ -368,12 +368,13 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 }
             }
             
+            if ($this->expandable) {
+                $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
+                    'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                ]));
+            }
+            
             if (isset($relations[$tableName]) && !$isTree) {
-                if ($this->expandable) {
-                    $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
-                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                    ]));
-                }
                 if ($this->expandable) {
                     $files[] = new CodeFile("$viewPath/_detail.php", $this->render("views/_detail.php", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
