@@ -687,7 +687,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         ]";
         } elseif ($column->dbType === 'time') {
             return "'$attribute' => ['type' => TabularForm::INPUT_WIDGET,
-            'widgetClass' => \\kartik\\datecontrol\\DateControl::classname()
+            'widgetClass' => \\kartik\\datecontrol\\DateControl::classname(),
             'options' => [
                 'type' => \\kartik\\datecontrol\\DateControl::FORMAT_TIME,
                 'saveFormat' => 'php:H:i:s',
