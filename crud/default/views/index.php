@@ -44,7 +44,7 @@ $this->registerJs($search);
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
     </p>
-    <?php if (!empty($generator->searchModelClass)): ?>
+<?php if (!empty($generator->searchModelClass)): ?>
     <div class="search-form" style="display:none">
         <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
     </div>
@@ -52,7 +52,7 @@ $this->registerJs($search);
 <?php 
 if ($generator->indexWidgetType === 'grid'): 
 ?>
-    <?= "<?php \n" ?>
+<?= "<?php \n" ?>
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
@@ -115,11 +115,9 @@ if ($generator->indexWidgetType === 'grid'):
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
         ],
-        // set a label for default menu
-        'export' => [
-            'label' => 'Page',
-            'fontAwesome' => true,
-        ],
+<?php if(!$generator->pdf) : ?>
+        'export' => false,
+<?php endif; ?>
         // your toolbar can include the additional full export menu
         'toolbar' => [
             '{export}',
@@ -135,6 +133,11 @@ if ($generator->indexWidgetType === 'grid'):
                         '<li class="dropdown-header">Export All Data</li>',
                     ],
                 ],
+<?php if(!$generator->pdf):?>
+                'exportConfig' => [
+                    ExportMenu::FORMAT_PDF => false
+                ]
+<?php endif;?>
             ]) ,
         ],
     ]); ?>
