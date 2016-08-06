@@ -513,7 +513,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "['attribute' => '$attribute', 'hidden' => true],\n";
+            return "['attribute' => '$attribute', 'visible' => false],\n";
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
@@ -558,8 +558,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         }
 
         if (in_array($attribute, $this->hiddenColumns)) {
-//            return "['attribute' => '$attribute', 'hidden' => true],\n";
-            return "";
+            return "['attribute' => '$attribute', 'visible' => false],\n";
         }
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
@@ -602,7 +601,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "['attribute' => '$attribute', 'hidden' => true],\n";
+            return "['attribute' => '$attribute', 'visible' => false],\n";
         }
 //        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
@@ -653,7 +652,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions'=>['hidden'=>true]]";
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
@@ -665,7 +664,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         }
         $column = $tableSchema->columns[$attribute];
         if ($column->autoIncrement) {
-            return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions' => ['hidden' => true]]";
+            return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
             return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX]";
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
