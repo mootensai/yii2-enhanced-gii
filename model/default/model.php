@@ -117,7 +117,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
         || $generator->UUIDColumn): 
     echo "\n"; ?>/**
      * @inheritdoc
-     * @return type mixed
+     * @return array mixed
      */ 
     public function behaviors()
     {
