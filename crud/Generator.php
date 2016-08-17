@@ -345,13 +345,14 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                     continue;
                 }
                 if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php'
-                    || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_data.php' || $file === 'saveAsNew.php') {
+                    || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_detail.php'
+                    || $file === '_data.php' || $file === 'saveAsNew.php') {
                     continue;
                 }
                 if($this->indexWidgetType != 'list' && $file === '_index.php') {
                     continue;
                 }
-                if($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_detail.php' || $file === '_form.php'
+                if($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_form.php'
                     || $file === '_pdf.php' || $file === 'create.php' || $file === 'update.php'
                     )){
                     continue;
