@@ -13,6 +13,8 @@ use yii\base\Model;
 use yii\base\NotSupportedException;
 use yii\db\Schema;
 use yii\db\TableSchema;
+use yii\db\BaseActiveRecord;
+use yii\db\ActiveQuery;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 
