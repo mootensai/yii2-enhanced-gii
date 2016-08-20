@@ -9,11 +9,9 @@
 namespace mootensai\enhancedgii\model;
 
 use Yii;
-use yii\base\Model;
 use yii\base\NotSupportedException;
 use yii\db\Schema;
 use yii\db\TableSchema;
-use yii\db\BaseActiveRecord;
 use yii\db\ActiveQuery;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
@@ -85,7 +83,6 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             [['tableName'], 'validateTableName'],
             [['nsModel', 'baseModelClass', 'queryNs', 'queryBaseClass'], 'match', 'pattern' => '/^[\w\\\\]+$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['modelClass', 'baseModelClass', 'db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
-            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::className()]],
             [['queryBaseClass', 'queryClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::className()]],
             [['db'], 'validateDb'],
             [['enableI18N', 'generateQuery', 'generateLabelsFromComments',
