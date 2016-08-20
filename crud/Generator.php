@@ -679,7 +679,11 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         if ($column->autoIncrement) {
             return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX]";
+            return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX,
+            'options' => [
+                'style' => 'position : relative; margin-top : -9px'
+            ]
+        ]";
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
