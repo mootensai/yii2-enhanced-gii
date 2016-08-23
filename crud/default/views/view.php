@@ -119,9 +119,12 @@ if($provider<?= $rel[1] ?>->totalCount){
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id($rel[3])?>']],
         'panel' => [
-        'type' => GridView::TYPE_PRIMARY,
-        'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+            'type' => GridView::TYPE_PRIMARY,
+            'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
         ],
+<?php if(!$generator->pdf): ?>
+        'export' => false,
+<?php endif; ?>
         'columns' => $gridColumn<?= $rel[1] . "\n" ?>
     ]);
 }
