@@ -42,6 +42,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
     public $skippedRelations;
+    public $useSchemaName = true;
 
     static public function getTreeColumns(){
         return ['id', 'root', 'lft', 'rgt', 'lvl', 'name', 'icon', 'icon_type', 'active', 'selected', 'disabled', 'readonly',
