@@ -418,7 +418,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 }
             }
 
-            if (strpos($this->tableName, '*') !== false) {
+            if (strpos($this->tableName, '*') !== false || $isTree) {
                 $this->modelClass = '';
                 $this->controllerClass = '';
                 $this->searchModelClass = '';
