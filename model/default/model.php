@@ -121,7 +121,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
      */ 
     public function behaviors()
     {
-        return [
+        return <?= ($isTree) ? "array_merge(parent::behaviors(), " : ""; ?>[
 <?php if ($generator->createdAt || $generator->updatedAt):?>
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
@@ -166,7 +166,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
             ],
 <?php endif; ?>
-        ];
+        ]<?= ($isTree) ? ")" : "" ?>;
     }
 <?php endif; ?>
 <?php if ($queryClassName): ?>
