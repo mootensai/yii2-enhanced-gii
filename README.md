@@ -3,7 +3,7 @@ Yii2 Gii (generator) with Relation
 
 [![Latest Stable Version](https://poser.pugx.org/mootensai/yii2-enhanced-gii/v/stable)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![License](https://poser.pugx.org/mootensai/yii2-enhanced-gii/license)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![Total Downloads](https://img.shields.io/packagist/dt/mootensai/yii2-enhanced-gii.svg)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
+[![Total Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/downloads)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Monthly Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/monthly)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Daily Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/daily)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Join the chat at https://gitter.im/mootensai/yii2-enhanced-gii](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootensai/yii2-enhanced-gii?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -90,8 +90,8 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
 
 # To Do
-1. Nested set generator -> FINISHED!! PLEASE TRY
-2. One-page-CRUD template
+1. One-page-CRUD template
+2. Implement generator for Soft Delete Behavior (https://github.com/yii2tech/ar-softdelete)
 
 I'm open for any improvement
 
