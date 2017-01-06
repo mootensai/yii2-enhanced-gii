@@ -7,9 +7,14 @@ Yii2 Gii (generator) with Relation
 [![Monthly Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/monthly)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Daily Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/daily)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
 [![Join the chat at https://gitter.im/mootensai/yii2-enhanced-gii](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootensai/yii2-enhanced-gii?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
+## Support
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/mootensai/)
+
+Hi! Currently this project is on hold because of my mom got cancer & I have to help her through all the process she's been through (I'm her only son). 
+
+If you find this project useful, please support me via gratipay (I don't know which is better to support me) to cure my mom's cancer, because the process takes a lot of money .
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
