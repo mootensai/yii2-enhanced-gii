@@ -665,7 +665,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN]";
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
@@ -677,7 +677,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         }
         $column = $tableSchema->columns[$attribute];
         if ($column->autoIncrement) {
-            return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
+            return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
             return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX,
             'options' => [
