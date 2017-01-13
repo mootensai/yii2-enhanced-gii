@@ -23,6 +23,8 @@ class Generator extends \yii\gii\Generator
     public $tableName;
     public $generateRelations = true;
     public $useTablePrefix = false;
+    public $createTableIfNotExists = 0;
+    public $disableFkc = false;
 
     /**
      * @inheritdoc
@@ -64,6 +66,8 @@ class Generator extends \yii\gii\Generator
             [['tableName'], 'validateTableName'],
             [['generateRelations'], 'boolean'],
             [['useTablePrefix'], 'boolean'],
+            [['createTableIfNotExists'], 'boolean'],
+            [['disableFkc'], 'boolean'],
         ]);
     }
 
@@ -79,6 +83,8 @@ class Generator extends \yii\gii\Generator
             'migrationName' => 'Migration Name',
             'migrationTime' => 'Migration Time',
             'generateRelations' => 'Generate Relations',
+            'createTableIfNotExists' => 'If table exist',
+            'disableFkc' => 'Disable foreign key checks',
         ]);
     }
 
@@ -103,6 +109,8 @@ class Generator extends \yii\gii\Generator
                 should consider the <code>tablePrefix</code> setting of the DB connection. For example, if the
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the migration
                 will use the table name as <code>{{%post}}</code>.',
+            'createTableIfNotExists' => 'Skip table if it exists in database.',
+            'disableFkc' => 'Disable foreign key checks when migrating down (drop table).'
         ]);
     }
 
