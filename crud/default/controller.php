@@ -250,8 +250,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         if (Yii::$app->request->post('_asnew') != '1') {
             $model = $this->findModel(<?= $actionParams; ?>);
         }
-    
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+    if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('saveAsNew', [
