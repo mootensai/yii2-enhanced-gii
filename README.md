@@ -11,9 +11,7 @@ Yii2 Gii (generator) with Relation
 ## Support
 [![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/mootensai/)
 
-Hi! Currently this project is on hold because of my mom got cancer & I have to help her through all the process she's been through (I'm her only son). 
-
-If you find this project useful, please support me via gratipay (I don't know which is better to support me) to cure my mom's cancer, because the process takes a lot of money .
+https://www.paypal.me/yohanesc
 
 ## Installation
 
