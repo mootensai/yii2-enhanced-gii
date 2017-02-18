@@ -686,7 +686,7 @@ if (array_key_exists($attribute, $fk) && $attribute) {
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN]";
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
