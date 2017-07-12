@@ -66,7 +66,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
      */
     public function getName()
     {
-        return 'IO Generator (CRUD)';
+        return 'I/O Generator (CRUD)';
     }
 
     /**

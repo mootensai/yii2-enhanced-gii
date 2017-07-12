@@ -62,7 +62,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
      * @inheritdoc
      */
     public function getName() {
-        return 'IO Generator (Model)';
+        return 'I/O Generator (Model)';
     }
 
     /**
