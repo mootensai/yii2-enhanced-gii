@@ -9,6 +9,7 @@
 /* @var $className string class name */
 /* @var $queryClassName string query class name */
 /* @var $tableSchema yii\db\TableSchema */
+/* @var $isTree boolean */
 /* @var $labels string[] list of attribute labels (name => label) */
 /* @var $rules string[] list of validation rules */
 /* @var $relations array list of relations (name => relation declaration) */
@@ -38,7 +39,7 @@ use mootensai\behaviors\UUIDBehavior;
 <?php if (!empty($relations)): ?>
  *
 <?php foreach ($relations as $name => $relation): ?>
-<?php if(!in_array($name, $generator->skippedRelations)): ?>
+<?php if (!in_array($name, $generator->skippedRelations)): ?>
  * @property <?= '\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
@@ -47,7 +48,18 @@ use mootensai\behaviors\UUIDBehavior;
 class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
 <?= (!$isTree) ? "    use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
+<?php if (!$isTree): ?>
 
+    /**
+    * This function helps \mootensai\relation\RelationTrait runs faster
+    * @return array relation names of this model
+    */
+    public function relationNames()
+    {
+        return [<?= "\n            '" . implode("',\n            '", array_keys($relations)) . "'\n        " ?>];
+    }
+
+<?php endif; ?>
     /**
      * @inheritdoc
      */
