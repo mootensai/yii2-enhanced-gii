@@ -4,7 +4,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator dee\gii\generators\migration\Generator */
+/* @var $generator mootensai\enhancedgii\migration\Generator */
 /* @var $migrationName string migration name */
 
 echo "<?php\n";
@@ -14,7 +14,11 @@ use yii\db\Schema;
 
 class <?= $migrationName ?> extends \yii\db\Migration
 {
+<?php if($generator->isSafeUpDown): ?>
+    public function safeUp()
+<?php else: ?>
     public function up()
+<?php endif; ?>
     {
 <?php if ($generator->createTableIfNotExists): ?>
         $tables = Yii::$app->db->schema->getTableNames();
@@ -52,7 +56,11 @@ class <?= $migrationName ?> extends \yii\db\Migration
         
     }
 
+<?php if($generator->isSafeUpDown): ?>
+    public function safeDown()
+<?php else: ?>
     public function down()
+<?php endif; ?>
     {
 <?php if ($generator->disableFkc) : ?>
         $this->execute('SET foreign_key_checks = 0');
