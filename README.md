@@ -77,6 +77,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 2. Generate Timestamp Behaviors
 3. Generate Blameable Behavior
 4. Generate UUID Behavior
+5. Generate Soft Delete Behavior (NEW! Todo : Generate data filtering for relation data, e.g. not show deleted children of hasMany )
 
 ## CRUD :
 1. Generate all CRUD with wildcard (*) of table
