@@ -92,6 +92,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 
 ## Migration Generator :
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
+2. Option to generate with `safeUp()` and `safeDown()`
 
 # To Do
 1. One-page-CRUD template
