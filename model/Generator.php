@@ -8,6 +8,7 @@
 
 namespace mootensai\enhancedgii\model;
 
+use mootensai\enhancedgii\BaseGenerator;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\db\Schema;
@@ -29,7 +30,7 @@ use yii\helpers\Inflector;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \mootensai\enhancedgii\BaseGenerator {
+class Generator extends BaseGenerator {
 
     /* @var $tableSchema TableSchema */
 
@@ -55,7 +56,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
     public $blameableValue = '\Yii::$app->user->id';
     public $UUIDColumn = 'id';
     public $deletedBy = 'deleted_by';
+    public $deletedByValue = '\Yii::$app->user->id';
     public $deletedAt = 'deleted_at';
+    public $deletedAtValue = 'date(\'Y-m-d H:i:s\')';
     public $generateBaseOnly = false;
 
     /**
@@ -93,7 +96,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             [['skippedColumns', 'skippedRelations',
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
-                'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedAt'], 'safe'],
+                'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue'], 'safe'],
         ]);
     }
 
@@ -134,7 +137,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
                 the matching characters. For example, table <code>tbl_post</code> will generate <code>Post</code>
                 class.',
             'nameAttribute' => 'This is the (set) of name column that you use to show as label, '
-            . 'separated by comma (,) for multiple table(asterisk on Table Name).',
+                . 'separated by comma (,) for multiple table(asterisk on Table Name).',
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
@@ -167,35 +170,40 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             'generateMigrations' => 'This indicates whether the generator should generate migrations based on
                 table structure.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
-            . 'Enter this field with optimistic lock column name. '
-            . 'Empty this field if you want to disable this feature.',
+                . 'Enter this field with optimistic lock column name. '
+                . 'Empty this field if you want to disable this feature.',
             'createdAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-            . 'Enter this field with Created At column name. '
-            . 'Empty "Created At" & "Updated At" field if you want to disable this feature.',
+                . 'Enter this field with Created At column name. '
+                . 'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
             'updatedAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-            . 'Enter this field with Updated At column name. '
-            . 'Empty "Created At" & "Updated At" field if you want to disable this feature.',
-            'timestampValue' => 'This will generate the </code>value</code> configuration entry for Timestamp Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
+                . 'Enter this field with Updated At column name. '
+                . 'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
+            'timestampValue' => 'This will generate the <code>value</code> configuration entry for Timestamp Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
             'createdBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-            . 'Enter this field with Created By column name. '
-            . 'Empty "Created By" & "Updated By" field if you want to disable this feature.',
+                . 'Enter this field with Created By column name. '
+                . 'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
             'updatedBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-            . 'Enter this field with Updated By column name. '
-            . 'Empty "Created By" & "Updated By" field if you want to disable this feature.',
+                . 'Enter this field with Updated By column name. '
+                . 'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
             'blameableValue' => 'This will generate the </code>value</code> configuration entry for Blameable Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
             'UUIDColumn' => 'This indicates whether the generator should generate UUID Behaviors feature for Model. '
-            . 'Enter this field with UUID column name. '
-            . 'Empty "UUID Column" field if you want to disable this feature.',
+                . 'Enter this field with UUID column name. '
+                . 'Empty <code>UUID Column</code> field if you want to disable this feature.',
             'deletedBy' => 'This indicates whether the generator should generate Soft Delete feature for Model. '
-            . 'Enter this field with Deleted By column name. '
-            . 'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
-            'deletedAt' => 'This indicates whether the generator should generate Soft Delete feature for Model. '
-            . 'Enter this field with Updated By column name. '
-            . 'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
+                . 'Enter this field with column name to tell whether row is deleted or not. You could also use <code>isdelete</code> for boolean value. '
+                . 'Empty <code>Deleted By</code> field if you want to disable this feature. If <code>Deleted By</code> field is empty, then <code>Deleted At</code> field will not work!',
+            'deletedByValue' => 'This will generate the <code>value</code> configuration entry for Soft Delete feature for model '
+                . 'Enter this field with value to give info like <code>true</code> or even <code>date(\'Y-m-d H:i:s\')</code>. '
+                . 'Empty <code>Deleted By</code> field if you want to disable this feature. If <code>Deleted By</code> field is empty, then <code>Deleted At</code> field will not work!',
+            'deletedAt' => 'This indicates whether the generator should generate additional info of Soft Delete feature for Model. '
+                . 'Enter this field with Deleted By column name. '
+                . 'Empty <code>Deleted By</code> field if you want to disable this feature. This field only work when <code>Deleted By</code> & <code>Deleted At Value</code> field is not empty ',
+            'deletedAtValue' => 'This indicates whether the generator should generate additional info of Soft Delete feature for Model. '
+                . 'Enter this field with additional <code>value</code> column name. You could enter PHP function here. '
+                . 'Empty <code>Deleted By</code> field if you want to disable this feature.',
 //            'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
 //                the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
 //                if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
-            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
                 to <code>@app/views/ControllerID</code>',
@@ -206,16 +214,13 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
 //                if "Table Name" ends with asterisk, in which case all relations will be generated.',
 //            'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
 //                You may choose either <code>GridView</code> or <code>ListView</code>',
-            'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
-                the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
-                if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
             'generateBaseOnly' => 'This indicates whether the generator should generate extended model(where you write your code) or not. '
-            . 'You usually re-generate models when you make changes on your database.'
+                . 'You usually re-generate models when you make changes on your database.'
         ]);
     }
 
@@ -236,13 +241,16 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             'optimisticLock',
             'createdBy',
             'updatedBy',
-            'deletedBy',
             'createdAt',
             'timestampValue',
             'updatedAt',
-            'deletedAt',
             'blameableValue',
+            'deletedAt',
+            'deletedAtValue',
+            'deletedBy',
+            'deletedByValue',
             'UUIDColumn',
+            'generateRelations'
 //            'baseControllerClass',
 //            'indexWidgetType',
 //            'viewPath'
@@ -296,11 +304,11 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
             ];
             // model :
             $files[] = new CodeFile(
-                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php', $this->render('model.php', $params)
+                Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php', $this->render('model.php', $params)
             );
             if (!$this->generateBaseOnly) {
                 $files[] = new CodeFile(
-                        Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
+                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
                 );
             }
             // query :
@@ -310,7 +318,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator {
                     'modelClassName' => $modelClassName,
                 ];
                 $files[] = new CodeFile(
-                        Yii::getAlias('@' . str_replace('\\', '/', $this->queryNs)) . '/' . $queryClassName . '.php', $this->render('query.php', $params)
+                    Yii::getAlias('@' . str_replace('\\', '/', $this->queryNs)) . '/' . $queryClassName . '.php', $this->render('query.php', $params)
                 );
             }
 

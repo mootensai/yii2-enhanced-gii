@@ -24,7 +24,8 @@
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-export": "*",
-        "kartik-v/yii2-tabs-x": "*"
+        "kartik-v/yii2-tabs-x": "*",
+        "yii2tech/ar-softdelete": "*"
     },
     "autoload": {
         "psr-4": {

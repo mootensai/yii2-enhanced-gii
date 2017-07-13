@@ -4,7 +4,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/* @var $generator mootensai\enhancedgii\model\Generator */
 /* @var $tableName string full table name */
 /* @var $className string class name */
 /* @var $queryClassName string query class name */
@@ -28,6 +28,9 @@ use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
 <?php if ($generator->UUIDColumn): ?>
 use mootensai\behaviors\UUIDBehavior;
+<?php endif; ?>
+<?php if ($generator->deletedAt || $generator->deletedBy):?>
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 <?php endif; ?>
 
 /**
@@ -67,7 +70,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     {
         return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -88,11 +91,11 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php if (!empty($generator->optimisticLock)): ?>
 
     /**
-     * 
+     *
      * @return string
      * overwrite function optimisticLock
-     * return string name of field are used to stored optimistic lock 
-     * 
+     * return string name of field are used to stored optimistic lock
+     *
      */
     public function optimisticLock() {
         return '<?= $generator->optimisticLock ?>';
@@ -124,13 +127,23 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     }
     <?php endif; ?>
 <?php endforeach; ?>
+<?php if($generator->deletedAt && $generator->deletedAtValue): ?>
+    /**
+    * @return bool
+    */
+    public function beforeSoftDelete()
+    {
+        $this-><?= $generator->deletedAt ?> = <?= $generator->deletedAtValue ?>;
+        return true;
+    }
+<?php endif; ?>
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
-        || $generator->UUIDColumn): 
+        || $generator->UUIDColumn):
     echo "\n"; ?>/**
      * @inheritdoc
      * @return array mixed
-     */ 
+     */
     public function behaviors()
     {
         return <?= ($isTree) ? "array_merge(parent::behaviors(), " : ""; ?>[
@@ -178,6 +191,19 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
             ],
 <?php endif; ?>
+<?php if ($generator->deletedAt || $generator->deletedBy):?>
+            'softdelete' => [
+                'class' => SoftDeleteBehavior::className(),
+<?php if (!empty($generator->deletedBy)):?>
+                'softDeleteAttributeValues' => [
+                    '<?= $generator->deletedBy ?>' => function ($model) {
+                        return <?= $generator->deletedByValue ?>;
+                    }
+                ],
+<?php endif; ?>
+                'replaceRegularDelete' => true
+            ],
+<?php endif; ?>
         ]<?= ($isTree) ? ")" : "" ?>;
     }
 <?php endif; ?>
@@ -192,7 +218,12 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
      */
     public static function find()
     {
+<?php if($generator->deletedBy): ?>
+        $query = new <?= $queryClassFullName ?>(get_called_class());
+        return $query->andWhere(['<?= $generator->deletedBy ?>' => 0]);
+<?php else: ?>
         return new <?= $queryClassFullName ?>(get_called_class());
+<?php endif; ?>
     }
 <?php endif; ?>
 }
