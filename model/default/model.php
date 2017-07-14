@@ -29,7 +29,7 @@ use yii\behaviors\BlameableBehavior;
 <?php if ($generator->UUIDColumn): ?>
 use mootensai\behaviors\UUIDBehavior;
 <?php endif; ?>
-<?php if ($generator->deletedAt || $generator->deletedBy):?>
+<?php if ($generator->deletedBy):?>
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 <?php endif; ?>
 
@@ -127,7 +127,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     }
     <?php endif; ?>
 <?php endforeach; ?>
-<?php if($generator->deletedAt && $generator->deletedAtValue): ?>
+<?php if($generator->deletedBy && $generator->deletedAt && $generator->deletedAtValue): ?>
     /**
     * @return bool
     */
@@ -191,7 +191,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
             ],
 <?php endif; ?>
-<?php if ($generator->deletedAt || $generator->deletedBy):?>
+<?php if ($generator->deletedBy):?>
             'softdelete' => [
                 'class' => SoftDeleteBehavior::className(),
 <?php if (!empty($generator->deletedBy)):?>

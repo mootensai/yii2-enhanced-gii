@@ -6,6 +6,7 @@
 /* @var $this yii\web\View */
 /* @var $generator mootensai\enhancedgii\crud\Generator */
 /* @var $className string class name */
+/* @var $relations array relations of Model class */
 /* @var $modelClassName string related model class name */
 
 $modelFullClassName = $modelClassName;
@@ -37,6 +38,9 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
      */
     public function all($db = null)
     {
+<?php foreach($relations as $rel): ?>
+        $this->joinwith(['namarelasi', true,])->where(['deleted_by' => '0']);
+<?php endforeach; ?>
         return parent::all($db);
     }
 
