@@ -13,7 +13,6 @@
 /* @var $labels string[] list of attribute labels (name => label) */
 /* @var $rules string[] list of validation rules */
 /* @var $relations array list of relations (name => relation declaration) */
-
 echo "<?php\n";
 ?>
 
@@ -28,9 +27,6 @@ use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
 <?php if ($generator->UUIDColumn): ?>
 use mootensai\behaviors\UUIDBehavior;
-<?php endif; ?>
-<?php if ($generator->deletedBy):?>
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
 <?php endif; ?>
 
 /**
@@ -51,6 +47,22 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
 class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
 <?= (!$isTree) ? "    use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
+
+<?php if($generator->deletedBy): ?>
+    private $_rt_softdelete = [
+        '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
+<?php if($generator->deletedAt): ?>
+        '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValue)) ? 1 : $generator->deletedAtValue ?>,
+<?php endif; ?>
+    ];
+    private $_rt_softrestore = [
+        '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValueRestored)) ? 0 : $generator->deletedByValueRestored ?>,
+
+<?php if($generator->deletedAt): ?>
+        '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValueRestored)) ? 0 : $generator->deletedAtValueRestored ?>,
+<?php endif; ?>
+    ];
+<?php endif; ?>
 <?php if (!$isTree): ?>
 
     /**
@@ -127,16 +139,6 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     }
     <?php endif; ?>
 <?php endforeach; ?>
-<?php if($generator->deletedBy && $generator->deletedAt && $generator->deletedAtValue): ?>
-    /**
-    * @return bool
-    */
-    public function beforeSoftDelete()
-    {
-        $this-><?= $generator->deletedAt ?> = <?= $generator->deletedAtValue ?>;
-        return true;
-    }
-<?php endif; ?>
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
         || $generator->UUIDColumn):
@@ -191,19 +193,6 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
             ],
 <?php endif; ?>
-<?php if ($generator->deletedBy):?>
-            'softdelete' => [
-                'class' => SoftDeleteBehavior::className(),
-<?php if (!empty($generator->deletedBy)):?>
-                'softDeleteAttributeValues' => [
-                    '<?= $generator->deletedBy ?>' => function ($model) {
-                        return <?= $generator->deletedByValue ?>;
-                    }
-                ],
-<?php endif; ?>
-                'replaceRegularDelete' => true
-            ],
-<?php endif; ?>
         ]<?= ($isTree) ? ")" : "" ?>;
     }
 <?php endif; ?>
@@ -212,6 +201,30 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     $queryClassFullName = '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
+<?php if( $generator->deletedBy): ?>
+    /**
+     * The following code shows how to apply a default condition for all queries:
+     *
+     * ```php
+     * class Customer extends ActiveRecord
+     * {
+     *     public static function find()
+     *     {
+     *         return parent::find()->where(['deleted' => false]);
+     *     }
+     * }
+     *
+     * // Use andWhere()/orWhere() to apply the default condition
+     * // SELECT FROM customer WHERE `deleted`=:deleted AND age>30
+     * $customers = Customer::find()->andWhere('age>30')->all();
+     *
+     * // Use where() to ignore the default condition
+     * // SELECT FROM customer WHERE age>30
+     * $customers = Customer::find()->where('age>30')->all();
+     * ```
+     */
+<?php endif; ?>
+
     /**
      * @inheritdoc
      * @return <?= $queryClassFullName ?> the active query used by this AR class.
@@ -220,7 +233,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     {
 <?php if($generator->deletedBy): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
-        return $query->andWhere(['<?= $generator->deletedBy ?>' => 0]);
+        return $query->where(['<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
 <?php else: ?>
         return new <?= $queryClassFullName ?>(get_called_class());
 <?php endif; ?>
