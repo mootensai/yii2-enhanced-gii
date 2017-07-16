@@ -700,11 +700,29 @@ if (array_key_exists($attribute, $fk) && $attribute) {
         if ($column->autoIncrement) {
             return "'$attribute' => ['type' => TabularForm::INPUT_HIDDEN]";
         } elseif ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
-            return "'$attribute' => ['type' => TabularForm::INPUT_CHECKBOX,
-            'options' => [
-                'style' => 'position : relative; margin-top : -9px'
-            ]
-        ]";
+            $column_name = $column->name;
+            $schema_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $tableSchema->name)));
+
+            return "'$attribute' => ['type' => 'raw',
+                'options' => [
+                    'style' => 'position : relative; margin-top : -9px'
+                ],
+                'value' => function(\$model, \$key) {
+                    \$value = \$model[$column_name];
+                    
+                    return
+                       Html::beginTag('div', [
+                            \"class\" => \"checkbox\"
+                        ]).
+                        Html::hiddenInput('".$schema_name."[' . \$key . '][$column_name]', 0 ) .
+                        Html::checkbox('".$schema_name."[' . \$key . '][$column_name]', \$value, [
+                            'style' => 'position : relative; margin-top : -9px',
+                            'id' => '$tableSchema->name-'.\$key.'-$column_name',
+                            'class' => 'form-control'
+                        ]).
+                        Html::endTag('div');
+                }
+            ]";
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
             return "'$attribute' => ['type' => TabularForm::INPUT_TEXTAREA]";
         } elseif ($column->dbType === 'date') {
