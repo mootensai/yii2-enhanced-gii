@@ -146,7 +146,8 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
         || $generator->UUIDColumn):
-    echo "\n"; ?>/**
+    echo "\n"; ?>
+    /**
      * @inheritdoc
      * @return array mixed
      */
