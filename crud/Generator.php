@@ -66,7 +66,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
      */
     public function getName()
     {
-        return 'IO Generator (CRUD)';
+        return 'I/O Generator (CRUD)';
     }
 
     /**
@@ -686,7 +686,7 @@ if (array_key_exists($attribute, $fk) && $attribute) {
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'visible' => false]";
+            return "\"$attribute\" => ['type' => TabularForm::INPUT_HIDDEN, 'columnOptions' => ['hidden'=>true]]"; //fixes #91 https://github.com/mootensai/yii2-enhanced-gii/issues/91
         }
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {

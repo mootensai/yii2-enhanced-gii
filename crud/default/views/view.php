@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
 <?= "<?php \n" ?>
     $gridColumn = [
-<?php 
+<?php
 if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
@@ -85,7 +85,7 @@ if ($tableSchema === false) {
     echo DetailView::widget([
         'model' => $model,
         'attributes' => $gridColumn
-    ]); 
+    ]);
 ?>
     </div>
 <?php foreach ($relations as $name => $rel): ?>
@@ -129,7 +129,39 @@ if($provider<?= $rel[1] ?>->totalCount){
     ]);
 }
 <?= "?>\n" ?>
+
     </div>
+<?php elseif(empty($rel[2])): ?>
+    <div class="row">
+        <h4><?= $rel[1] ?><?= "<?= " ?>' '. Html::encode($this->title) ?></h4>
+    </div>
+    <?= "<?php \n" ?>
+    $gridColumn<?= $rel[1] ?> = [
+<?php
+    $relTableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
+    $fkRel = $generator->generateFK($relTableSchema);
+    foreach($relTableSchema->getColumnNames() as $attribute){
+        if($attribute == $rel[5]){
+            continue;
+        }
+        if ($relTableSchema === false) {
+            if (!in_array($attribute, $generator->skippedColumns)){
+                echo "        '" . $attribute . "',\n";
+            }
+        } else{
+            if(!in_array($attribute, $generator->skippedColumns)){
+                echo "        ".$generator->generateDetailViewField($attribute,$fkRel);
+            }
+        }
+    }
+    ?>
+    ];
+    echo DetailView::widget([
+        'model' => $model,
+        'attributes' => $gridColumn
+    ]);
+    ?>
+</div>
 <?php endif; ?>
 <?php endforeach; ?>
 </div>

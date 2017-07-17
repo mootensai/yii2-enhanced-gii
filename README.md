@@ -71,12 +71,13 @@ See treemanager settings on http://demos.krajee.com/tree-manager#module (If you 
 Go to your gii tools, and notice the new IO Generator for models & CRUD
 
 
-#Features
+# Features
 ## Model :
 1. Generate optimistic lock
 2. Generate Timestamp Behaviors
 3. Generate Blameable Behavior
 4. Generate UUID Behavior
+5. Generate Soft Delete Behavior (NEW! Todo : Generate data filtering for relation data, e.g. not show deleted children of hasMany )
 
 ## CRUD :
 1. Generate all CRUD with wildcard (*) of table
@@ -91,6 +92,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 
 ## Migration Generator :
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
+2. Option to generate with `safeUp()` and `safeDown()`
 
 # To Do
 1. One-page-CRUD template

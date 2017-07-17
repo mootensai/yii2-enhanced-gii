@@ -25,6 +25,7 @@ class Generator extends \yii\gii\Generator
     public $useTablePrefix = false;
     public $createTableIfNotExists = 0;
     public $disableFkc = false;
+    public $isSafeUpDown = false;
 
     /**
      * @inheritdoc
@@ -68,6 +69,7 @@ class Generator extends \yii\gii\Generator
             [['useTablePrefix'], 'boolean'],
             [['createTableIfNotExists'], 'boolean'],
             [['disableFkc'], 'boolean'],
+            [['isSafeUpDown'], 'boolean'],
         ]);
     }
 
@@ -85,6 +87,7 @@ class Generator extends \yii\gii\Generator
             'generateRelations' => 'Generate Relations',
             'createTableIfNotExists' => 'If table exist',
             'disableFkc' => 'Disable foreign key checks',
+            'isSafeUpDown' => 'Generate with safeUp() and safeDown()',
         ]);
     }
 
@@ -110,7 +113,8 @@ class Generator extends \yii\gii\Generator
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the migration
                 will use the table name as <code>{{%post}}</code>.',
             'createTableIfNotExists' => 'Skip table if it exists in database.',
-            'disableFkc' => 'Disable foreign key checks when migrating down (drop table).'
+            'disableFkc' => 'Disable foreign key checks when migrating down (drop table).',
+            'isSafeUpDown' => 'Option to generate whether use <code>up() down()</code> or <code>safeUp() safeDown()</code>'
         ]);
     }
 
@@ -175,8 +179,8 @@ class Generator extends \yii\gii\Generator
         $migrationName = 'm' . $this->migrationTime . '_' . $this->migrationName;
         $file = rtrim(Yii::getAlias($this->migrationPath), '/') . "/{$migrationName}.php";
         $files = new CodeFile($file, $this->render('migration.php', [
-                'tables' => $this->reorderTables($tables, $relations),
-                'migrationName' => $migrationName,
+            'tables' => $this->reorderTables($tables, $relations),
+            'migrationName' => $migrationName,
         ]));
         return [$files];
     }
