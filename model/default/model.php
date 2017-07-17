@@ -49,19 +49,23 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?= (!$isTree) ? "    use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
 
 <?php if($generator->deletedBy): ?>
-    private $_rt_softdelete = [
-        '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
-<?php if($generator->deletedAt): ?>
-        '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValue)) ? 1 : $generator->deletedAtValue ?>,
-<?php endif; ?>
-    ];
-    private $_rt_softrestore = [
-        '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValueRestored)) ? 0 : $generator->deletedByValueRestored ?>,
+    private $_rt_softdelete;
+    private $_rt_softrestore;
 
+    public function __construct(){
+        $this->_rt_softdelete = [
+            '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
 <?php if($generator->deletedAt): ?>
-        '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValueRestored)) ? 0 : $generator->deletedAtValueRestored ?>,
+            '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValue)) ? 1 : $generator->deletedAtValue ?>,
 <?php endif; ?>
-    ];
+        ];
+        $this->_rt_softrestore = [
+            '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValueRestored)) ? 0 : $generator->deletedByValueRestored ?>,
+<?php if($generator->deletedAt): ?>
+            '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValueRestored)) ? 0 : $generator->deletedAtValueRestored ?>,
+<?php endif; ?>
+        ];
+    }
 <?php endif; ?>
 <?php if (!$isTree): ?>
 
