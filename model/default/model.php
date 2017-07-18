@@ -53,6 +53,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     private $_rt_softrestore;
 
     public function __construct(){
+        parent::__construct();
         $this->_rt_softdelete = [
             '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
 <?php if($generator->deletedAt): ?>
