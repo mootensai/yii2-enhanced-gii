@@ -708,7 +708,7 @@ if (array_key_exists($attribute, $fk) && $attribute) {
                     'style' => 'position : relative; margin-top : -9px'
                 ],
                 'value' => function(\$model, \$key) {
-                    \$value = \$model[$column_name];
+                    \$value = \$model['$column_name'];
                     
                     return
                        Html::beginTag('div', [
