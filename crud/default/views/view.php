@@ -157,11 +157,10 @@ if($provider<?= $rel[1] ?>->totalCount){
     ?>
     ];
     echo DetailView::widget([
-        'model' => $model,
-        'attributes' => $gridColumn
+        'model' => $model-><?= $name ?>,
+        'attributes' => $gridColumn<?= $rel[1] ?>
     ]);
     ?>
-</div>
 <?php endif; ?>
 <?php endforeach; ?>
 </div>
