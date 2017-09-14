@@ -13,6 +13,10 @@ Yii2 Gii (generator) with Relation
 
 https://www.paypal.me/yohanesc
 
+Endorse me on LinkedIn
+
+https://www.linkedin.com/in/yohanes-candrajaya-b68394102/
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
