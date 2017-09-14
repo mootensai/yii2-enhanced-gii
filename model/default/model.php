@@ -239,7 +239,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     {
 <?php if($generator->deletedBy): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
-        return $query->where(['<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
+        return $query->where(['<?= $tableName ?>.<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
 <?php else: ?>
         return new <?= $queryClassFullName ?>(get_called_class());
 <?php endif; ?>
