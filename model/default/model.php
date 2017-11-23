@@ -74,7 +74,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model
     */
-    public function relationNames()
+    public static function relationNames()
     {
         return [<?= "\n            '" . implode("',\n            '", array_keys($relations)) . "'\n        " ?>];
     }
@@ -237,7 +237,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
      */
     public static function find()
     {
-<?php if($generator->deletedBy): ?>
+<?php if($generator->deletedBy && array_key_exists($generator->deletedBy, $labels)): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
         return $query->where(['<?= $tableName ?>.<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
 <?php else: ?>
