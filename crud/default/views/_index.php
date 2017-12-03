@@ -16,25 +16,25 @@ use yii\widgets\DetailView;
     </div>
     <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3";?>" style="margin-top: 15px">
 <?php if($generator->pdf): ?>
-        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Print PDF')?>,
+        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Generar PDF')?>,
             ['pdf', <?= $urlParams ?>],
             [
                 'class' => 'btn btn-danger',
                 'target' => '_blank',
                 'data-toggle' => 'tooltip',
-                'title' => Yii::t('app', 'Will open the generated PDF file in a new window')
+                'title' => Yii::t('app', 'El PDF se abrirá en una nueva ventana')
             ]
         )?>
 <?php endif; ?>
 <?php if($generator->saveAsNew): ?>
-        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Save As New')?>,
+        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Duplicar Registro')?>,
             ['save-as-new', <?= $urlParams ?>], ['class' => 'btn btn-info'])?>
 <?php endif; ?>
         <?= "<?=" ?> Html::a(Yii::t('app', 'Update'), ['update', <?= $urlParams ?>], ['class' => 'btn btn-primary']) ?>
         <?= "<?=" ?> Html::a(Yii::t('app', 'Delete'), ['delete', <?= $urlParams ?>], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('app', '¿Desea eliminar este elemento?'),
                 'method' => 'post',
             ],
         ])
@@ -74,5 +74,3 @@ use yii\widgets\DetailView;
     ]);
     ?>
 </div>
-
-

@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
 <?= "<?php \n" ?>
     $gridColumn = [
-<?php 
+<?php
 if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
@@ -53,12 +53,12 @@ if ($tableSchema === false) {
     echo DetailView::widget([
         'model' => $model,
         'attributes' => $gridColumn
-    ]); 
+    ]);
 ?>
     </div>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    
+
     <div class="row">
 <?= "<?php\n" ?>
 if($provider<?= $rel[1] ?>->totalCount){

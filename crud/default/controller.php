@@ -190,9 +190,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 
         return $this->redirect(['index']);
     }
-<?php if ($generator->pdf):?>    
+<?php if ($generator->pdf):?>
     /**
-     * 
+     *
      * Export <?= $modelClass ?> information into PDF format.
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
@@ -250,7 +250,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         if (Yii::$app->request->post('_asnew') != '1') {
             $model = $this->findModel(<?= $actionParams; ?>);
         }
-    
+
         if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
@@ -260,7 +260,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         }
     }
 <?php endif; ?>
-    
+
     /**
      * Finds the <?= $modelClass ?> model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -284,12 +284,12 @@ if (count($pks) === 1) {
         if (($model = <?= $modelClass ?>::findOne(<?= $condition ?>)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
+            throw new NotFoundHttpException(<?= $generator->generateString('La página solicitada no existe.')?>);
         }
     }
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    
+
     /**
     * Action to load a tabular form grid
     * for <?= $rel[1] . "\n" ?>
@@ -306,7 +306,7 @@ if (count($pks) === 1) {
                 $row[] = [];
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
         } else {
-            throw new NotFoundHttpException(<?= $generator->generateString('The requested page does not exist.')?>);
+            throw new NotFoundHttpException(<?= $generator->generateString('La página solicitada no existe.')?>);
         }
     }
 <?php endif; ?>

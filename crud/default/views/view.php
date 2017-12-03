@@ -34,26 +34,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->pdf): ?>
 <?= "<?= " ?>
             <?= "
-             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
+             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ",
                 ['pdf', $urlParams],
                 [
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
                     'data-toggle' => 'tooltip',
-                    'title' => " . $generator->generateString('Will open the generated PDF file in a new window') . "
+                    'title' => " . $generator->generateString('Abrir PDF en una nueva ventana') . "
                 ]
             )?>\n"
             ?>
 <?php endif; ?>
 <?php if($generator->saveAsNew): ?>
-<?= "            <?= Html::a(" . $generator->generateString('Save As New') . ", ['save-as-new', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-info']) ?>" ?>
+<?= "            <?= Html::a(" . $generator->generateString('Duplicar Registro') . ", ['save-as-new', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-info']) ?>" ?>
 <?php endif;?>
             <?= "
-            <?= Html::a(" . $generator->generateString('Update') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(" . $generator->generateString('Delete') . ", ['delete', " . $generator->generateUrlParams() . "], [
+            <?= Html::a(" . $generator->generateString('Actualizar') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(" . $generator->generateString('Eliminar') . ", ['delete', " . $generator->generateUrlParams() . "], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => " . $generator->generateString('Are you sure you want to delete this item?') . ",
+                    'confirm' => " . $generator->generateString('¿Desea Eliminar este elemento?') . ",
                     'method' => 'post',
                 ],
             ])
@@ -90,7 +90,7 @@ if ($tableSchema === false) {
     </div>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    
+
     <div class="row">
 <?= "<?php\n" ?>
 if($provider<?= $rel[1] ?>->totalCount){

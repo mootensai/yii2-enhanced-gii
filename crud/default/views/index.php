@@ -39,9 +39,9 @@ $this->registerJs($search);
 <?php endif; ?>
 
     <p>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Agregar ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
 <?php if (!empty($generator->searchModelClass)): ?>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Busqueda Avanzada')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
     </p>
 <?php if (!empty($generator->searchModelClass)): ?>
@@ -49,8 +49,8 @@ $this->registerJs($search);
         <?= "<?= " ?> $this->render('_search', ['model' => $searchModel]); ?>
     </div>
     <?php endif; ?>
-<?php 
-if ($generator->indexWidgetType === 'grid'): 
+<?php
+if ($generator->indexWidgetType === 'grid'):
 ?>
 <?= "<?php \n" ?>
     $gridColumn = [
@@ -73,7 +73,7 @@ if ($generator->indexWidgetType === 'grid'):
 <?php
     endif;
 ?>
-<?php   
+<?php
     if ($tableSchema === false) :
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
@@ -83,7 +83,7 @@ if ($generator->indexWidgetType === 'grid'):
             }
         }
     else :
-        foreach ($tableSchema->getColumnNames() as $attribute): 
+        foreach ($tableSchema->getColumnNames() as $attribute):
             if (!in_array($attribute, $generator->skippedColumns)) :
 ?>
         <?= $generator->generateGridViewFieldIndex($attribute, $fk, $tableSchema)?>
@@ -101,9 +101,9 @@ if ($generator->indexWidgetType === 'grid'):
             ],
 <?php endif; ?>
         ],
-    ]; 
-<?php 
-    endif; 
+    ];
+<?php
+    endif;
 ?>
     ?>
     <?= "<?= " ?>GridView::widget([
@@ -130,7 +130,7 @@ if ($generator->indexWidgetType === 'grid'):
                     'label' => 'Full',
                     'class' => 'btn btn-default',
                     'itemsBefore' => [
-                        '<li class="dropdown-header">Export All Data</li>',
+                        '<li class="dropdown-header">Exportar Información</li>',
                     ],
                 ],
 <?php if(!$generator->pdf):?>
@@ -141,8 +141,8 @@ if ($generator->indexWidgetType === 'grid'):
             ]) ,
         ],
     ]); ?>
-<?php 
-else: 
+<?php
+else:
 ?>
     <?= "<?= " ?>ListView::widget([
         'dataProvider' => $dataProvider,
@@ -151,8 +151,8 @@ else:
             return $this->render('_index',['model' => $model, 'key' => $key, 'index' => $index, 'widget' => $widget, 'view' => $this]);
         },
     ]) ?>
-<?php 
-endif; 
+<?php
+endif;
 ?>
 
 </div>
