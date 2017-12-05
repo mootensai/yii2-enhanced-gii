@@ -26,6 +26,7 @@ echo "<?php\n";
 
 namespace <?= StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>;
 
+use kartik\mpdf\Pdf;
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
@@ -36,6 +37,10 @@ use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+<?php if(isset($relations)): ?>
+use yii\data\ArrayDataProvider;
+<?php endif; ?>
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -66,7 +71,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 ?>
             'access' => [
-                'class' => \yii\filters\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'rules' => [
                     [
                         'allow' => true,
@@ -111,13 +116,14 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * Displays a single <?= $modelClass ?> model.
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView(<?= $actionParams ?>)
     {
-        $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-        $provider<?= $rel[1]?> = new \yii\data\ArrayDataProvider([
+        $model = $this->findModel(<?= $actionParams ?>);
+        $provider<?= $rel[1]?> = new ArrayDataProvider([
             'allModels' => $model-><?= $name ?>,
         ]);
 <?php endif; ?>
@@ -136,6 +142,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * Creates a new <?= $modelClass ?> model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
@@ -155,6 +162,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * If update is successful, the browser will be redirected to the 'view' page.
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
      */
     public function actionUpdate(<?= $actionParams ?>)
     {
@@ -183,6 +192,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
      */
     public function actionDelete(<?= $actionParams ?>)
     {
@@ -192,16 +203,16 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 <?php if ($generator->pdf):?>
     /**
-     *
      * Export <?= $modelClass ?> information into PDF format.
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionPdf(<?= $actionParams ?>) {
         $model = $this->findModel(<?= $actionParams ?>);
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-        $provider<?= $rel[1] ?> = new \yii\data\ArrayDataProvider([
+        $provider<?= $rel[1] ?> = new ArrayDataProvider([
             'allModels' => $model-><?= $name; ?>,
         ]);
 <?php endif; ?>
@@ -216,11 +227,11 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php endforeach; ?>
         ]);
 
-        $pdf = new \kartik\mpdf\Pdf([
-            'mode' => \kartik\mpdf\Pdf::MODE_CORE,
-            'format' => \kartik\mpdf\Pdf::FORMAT_A4,
-            'orientation' => \kartik\mpdf\Pdf::ORIENT_PORTRAIT,
-            'destination' => \kartik\mpdf\Pdf::DEST_BROWSER,
+        $pdf = new Pdf([
+            'mode' => Pdf::MODE_CORE,
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
             'content' => $content,
             'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
             'cssInline' => '.kv-heading-1{font-size:18px}',
@@ -243,6 +254,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     *
     * @param mixed $id
     * @return mixed
+    * @throws NotFoundHttpException
     */
     public function actionSaveAsNew(<?= $actionParams; ?>) {
         $model = new <?= $modelClass ?>();
@@ -297,7 +309,7 @@ if (count($pks) === 1) {
     * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
     *
     * @return mixed
-    */
+    * @throws NotFoundHttpException    */
     public function actionAdd<?= $rel[1] ?>()
     {
         if (Yii::$app->request->isAjax) {
