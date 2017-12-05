@@ -18,7 +18,9 @@ echo "<?php\n";
 
 namespace <?= $generator->nsModel ?>\base;
 
+<?= (!$isTree) ? "use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
 use Yii;
+use yii\db\ActiveRecord;
 <?php if ($generator->createdAt || $generator->updatedAt): ?>
 use yii\behaviors\TimestampBehavior;
 <?php endif; ?>
@@ -46,7 +48,6 @@ use mootensai\behaviors\UUIDBehavior;
  */
 class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
-<?= (!$isTree) ? "    use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
 
 <?php if($generator->deletedBy): ?>
     private $_rt_softdelete;
