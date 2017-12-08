@@ -830,7 +830,7 @@ if (array_key_exists($attribute, $fk) && $attribute) {
         if ($column->phpType === 'boolean' || $column->dbType === 'tinyint(1)') {
             return "\$form->field($model, '$attribute')->checkbox()";
         } elseif ($column->type === 'text' || $column->dbType === 'tinytext') {
-            return "\$form->field($model, '$attribute')->textarea(['rows' => 6])";
+            return "\$form->field($model, '$attribute')->widget(\yii\\redactor\\widgets\\Redactor::className());";
         } elseif ($column->dbType === 'date') {
             return "\$form->field($model, '$attribute')->widget(\\kartik\\datecontrol\\DateControl::classname(), [
         'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATE,

@@ -48,6 +48,7 @@ use mootensai\behaviors\UUIDBehavior;
  */
 class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
+<?= (!$isTree) ? "use RelationTrait;\n" : "" ?>
 
 <?php if($generator->deletedBy): ?>
     private $_rt_softdelete;
