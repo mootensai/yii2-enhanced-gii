@@ -1127,4 +1127,14 @@ if (array_key_exists($attribute, $fk) && $attribute) {
         return $conditions;
     }
 
+    public function hasFile(){
+        /* @var $model Model */
+        $model = new $this->modelClass();
+        $attributeLabels = $model->attributeLabels();
+        foreach ($attributeLabels as $label){
+            echo $label;
+        }
+        return false;
+    }
+
 }

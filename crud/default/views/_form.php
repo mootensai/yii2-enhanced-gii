@@ -39,7 +39,12 @@ foreach ($relations as $name => $rel) {
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
+    <?php
+    if($generator->hasFile()):
+    echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php else: ?>
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+    <?php endif; ?>
 
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
