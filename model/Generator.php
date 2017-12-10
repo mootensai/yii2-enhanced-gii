@@ -11,9 +11,9 @@ namespace mootensai\enhancedgii\model;
 use mootensai\enhancedgii\BaseGenerator;
 use Yii;
 use yii\base\NotSupportedException;
+use yii\db\ActiveQuery;
 use yii\db\Schema;
 use yii\db\TableSchema;
-use yii\db\ActiveQuery;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 
@@ -30,7 +30,8 @@ use yii\helpers\Inflector;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends BaseGenerator {
+class Generator extends BaseGenerator
+{
 
     /* @var $tableSchema TableSchema */
 
@@ -66,21 +67,24 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function getName() {
+    public function getName()
+    {
         return 'I/O Generator (Model)';
     }
 
     /**
      * @inheritdoc
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return 'This generator generates model operations for the database.';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return array_merge(parent::rules(), [
             [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs'], 'filter', 'filter' => 'trim'],
             [['tableName', 'db'], 'required'],
@@ -105,7 +109,8 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array_merge(parent::attributeLabels(), [
             'db' => 'Database Connection ID',
             'modelClass' => 'Model Class',
@@ -134,7 +139,8 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function hints() {
+    public function hints()
+    {
         return array_merge(parent::hints(), [
             'db' => 'This is the ID of the DB application component.',
             'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
@@ -252,7 +258,8 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function stickyAttributes() {
+    public function stickyAttributes()
+    {
         return array_merge(parent::stickyAttributes(), [
             'db',
 //            'skippedColumns',
@@ -287,7 +294,8 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function requiredTemplates() {
+    public function requiredTemplates()
+    {
         return ['model.php'];
     }
 
@@ -296,7 +304,8 @@ class Generator extends BaseGenerator {
     /**
      * @inheritdoc
      */
-    public function generate() {
+    public function generate()
+    {
         $files = [];
         $relations = $this->generateRelations();
         $db = $this->getDbConnection();
@@ -370,7 +379,8 @@ class Generator extends BaseGenerator {
      * @param array $columns columns to check for autoIncrement property
      * @return boolean whether any of the specified columns is auto incremental.
      */
-    protected function isColumnAutoIncremental($table, $columns) {
+    protected function isColumnAutoIncremental($table, $columns)
+    {
         foreach ($columns as $column) {
             if (isset($table->columns[$column]) && $table->columns[$column]->autoIncrement) {
                 return true;
@@ -385,7 +395,8 @@ class Generator extends BaseGenerator {
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated attribute labels (name => label)
      */
-    public function generateLabels($table) {
+    public function generateLabels($table)
+    {
         $labels = [];
         foreach ($table->columns as $column) {
             if ($this->generateLabelsFromComments && !empty($column->comment)) {
@@ -423,7 +434,8 @@ class Generator extends BaseGenerator {
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated validation rules
      */
-    public function generateRules($table) {
+    public function generateRules($table)
+    {
         $types = [];
         $lengths = [];
         foreach ($table->columns as $column) {
@@ -431,9 +443,9 @@ class Generator extends BaseGenerator {
                 continue;
             }
             if (!$column->allowNull && $column->defaultValue === null) {
-                if($this->isTree && in_array($column->name,['lft', 'rgt', 'lvl'])){
+                if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl'])) {
 
-                }else{
+                } else {
                     $types['required'][] = $column->name;
                 }
             }
@@ -460,6 +472,11 @@ class Generator extends BaseGenerator {
                     break;
                 default: // strings
                     if ($column->size > 0) {
+                        if ($this->containsAnnotation($column, "@file")) {
+                            $types['file'][] = $column->name . "File";
+                        } elseif ($this->containsAnnotation($column, "@image")) {
+                            $types['file'][] = $column->name . "Image";
+                        }
                         $lengths[$column->size][] = $column->name;
                     } else {
                         $types['string'][] = $column->name;
@@ -504,4 +521,27 @@ class Generator extends BaseGenerator {
         return $rules;
     }
 
+    /**
+     * @param $column
+     * @param $annotation
+     * @return bool
+     */
+    public function containsAnnotation($column, $annotation)
+    {
+        return substr($column->comment, 0) === $annotation;
+    }
+
+    /**
+     * @param $comment
+     * @return mixed
+     */
+    public function removeAnnotation($comment)
+    {
+        if (substr($comment, 0) === "@file") {
+            return str_replace("@file", "", $comment);
+        } elseif (substr($comment, 0) === "@image") {
+            return str_replace("@image", "", $comment);
+        }
+        return $comment;
+    }
 }
