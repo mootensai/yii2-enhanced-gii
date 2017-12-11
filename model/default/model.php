@@ -46,7 +46,7 @@ use mootensai\behaviors\UUIDBehavior;
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : '\\' . ltrim($generator->baseModelClass, '\\') . "\n" ?>
+class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
 <?= (!$isTree) ? "use RelationTrait;\n" : "" ?>
 

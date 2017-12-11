@@ -21,23 +21,35 @@ use Yii;
 use \<?= $generator->nsModel ?>\base\<?= $className ?> as Base<?= $className ?>;
 
 /**
- * This is the model class for table "<?= $tableName ?>".
- */
+* This is the model class for table "<?= $tableName ?>".
+*/
 class <?= $className ?> extends Base<?= $className . "\n" ?>
-{	
+{
+<?php foreach ($generator->tableSchema->columns as $column) {
+    if ($generator->containsAnnotation($column, "@file")) {
+        echo "public $" . $column->name . "File;\n";
+        echo "if (" . $column->name . "File != null) {
+                $column->name = 'parte_' . $model->no_parte;
+                $model->filePicture->saveAs('images/partes/' . $partePicture . '.' . $model->filePicture->extension);
+                $model->imagen = $partePicture . '.' . $model->filePicture->extension;
+            }";
+    } elseif ($generator->containsAnnotation($column, "@image")) {
+        echo "public $" . $column->name . "Image;\n";
+    }
+} ?>
 <?php if ($generator->generateAttributeHints): ?>
     /**
-     * @inheritdoc
-     */
+    * @inheritdoc
+    */
     public function attributeHints()
     {
-        return [
-<?php foreach ($labels as $name => $label): ?>
-<?php if (!in_array($name, $generator->skippedColumns)): ?>
+    return [
+    <?php foreach ($labels as $name => $label): ?>
+        <?php if (!in_array($name, $generator->skippedColumns)): ?>
             <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-<?php endif; ?>
-<?php endforeach; ?>
-        ];
+        <?php endif; ?>
+    <?php endforeach; ?>
+    ];
     }
 <?php endif; ?>
 }

@@ -41,6 +41,9 @@ use yii\filters\AccessControl;
 <?php if(isset($relations)): ?>
 use yii\data\ArrayDataProvider;
 <?php endif; ?>
+<?php if($generator->hasFile($generator->tableSchema)):?>
+use yii\web\UploadedFile;
+<?php endif; ?>
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -144,18 +147,33 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      * @return mixed
      * @throws \yii\db\Exception
      */
-    public function actionCreate()
-    {
-        $model = new <?= $modelClass ?>();
+     public function actionCreate()
+     {
+         $model = new <?= $modelClass ?>();
+         if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>)){
+             <?php
+             foreach ($generator->tableSchema->columns as $column) {
+                 if ($generator->containsAnnotation($column, "@file")) {
+                     echo "\$model->" . $column->name . "File = UploadedFile::getInstance(\$model, '" . $column->name . "File');\n";
 
-        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+                 } elseif ($generator->containsAnnotation($column, "@image")) {
+                     echo "\$model->" . $column->name . "Image = UploadedFile::getInstance(\$model, '" . $column->name . "Image');\n";
+                 }
+             }
+             ?>
+             if($model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
+                 return $this->redirect(['view', <?= $urlParams ?>]);
+             }
+                 return $this->render('create', [
+                 'model' => $model,
+                 ]);
+             }
+             else {
+                 return $this->render('create', [
+                 'model' => $model,
+                 ]);
+             }
+     }
 
     /**
      * Updates an existing <?= $modelClass ?> model.

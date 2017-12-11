@@ -1,4 +1,5 @@
 <?php
+
 namespace mootensai\enhancedgii\crud;
 
 use Yii;
@@ -349,19 +350,19 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                     || $file === '_data.php' || $file === 'saveAsNew.php' || $file === '_pdf.php') {
                     continue;
                 }
-                if($this->indexWidgetType != 'list' && $file === '_index.php') {
+                if ($this->indexWidgetType != 'list' && $file === '_index.php') {
                     continue;
                 }
-                if($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_form.php'
-                    || $file === 'create.php' || $file === 'update.php'
-                    )){
+                if ($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_form.php'
+                        || $file === 'create.php' || $file === 'update.php'
+                    )) {
                     continue;
                 }
-                if(!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')){
+                if (!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')) {
                     continue;
                 }
                 if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                    $fileName = ($isTree) ? str_replace('Nested','',$file) : $file;
+                    $fileName = ($isTree) ? str_replace('Nested', '', $file) : $file;
                     $files[] = new CodeFile("$viewPath/$fileName", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                         'isTree' => $isTree
@@ -380,7 +381,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                 ]));
             }
 
-            if($this->saveAsNew){
+            if ($this->saveAsNew) {
                 $files[] = new CodeFile("$viewPath/saveAsNew.php", $this->render("views/saveAsNew.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                 ]));
@@ -403,7 +404,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
                             ]));
                         }
-                    }else if(isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)){
+                    } else if (isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)) {
                         $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefone.php", [
                             'relName' => $name,
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
@@ -629,14 +630,14 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
 //        if($column->autoIncrement){
 //            return "";
 //        } else
-if (array_key_exists($attribute, $fk) && $attribute) {
+        if (array_key_exists($attribute, $fk) && $attribute) {
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
             $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
 //            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
-           if ($column->allowNull)
-           { $output = "[
+            if ($column->allowNull) {
+                $output = "[
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
                 'value' => function(\$model){
@@ -652,10 +653,9 @@ if (array_key_exists($attribute, $fk) && $attribute) {
                 ],
                 'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
             ],\n";
-           return $output;
-           }
-           else
-           { $output = "[
+                return $output;
+            } else {
+                $output = "[
                 'attribute' => '$attribute',
                 'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
                 'value' => function(\$model){
@@ -668,8 +668,8 @@ if (array_key_exists($attribute, $fk) && $attribute) {
                 ],
                 'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
             ],\n";
-           return $output;
-           }
+                return $output;
+            }
         } else {
             return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
         }
@@ -752,6 +752,10 @@ if (array_key_exists($attribute, $fk) && $attribute) {
                 ],
             ]
         ]";
+        } elseif ($this->containsAnnotation($column, "@file")) {
+            return "";
+        } elseif ($this->containsAnnotation($column, "@image")) {
+            return "";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[self::REL_TABLE]);
@@ -802,12 +806,12 @@ if (array_key_exists($attribute, $fk) && $attribute) {
      */
     public function generateActiveField($attribute, $fk, $tableSchema = null, $relations = null, $isTree = false)
     {
-        if ($isTree){
+        if ($isTree) {
             $model = "\$node";
-        } else if (is_null($relations)){
+        } else if (is_null($relations)) {
             $model = "\$model";
-        }else{
-            $model = '$'.$relations[self::REL_CLASS];
+        } else {
+            $model = '$' . $relations[self::REL_CLASS];
         }
 
         if (is_null($tableSchema)) {
@@ -867,6 +871,10 @@ if (array_key_exists($attribute, $fk) && $attribute) {
             ]
         ],
     ]);";
+        } elseif ($this->containsAnnotation($column, "@file")) {
+            return "\$form->field($model, '" . $column->name . "File')->fileInput()";
+        } elseif ($this->containsAnnotation($column, "@image")) {
+            return "\$form->field($model, '" . $column->name . "Image')->fileInput()";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[3]);
@@ -893,7 +901,7 @@ if (array_key_exists($attribute, $fk) && $attribute) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field($model, '$attribute')->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder'])";
             } else {
@@ -997,7 +1005,8 @@ if (array_key_exists($attribute, $fk) && $attribute) {
      * Generates validation rules for the search model.
      * @return array the generated validation rules
      */
-    public function generateSearchRules() {
+    public function generateSearchRules()
+    {
         if (($table = $this->getTableSchema()) === false) {
             return ["[['" . implode("', '", $this->getColumnNames()) . "'], 'safe']"];
         }
@@ -1040,7 +1049,8 @@ if (array_key_exists($attribute, $fk) && $attribute) {
      * Generates the attribute labels for the search model.
      * @return array the generated attribute labels (name => label)
      */
-    public function generateSearchLabels() {
+    public function generateSearchLabels()
+    {
         /* @var $model Model */
         $model = new $this->modelClass();
         $attributeLabels = $model->attributeLabels();
@@ -1067,7 +1077,8 @@ if (array_key_exists($attribute, $fk) && $attribute) {
     /**
      * @return array searchable attributes
      */
-    public function getSearchAttributes() {
+    public function getSearchAttributes()
+    {
         return $this->getColumnNames();
     }
 
@@ -1075,7 +1086,8 @@ if (array_key_exists($attribute, $fk) && $attribute) {
      * Generates search conditions
      * @return array
      */
-    public function generateSearchConditions() {
+    public function generateSearchConditions()
+    {
         $columns = [];
         if (($table = $this->getTableSchema()) === false) {
             $class = $this->modelClass;
@@ -1127,16 +1139,43 @@ if (array_key_exists($attribute, $fk) && $attribute) {
         return $conditions;
     }
 
-    public function hasFile(){
-        /* @var $model Model */
-        $model = new $this->modelClass();
-        $attributeLabels = $model->attributeLabels();
-        foreach ($attributeLabels as $label){
-            echo $label;
+    public function hasFile($table)
+    {
+        foreach ($table->columns as $column) {
+            if ($this->containsAnnotation($column, "@file") || $this->containsAnnotation($column, "@image")) {
+                return true;
+            }
         }
         return false;
     }
 
+    /**
+     * @param $column
+     * @param $annotation
+     * @return bool
+     */
+    public function containsAnnotation($column, $annotation)
+    {
+        if (substr($column->comment, 0, 1) !== "@")
+            return false;
+        return substr($column->comment, 0, strlen($annotation)) === $annotation;
+    }
+
+    /**
+     * @param $comment
+     * @return mixed
+     */
+    public function removeAnnotation($comment)
+    {
+        if (substr($comment, 0, 1) !== "@")
+            return $comment;
+        if (substr($comment, 0, 5) === "@file") {
+            return str_replace("@file", "", $comment);
+        } elseif (substr($comment, 0, 6) === "@image") {
+            return str_replace("@image", "", $comment);
+        }
+        return $comment;
+    }
 
 
 }

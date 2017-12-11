@@ -400,7 +400,7 @@ class Generator extends BaseGenerator
         $labels = [];
         foreach ($table->columns as $column) {
             if ($this->generateLabelsFromComments && !empty($column->comment)) {
-                $labels[$column->name] = $column->comment;
+                $labels[$column->name] = $this->removeAnnotation($column->comment);
             } elseif (!strcasecmp($column->name, 'id')) {
                 $labels[$column->name] = 'ID';
             } else {
@@ -528,7 +528,9 @@ class Generator extends BaseGenerator
      */
     public function containsAnnotation($column, $annotation)
     {
-        return substr($column->comment, 0) === $annotation;
+        if (substr($column->comment, 0, 1) !== "@")
+            return false;
+        return substr($column->comment, 0, strlen($annotation)) === $annotation;
     }
 
     /**
@@ -537,9 +539,11 @@ class Generator extends BaseGenerator
      */
     public function removeAnnotation($comment)
     {
-        if (substr($comment, 0) === "@file") {
+        if (substr($comment, 0, 1) !== "@")
+            return $comment;
+        if (substr($comment, 0, 5) === "@file") {
             return str_replace("@file", "", $comment);
-        } elseif (substr($comment, 0) === "@image") {
+        } elseif (substr($comment, 0, 6) === "@image") {
             return str_replace("@image", "", $comment);
         }
         return $comment;
