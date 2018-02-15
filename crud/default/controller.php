@@ -207,7 +207,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php endif; ?>
 <?php endforeach; ?>
 
-        $content = $this->renderAjax('_pdf', [
+        $content = $this->renderPartial('_pdf', [
             'model' => $model,
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
@@ -216,6 +216,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php endforeach; ?>
         ]);
 
+        Yii::$app->response->clearOutputBuffers();
         $pdf = new \kartik\mpdf\Pdf([
             'mode' => \kartik\mpdf\Pdf::MODE_CORE,
             'format' => \kartik\mpdf\Pdf::FORMAT_A4,
