@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="row">
+        <div class="col-sm-12">
 <?= "<?php \n" ?>
     $gridColumn = [
 <?php
@@ -87,11 +88,13 @@ if ($tableSchema === false) {
         'attributes' => $gridColumn
     ]);
 ?>
+        </div>
     </div>
 <?php foreach ($relations as $name => $rel): ?>
 <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
 
     <div class="row">
+        <div class="col-sm-12">
 <?= "<?php\n" ?>
 if($provider<?= $rel[1] ?>->totalCount){
     $gridColumn<?= $rel[1] ?> = [
@@ -129,7 +132,7 @@ if($provider<?= $rel[1] ?>->totalCount){
     ]);
 }
 <?= "?>\n" ?>
-
+        </div>
     </div>
 <?php elseif(empty($rel[2])): ?>
     <div class="row">
