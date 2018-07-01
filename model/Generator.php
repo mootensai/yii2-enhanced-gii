@@ -38,6 +38,7 @@ class Generator extends BaseGenerator
     public $nsModel = 'app\models';
     public $nameAttribute = 'name, title, username';
     public $hiddenColumns = 'id, lock';
+    public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $generateQuery = true;
     public $queryNs = 'app\models';
@@ -88,7 +89,7 @@ class Generator extends BaseGenerator
         return array_merge(parent::rules(), [
             [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs'], 'filter', 'filter' => 'trim'],
             [['tableName', 'db'], 'required'],
-            [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
+            [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
             [['nsModel', 'baseModelClass', 'queryNs', 'queryBaseClass'], 'match', 'pattern' => '/^[\w\\\\]+$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['modelClass', 'baseModelClass', 'db'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
@@ -99,7 +100,7 @@ class Generator extends BaseGenerator
             [['generateRelations'], 'in', 'range' => [self::RELATIONS_NONE, self::RELATIONS_ALL, self::RELATIONS_ALL_INVERSE]],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
 
-            [['skippedColumns', 'skippedRelations',
+            [['skippedTables', 'skippedColumns', 'skippedRelations',
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue'], 'safe'],
@@ -113,6 +114,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::attributeLabels(), [
             'db' => 'Database Connection ID',
+            'moduleName' => 'Module Name',
             'modelClass' => 'Model Class',
             'timestampValue' => 'Value',
             'blameableValue' => 'Value',
@@ -143,6 +145,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::hints(), [
             'db' => 'This is the ID of the DB application component.',
+            'moduleName' => 'The module where the models will be placed',
             'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
@@ -155,6 +158,8 @@ class Generator extends BaseGenerator
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
+            'skippedTables' => 'Fill this field with the table name that you dont want to generate files. 
+                You can fill multiple tables, separated by comma (,).',
             'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
                 You can fill multiple relations, separated by comma (,). You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
@@ -309,13 +314,25 @@ class Generator extends BaseGenerator
         $files = [];
         $relations = $this->generateRelations();
         $db = $this->getDbConnection();
+        if (isset($this->moduleName)) {
+            $this->nsModel = "app\modules\\$this->moduleName\models";
+            $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
+            $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
+        }
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
+        $this->skippedTables = ($this->skippedTables) ? explode(',', str_replace(' ', '', $this->skippedTables)) : [];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [];
         $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
+        $this->skippedTables = array_filter($this->skippedTables);
         $this->skippedColumns = array_filter($this->skippedColumns);
         $this->skippedRelations = array_filter($this->skippedRelations);
 //        $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [];
         foreach ($this->getTableNames() as $tableName) {
+
+            if (in_array($tableName, $this->skippedTables)):
+                continue;
+            endif;
+
             // preparation :
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
@@ -367,6 +384,7 @@ class Generator extends BaseGenerator
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
+        $this->skippedTables = (is_array($this->skippedTables)) ? implode(', ', $this->skippedTables) : '';
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 

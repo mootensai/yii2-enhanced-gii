@@ -25,6 +25,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
 
     public $nameAttribute = 'name, title, username';
     public $hiddenColumns = 'id, lock';
+    public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
@@ -56,7 +57,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     public $cancelable;
     public $saveAsNew;
     public $pdf;
-    public $viewPath = '@app/views';
+    public $viewPath = "@app/modules/module/views";
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $relations;
@@ -87,7 +88,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         return array_merge(parent::rules(), [
             [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
-            [['tableName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
+            [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
 //            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
             [['modelClass', 'baseControllerClass', 'searchModelClass', 'db', 'queryClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
@@ -101,7 +102,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
 //            [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            [['viewPath', 'skippedRelations', 'skippedColumns',
+            [['viewPath', 'skippedRelations', 'skippedColumns','skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
                 'hiddenColumns', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'UUIDColumn', 'saveAsNew'], 'safe'],
@@ -115,6 +116,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     {
         return array_merge(parent::attributeLabels(), [
             'db' => 'Database Connection ID',
+            'moduleName' => 'Module Name',
             'modelClass' => 'Model Class',
             'generateQuery' => 'Generate ActiveQuery',
             'queryNs' => 'ActiveQuery Namespace',
@@ -140,6 +142,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
     {
         return array_merge(parent::hints(), [
             'db' => 'This is the ID of the DB application component.',
+            'moduleName' => 'The module where the files will be placed',
             'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
@@ -152,6 +155,8 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
+            'skippedTables' => 'Fill this field with the table name that you dont want to generate files. 
+                You can fill multiple tables, separated by comma (,).',
             'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
@@ -243,6 +248,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         return array_merge(parent::stickyAttributes(), [
             'db',
             'skippedColumns',
+            'skippedTables',
             'hiddenColumns',
             'nameAttribute',
             'nsModel',
@@ -283,13 +289,24 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         $relations = $this->generateRelations();
         $this->relations = $relations;
         $db = $this->getDbConnection();
+        if (isset($this->moduleName)) {
+            $this->nsModel = "app\modules\\$this->moduleName\models";
+            $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
+            $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
+            $this->nsController = "app\modules\\$this->moduleName\controllers";
+        }
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
+        $this->skippedTables = ($this->skippedTables) ? explode(',', str_replace(' ', '', $this->skippedTables)) : [$this->skippedTables];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [$this->skippedColumns];
         $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [$this->skippedRelations];
+        $this->skippedTables = array_filter($this->skippedTables);
         $this->skippedColumns = array_filter($this->skippedColumns);
         $this->skippedRelations = array_filter($this->skippedRelations);
         foreach ($this->getTableNames() as $tableName) {
+            if (in_array($tableName, $this->skippedTables)):
+                continue;
+            endif;
             // model :
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
@@ -433,6 +450,7 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
         $this->hiddenColumns = (is_array($this->hiddenColumns)) ? implode(', ', $this->hiddenColumns) : '';
+        $this->skippedTables = (is_array($this->skippedTables)) ? implode(', ', $this->skippedTables) : '';
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 
@@ -455,6 +473,9 @@ class Generator extends \mootensai\enhancedgii\BaseGenerator
      */
     public function getViewPath()
     {
+        if (isset($this->moduleName)) {
+            return Yii::getAlias("@app/modules/{$this->moduleName}/views/" . $this->getControllerID());
+        }
         if (empty($this->viewPath)) {
             return Yii::getAlias('@app/views/' . $this->getControllerID());
         } else {

@@ -17,6 +17,7 @@ use yii\helpers\Inflector;
 
 abstract class BaseGenerator extends \yii\gii\Generator
 {
+    public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
     const RELATIONS_NONE = 'none';
     const RELATIONS_ALL = 'all';
     const RELATIONS_ALL_INVERSE = 'all-inverse';
@@ -38,13 +39,15 @@ abstract class BaseGenerator extends \yii\gii\Generator
     public $tableSchema;
     public $tableName;
     public $modelClass;
+    public $moduleName;
     public $baseModelClass = 'ActiveRecord';
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
     public $skippedRelations;
     public $useSchemaName = true;
 
-    static public function getTreeColumns(){
+    static public function getTreeColumns()
+    {
         return ['id', 'root', 'lft', 'rgt', 'lvl', 'name', 'icon', 'icon_type', 'active', 'selected', 'disabled', 'readonly',
             'visible', 'collapsed', 'movable_u', 'movable_d', 'movable_l', 'movable_r', 'removable', 'removable_all'];
     }
@@ -76,6 +79,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
         } elseif (!Yii::$app->get($this->db) instanceof Connection) {
             $this->addError('db', 'The "db" application component must be a DB connection instance.');
         }
+    }
+
+    public function validateModuleExist(){
+        //TODO validate that module exist
     }
 
     /**
@@ -309,10 +316,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
                     $relations[$table->fullName][$leftRelationName][0] =
                         rtrim($relations[$table->fullName][$leftRelationName][0], ';')
-                        . "->inverseOf('".lcfirst($rightRelationName)."');";
+                        . "->inverseOf('" . lcfirst($rightRelationName) . "');";
                     $relations[$refTableSchema->fullName][$rightRelationName][0] =
                         rtrim($relations[$refTableSchema->fullName][$rightRelationName][0], ';')
-                        . "->inverseOf('".lcfirst($leftRelationName)."');";
+                        . "->inverseOf('" . lcfirst($leftRelationName) . "');";
                 }
             }
         }
@@ -524,6 +531,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
      */
     public function generateTableName($tableName)
     {
+
         if (!$this->useTablePrefix) {
             return $tableName;
         }
