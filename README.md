@@ -2,20 +2,7 @@
 Yii2 Gii (generator) with Relation
 
 [![Latest Stable Version](https://poser.pugx.org/mootensai/yii2-enhanced-gii/v/stable)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![License](https://poser.pugx.org/mootensai/yii2-enhanced-gii/license)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![Total Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/downloads)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![Monthly Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/monthly)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![Daily Downloads](https://poser.pugx.org/mootensai/yii2-enhanced-gii/d/daily)](https://packagist.org/packages/mootensai/yii2-enhanced-gii)
-[![Join the chat at https://gitter.im/mootensai/yii2-enhanced-gii](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootensai/yii2-enhanced-gii?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
-## Support
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/mootensai/)
-
-https://www.paypal.me/yohanesc
-
-Endorse me on LinkedIn
-
-https://www.linkedin.com/in/yohanes-candrajaya-b68394102/
 
 ## Installation
 
@@ -36,9 +23,6 @@ or add
 "kartik-v/yii2-mpdf": "dev-master",
 "kartik-v/yii2-tree-manager": "dev-master"
 ```
->add `"kartik-v/yii2-mpdf": "dev-master",` if you want to use pdf exporter 
-
->add `"kartik-v/yii2-tree-manager": "dev-master",` if you want to use tree/nested relation table
 
 to the `require` section of your `composer.json` file.
 
@@ -48,21 +32,16 @@ Then you must add this code at your config\main.php.
 
 ```php
 'modules' => [
-... //your another module
       'gridview' => [
           'class' => '\kartik\grid\Module',
-          // see settings on http://demos.krajee.com/grid#module
       ],
       'datecontrol' => [
           'class' => '\kartik\datecontrol\Module',
-          // see settings on http://demos.krajee.com/datecontrol#module
       ],
       // If you use tree table
       'treemanager' =>  [
           'class' => '\kartik\tree\Module',
-          // see settings on http://demos.krajee.com/tree-manager#module
       ]
-... // your another module
     ],
 ```
 See gridview settings on http://demos.krajee.com/grid#module
@@ -82,6 +61,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 3. Generate Blameable Behavior
 4. Generate UUID Behavior
 5. Generate Soft Delete Behavior (NEW! Todo : Generate data filtering for relation data, e.g. not show deleted children of hasMany )
+6. Specify module destination for files
 
 ## CRUD :
 1. Generate all CRUD with wildcard (*) of table
@@ -93,6 +73,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
 7. Set pluralize or not
 8. PDF Printable view
 9. Expandable / collapsible row at index grid view for related data
+10. Specify module destination for files
 
 ## Migration Generator :
 1. Generate migration from your database structure (based on : https://github.com/deesoft/yii2-gii)
@@ -137,7 +118,8 @@ I'm open for any improvement
 
 
 # Thanks To
-1. Jiwanndaru (jiwanndaru@gmail.com) for creating the tradition
-2. kartik-v (https://github.com/kartik-v) for most of widgets
-3. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
-4. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
+1. mootensai (https://github.com/mootensai/yii2-enhanced-gii) for the system structure
+2. Jiwanndaru (jiwanndaru@gmail.com) for creating the tradition
+3. kartik-v (https://github.com/kartik-v) for most of widgets
+4. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
+5. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
