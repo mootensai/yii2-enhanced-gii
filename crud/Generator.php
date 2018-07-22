@@ -839,7 +839,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\$form->field($model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none',v-model='$attribute']);";
+            return "\$form->field($model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none']);";
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
@@ -922,11 +922,11 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field($model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', v-model='$attribute'])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder'])";
+                return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder', v-model='$attribute'])";
             } else {
-                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder'])";
+                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder', v-model='$attribute'])";
             }
         }
     }

@@ -33,7 +33,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
 
     /**
      * @inheritdoc
-     * @return <?= $modelFullClassName ?>[]|array
+     * @return <?= $modelFullClassName ?>Query[]|array
      */
     public function all($db = null)
     {
@@ -42,7 +42,7 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
 
     /**
      * @inheritdoc
-     * @return <?= $modelFullClassName ?>|array|null
+     * @return <?= $modelFullClassName ?>Query|array|null
      */
     public function one($db = null)
     {
