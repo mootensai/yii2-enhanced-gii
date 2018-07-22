@@ -922,11 +922,11 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
                 return "\$form->field($model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', v-model='$attribute'])";
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', v-model=>'$attribute'])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder', v-model='$attribute'])";
+                return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder', v-model=>'$attribute'])";
             } else {
-                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder', v-model='$attribute'])";
+                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder', v-model=>'$attribute'])";
             }
         }
     }
