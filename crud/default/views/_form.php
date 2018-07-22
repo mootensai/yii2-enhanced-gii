@@ -45,7 +45,7 @@ $numberInputs = count($tableSchema->getColumnNames());
 foreach ($tableSchema->getColumnNames() as $key => $attribute) {
     if (!in_array($attribute, $generator->skippedColumns)) {
         //TODO Get the number of inputs divide in rows and add the col-sm-size to each attribute
-        echo "'$attribute' => '',\n";
+        echo "'$attribute' => isset(\$model->$attribute) ? \$model->$attribute : '',\n";
     }
 }
 ?>
@@ -56,6 +56,7 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
 . "}"),
 ]
 ]);
+?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?php
