@@ -60,7 +60,7 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?php
-    if($generator->hasFile($tableSchema)):
+    if ($generator->hasFile($tableSchema)):
         echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data','class' => 'disable-submit-buttons']]); ?>
     <?php else: ?>
         <?= "<?php " ?>$form = ActiveForm::begin(['options' => ['class' => 'disable-submit-buttons']]); ?>
@@ -69,11 +69,9 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
     <?php
-    $numberInputs = count($tableSchema->getColumnNames());
     $rowCount = 0;
     $bootstrapColWidth = 12 / $generator->formColumns;
     echo "<div class='row'>";
-
     foreach ($tableSchema->getColumnNames() as $key => $attribute) {
         if (!in_array($attribute, $generator->skippedColumns)) {
             echo "<div class='col-md-$bootstrapColWidth'>";
