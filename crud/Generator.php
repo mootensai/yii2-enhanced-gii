@@ -839,7 +839,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $tableSchema = $this->getTableSchema();
         }
         if (in_array($attribute, $this->hiddenColumns)) {
-            return "\$form->field($model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none']);";
+            return "\$form->field($model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none',v-model='$attribute']);";
         }
         $placeholder = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {

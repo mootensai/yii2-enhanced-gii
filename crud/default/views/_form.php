@@ -13,6 +13,7 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use inquid\vue\Vue;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
@@ -35,8 +36,26 @@ foreach ($relations as $name => $rel) {
     }
 }
 ?>
-?>
-
+Vue::begin([
+    'jsName' => '<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>'
+    'id' => "<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form",
+    'data' => [
+        <?php
+        $numberInputs = count($tableSchema->getColumnNames());
+        foreach ($tableSchema->getColumnNames() as $key => $attribute) {
+            if (!in_array($attribute, $generator->skippedColumns)) {
+                //TODO Get the number of inputs divide in rows and add the col-sm-size to each attribute
+                echo "'$attribute' => '',\n";
+            }
+        }
+        ?>
+    ],
+    'methods' => [
+        'reverseMessage' => new yii\web\JsExpression("function(){"
+        . "this.message =1; "
+        . "}"),
+    ]
+]);
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?php
@@ -112,5 +131,5 @@ foreach ($relations as $name => $rel) {
     </div>
 
     <?= "<?php " ?>ActiveForm::end(); ?>
-
+    <?= "<?php " ?>Vue::end(); ?>
 </div>
