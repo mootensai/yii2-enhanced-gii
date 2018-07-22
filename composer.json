@@ -34,7 +34,7 @@
         "kartik-v/yii2-datecontrol": "@dev",
         "faryshta/yii2-disable-submit-buttons": "*",
         "inquid/yii2-vue": "*",
-        "inquid/yii2-fpdf": "dev-master",
+        "inquid/yii2-fpdf": "*",
         "dominus77/yii2-sweetalert2-widget": "*"
     },
     "autoload": {
