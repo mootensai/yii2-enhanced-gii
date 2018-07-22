@@ -37,32 +37,32 @@ foreach ($relations as $name => $rel) {
 }
 ?>
 Vue::begin([
-    'jsName' => '<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>'
-    'id' => "<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form",
-    'data' => [
-        <?php
-        $numberInputs = count($tableSchema->getColumnNames());
-        foreach ($tableSchema->getColumnNames() as $key => $attribute) {
-            if (!in_array($attribute, $generator->skippedColumns)) {
-                //TODO Get the number of inputs divide in rows and add the col-sm-size to each attribute
-                echo "'$attribute' => '',\n";
-            }
-        }
-        ?>
-    ],
-    'methods' => [
-        'reverseMessage' => new yii\web\JsExpression("function(){"
-        . "this.message =1; "
-        . "}"),
-    ]
+'jsName' => '<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>',
+'id' => "<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form",
+'data' => [
+<?php
+$numberInputs = count($tableSchema->getColumnNames());
+foreach ($tableSchema->getColumnNames() as $key => $attribute) {
+    if (!in_array($attribute, $generator->skippedColumns)) {
+        //TODO Get the number of inputs divide in rows and add the col-sm-size to each attribute
+        echo "'$attribute' => '',\n";
+    }
+}
+?>
+],
+'methods' => [
+'reverseMessage' => new yii\web\JsExpression("function(){"
+. "this.message =1; "
+. "}"),
+]
 ]);
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?php
     if($generator->hasFile($tableSchema)):
-    echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data','class' => 'disable-submit-buttons']]); ?>
+        echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data','class' => 'disable-submit-buttons']]); ?>
     <?php else: ?>
-    <?= "<?php " ?>$form = ActiveForm::begin(['options' => ['class' => 'disable-submit-buttons']]); ?>
+        <?= "<?php " ?>$form = ActiveForm::begin(['options' => ['class' => 'disable-submit-buttons']]); ?>
     <?php endif; ?>
 
     <?= "<?= " ?>$form->errorSummary($model); ?>

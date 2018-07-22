@@ -122,7 +122,7 @@ if ($generator->indexWidgetType === 'grid'):
         'toolbar' => [
             '{export}',
             ExportMenu::widget([
-                'fileName'=>'<?= Inflector::camel2id($baseModelClass) ?>',
+                'filename'=>'<?= Inflector::camel2id($baseModelClass) ?>',
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
