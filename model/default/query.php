@@ -4,7 +4,7 @@
      */
 
 /* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/* @var $generator inquid\enhancedgii\crud\Generator */
 /* @var $className string class name */
 /* @var $modelClassName string related model class name */
 

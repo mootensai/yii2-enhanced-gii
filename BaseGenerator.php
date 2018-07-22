@@ -6,7 +6,7 @@
  * Time: 3:56 PM
  */
 
-namespace mootensai\enhancedgii;
+namespace inquid\enhancedgii;
 
 use Yii;
 use yii\base\NotSupportedException;

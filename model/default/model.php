@@ -4,7 +4,7 @@
  */
 
 /* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\model\Generator */
+/* @var $generator inquid\enhancedgii\model\Generator */
 /* @var $tableName string full table name */
 /* @var $className string class name */
 /* @var $queryClassName string query class name */
@@ -73,7 +73,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php if (!$isTree): ?>
 
     /**
-    * This function helps \mootensai\relation\RelationTrait runs faster
+    * This function helps \inquid\relation\RelationTrait runs faster
     * @return array relation names of this model
     */
     public function relationNames()

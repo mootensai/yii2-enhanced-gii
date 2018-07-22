@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/* @var $generator \inquid\enhancedgii\crud\Generator */
 
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;

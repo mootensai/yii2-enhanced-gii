@@ -6,9 +6,9 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace mootensai\enhancedgii\model;
+namespace inquid\enhancedgii\model;
 
-use mootensai\enhancedgii\BaseGenerator;
+use inquid\enhancedgii\BaseGenerator;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;

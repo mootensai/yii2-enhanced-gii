@@ -4,7 +4,7 @@ use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/* @var $generator inquid\enhancedgii\crud\Generator */
 $urlParams = $generator->generateUrlParams();
 $tableSchema = $generator->getTableSchema();
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];

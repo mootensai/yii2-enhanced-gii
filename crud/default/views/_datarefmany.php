@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/* @var $generator \inquid\enhancedgii\crud\Generator */
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[3]);
 $fk = $generator->generateFK($tableSchema);
 ?>

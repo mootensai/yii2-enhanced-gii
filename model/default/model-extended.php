@@ -3,7 +3,7 @@
  * This is the template for generating the model class of a specified table.
  *
  * @var yii\web\View $this
- * @var mootensai\enhancedgii\model\Generator $generator
+ * @var inquid\enhancedgii\model\Generator $generator
  * @var string $tableName full table name
  * @var string $className class name
  * @var yii\db\TableSchema $tableSchema

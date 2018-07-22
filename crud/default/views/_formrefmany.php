@@ -1,5 +1,5 @@
 <?php
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/* @var $generator \inquid\enhancedgii\crud\Generator */
 /* @var $relations array */
 
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
