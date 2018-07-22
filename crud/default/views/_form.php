@@ -70,10 +70,18 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
 
     <?php
     $numberInputs = count($tableSchema->getColumnNames());
+    $numOfCols = 4;
+    $rowCount = 0;
+    $bootstrapColWidth = 12 / $numOfCols;
+
     foreach ($tableSchema->getColumnNames() as $key => $attribute) {
+        echo "<div class='row'>";
         if (!in_array($attribute, $generator->skippedColumns)) {
-            //TODO Get the number of inputs divide in rows and add the col-sm-size to each attribute
+            echo "<div class='col-md-$bootstrapColWidth'>";
             echo "    <?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
+            echo "</div>";
+            $rowCount++;
+            if ($rowCount % $numOfCols == 0) echo '</div><div class="row">';
         }
     }
 
