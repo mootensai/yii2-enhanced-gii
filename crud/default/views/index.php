@@ -91,7 +91,7 @@ if ($generator->indexWidgetType === 'grid'):
             endif;
         endforeach; ?>
         [
-            'class' => 'yii\grid\ActionColumn',
+            'class' => 'kartik\grid\ActionColumn',
 <?php if($generator->saveAsNew): ?>
             'template' => '{save-as-new} {view} {update} {delete}',
             'buttons' => [
@@ -122,6 +122,7 @@ if ($generator->indexWidgetType === 'grid'):
         'toolbar' => [
             '{export}',
             ExportMenu::widget([
+                'fileName'=>'<?= Inflector::camel2id($baseModelClass) ?>',
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumn,
                 'target' => ExportMenu::TARGET_BLANK,
