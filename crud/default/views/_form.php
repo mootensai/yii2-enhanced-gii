@@ -41,9 +41,9 @@ foreach ($relations as $name => $rel) {
 
     <?php
     if($generator->hasFile($tableSchema)):
-    echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data','class' => 'disable-submit-buttons']]); ?>
     <?php else: ?>
-    <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+    <?= "<?php " ?>$form = ActiveForm::begin(['options' => ['class' => 'disable-submit-buttons']]); ?>
     <?php endif; ?>
 
     <?= "<?= " ?>$form->errorSummary($model); ?>
