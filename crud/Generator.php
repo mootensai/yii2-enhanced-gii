@@ -61,7 +61,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $relations;
-
+    /* Bootstrap */
+    public $formColumns = 4;
 
     /**
      * @inheritdoc
@@ -102,7 +103,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
-            [['viewPath', 'skippedRelations', 'skippedColumns','skippedTables',
+            [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
                 'hiddenColumns', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'UUIDColumn', 'saveAsNew'], 'safe'],

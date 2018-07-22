@@ -70,20 +70,20 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
 
     <?php
     $numberInputs = count($tableSchema->getColumnNames());
-    $numOfCols = 4;
     $rowCount = 0;
-    $bootstrapColWidth = 12 / $numOfCols;
+    $bootstrapColWidth = 12 / $generator->formColumns;
+    echo "<div class='row'>";
 
     foreach ($tableSchema->getColumnNames() as $key => $attribute) {
-        echo "<div class='row'>";
         if (!in_array($attribute, $generator->skippedColumns)) {
             echo "<div class='col-md-$bootstrapColWidth'>";
-            echo "    <?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
+            echo "    \n<?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
             echo "</div>";
             $rowCount++;
-            if ($rowCount % $numOfCols == 0) echo '</div><div class="row">';
+            if ($rowCount % $generator->formColumns == 0) echo '</div><div class="row">';
         }
     }
+    echo "</div>";
 
     $forms = "";
     foreach ($relations as $name => $rel) {
