@@ -6,6 +6,10 @@
     "type": "yii2-extension",
     "authors": [
         {
+            "name": "Inquid",
+            "email": "contact@inquid.co"
+        }
+        {
             "name": "Yohanes Candrajaya",
             "email": "moo.tensai@gmail.com"
         },
@@ -25,7 +29,11 @@
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-export": "*",
         "kartik-v/yii2-tabs-x": "*",
-        "kartik-v/yii2-datecontrol": "@dev"
+        "kartik-v/yii2-datecontrol": "@dev",
+        "faryshta/yii2-disable-submit-buttons": "*",
+        "inquid/yii2-vue": "*",
+        "inquid/yii2-fpdf": "dev-master",
+        "dominus77/yii2-sweetalert2-widget": "*"
     },
     "autoload": {
         "psr-4": {
