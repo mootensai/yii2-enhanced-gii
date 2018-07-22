@@ -98,13 +98,13 @@ foreach ($relations as $name => $rel) {
     <div class="form-group">
         <?php if ($generator->saveAsNew): ?>
             <?= "    <?php if(Yii::\$app->controller->action->id != 'save-as-new'): ?>\n" ?>
-            <?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Agregar') ?> : <?= $generator->generateString('Actualizar') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Agregar') ?> : <?= $generator->generateString('Actualizar') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','data' => ['disabled-text' => 'Please Wait']]) ?>
             <?= "    <?php endif; ?>\n" ?>
             <?= "    <?php if(Yii::\$app->controller->action->id != 'create'): ?>\n" ?>
             <?= "        <?= " ?>Html::submitButton(<?= $generator->generateString('Duplicar Registro') ?>, ['class' => 'btn btn-info', 'value' => '1', 'name' => '_asnew']) ?>
             <?= "    <?php endif; ?>\n" ?>
         <?php else: ?>
-            <?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Agregar') ?> : <?= $generator->generateString('Actualizar') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Agregar') ?> : <?= $generator->generateString('Actualizar') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','data' => ['disabled-text' => 'Please Wait']]) ?>
         <?php endif; ?>
         <?php if ($generator->cancelable): ?>
             <?= "<?= " ?>Html::a(Yii::t('app', 'Cancelar'), Yii::$app->request->referrer , ['class'=> 'btn btn-danger']) ?>
