@@ -73,7 +73,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php if (!$isTree): ?>
 
     /**
-    * This function helps \inquid\relation\RelationTrait runs faster
+    * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model
     */
     public function relationNames()
