@@ -315,6 +315,10 @@ class Generator extends BaseGenerator
         $relations = $this->generateRelations();
         $db = $this->getDbConnection();
         if (isset($this->moduleName)) {
+            $moduleGenerator = new \inquid\enhancedgii\module\Generator();
+            $moduleGenerator->moduleClass = "app\modules\\$this->moduleName\Module";
+            $moduleGenerator->moduleID = $this->moduleName;
+            $moduleGenerator->generate();
             $this->nsModel = "app\modules\\$this->moduleName\models";
             $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
             $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
