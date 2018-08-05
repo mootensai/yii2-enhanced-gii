@@ -64,6 +64,7 @@ class Generator extends BaseGenerator
     public $deletedAtValueRestored = 'date(\'Y-m-d H:i:s\')';
     public $generateBaseOnly = false;
     public $UUIDColumn = 'id';
+    public $skipAllExistingTables = true;
 
     /**
      * @inheritdoc
@@ -314,6 +315,7 @@ class Generator extends BaseGenerator
         $files = [];
         $relations = $this->generateRelations();
         $db = $this->getDbConnection();
+
         if (isset($this->moduleName)) {
             $moduleGenerator = new \inquid\enhancedgii\module\Generator();
             $moduleGenerator->moduleClass = "app\modules\\$this->moduleName\Module";
@@ -323,6 +325,7 @@ class Generator extends BaseGenerator
             $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
             $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
         }
+
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
         $this->skippedTables = ($this->skippedTables) ? explode(',', str_replace(' ', '', $this->skippedTables)) : [];
         $this->skippedColumns = ($this->skippedColumns) ? explode(',', str_replace(' ', '', $this->skippedColumns)) : [];
@@ -331,6 +334,15 @@ class Generator extends BaseGenerator
         $this->skippedColumns = array_filter($this->skippedColumns);
         $this->skippedRelations = array_filter($this->skippedRelations);
 //        $this->skippedRelations = ($this->skippedRelations) ? explode(',', str_replace(' ', '', $this->skippedRelations)) : [];
+
+        /* TODO get all the generated tables on the database
+         * if ($this->skipAllExistingTables) {
+            foreach ($this->getTableNames() as $tableName) {
+                Yii::debug("Table skipped " . $tableName);
+                array_push($this->skippedTables, $tableName);
+            }
+        }*/
+
         foreach ($this->getTableNames() as $tableName) {
 
             if (in_array($tableName, $this->skippedTables)):

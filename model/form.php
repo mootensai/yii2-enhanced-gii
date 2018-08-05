@@ -12,6 +12,8 @@
     </blockquote>
 <?php
 echo $form->field($generator, 'db');
+echo $form->field($generator, 'skippedTables');
+echo $form->field($generator, 'skipAllExistingTables')->checkbox();
 echo $form->field($generator, 'tableName');
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'messageCategory');
