@@ -35,7 +35,8 @@
         "faryshta/yii2-disable-submit-buttons": "*",
         "inquid/yii2-vue": "*",
         "inquid/yii2-fpdf": "*",
-        "dominus77/yii2-sweetalert2-widget": "*"
+        "dominus77/yii2-sweetalert2-widget": "*",
+        "yiisoft/yii2-apidoc": "~2.1.0"
     },
     "autoload": {
         "psr-4": {

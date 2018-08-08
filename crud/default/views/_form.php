@@ -73,6 +73,12 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
     $bootstrapColWidth = 12 / $generator->formColumns;
     echo "<div class='row'>";
     foreach ($tableSchema->getColumnNames() as $key => $attribute) {
+        if ($attribute == $tableSchema->primaryKey[0]) {
+            echo "</div>";
+            echo "    \n<?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
+            echo "<div class='row'>";
+            continue;
+        }
         if (!in_array($attribute, $generator->skippedColumns)) {
             echo "<div class='col-md-$bootstrapColWidth'>";
             echo "    \n<?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
