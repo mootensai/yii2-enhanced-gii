@@ -3,6 +3,8 @@
 namespace inquid\enhancedgii\crud;
 
 use Yii;
+use yii\apidoc\commands\ApiController;
+use yii\base\Module;
 use yii\db\ActiveRecord;
 use yii\db\ColumnSchema;
 use yii\db\Schema;
@@ -61,6 +63,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $relations;
+
+    public $generateDocumentation = false;
     /* Bootstrap */
     public $formColumns = 4;
 
@@ -454,6 +458,11 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedTables = (is_array($this->skippedTables)) ? implode(', ', $this->skippedTables) : '';
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
+
+
+        if ($this->generateDocumentation) {
+            (new ApiController('docs-generator', new Module('generator')))->actionIndex([Yii::getAlias("@app/modules/{$this->moduleName}/")], Yii::getAlias("@app/modules/{$this->moduleName}/"));
+        }
 
         return $files;
     }

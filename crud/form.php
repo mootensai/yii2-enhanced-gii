@@ -66,3 +66,5 @@ echo $form->field($generator, 'indexWidgetType')->dropDownList([
     'list' => 'ListView',
 ]);
 echo $form->field($generator, 'viewPath');
+
+echo $form->field($generator, 'generateDocumentation')->checkbox();
