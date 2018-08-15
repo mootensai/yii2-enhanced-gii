@@ -744,7 +744,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'options' => [
                 'type' => \\kartik\\datecontrol\\DateControl::FORMAT_DATE,
                 'saveFormat' => 'php:Y-m-d',
-                'ajaxConversion' => true,
+                'ajaxConversion' => false,
                 'options' => [
                     'pluginOptions' => [
                         'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . ",
