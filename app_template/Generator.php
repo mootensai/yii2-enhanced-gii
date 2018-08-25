@@ -84,6 +84,6 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         $appName = new AppTemplate(strtolower(str_replace(' ', '_', $this->appName)), $this->repo, $this->path);
-        $appName->createApp();
+        Yii::debug("Creating app".$appName->createApp());
     }
 }
