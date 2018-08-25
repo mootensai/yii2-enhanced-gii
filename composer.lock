@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f97dce4490f2f685c466d35e5e4fe640",
+    "content-hash": "a5fb8e92083a591860289a0c8ce36448",
     "packages": [
         {
             "name": "bower-asset/axios",
@@ -280,16 +280,16 @@
         },
         {
             "name": "bower-asset/sweetalert2",
-            "version": "v7.26.11",
+            "version": "v7.26.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetalert2/sweetalert2.git",
-                "reference": "afacaa505ebcc7f96cf79832735d2878c6d08e8c"
+                "reference": "b23b931cc5742c61b497ce7f6a0348b8dd3f9558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetalert2/sweetalert2/zipball/afacaa505ebcc7f96cf79832735d2878c6d08e8c",
-                "reference": "afacaa505ebcc7f96cf79832735d2878c6d08e8c",
+                "url": "https://api.github.com/repos/sweetalert2/sweetalert2/zipball/b23b931cc5742c61b497ce7f6a0348b8dd3f9558",
+                "reference": "b23b931cc5742c61b497ce7f6a0348b8dd3f9558",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -330,7 +330,7 @@
                 "sweetalert",
                 "sweetalert2"
             ],
-            "time": "2018-08-09T14:36:50+00:00"
+            "time": "2018-08-24T10:08:30+00:00"
         },
         {
             "name": "bower-asset/vue",
@@ -1576,12 +1576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-datecontrol.git",
-                "reference": "b22dc0b87c2ff452bdee9374d898f6cbd7d44b9d"
+                "reference": "6e5a7f94b7ecf9e1f300e4e286ded6f3cef446f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-datecontrol/zipball/b22dc0b87c2ff452bdee9374d898f6cbd7d44b9d",
-                "reference": "b22dc0b87c2ff452bdee9374d898f6cbd7d44b9d",
+                "url": "https://api.github.com/repos/kartik-v/yii2-datecontrol/zipball/6e5a7f94b7ecf9e1f300e4e286ded6f3cef446f2",
+                "reference": "6e5a7f94b7ecf9e1f300e4e286ded6f3cef446f2",
                 "shasum": ""
             },
             "require": {
@@ -1620,7 +1620,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2018-01-06T13:08:48+00:00"
+            "time": "2018-08-17T07:20:56+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1901,16 +1901,16 @@
         },
         {
             "name": "kartik-v/yii2-krajee-base",
-            "version": "v1.8.9",
+            "version": "v1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "0cafe6376780cedcd00f52c9d82b172d5851f6b0"
+                "reference": "2c007b06602d4af59c7d3e708921d539bc81bc40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/0cafe6376780cedcd00f52c9d82b172d5851f6b0",
-                "reference": "0cafe6376780cedcd00f52c9d82b172d5851f6b0",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/2c007b06602d4af59c7d3e708921d539bc81bc40",
+                "reference": "2c007b06602d4af59c7d3e708921d539bc81bc40",
                 "shasum": ""
             },
             "require": {
@@ -1919,12 +1919,12 @@
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\base\\": ""
+                    "kartik\\base\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1948,7 +1948,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-29T06:18:14+00:00"
+            "time": "2018-08-20T18:10:23+00:00"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -2161,30 +2161,30 @@
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
-            "version": "v1.4.9",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "578de8c5dd751373a260e45122fe49211c33185a"
+                "reference": "5e27a7181812a0b7eeb067544f000db76d2558dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/578de8c5dd751373a260e45122fe49211c33185a",
-                "reference": "578de8c5dd751373a260e45122fe49211c33185a",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/5e27a7181812a0b7eeb067544f000db76d2558dc",
+                "reference": "5e27a7181812a0b7eeb067544f000db76d2558dc",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "~1.7"
+                "kartik-v/yii2-krajee-base": "~1.9"
             },
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\form\\": ""
+                    "kartik\\form\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2209,7 +2209,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2018-03-05T04:35:50+00:00"
+            "time": "2018-08-16T13:01:56+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-affix",
@@ -2425,25 +2425,30 @@
         },
         {
             "name": "kartik-v/yii2-widget-datetimepicker",
-            "version": "v1.4.4",
+            "version": "v1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-datetimepicker.git",
-                "reference": "e843520aca008dc0807aa7ea99bfab2cc03c9a3c"
+                "reference": "3470c587b35d659907cb02c35cbde492623011c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datetimepicker/zipball/e843520aca008dc0807aa7ea99bfab2cc03c9a3c",
-                "reference": "e843520aca008dc0807aa7ea99bfab2cc03c9a3c",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datetimepicker/zipball/3470c587b35d659907cb02c35cbde492623011c4",
+                "reference": "3470c587b35d659907cb02c35cbde492623011c4",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "*"
+                "kartik-v/yii2-krajee-base": "~1.9"
             },
             "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "kartik\\datetime\\": ""
+                    "kartik\\datetime\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2470,7 +2475,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-06-08T05:53:28+00:00"
+            "time": "2018-08-21T18:49:35+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-depdrop",
@@ -2732,20 +2737,20 @@
         },
         {
             "name": "kartik-v/yii2-widget-select2",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-select2.git",
-                "reference": "baaa8f8b8bbaed1ed0aea56fb0564c5ab340d7d3"
+                "reference": "c109c0f153def3be9f7a874dbaf5c951e5a62e73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/baaa8f8b8bbaed1ed0aea56fb0564c5ab340d7d3",
-                "reference": "baaa8f8b8bbaed1ed0aea56fb0564c5ab340d7d3",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/c109c0f153def3be9f7a874dbaf5c951e5a62e73",
+                "reference": "c109c0f153def3be9f7a874dbaf5c951e5a62e73",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "~1.7"
+                "kartik-v/yii2-krajee-base": "~1.9"
             },
             "type": "yii2-extension",
             "extra": {
@@ -2755,7 +2760,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\select2\\": ""
+                    "kartik\\select2\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2781,7 +2786,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-11-25T06:02:18+00:00"
+            "time": "2018-08-17T07:47:43+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",
@@ -2986,30 +2991,35 @@
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-touchspin.git",
-                "reference": "afc56f68d87c65c9659b76ac82ae4ae8160634c6"
+                "reference": "a62555e7aa335c10c64629bba8e4880ca48f4ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-touchspin/zipball/afc56f68d87c65c9659b76ac82ae4ae8160634c6",
-                "reference": "afc56f68d87c65c9659b76ac82ae4ae8160634c6",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-touchspin/zipball/a62555e7aa335c10c64629bba8e4880ca48f4ca8",
+                "reference": "a62555e7aa335c10c64629bba8e4880ca48f4ca8",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "*"
+                "kartik-v/yii2-krajee-base": "~1.9"
             },
             "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "kartik\\touchspin\\": ""
+                    "kartik\\touchspin\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD 3-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -3032,7 +3042,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10T17:10:39+00:00"
+            "time": "2018-08-17T12:43:42+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-typeahead",
@@ -3243,6 +3253,45 @@
                 "mathematics"
             ],
             "time": "2018-07-31T08:38:40+00:00"
+        },
+        {
+            "name": "mikehaertl/php-shellcommand",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikehaertl/php-shellcommand.git",
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "mikehaertl\\shellcommand\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Härtl",
+                    "email": "haertl.mike@gmail.com"
+                }
+            ],
+            "description": "An object oriented interface to shell commands",
+            "keywords": [
+                "shell"
+            ],
+            "time": "2018-07-07T07:35:36+00:00"
         },
         {
             "name": "mikevanriel/text-to-latex",
@@ -4688,7 +4737,8 @@
     "stability-flags": {
         "kartik-v/yii2-mpdf": 20,
         "kartik-v/yii2-tree-manager": 20,
-        "kartik-v/yii2-datecontrol": 20
+        "kartik-v/yii2-datecontrol": 20,
+        "mikehaertl/php-shellcommand": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

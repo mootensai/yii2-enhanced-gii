@@ -2,6 +2,7 @@
 
 namespace inquid\enhancedgii\crud;
 
+use inquid\enhancedgii\docgen\DocumentationGenerator;
 use Yii;
 use yii\apidoc\commands\ApiController;
 use yii\base\Module;
@@ -459,9 +460,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedColumns = (is_array($this->skippedColumns)) ? implode(', ', $this->skippedColumns) : '';
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 
-
         if ($this->generateDocumentation) {
-            (new ApiController('docs-generator', new Module('generator')))->actionIndex([Yii::getAlias("@app/modules/{$this->moduleName}/")], Yii::getAlias("@app/modules/{$this->moduleName}/"));
+            $docGen = new DocumentationGenerator($this->moduleName,$this->getTableNames());
+            $docGen->compileApi(true);
         }
 
         return $files;
