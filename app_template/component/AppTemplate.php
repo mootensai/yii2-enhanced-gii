@@ -36,10 +36,12 @@ class AppTemplate
      * @param bool $pdf
      * @return string
      */
-    public function createApp()
+    public function createApp($updateDependencies)
     {
         $command = new Command(" cd {$this->path} && git clone {$this->repo} {$this->appFolder}");
         if ($command->execute()) {
+            $command = new Command(" cd {$this->path} && composer update");
+            $command->execute();
             return $command->getOutput();
         } else {
             $exitCode = $command->getExitCode();

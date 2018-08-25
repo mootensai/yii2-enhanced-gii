@@ -6,3 +6,4 @@
 echo $form->field($generator, 'appName');
 echo $form->field($generator, 'path');
 echo $form->field($generator, 'repo')->dropDownList(['https://github.com/yiisoft/yii2-app-basic'=>'yii-basic', 'https://github.com/yiisoft/yii2-app-advanced'=>'yii-advance', 'https://github.com/gogl92/legal'=>'inquid']);
+echo $form->field($generator, 'updateDependencies')->checkbox();
