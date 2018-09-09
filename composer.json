@@ -37,6 +37,7 @@
         "inquid/yii2-fpdf": "*",
         "dominus77/yii2-sweetalert2-widget": "*",
         "yiisoft/yii2-apidoc": "~2.1.0",
+        "yiidoc/yii2-redactor": "*",
         "mikehaertl/php-shellcommand":"dev-master"
     },
     "autoload": {
