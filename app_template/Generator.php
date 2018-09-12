@@ -17,7 +17,7 @@ use yii\db\Expression;
  */
 class Generator extends \yii\gii\Generator
 {
-    public $appName = 'db';
+    public $appName = '';
     public $path = '/opt/lampp/htdocs/';
     public $folderName = 'inquid_app';
     public $repo = 'inquid';
@@ -85,6 +85,7 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         $appName = new AppTemplate(strtolower(str_replace(' ', '_', $this->appName)), $this->repo, $this->path);
-        Yii::debug("Creating app".$appName->createApp($this->updateDependencies));
+        Yii::debug("Creating app" . $appName->createApp($this->updateDependencies));
+        $appName->createEnv();
     }
 }
