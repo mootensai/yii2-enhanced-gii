@@ -52,7 +52,7 @@ class Generator extends BaseGenerator
     public $optimisticLock = 'lock';
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
-    public $timestampValue = "new \\yii\\db\\Expression('NOW()')";
+    public $timestampValue = "new \\yii\\db\\Expression('CONVERT_TZ(NOW(),\'+00:00\',\'-05:00\')')";
     public $createdBy = 'created_by';
     public $updatedBy = 'updated_by';
     public $blameableValue = '\Yii::$app->user->id';
