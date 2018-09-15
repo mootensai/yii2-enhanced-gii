@@ -23,6 +23,43 @@ class Generator extends \yii\gii\Generator
     public $repo = 'inquid';
     public $updateDependencies = false;
 
+    public $language = 'es';
+    public $time_zone = 'America/Mexico_City';
+    public $date_time_format = 'Y-m-d H:i:s';
+    public $thousandSeparator = ',';
+    public $decimalSeparator = '.';
+    public $currencyCode = '$';
+
+    public $db_ip_host = '';
+    public $db_ip_host_test ='';
+    public $db_username = 'root';
+    public $db_password='';
+    public $db_prefix='inq_';
+
+    public $db_ip_port = 3306;
+    public $db_name;
+    public $db_ip_port_test;
+    public $db_name_test;
+
+    public $google_project;
+    public $google_sql_instance_name;
+    public $google_bucket;
+
+    public $email_smtp_host = 'smtp.gmail.com';
+    public $email_username = 'email@gmail.com';
+    public $email_port = 587;
+    public $email_password = '';
+    public $email_robot = 'robot@gmail.com';
+    public $email_encryption = 'tls';
+
+    public $github_client_id = '';
+    public $github_client_secret = '';
+
+    public $confirm_with =21600;
+    public $cost=12;
+    public $admins;
+
+
     /**
      * @inheritdoc
      */
@@ -45,6 +82,14 @@ class Generator extends \yii\gii\Generator
     public function getDescription()
     {
         return 'This generator Creates a new app from a given repo';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiredTemplates()
+    {
+        return ['.env'];
     }
 
     /**
@@ -84,9 +129,11 @@ class Generator extends \yii\gii\Generator
 
     public function generate()
     {
+        $files = [];
         $appName = new AppTemplate(strtolower(str_replace(' ', '_', $this->appName)), $this->repo, $this->path);
         Yii::debug("Creating app" . $appName->createApp($this->updateDependencies));
-        new CodeFile("{$this->path}/.env", $this->render(".env"));
+        $files[] = new CodeFile("{$this->path}/{$this->appName}/.env", $this->render(".env"));
+        return $files;
         //$appName->createEnv();
     }
 }
