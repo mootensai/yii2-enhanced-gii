@@ -34,6 +34,7 @@ class Bootstrap implements BootstrapInterface
                 $app->getModule('gii')->generators['enhanced-gii-model'] = 'inquid\enhancedgii\model\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'inquid\enhancedgii\crud\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-app'] = 'inquid\enhancedgii\app_template\Generator';
+                $app->getModule('gii')->generators['enhanced-gii-module'] = 'inquid\enhancedgii\module\Generator';
 //                $app->getModule('gii')->generators['enhanced-gii-crud']['templates'] = [
 //                    'default' => '@mtengii/crud/default',
 //                    'nested' => '@mtengii/crud/nested'
