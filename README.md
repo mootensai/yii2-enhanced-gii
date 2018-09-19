@@ -17,7 +17,7 @@ composer require inquid/yii2-enhanced-gii:dev-master
 or add
 
 ```
-"mootensai/yii2-enhanced-gii": "dev-master",
+"inquid/yii2-enhanced-gii": "dev-master",
 ```
 
 to the `require` section of your `composer.json` file.
