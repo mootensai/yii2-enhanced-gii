@@ -37,8 +37,8 @@ foreach ($relations as $name => $rel) {
 }
 ?>
 Vue::begin([
-'jsName' => '<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>',
-'id' => "<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form",
+'jsName' => '<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>',
+'id' => "<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>-form",
 'data' => [
 <?php
 $numberInputs = count($tableSchema->getColumnNames());
