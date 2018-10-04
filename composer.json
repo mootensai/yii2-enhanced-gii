@@ -24,7 +24,7 @@
         "mootensai/yii2-relation-trait": "*",
         "mootensai/yii2-jsblock": "*",
         "mootensai/yii2-optimistic-lock-validator": "*",
-        "kartik-v/yii2-builder": "*",
+        "kartik-v/yii2-builder": "dev-master",
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-export": "*",
