@@ -952,7 +952,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if ($column->phpType === 'boolean') {
             return 'boolean';
         } elseif ($column->type === 'text') {
-            return 'ntext';
+            return 'html';
         } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
             return 'datetime';
         } elseif (stripos($column->name, 'email') !== false) {
