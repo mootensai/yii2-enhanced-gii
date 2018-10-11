@@ -26,7 +26,7 @@ use yii\web\Controller;
 class Generator extends \inquid\enhancedgii\BaseGenerator
 {
 
-    public $nameAttribute = 'name, title, username';
+    public $nameAttribute = 'name, title, username, nombre';
     public $hiddenColumns = 'id, lock';
     public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
