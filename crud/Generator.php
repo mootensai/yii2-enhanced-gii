@@ -951,6 +951,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     {
         if ($column->phpType === 'boolean') {
             return 'boolean';
+        } elseif ($column->dbType === 'tinyint(1)'){
+            return 'boolean';
         } elseif ($column->type === 'text') {
             return 'html';
         } elseif (stripos($column->name, 'time') !== false && $column->phpType === 'integer') {
