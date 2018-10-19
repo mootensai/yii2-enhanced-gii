@@ -10,7 +10,7 @@ namespace inquid\enhancedgii\app_template\component;
 class RepoHandler
 {
     public $public_repo = false;
-    public $github_token   = "";
+    public $github_token   = '';
     public $name;
     public $local_path;
     public $description;
@@ -32,7 +32,7 @@ class RepoHandler
             print_r($client->repo()->create(
                 $this->name,
                 $this->description,
-                $this->name . "." . $this->suffix_page,
+                $this->name . '.' . $this->suffix_page,
                 $this->public_repo,
                 null,
                 true,
