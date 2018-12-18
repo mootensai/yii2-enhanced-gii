@@ -35,13 +35,15 @@
         "faryshta/yii2-disable-submit-buttons": "*",
         "inquid/yii2-vue": "*",
         "inquid/yii2-fpdf": "*",
-        "inquid/yii2-godaddy": "dev-master",
         "dominus77/yii2-sweetalert2-widget": "*",
+        "yiidoc/yii2-redactor": "*"
+    },
+    "require-dev": {
+        "inquid/yii2-godaddy": "dev-master",
         "yiisoft/yii2-apidoc": "~2.1.0",
-        "yiidoc/yii2-redactor": "*",
+        "php-http/guzzle6-adapter": "^1.1",
         "mikehaertl/php-shellcommand":"dev-master",
-        "knplabs/github-api": "^2.8",
-        "php-http/guzzle6-adapter": "^1.1"
+        "knplabs/github-api": "^2.8"
     },
     "autoload": {
         "psr-4": {
