@@ -23,6 +23,8 @@ echo $form->field($generator, 'skippedTables');
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'messageCategory');
 
+echo $form->field($generator, 'modelSort')->dropDownList(['SORT_DESC'=>'⭣ DESCENDING Last created at the top','SORT_ASC'=>'⭡ ASCENDING First created at the top ']);
+
 echo $form->field($generator, 'nsController');
 echo $form->field($generator, 'controllerClass');
 echo $form->field($generator, 'baseControllerClass');

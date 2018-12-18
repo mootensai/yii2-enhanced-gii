@@ -64,7 +64,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $relations;
-
+    public $modelSort = 'SORT_DESC';
     public $generateDocumentation = false;
     /* Bootstrap */
     public $formColumns = 4;
@@ -112,6 +112,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'controllerClass', 'blameableValue', 'nameAttribute',
                 'hiddenColumns', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'UUIDColumn', 'saveAsNew'], 'safe'],
+            [['modelSort'], 'string', 'max' => '9']
         ]);
     }
 
@@ -137,7 +138,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'searchModelClass' => 'Search Model Class',
             'expandable' => 'Expandable Index Grid View',
             'cancelable' => 'Add Cancel Button On Form',
-            'pdf' => 'PDF Printable View'
+            'pdf' => 'PDF Printable View',
+            'modelSort' => 'Model Sort Order'
         ]);
     }
 
@@ -242,7 +244,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
-            'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.'
+            'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.',
+            'modelSort'=>'Sort order of the grids, ASC or DESC of the ID'
         ]);
     }
 
@@ -461,7 +464,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedRelations = (is_array($this->skippedRelations)) ? implode(', ', $this->skippedRelations) : '';
 
         if ($this->generateDocumentation) {
-            $docGen = new DocumentationGenerator($this->moduleName,$this->getTableNames());
+            $docGen = new DocumentationGenerator($this->moduleName, $this->getTableNames());
             $docGen->compileApi(true);
         }
 
@@ -951,7 +954,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     {
         if ($column->phpType === 'boolean') {
             return 'boolean';
-        } elseif ($column->dbType === 'tinyint(1)'){
+        } elseif ($column->dbType === 'tinyint(1)') {
             return 'boolean';
         } elseif ($column->type === 'text') {
             return 'html';

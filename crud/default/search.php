@@ -69,6 +69,8 @@ use <?= ltrim($generator->nsModel . '\\' . $modelClass, '\\') . (isset($modelAli
             'query' => $query,
         ]);
 
+        $query->orderBy(['id' => <?= $generator->modelSort ?>]);
+
         $this->load($params);
 
         if (!$this->validate()) {
