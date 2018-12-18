@@ -1,6 +1,6 @@
 {
     "name": "inquid/yii2-enhanced-gii",
-    "description": "Generate Relational (hasMany, hasOne, belongsTo, & nested) Models & CRUD.",
+    "description": "Yii app generator, genereates infrastructure, server, domain, app and generates Relational Models & CRUD.",
     "keywords": ["inquid","relation", "gii", "yii2", "yii", "enhanced"],
     "license": "BSD-3-Clause",
     "type": "yii2-extension",
