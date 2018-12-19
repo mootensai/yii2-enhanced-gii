@@ -73,7 +73,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName()
     {
-        return 'App Generator';
+        return 'INQUID Generator (APP)';
     }
 
     /**

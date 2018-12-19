@@ -65,13 +65,23 @@ class Generator extends BaseGenerator
     public $generateBaseOnly = false;
     public $UUIDColumn = 'id';
     public $skipAllExistingTables = true;
+    // Uploaders
+    public $excelImport = true;
+    public $imageExtensions = 'png, jpg';
+    public $videoExtensions = 'mp4, mpg, mpeg';
+    public $pdfExtensions = 'pdf';
+    public $wordExtensions = 'doc, docx';
+    public $excelExtensions = 'xls, csv, xlsx';
+    public $powerPointExtensions = 'ppt, pptx';
+    public $genericFileExtensions = 'txt, sh';
+
 
     /**
      * @inheritdoc
      */
     public function getName()
     {
-        return 'I/O Generator (Model)';
+        return 'INQUID Generator (Model)';
     }
 
     /**
@@ -97,7 +107,7 @@ class Generator extends BaseGenerator
             [['queryBaseClass', 'queryClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::className()]],
             [['db'], 'validateDb'],
             [['enableI18N', 'generateQuery', 'generateLabelsFromComments',
-                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly'], 'boolean'],
+                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly','excelImport'], 'boolean'],
             [['generateRelations'], 'in', 'range' => [self::RELATIONS_NONE, self::RELATIONS_ALL, self::RELATIONS_ALL_INVERSE]],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
 
@@ -105,6 +115,7 @@ class Generator extends BaseGenerator
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue'], 'safe'],
+            [['imageExtensions','videoExtensions','excelImport','wordExtensions','powerPointExtensions','pdfExtensions','genericFileExtensions'],'string']
         ]);
     }
 
@@ -136,6 +147,13 @@ class Generator extends BaseGenerator
             'deletedAt' => 'Info Column',
             'deletedAtValue' => 'Info Value',
             'deletedAtValueRestored' => 'Info Restored Value',
+            'excelImport'=>'Import From Excel',
+            'imageExtensions'=>'Accepted Image Extensions',
+            'videoExtensions'=>'Accepted Video Extensions',
+            'wordExtensions'=>'Accepted Word Extensions',
+            'excelExtensions'=>'Accepted Excel Extensions',
+            'powerpointExtensions'=>'Accepted PowerPoint Extensions',
+            'genericFileExtensions'=>'Generic files accepted'
         ]);
     }
 
@@ -257,7 +275,15 @@ class Generator extends BaseGenerator
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
             'generateBaseOnly' => 'This indicates whether the generator should generate extended model(where you write your code) or not. '
-                . 'You usually re-generate models when you make changes on your database.'
+                . 'You usually re-generate models when you make changes on your database.',
+            'excelImport' => 'Prepare the model to be filled from a Excel Sheet',
+            'imageExtensions' => 'Accepted image extensions, should be spearated by a comma',
+            'videoExtensions' => 'Accepted video extensions, should be spearated by a comma',
+            'pdfExtensions' => 'Accepted PDF extensions, should be spearated by a comma',
+            'excelExtensions' => 'Accepted Excel extensions, should be spearated by a comma',
+            'wordExtensions' => 'Accepted Word extensions, should be spearated by a comma',
+            'powerpointExtensions' => 'Accepted PowerPoint extensions, should be spearated by a comma',
+            'genericFileExtensions'=>'Files that should be accepted using the @file annotation at the column comments'
         ]);
     }
 
@@ -510,6 +536,16 @@ class Generator extends BaseGenerator
                             $types['file'][] = $column->name . "File";
                         } elseif ($this->containsAnnotation($column, "@image")) {
                             $types['file'][] = $column->name . "Image";
+                        } elseif ($this->containsAnnotation($column, "@video")) {
+                            $types['file'][] = $column->name . "Video";
+                        } elseif ($this->containsAnnotation($column, "@pdf")) {
+                            $types['file'][] = $column->name . "Pdf";
+                        }elseif ($this->containsAnnotation($column, "@excel")) {
+                            $types['file'][] = $column->name . "Excel";
+                        }elseif ($this->containsAnnotation($column, "@word")) {
+                            $types['file'][] = $column->name . "Word";
+                        }elseif ($this->containsAnnotation($column, "@powerpoint")) {
+                            $types['file'][] = $column->name . "Powerpoint";
                         }
                         $lengths[$column->size][] = $column->name;
                     } else {
@@ -518,8 +554,26 @@ class Generator extends BaseGenerator
             }
         }
         $rules = [];
+        /* TODO column is not avilable at this point */
         foreach ($types as $type => $columns) {
-            $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
+            if ($this->containsAnnotation($column, "@file")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->genericFileExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@image")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->imageExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@video")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->videoExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@pdf")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->pdfExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@excel")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->excelExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@word")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->wordExtensions}']";
+            }elseif ($this->containsAnnotation($column, "@powerpoint")) {
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->powerPointExtensions}']";
+            }
+            else{
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
+            }
         }
         foreach ($lengths as $length => $columns) {
             $rules[] = "[['" . implode("', '", $columns) . "'], 'string', 'max' => $length]";

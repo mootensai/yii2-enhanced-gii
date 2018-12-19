@@ -33,7 +33,7 @@ class Generator extends BaseGenerator
      */
     public function getName()
     {
-        return 'I/O Generator (Module)';
+        return 'INQUID Generator (Module)';
     }
 
     /**

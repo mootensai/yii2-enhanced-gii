@@ -41,7 +41,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getName()
     {
-        return 'Migration Generator';
+        return 'INQUID Generator (MIGRATION)';
     }
 
     /**

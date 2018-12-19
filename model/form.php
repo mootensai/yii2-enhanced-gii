@@ -24,6 +24,7 @@ echo $form->field($generator, 'baseModelClass');
 echo $form->field($generator, 'generateQuery')->checkbox();
 echo $form->field($generator, 'queryNs');
 echo $form->field($generator, 'queryBaseClass');
+echo $form->field($generator, 'excelImport');
 ?>
     <div class="row">
         <div class="col-md-6">

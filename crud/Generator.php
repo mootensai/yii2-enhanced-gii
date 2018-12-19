@@ -74,7 +74,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function getName()
     {
-        return 'I/O Generator (CRUD)';
+        return 'INQUID Generator (CRUD)';
     }
 
     /**

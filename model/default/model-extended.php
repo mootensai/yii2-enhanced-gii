@@ -25,14 +25,12 @@ use \<?= $generator->nsModel ?>\base\<?= $className ?> as Base<?= $className ?>;
 */
 class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
+<?php if($generator->excelImport): ?>
+    public $fileExcelImport;
+<?php endif; ?>
 <?php foreach ($generator->tableSchema->columns as $column) {
     if ($generator->containsAnnotation($column, "@file")) {
         echo "public $" . $column->name . "File;\n";
-        echo "if (" . $column->name . "File != null) {
-                $column->name = 'parte_' . $model->no_parte;
-                $model->filePicture->saveAs('images/partes/' . $partePicture . '.' . $model->filePicture->extension);
-                $model->imagen = $partePicture . '.' . $model->filePicture->extension;
-            }";
     } elseif ($generator->containsAnnotation($column, "@image")) {
         echo "public $" . $column->name . "Image;\n";
     }
