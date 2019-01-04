@@ -4,8 +4,6 @@ namespace inquid\enhancedgii\crud;
 
 use inquid\enhancedgii\docgen\DocumentationGenerator;
 use Yii;
-use yii\apidoc\commands\ApiController;
-use yii\base\Module;
 use yii\db\ActiveRecord;
 use yii\db\ColumnSchema;
 use yii\db\Schema;
@@ -68,6 +66,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $generateDocumentation = false;
     /* Bootstrap */
     public $formColumns = 4;
+    public $placeHolders = false;
 
     /**
      * @inheritdoc
@@ -106,7 +105,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -139,7 +138,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'expandable' => 'Expandable Index Grid View',
             'cancelable' => 'Add Cancel Button On Form',
             'pdf' => 'PDF Printable View',
-            'modelSort' => 'Model Sort Order'
+            'modelSort' => 'Model Sort Order',
+            'placeHolders'=>'Enable Or Disable Placeholders'
         ]);
     }
 
@@ -245,7 +245,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
             'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
             'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.',
-            'modelSort'=>'Sort order of the grids, ASC or DESC of the ID'
+            'modelSort' => 'Sort order of the grids, ASC or DESC of the ID',
+            'placeHolders'=>'Enable or Disable the place holders in all fields including lists',
+            'generateDocumentation'=>''
         ]);
     }
 
@@ -686,7 +688,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
-                'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
+                'filterInputOptions' => [" . (($this->placeHolders) ? "'placeholder' => '$humanize'," : "") . " 'id' => '$id']
             ],\n";
                 return $output;
             } else {
@@ -701,7 +703,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
-                'filterInputOptions' => ['placeholder' => '$humanize', 'id' => '$id']
+                'filterInputOptions' => [" . (($this->placeHolders) ? "'placeholder' => '$humanize'," : "") . "'id' => '$id']
             ],\n";
                 return $output;
             }
@@ -750,9 +752,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'saveFormat' => 'php:Y-m-d',
                 'ajaxConversion' => false,
                 'options' => [
-                    'pluginOptions' => [
-                        'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . ",
-                        'autoclose' => true
+                    'pluginOptions' => ["
+                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                "'autoclose' => true
                     ]
                 ],
             ]
@@ -765,9 +767,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'saveFormat' => 'php:H:i:s',
                 'ajaxConversion' => true,
                 'options' => [
-                    'pluginOptions' => [
-                        'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . ",
-                        'autoclose' => true
+                    'pluginOptions' => ["
+                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                "'autoclose' => true
                     ]
                 ]
             ]
@@ -780,9 +782,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'saveFormat' => 'php:Y-m-d H:i:s',
                 'ajaxConversion' => true,
                 'options' => [
-                    'pluginOptions' => [
-                        'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . ",
-                        'autoclose' => true,
+                    'pluginOptions' => ["
+                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                "'autoclose' => true,
                     ]
                 ],
             ]
@@ -803,7 +805,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'widgetClass' => \\kartik\\widgets\\Select2::className(),
             'options' => [
                 'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$labelCol')->asArray()->all(), '{$rel[self::REL_PRIMARY_KEY]}', '$labelCol'),
-                'options' => ['placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "],
+                'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
             ],
             'columnOptions' => ['width' => '200px']
         ]";
@@ -823,7 +825,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     'items' => " . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ",
                     'options' => [
                         'columnOptions' => ['width' => '185px'],
-                        'options' => ['placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "],
+                        'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
                     ]
         ]";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
@@ -855,7 +857,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (in_array($attribute, $this->hiddenColumns)) {
             return "\$form->field($model, '$attribute', ['template' => '{input}'])->textInput(['style' => 'display:none']);";
         }
-        $placeholder = Inflector::humanize($attribute, true);
+
+        $placeholder = $this->placeHolders ? Inflector::humanize($attribute, true) : '';
+
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "\$form->field($model, '$attribute')->passwordInput()";
@@ -918,7 +922,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[1];
             $output = "\$form->field($model, '$attribute')->widget(\\kartik\\widgets\\Select2::classname(), [
         'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
-        'options' => ['placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "],
+        'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
         'pluginOptions' => [
             'allowClear' => true
         ],
@@ -938,9 +942,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 return "\$form->field($model, '$attribute')->dropDownList("
                     . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', 'v-model'=>'$attribute'])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field($model, '$attribute')->$input(['placeholder' => '$placeholder', 'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input([".(($this->placeHolders)?"'placeholder' => '$placeholder',":"")."'v-model'=>'$attribute'])";
             } else {
-                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, 'placeholder' => '$placeholder', 'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, ".(($this->placeHolders)?"'placeholder' => '$placeholder',":"")."'v-model'=>'$attribute'])";
             }
         }
     }
