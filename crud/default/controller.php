@@ -50,6 +50,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use yii\web\UploadedFile;
 use inquid\yiireports\ExcelHelper;
 use yii\helpers\Json;
+use Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
