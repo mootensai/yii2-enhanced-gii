@@ -67,6 +67,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     /* Bootstrap */
     public $formColumns = 4;
     public $placeHolders = false;
+    /* Excel */
+    public $importExcel = true;
 
     /**
      * @inheritdoc
@@ -105,7 +107,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders','importExcel'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -138,6 +140,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'expandable' => 'Expandable Index Grid View',
             'cancelable' => 'Add Cancel Button On Form',
             'pdf' => 'PDF Printable View',
+            'importExcel' => 'Import From Excel',
             'modelSort' => 'Model Sort Order',
             'placeHolders'=>'Enable Or Disable Placeholders'
         ]);
@@ -247,7 +250,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.',
             'modelSort' => 'Sort order of the grids, ASC or DESC of the ID',
             'placeHolders'=>'Enable or Disable the place holders in all fields including lists',
-            'generateDocumentation'=>''
+            'generateDocumentation'=>'',
+            'importExcel'=>'Import Data from Excel sheet'
         ]);
     }
 
@@ -375,7 +379,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 }
                 if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php'
                     || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_detail.php'
-                    || $file === '_data.php' || $file === 'saveAsNew.php' || $file === '_pdf.php') {
+                    || $file === '_data.php' || $file === 'saveAsNew.php' || $file === '_pdf.php' || $file === 'import.php') {
                     continue;
                 }
                 if ($this->indexWidgetType != 'list' && $file === '_index.php') {
@@ -405,6 +409,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
             if ($this->pdf) {
                 $files[] = new CodeFile("$viewPath/_pdf.php", $this->render("views/_pdf.php", [
+                    'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                ]));
+            }
+            
+            if ($this->importExcel) {
+                $files[] = new CodeFile("$viewPath/import.php", $this->render("views/import.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                 ]));
             }
