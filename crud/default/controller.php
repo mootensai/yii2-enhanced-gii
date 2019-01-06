@@ -44,6 +44,12 @@ use yii\data\ArrayDataProvider;
 <?php if($generator->hasFile($generator->tableSchema)):?>
 use yii\web\UploadedFile;
 <?php endif; ?>
+use inquid\google_debugger\GoogleCloudLogger;
+use dominus77\sweetalert2\Alert;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use yii\web\UploadedFile;
+use inquid\yiireports\ExcelHelper;
+
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -67,6 +73,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     if($generator->importExcel){
         array_push($actions,"'import'");
         array_push($actions,"'import-excel'");
+        array_push($actions,"'get-format'");
     }
     if($generator->saveAsNew){
         array_push($actions,"'save-as-new'");
@@ -449,7 +456,7 @@ if (count($pks) === 1) {
             }
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-            echo "\$personal->{$name} = (string)\$datum[{$key}];\n";
+            echo "              \$personal->{$name} = (string)\$datum[{$key}];\n";
     }
 ?>
             if ($test) {
