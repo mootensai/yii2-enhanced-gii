@@ -381,7 +381,7 @@ if (count($pks) === 1) {
                 [
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-            echo "            ['coordinate' => '".(new ExcelHelper())->getNameFromNumber($key+1)."', 'title' => '" . $name . "'],\n";
+            echo "            ['coordinate' => '".(new ExcelHelper())->getNameFromNumber($key+1)."1', 'title' => '" . $name . "'],\n";
     }
 ?>
                 ]);
