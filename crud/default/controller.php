@@ -49,7 +49,7 @@ use dominus77\sweetalert2\Alert;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use yii\web\UploadedFile;
 use inquid\yiireports\ExcelHelper;
-
+use yii\helpers\Json;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
