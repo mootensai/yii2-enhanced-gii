@@ -4,6 +4,7 @@
  * This is the template for generating a CRUD controller class file.
  */
 use yii\helpers\StringHelper;
+use inquid\yiireports\ExcelHelper;
 
 /* @var $this yii\web\View */
 /* @var $generator \inquid\enhancedgii\crud\Generator */
