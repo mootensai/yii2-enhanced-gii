@@ -4,6 +4,8 @@
  * This is the template for generating a CRUD controller class file.
  */
 use yii\helpers\StringHelper;
+use app\components\ExcelHelper;
+use app\components\GoogleCloudLogger;
 
 /* @var $this yii\web\View */
 /* @var $generator \inquid\enhancedgii\crud\Generator */
@@ -341,4 +343,129 @@ if (count($pks) === 1) {
     }
 <?php endif; ?>
 <?php endforeach; ?>
+        
+        /* Excel Zone */
+    /**
+     * @param int $id
+     * @return bool|\yii\web\Response
+     */
+    public function actionGetFormat($format = false)
+    {
+        $excel = new ExcelHelper();
+        try {
+            $data = <?= $modelClass ?>::find()
+                ->select([
+<?php
+if ($tableSchema === false) {
+    foreach ($generator->getColumnNames() as $name) {
+            echo "            '" . $name . "',\n";
+    }
+}?>
+                ]);
+            if ($format) {
+                $data->where(['id' => -1]);
+            }
+            $excel->createExportTable(
+                $data->asArray()->all(),
+                [
+<?php
+if ($tableSchema === false) {
+    foreach ($generator->getColumnNames() as $name) {
+            echo "            ['coordinate' => 'A1', 'title' => '" . $name . "'],\n";
+    }
+}?>
+                ]);
+            return $this->redirect($excel->saveExcel('files/formats', 'FormatoImportar<?= $modelClass ?>'));
+        } catch (Exception $e) {
+            return false;
+        } catch (InvalidConfigException $e) {
+            return false;
+        }
+    }
+    /**
+     * @return string
+     */
+    public function actionImport()
+    {
+        return $this->render('import');
+    }
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \Exception
+     */
+    public function actionImportValidate()
+    {
+        $personal = new <?= $modelClass ?>();
+        $personal->fileExcel = UploadedFile::getInstanceByName('fileExcelTest');
+        $personal->fileExcel->saveAs('files/<?= $modelClass ?>/tmp_' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension);
+        $path = './files/personal/tmp_' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension;
+        $inputFileType = IOFactory::identify($path);
+        $reader = IOFactory::createReader($inputFileType);
+        $spreadsheet = $reader->load($path);
+        $highestRow = $spreadsheet->getActiveSheet()->getHighestRow();
+        $data = $spreadsheet->getActiveSheet()->rangeToArray('A1:U' . $highestRow, null, true, false);
+        if ($this->extractData($data, true)) {
+            Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, 'La información es correcta y se puede subir al sistema');
+        } else {
+            Yii::$app->session->setFlash(Alert::TYPE_ERROR, 'La información contiene errores favor de revisar');
+        }
+    }
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \Exception
+     */
+    public function actionImportExcel()
+    {
+        $personal = new <?= $modelClass ?>();
+        $personal->fileExcel = UploadedFile::getInstanceByName('fileExcel');
+        $personal->fileExcel->saveAs('files/<?= $modelClass ?>/' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension);
+        $path = './files/personal/' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension;
+        $inputFileType = IOFactory::identify($path);
+        $reader = IOFactory::createReader($inputFileType);
+        $spreadsheet = $reader->load($path);
+        $highestRow = $spreadsheet->getActiveSheet()->getHighestRow();
+        $data = $spreadsheet->getActiveSheet()->rangeToArray('A1:U' . $highestRow, null, true, false);
+        if ($this->extractData($data)) {
+            Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, 'La información fue ingresada al sistema de forma correcta');
+        } else {
+            Yii::$app->session->setFlash(Alert::TYPE_ERROR, 'La información contiene errores favor de revisar');
+        }
+    }
+    /**
+     * @param $data
+     * @param bool $test
+     * @return array|bool
+     */
+    private function extractData($data, $test = false)
+    {
+        Yii::debug('Data to import to movements' . Json::encode($data), GoogleCloudLogger::INVENTARIOS_LOG);
+        unset($data[0]);
+        foreach ($data as $datum) {
+            $personal = <?= $modelClass ?>::find()->where(['id' => (int)$datum[0]])->one();
+            if ($personal === null) {
+                $personal = new <?= $modelClass ?>();
+            }
+<?php
+if ($tableSchema === false) {
+    foreach ($generator->getColumnNames() as $key => $name) {
+            echo "$personal->{$name} = (string)$datum[{$key}];,\n";
+    }
+}?>
+            if ($test) {
+                if (!$personal->validate()) {
+                    Yii::debug('Errors' . Json::encode($personal->getErrors()));
+                    return false;
+                }
+                return true;
+            }
+            if (!$personal->save()) {
+                Yii::debug($personal->getErrors());
+                return false;
+            }
+        }
+        return true;
+    }
+        //END EXCEL Zone
 }
