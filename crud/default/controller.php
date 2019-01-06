@@ -356,11 +356,10 @@ if (count($pks) === 1) {
             $data = <?= $modelClass ?>::find()
                 ->select([
 <?php
-if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
             echo "            '" . $name . "',\n";
     }
-}?>
+?>
                 ]);
             if ($format) {
                 $data->where(['id' => -1]);
@@ -369,11 +368,10 @@ if ($tableSchema === false) {
                 $data->asArray()->all(),
                 [
 <?php
-if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
             echo "            ['coordinate' => 'A1', 'title' => '" . $name . "'],\n";
     }
-}?>
+?>
                 ]);
             return $this->redirect($excel->saveExcel('files/formats', 'FormatoImportar<?= $modelClass ?>'));
         } catch (Exception $e) {
@@ -448,11 +446,10 @@ if ($tableSchema === false) {
                 $personal = new <?= $modelClass ?>();
             }
 <?php
-if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $key => $name) {
-            echo "$personal->{$name} = (string)$datum[{$key}];,\n";
+            echo "\$personal->{$name} = (string)\$datum[{$key}];,\n";
     }
-}?>
+?>
             if ($test) {
                 if (!$personal->validate()) {
                     Yii::debug('Errors' . Json::encode($personal->getErrors()));
