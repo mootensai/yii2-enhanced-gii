@@ -387,6 +387,14 @@ if (count($pks) === 1) {
     }
 ?>
                 ]);
+        $excel->autoSizeColumns([
+<?php
+    foreach ($generator->getColumnNames() as $key => $name) {
+        if (!in_array($name, $generator->skippedColumns))
+            echo "            ".(new ExcelHelper())->getNameFromNumber($key+1).",\n";
+    }
+?>
+            ]);
             return $this->redirect($excel->saveExcel('files/formats', 'FormatoImportar<?= $modelClass ?>'));
         } catch (Exception $e) {
             return false;
