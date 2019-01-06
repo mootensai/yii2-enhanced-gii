@@ -38,11 +38,14 @@ echo $form->field($generator, 'baseControllerClass');
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <?= $form->field($generator, 'expandable')->checkbox(); ?>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <?= $form->field($generator, 'pdf')->checkbox(); ?>
+    </div>
+    <div class="col-md-4">
+        <?= $form->field($generator, 'importExcel')->checkbox(); ?>
     </div>
 </div>
 <div class="row">
