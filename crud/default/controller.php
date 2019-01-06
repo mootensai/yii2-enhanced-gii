@@ -379,8 +379,8 @@ if (count($pks) === 1) {
                 $data->asArray()->all(),
                 [
 <?php
-    foreach ($generator->getColumnNames() as $name) {
-            echo "            ['coordinate' => 'A1', 'title' => '" . $name . "'],\n";
+    foreach ($generator->getColumnNames() as $key => $name) {
+            echo "            ['coordinate' => '".(new ExcelHelper())->getNameFromNumber($key+1)."', 'title' => '" . $name . "'],\n";
     }
 ?>
                 ]);
