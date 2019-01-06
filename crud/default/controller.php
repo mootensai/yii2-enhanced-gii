@@ -369,6 +369,7 @@ if (count($pks) === 1) {
                 ->select([
 <?php
     foreach ($generator->getColumnNames() as $name) {
+        if (!in_array($name, $generator->skippedColumns))
             echo "            '" . $name . "',\n";
     }
 ?>
@@ -381,6 +382,7 @@ if (count($pks) === 1) {
                 [
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
+        if (!in_array($name, $generator->skippedColumns))
             echo "            ['coordinate' => '".(new ExcelHelper())->getNameFromNumber($key+1)."1', 'title' => '" . $name . "'],\n";
     }
 ?>
@@ -459,6 +461,7 @@ if (count($pks) === 1) {
             }
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
+        if (!in_array($name, $generator->skippedColumns))
             echo "              \$personal->{$name} = (string)\$datum[{$key}];\n";
     }
 ?>
