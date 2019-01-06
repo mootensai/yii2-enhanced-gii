@@ -451,7 +451,7 @@ if (count($pks) === 1) {
             }
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-            echo "\$personal->{$name} = (string)\$datum[{$key}];,\n";
+            echo "\$personal->{$name} = (string)\$datum[{$key}];\n";
     }
 ?>
             if ($test) {
