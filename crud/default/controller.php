@@ -4,8 +4,6 @@
  * This is the template for generating a CRUD controller class file.
  */
 use yii\helpers\StringHelper;
-use app\components\ExcelHelper;
-use app\components\GoogleCloudLogger;
 
 /* @var $this yii\web\View */
 /* @var $generator \inquid\enhancedgii\crud\Generator */
