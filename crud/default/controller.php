@@ -391,7 +391,7 @@ if (count($pks) === 1) {
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
         if (!in_array($name, $generator->skippedColumns))
-            echo "            ".(new ExcelHelper())->getNameFromNumber($key+1).",\n";
+            echo "            '".(new ExcelHelper())->getNameFromNumber($key+1)."',\n";
     }
 ?>
             ]);
