@@ -66,6 +66,10 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     if($generator->pdf){
         array_push($actions,"'pdf'");
     }
+    if($generator->importExcel){
+        array_push($actions,"'import'");
+        array_push($actions,"'import-excel'");
+    }
     if($generator->saveAsNew){
         array_push($actions,"'save-as-new'");
     }
