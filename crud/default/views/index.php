@@ -43,6 +43,9 @@ $this->registerJs($search);
 <?php if (!empty($generator->searchModelClass)): ?>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Busqueda Avanzada')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
+<?php if (!empty($generator->importExcel)): ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Importar desde Excel ') ?>, ['import'], ['class' => 'btn btn-danger']) ?>
+<?php endif; ?>
     </p>
 <?php if (!empty($generator->searchModelClass)): ?>
     <div class="search-form" style="display:none">
