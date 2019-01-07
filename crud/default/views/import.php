@@ -27,7 +27,7 @@ $this->title = 'Importar';
                 </div>
                 <div class="col-sm-4">
                     <h1>Validar Formato</h1>
-                    <?= \kartik\file\FileInput::widget([
+                    <?= "<?= \kartik\\file\FileInput::widget([
                         'name' => 'fileExcelTest',
                         'id' => 'fileExcelTest',
                         'pluginEvents' => [
@@ -36,18 +36,18 @@ $this->title = 'Importar';
                         'pluginOptions' => [
                             'showPreview' => false,
                             'showCaption' => false,
-                            'browseIcon' => '<i class="glyphicon glyphicon-file"></i> ',
+                            'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
                             'browseLabel' => 'Importar desde excel',
                             'elCaptionText' => '#customCaption',
                             'uploadUrl' => \yii\helpers\Url::to(['import-validate']),
                             'allowedFileTypes' => 'object',
                             'allowedFileExtensions' => ['xls', 'xlsx']
                         ],
-                    ]); ?>
+                    ]); ?>"?>
                 </div>
                 <div class="col-sm-4">
                     <h1>Importar Formato</h1>
-                    <?= \kartik\file\FileInput::widget([
+                    <?= "<?= \kartik\\file\FileInput::widget([
                         'name' => 'fileExcel',
                         'id' => 'fileExcel',
                         'pluginEvents' => [
@@ -56,14 +56,14 @@ $this->title = 'Importar';
                         'pluginOptions' => [
                             'showPreview' => false,
                             'showCaption' => false,
-                            'browseIcon' => '<i class="glyphicon glyphicon-file"></i> ',
+                            'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
                             'browseLabel' => 'Importar desde excel',
                             'elCaptionText' => '#customCaption',
                             'uploadUrl' => \yii\helpers\Url::to(['import-excel']),
                             'allowedFileTypes' => 'object',
                             'allowedFileExtensions' => ['xls', 'xlsx']
                         ],
-                    ]); ?>
+                    ]); ?>" ?>
                 </div>
             </div>
         </div>
