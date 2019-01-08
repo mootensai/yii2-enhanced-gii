@@ -53,6 +53,9 @@ use inquid\yiireports\ExcelHelper;
 use yii\helpers\Json;
 use Exception;
 use yii\base\InvalidConfigException;
+<?php if($generator->pdf): ?>
+    use app\modules\<?=$generator->moduleName?>\components\<?=$modelClass?>PDF;
+<?php endif; ?>
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -75,6 +78,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
     if($generator->importExcel){
         array_push($actions,"'import'");
+        array_push($actions,"'import-validate'");
         array_push($actions,"'import-excel'");
         array_push($actions,"'get-format'");
     }
@@ -249,32 +253,10 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         ]);
 <?php endif; ?>
 <?php endforeach; ?>
-
-        $content = $this->renderAjax('_pdf', [
-            'model' => $model,
-<?php foreach ($relations as $name => $rel): ?>
-<?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-            'provider<?= $rel[1]?>' => $provider<?= $rel[1] ?>,
-<?php endif; ?>
-<?php endforeach; ?>
-        ]);
-
-        $pdf = new Pdf([
-            'mode' => Pdf::MODE_CORE,
-            'format' => Pdf::FORMAT_A4,
-            'orientation' => Pdf::ORIENT_PORTRAIT,
-            'destination' => Pdf::DEST_BROWSER,
-            'content' => $content,
-            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
-            'cssInline' => '.kv-heading-1{font-size:18px}',
-            'options' => ['title' => \Yii::$app->name],
-            'methods' => [
-                'SetHeader' => [\Yii::$app->name],
-                'SetFooter' => ['{PAGENO}'],
-            ]
-        ]);
-
-        return $pdf->render();
+        $voucher = new <?=$modelClass?>PDF();
+        $voucher-><?=$modelClass?> = $model;
+        $voucher->Body();
+        return $voucher->Output('I', 'test.pdf', true);
     }
 <?php endif; ?>
 
@@ -355,7 +337,7 @@ if (count($pks) === 1) {
     }
 <?php endif; ?>
 <?php endforeach; ?>
-        
+
         /* Excel Zone */
     /**
      * @param int $id
@@ -417,9 +399,9 @@ if (count($pks) === 1) {
     public function actionImportValidate()
     {
         $personal = new <?= $modelClass ?>();
-        $personal->fileExcel = UploadedFile::getInstanceByName('fileExcelTest');
-        $personal->fileExcel->saveAs('files/<?= $modelClass ?>/tmp_' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension);
-        $path = './files/personal/tmp_' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension;
+        $personal->fileExcelImport = UploadedFile::getInstanceByName('fileExcelTest');
+        $personal->fileExcelImport->saveAs('files/<?= $modelClass ?>/tmp_' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension);
+        $path = './files/<?= $modelClass ?>/tmp_' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension;
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
         $spreadsheet = $reader->load($path);
@@ -439,9 +421,9 @@ if (count($pks) === 1) {
     public function actionImportExcel()
     {
         $personal = new <?= $modelClass ?>();
-        $personal->fileExcel = UploadedFile::getInstanceByName('fileExcel');
-        $personal->fileExcel->saveAs('files/<?= $modelClass ?>/' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension);
-        $path = './files/personal/' . $personal->fileExcel->baseName . '_' . $personal->id . $personal->fileExcel->extension;
+        $personal->fileExcelImport = UploadedFile::getInstanceByName('fileExcel');
+        $personal->fileExcelImport->saveAs('files/<?= $modelClass ?>/' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension);
+        $path = './files/<?= $modelClass ?>/' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension;
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
         $spreadsheet = $reader->load($path);

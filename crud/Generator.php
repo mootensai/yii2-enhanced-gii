@@ -69,7 +69,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $placeHolders = false;
     /* Excel */
     public $importExcel = true;
-
+    /* PDF */
+    public $nsComponent = 'app\components';
+    public $componentClass;
     /**
      * @inheritdoc
      */
@@ -93,7 +95,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass','nsComponent'], 'filter', 'filter' => 'trim'],
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -133,6 +135,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'nsSearchModel' => 'Search Model Namespace',
             'UUIDColumn' => 'UUID Column',
             'nsController' => 'Controller Namespace',
+            'nsComponent' => 'Component Namespace',
             'viewPath' => 'View Path',
             'baseControllerClass' => 'Base Controller Class',
             'indexWidgetType' => 'Widget Used in Index Page',
@@ -142,7 +145,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'pdf' => 'PDF Printable View',
             'importExcel' => 'Import From Excel',
             'modelSort' => 'Model Sort Order',
-            'placeHolders'=>'Enable Placeholders'
+            'placeHolders'=>'Enable Or Disable Placeholders'
         ]);
     }
 
@@ -251,7 +254,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'modelSort' => 'Sort order of the grids, ASC or DESC of the ID',
             'placeHolders'=>'Enable or Disable the place holders in all fields including lists',
             'generateDocumentation'=>'',
-            'importExcel'=>'Import Data from Excel sheet'
+            'importExcel'=>'Import Data from Excel sheet',
+            'nsComponent'=>'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
         ]);
     }
 
@@ -292,7 +296,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function requiredTemplates()
     {
-        return ['controller.php'];
+        return ['controller.php','pdf_component.php'];
     }
 
     /**
@@ -309,6 +313,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
             $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
             $this->nsController = "app\modules\\$this->moduleName\controllers";
+            $this->nsComponent = "app\modules\\$this->moduleName\components";
         }
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [$this->nameAttribute];
         $this->hiddenColumns = ($this->hiddenColumns) ? explode(',', str_replace(' ', '', $this->hiddenColumns)) : [$this->hiddenColumns];
@@ -326,9 +331,11 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
                 $controllerClassName = $modelClassName . 'Controller';
+                $pdfComponentClassName = $modelClassName.'PDF';
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
                 $controllerClassName = (!empty($this->controllerClass)) ? $this->controllerClass : $modelClassName . 'Controller';
+                $pdfComponentClassName = (!empty($this->componentClass)) ? $this->componentClass : $modelClassName . 'PDF';
             }
 //            $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
@@ -336,6 +343,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $this->tableSchema = $tableSchema;
 //            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
+            $this->componentClass = $this->nsComponent . '\\'.$pdfComponentClassName;
+
             $isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 
             // search model :
@@ -368,6 +377,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     ])
             );
 
+            if($this->pdf){
+                $files[] =   new CodeFile(
+                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $pdfComponentClassName . '.php',
+                    $this->render('pdf_component.php', ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
+                );
+            }
+
+
             // views :
             $viewPath = $this->getViewPath();
             $templatePath = $this->getTemplatePath() . '/views';
@@ -379,7 +396,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 }
                 if ($file === '_formrefone.php' || $file === '_formrefmany.php' || $file === '_datarefone.php'
                     || $file === '_datarefmany.php' || $file === '_expand.php' || $file === '_detail.php'
-                    || $file === '_data.php' || $file === 'saveAsNew.php' || $file === '_pdf.php' || $file === 'import.php') {
+                    || $file === '_data.php' || $file === 'saveAsNew.php' || $file === 'import.php') {
                     continue;
                 }
                 if ($this->indexWidgetType != 'list' && $file === '_index.php') {
@@ -403,12 +420,6 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             }
             if ($this->expandable) {
                 $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
-                    'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                ]));
-            }
-
-            if ($this->pdf) {
-                $files[] = new CodeFile("$viewPath/_pdf.php", $this->render("views/_pdf.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                 ]));
             }
@@ -461,12 +472,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 $this->modelClass = '';
                 $this->controllerClass = '';
                 $this->searchModelClass = '';
+                $this->componentClass = '';
             } else {
                 $this->modelClass = $modelClassName;
                 $this->controllerClass = $controllerClassName;
                 if ($this->generateSearchModel) {
                     $this->searchModelClass = $searchModelClassName;
                 }
+                $this->componentClass = $pdfComponentClassName;
             }
         }
         $this->nameAttribute = (is_array($this->nameAttribute)) ? implode(', ', $this->nameAttribute) : '';
