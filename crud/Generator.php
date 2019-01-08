@@ -142,7 +142,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'pdf' => 'PDF Printable View',
             'importExcel' => 'Import From Excel',
             'modelSort' => 'Model Sort Order',
-            'placeHolders'=>'Enable Or Disable Placeholders'
+            'placeHolders'=>'Enable Placeholders'
         ]);
     }
 
