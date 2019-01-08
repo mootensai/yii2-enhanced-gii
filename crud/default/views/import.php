@@ -2,27 +2,29 @@
 /**
  * Created by Inquid INC.
  */
-
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-use dominus77\sweetalert2\Alert;
 
-/* @var $this \yii\web\View */
-$this->title = 'Importar';
+echo "
+<?php
+use dominus77\sweetalert2\Alert;";
+
+echo "/* @var \$this \yii\web\View */
+\$this->title = 'Importar'; ?>"
 ?>
-<?= Alert::widget(['useSessionFlash' => true]); ?>
+<?= "<?= Alert::widget(['useSessionFlash' => true]); ?>" ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-create">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= \yii\helpers\Html::encode($this->title) ?></h3>
+            <h3 class="box-title"><?= "<?= \yii\helpers\Html::encode(\$this->title) ?>"?></h3>
         </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-4">
                     <h1>Formatos</h1>
                     <ul>
-                        <li><?= \yii\helpers\Html::a('Formato para Importar', ['get-format?format=true']) ?></li>
-                        <li><?= \yii\helpers\Html::a('Formato para Actualizar', ['get-format']) ?></li>
+                        <li><?= "<?=  \yii\helpers\Html::a('Formato para Importar', ['get-format?format=true']) ?> "?></li>
+                        <li><?= "<?= \yii\helpers\Html::a('Formato para Actualizar', ['get-format']) ?> "?></li>
                     </ul>
                 </div>
                 <div class="col-sm-4">
