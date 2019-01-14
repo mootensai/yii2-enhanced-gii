@@ -96,7 +96,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => [<?= implode(', ',$actions)?>],
+                        'actions' => [
+                                    <?= implode(",\n\t\t\t\t\t\t\t\t\t",$actions)?><?= "\n" ?>
+                        ],
                         'roles' => ['@']
                     ],
                     [
