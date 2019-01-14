@@ -255,7 +255,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         ]);
 <?php endif; ?>
 <?php endforeach; ?>
-        $voucher = new <?=$modelClass?>PDF();
+        $voucher = new <?=$modelClass?>PDF('P', 'mm', 'Letter');
         $voucher-><?=$modelClass?> = $model;
         $voucher->Body();
         $voucher->Output('I', "<?=$modelClass?>-{$id}.pdf", true);
