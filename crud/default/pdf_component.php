@@ -16,6 +16,7 @@ echo "<?php\n";
 
 namespace <?= StringHelper::dirname(ltrim($generator->componentClass, '\\')) ?>;
 
+use inquid\date_time\DateTimeHandler;
 use inquid\pdf\FPDF;
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
@@ -50,5 +51,13 @@ echo "\tpublic function Footer(){
         \t\t\$this->SetY(-40);
         \t\t\$this->SetFont('Arial', 'B', 8);
 \t}\n";
+echo "    /**
+     * @return string
+     */
+    public function saveToFile()
+    {
+        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
+        return \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
+    }\n";
     ?>
 }
