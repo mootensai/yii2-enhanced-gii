@@ -5,7 +5,7 @@ use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $generator \inquid\enhancedgii\crud\Generator */
-
+/* @var $tableCommentName */
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 $tableSchema = $generator->getTableSchema();
@@ -23,7 +23,7 @@ use kartik\export\ExportMenu;
 use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
 
 
-$this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
+$this->title = "<?php if($generator->useTableComment){ echo $tableCommentName;  } else{ echo ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)); }?>";
 $this->params['breadcrumbs'][] = $this->title;
 $search = "$('.search-button').click(function(){
 	$('.search-form').toggle(1000);

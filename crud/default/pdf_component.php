@@ -5,11 +5,18 @@
  * Date: 1/7/19
  * Time: 10:41 PM
  */
-use yii\helpers\StringHelper;
+
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 $componentClass = StringHelper::basename($generator->componentClass);
 $modelClass = StringHelper::basename($generator->modelClass);
+
+if ($generator->useTableComment) {
+    $customName = $tableNameComment;
+} else {
+    $customName = Inflector::camel2id(StringHelper::basename($modelClass));
+}
 
 echo "<?php\n";
 ?>
@@ -28,10 +35,10 @@ class <?= $componentClass ?> extends FPDF
 {
     /** @var array $color */
     private $color = ['5', '100', '36'];
-    <?= "public \${$modelClass};\n" ?>
+<?= "public \${$modelClass};\n" ?>
 <?php
 echo "\tpublic function Header(){
-        \t\t\$this->SetTitle('".Inflector::camel2id(StringHelper::basename($modelClass))."-' . \$this->".$modelClass ."->id);
+        \t\t\$this->SetTitle('" . $customName . "-' . \$this->" . $modelClass . "->id);
         \t\t\$this->SetFillColor(\$this->color[0], \$this->color[1], \$this->color[2]);
         \t\t\$this->SetFont('Arial', 'B', 12);
         \t\t\$this->Cell(40, 4, '', 0, 0, 'C');
@@ -56,8 +63,8 @@ echo "    /**
      */
     public function saveToFile()
     {
-        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
-        return \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
+        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/" . Inflector::camel2id(StringHelper::basename($modelClass)) . "' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
+        return \Yii::getAlias('@app/web/files/PurchaseOrder/" . Inflector::camel2id(StringHelper::basename($modelClass)) . "-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
     }\n";
-    ?>
+?>
 }

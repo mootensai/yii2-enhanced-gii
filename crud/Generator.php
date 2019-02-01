@@ -3,6 +3,7 @@
 namespace inquid\enhancedgii\crud;
 
 use inquid\enhancedgii\docgen\DocumentationGenerator;
+use inquid\enhancedgii\utils\TableUtils;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\ColumnSchema;
@@ -38,6 +39,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $queryBaseClass = 'yii\db\ActiveQuery';
     public $generateLabelsFromComments = false;
     public $useTablePrefix = false;
+    public $useTableComment = true;
     public $generateRelations = true;
     public $generateMigrations = true;
     public $optimisticLock = 'lock';
@@ -109,7 +111,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders','importExcel'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders','importExcel','useTableComment'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -190,6 +192,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 should consider the <code>tablePrefix</code> setting of the DB connection. For example, if the
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the ActiveRecord class
                 will return the table name as <code>{{%post}}</code>.',
+            'useTableComment'=>'Use the table comment as the title label for views',
             'generateSearchModel' => 'This indicates whether the generator should generate search model based on
                 columns it detects in the database.',
             'generateRelations' => 'This indicates whether the generator should generate relations based on
@@ -308,6 +311,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $relations = $this->generateRelations();
         $this->relations = $relations;
         $db = $this->getDbConnection();
+        $tableUtils = new TableUtils();
+        $tableUtils->dbConnection = $db;
+
         if (isset($this->moduleName)) {
             $this->nsModel = "app\modules\\$this->moduleName\models";
             $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
@@ -324,6 +330,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedColumns = array_filter($this->skippedColumns);
         $this->skippedRelations = array_filter($this->skippedRelations);
         foreach ($this->getTableNames() as $tableName) {
+            $tableCommentName = $tableUtils->getTableComment($tableName);
             if (in_array($tableName, $this->skippedTables)):
                 continue;
             endif;
@@ -380,7 +387,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             if($this->pdf){
                 $files[] =   new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $pdfComponentClassName . '.php',
-                    $this->render('pdf_component.php', ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
+                    $this->render('pdf_component.php', ['tableNameComment'=>$tableCommentName,'relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
                 );
             }
 
@@ -414,19 +421,22 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     $fileName = ($isTree) ? str_replace('Nested', '', $file) : $file;
                     $files[] = new CodeFile("$viewPath/$fileName", $this->render("views/$file", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                        'isTree' => $isTree
+                        'isTree' => $isTree,
+                        'tableCommentName' => $tableCommentName
                     ]));
                 }
             }
             if ($this->expandable) {
                 $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    'tableCommentName' => $tableCommentName
                 ]));
             }
             
             if ($this->importExcel) {
                 $files[] = new CodeFile("$viewPath/import.php", $this->render("views/import.php", [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    'tableCommentName' => $tableCommentName
                 ]));
             }
 
@@ -440,28 +450,33 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 if ($this->expandable) {
                     $files[] = new CodeFile("$viewPath/_detail.php", $this->render("views/_detail.php", [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                        'tableCommentName' => $tableCommentName
                     ]));
                 }
                 foreach ($relations[$tableName] as $name => $rel) {
                     if ($rel[self::REL_IS_MULTIPLE] && isset($rel[self::REL_TABLE]) && !in_array($name, $this->skippedRelations)) {
                         $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefmany.php", [
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            'tableCommentName' => $tableCommentName
                         ]));
                         if ($this->expandable) {
                             $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefmany.php", [
                                 'relName' => $name,
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                                'tableCommentName' => $tableCommentName
                             ]));
                         }
                     } else if (isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)) {
                         $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefone.php", [
                             'relName' => $name,
                             'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            'tableCommentName' => $tableCommentName
                         ]));
                         if ($this->expandable) {
                             $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefone.php", [
                                 'relName' => $name,
                                 'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                                'tableCommentName' => $tableCommentName
                             ]));
                         }
                     }

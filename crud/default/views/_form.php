@@ -37,9 +37,9 @@ foreach ($relations as $name => $rel) {
 }
 ?>
 Vue::begin([
-'jsName' => '<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>',
-'id' => "<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>-form",
-'data' => [
+    'jsName' => '<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>',
+    'id' => "<?= Inflector::underscore(StringHelper::basename($generator->modelClass)) ?>-form",
+    'data' => [
 <?php
 $numberInputs = count($tableSchema->getColumnNames());
 foreach ($tableSchema->getColumnNames() as $key => $attribute) {
@@ -50,10 +50,10 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
 }
 ?>
 ],
-'methods' => [
-'reverseMessage' => new yii\web\JsExpression("function(){"
-. "this.message =1; "
-. "}"),
+    'methods' => [
+    'reverseMessage' => new yii\web\JsExpression("function(){"
+    . "this.message =1; "
+    . "}"),
 ]
 ]);
 ?>
