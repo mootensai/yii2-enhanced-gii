@@ -7,15 +7,16 @@
  */
 echo "<?php\n";
 
-use yii\helpers\StringHelper; ?>
+use yii\helpers\StringHelper;
+?>
 
-namespace <?= StringHelper::dirname(ltrim($generator->componentClass, '\\')) ?>;
+namespace <?= $generator->nsComponent ?>;
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 /**
-* <?= $componentClass ?> implements all the functionality and business layer of the <?= $modelClass ?> model.
+* <?= $componentClassName ?> implements all the functionality and business layer of the <?= $modelClass ?> model.
 */
-class <?= $componentClass ?> extends Component
+class <?= $componentClassName ?> extends Component
 {
 <?php
 echo "\tpublic function beforeSave(){

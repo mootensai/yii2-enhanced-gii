@@ -41,7 +41,10 @@
         "yiidoc/yii2-redactor": "*",
         "mikehaertl/php-shellcommand":"dev-master",
         "knplabs/github-api": "^2.8",
-        "php-http/guzzle6-adapter": "^1.1"
+        "php-http/guzzle6-adapter": "^1.1",
+        "drsdre/yii2-wizardwidget": "*",
+        "bizley/contenttools": "^1.2",
+        "yii2mod/yii2-editable": "*"
     },
     "autoload": {
         "psr-4": {

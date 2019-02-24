@@ -75,7 +75,7 @@ class Generator extends BaseGenerator
     public $excelExtensions = 'xls, csv, xlsx';
     public $powerPointExtensions = 'ppt, pptx';
     public $genericFileExtensions = 'txt, sh';
-
+    public $componentClass;
 
     /**
      * @inheritdoc
@@ -99,7 +99,7 @@ class Generator extends BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs','nsComponent'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
             [['tableName', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -108,7 +108,7 @@ class Generator extends BaseGenerator
             [['queryBaseClass', 'queryClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::className()]],
             [['db'], 'validateDb'],
             [['enableI18N', 'generateQuery', 'generateLabelsFromComments',
-                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly','excelImport'], 'boolean'],
+                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly', 'excelImport'], 'boolean'],
             [['generateRelations'], 'in', 'range' => [self::RELATIONS_NONE, self::RELATIONS_ALL, self::RELATIONS_ALL_INVERSE]],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
 
@@ -116,7 +116,7 @@ class Generator extends BaseGenerator
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
                 'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue'], 'safe'],
-            [['imageExtensions','videoExtensions','excelImport','wordExtensions','powerPointExtensions','pdfExtensions','genericFileExtensions'],'string']
+            [['imageExtensions', 'videoExtensions', 'excelImport', 'wordExtensions', 'powerPointExtensions', 'pdfExtensions', 'genericFileExtensions'], 'string']
         ]);
     }
 
@@ -148,13 +148,13 @@ class Generator extends BaseGenerator
             'deletedAt' => 'Info Column',
             'deletedAtValue' => 'Info Value',
             'deletedAtValueRestored' => 'Info Restored Value',
-            'excelImport'=>'Import From Excel',
-            'imageExtensions'=>'Accepted Image Extensions',
-            'videoExtensions'=>'Accepted Video Extensions',
-            'wordExtensions'=>'Accepted Word Extensions',
-            'excelExtensions'=>'Accepted Excel Extensions',
-            'powerpointExtensions'=>'Accepted PowerPoint Extensions',
-            'genericFileExtensions'=>'Generic files accepted',
+            'excelImport' => 'Import From Excel',
+            'imageExtensions' => 'Accepted Image Extensions',
+            'videoExtensions' => 'Accepted Video Extensions',
+            'wordExtensions' => 'Accepted Word Extensions',
+            'excelExtensions' => 'Accepted Excel Extensions',
+            'powerpointExtensions' => 'Accepted PowerPoint Extensions',
+            'genericFileExtensions' => 'Generic files accepted',
             'nsComponent' => 'Component Namespace',
         ]);
     }
@@ -285,8 +285,8 @@ class Generator extends BaseGenerator
             'excelExtensions' => 'Accepted Excel extensions, should be spearated by a comma',
             'wordExtensions' => 'Accepted Word extensions, should be spearated by a comma',
             'powerpointExtensions' => 'Accepted PowerPoint extensions, should be spearated by a comma',
-            'genericFileExtensions'=>'Files that should be accepted using the @file annotation at the column comments',
-            'nsComponent'=>'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
+            'genericFileExtensions' => 'Files that should be accepted using the @file annotation at the column comments',
+            'nsComponent' => 'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
         ]);
     }
 
@@ -331,7 +331,7 @@ class Generator extends BaseGenerator
      */
     public function requiredTemplates()
     {
-        return ['model.php','component.php'];
+        return ['model.php', 'component.php'];
     }
 
     public $isTree;
@@ -385,15 +385,20 @@ class Generator extends BaseGenerator
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
             }
+            $componentClassName = $modelClassName . 'Component';
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
+            $this->componentClass = "{$this->nsComponent}\\{$componentClassName}";
+
             $this->tableSchema = $tableSchema;
             $this->isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 //            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
             $params = [
                 'tableName' => $tableName,
                 'className' => $modelClassName,
+                'componentClass' =>$this->componentClass,
+                'componentClassName' => $componentClassName,
                 'queryClassName' => $queryClassName,
                 'tableSchema' => $tableSchema,
                 'labels' => $this->generateLabels($tableSchema),
@@ -411,7 +416,7 @@ class Generator extends BaseGenerator
                 );
             }
             $files[] = new CodeFile(
-                Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $modelClassName . '.php', $this->render('component.php', $params)
+                Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $componentClassName . '.php', $this->render('component.php', $params)
             );
             // query :
             if ($queryClassName) {
@@ -547,11 +552,11 @@ class Generator extends BaseGenerator
                             $types['file'][] = $column->name . "Video";
                         } elseif ($this->containsAnnotation($column, "@pdf")) {
                             $types['file'][] = $column->name . "Pdf";
-                        }elseif ($this->containsAnnotation($column, "@excel")) {
+                        } elseif ($this->containsAnnotation($column, "@excel")) {
                             $types['file'][] = $column->name . "Excel";
-                        }elseif ($this->containsAnnotation($column, "@word")) {
+                        } elseif ($this->containsAnnotation($column, "@word")) {
                             $types['file'][] = $column->name . "Word";
-                        }elseif ($this->containsAnnotation($column, "@powerpoint")) {
+                        } elseif ($this->containsAnnotation($column, "@powerpoint")) {
                             $types['file'][] = $column->name . "Powerpoint";
                         }
                         $lengths[$column->size][] = $column->name;
@@ -565,20 +570,19 @@ class Generator extends BaseGenerator
         foreach ($types as $type => $columns) {
             if ($this->containsAnnotation($column, "@file")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->genericFileExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@image")) {
+            } elseif ($this->containsAnnotation($column, "@image")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->imageExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@video")) {
+            } elseif ($this->containsAnnotation($column, "@video")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->videoExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@pdf")) {
+            } elseif ($this->containsAnnotation($column, "@pdf")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->pdfExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@excel")) {
+            } elseif ($this->containsAnnotation($column, "@excel")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->excelExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@word")) {
+            } elseif ($this->containsAnnotation($column, "@word")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->wordExtensions}']";
-            }elseif ($this->containsAnnotation($column, "@powerpoint")) {
+            } elseif ($this->containsAnnotation($column, "@powerpoint")) {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->powerPointExtensions}']";
-            }
-            else{
+            } else {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
             }
         }
