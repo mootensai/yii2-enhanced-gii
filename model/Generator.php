@@ -65,6 +65,7 @@ class Generator extends BaseGenerator
     public $generateBaseOnly = false;
     public $UUIDColumn = 'id';
     public $skipAllExistingTables = true;
+    public $nsComponent = 'app\components';
     // Uploaders
     public $excelImport = true;
     public $imageExtensions = 'png, jpg';
@@ -98,7 +99,7 @@ class Generator extends BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs','nsComponent'], 'filter', 'filter' => 'trim'],
             [['tableName', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -153,7 +154,8 @@ class Generator extends BaseGenerator
             'wordExtensions'=>'Accepted Word Extensions',
             'excelExtensions'=>'Accepted Excel Extensions',
             'powerpointExtensions'=>'Accepted PowerPoint Extensions',
-            'genericFileExtensions'=>'Generic files accepted'
+            'genericFileExtensions'=>'Generic files accepted',
+            'nsComponent' => 'Component Namespace',
         ]);
     }
 
@@ -283,7 +285,8 @@ class Generator extends BaseGenerator
             'excelExtensions' => 'Accepted Excel extensions, should be spearated by a comma',
             'wordExtensions' => 'Accepted Word extensions, should be spearated by a comma',
             'powerpointExtensions' => 'Accepted PowerPoint extensions, should be spearated by a comma',
-            'genericFileExtensions'=>'Files that should be accepted using the @file annotation at the column comments'
+            'genericFileExtensions'=>'Files that should be accepted using the @file annotation at the column comments',
+            'nsComponent'=>'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
         ]);
     }
 
@@ -328,7 +331,7 @@ class Generator extends BaseGenerator
      */
     public function requiredTemplates()
     {
-        return ['model.php'];
+        return ['model.php','component.php'];
     }
 
     public $isTree;
@@ -350,6 +353,7 @@ class Generator extends BaseGenerator
             $this->nsModel = "app\modules\\$this->moduleName\models";
             $this->nsSearchModel = "app\modules\\$this->moduleName\models\search";
             $this->queryNs = "app\modules\\$this->moduleName\models\ActiveQuery";
+            $this->nsComponent = "app\modules\\$this->moduleName\components";
         }
 
         $this->nameAttribute = ($this->nameAttribute) ? explode(',', str_replace(' ', '', $this->nameAttribute)) : [];
@@ -406,6 +410,9 @@ class Generator extends BaseGenerator
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
                 );
             }
+            $files[] = new CodeFile(
+                Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $modelClassName . '.php', $this->render('component.php', $params)
+            );
             // query :
             if ($queryClassName) {
                 $params = [
