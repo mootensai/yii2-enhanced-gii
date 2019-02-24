@@ -14,7 +14,7 @@ namespace <?= $generator->nsComponent ?>;
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 /**
-* <?= $componentClassName ?> implements all the functionality and business layer of the <?= $modelClass ?> model.
+* <?= $componentClassName ?> implements all the functionality and business layer of the <?= $generator->generateTableName($tableName) ?> table.
 */
 class <?= $componentClassName ?> extends Component
 {
