@@ -1,12 +1,11 @@
 <?php
-namespace inquid\testsgenerator\migration;
+namespace inquid\enhancedgii\testsgenerator;
 
 use Yii;
 /**
- * This generator will generate migration file for the specified database table.
+ * This generator will generate all the test necessary for test the CRUD.
  *
- * @author Misbahul D Munir <misbahuldmunir@gmail.com>
- * @since 1.1
+ * @author Luis Gonzalez <contact@inquid.co>
  */
 class Generator extends \yii\gii\Generator
 {
