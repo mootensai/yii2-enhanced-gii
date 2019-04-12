@@ -3,13 +3,15 @@
 namespace inquid\enhancedgii\testsgenerator;
 
 use Yii;
+use inquid\enhancedgii\utils\TableUtils;
+use yii\gii\CodeFile;
 
 /**
  * This generator will generate all the test necessary for test the CRUD.
  *
  * @author Luis Gonzalez <contact@inquid.co>
  */
-class Generator extends \yii\gii\Generator
+class Generator extends \inquid\enhancedgii\BaseGenerator
 {
     public $db;
     public $testPath = '@app/tests';
@@ -119,20 +121,12 @@ class Generator extends \yii\gii\Generator
      */
     public function generate()
     {
-        $relations = $this->generateRelations();
         $db = $this->getDbConnection();
+        $tableUtils = new TableUtils();
+        $tableUtils->dbConnection = $db;
         $tables = [];
         $files = [];
         foreach ($this->getTableNames() as $tableName) {
-            $tableSchema = $db->getTableSchema($tableName);
-            $columns = $this->generateColumns($tableSchema);
-            if (isset($columns[0])) {
-                $primary = $columns[0];
-                unset($columns[0]);
-            } else {
-                $primary = null;
-            }
-
             $testName = $tableName;
             $file = rtrim(Yii::getAlias($this->testPath), '/') . "/{$testName}UnitTest.php";
             $files[] = new CodeFile($file, $this->render('unit_test.php', [
@@ -150,7 +144,7 @@ class Generator extends \yii\gii\Generator
     {
         if (!Yii::$app->has($this->db)) {
             $this->addError('db', 'There is no application component named "db".');
-        } elseif (!Yii::$app->get($this->db) instanceof Connection) {
+        } elseif (!Yii::$app->get($this->db) instanceof \yii\db\Connection) {
             $this->addError('db', 'The "db" application component must be a DB connection instance.');
         }
     }
@@ -232,9 +226,8 @@ class Generator extends \yii\gii\Generator
 
     /**
      * @return Connection the DB connection as specified by [[db]].
-     * @throws \yii\base\InvalidConfigException
      */
-    protected function getDbConnection()
+    public function getDbConnection()
     {
         return Yii::$app->get($this->db, false);
     }
