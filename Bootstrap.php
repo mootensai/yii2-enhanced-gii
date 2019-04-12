@@ -31,14 +31,12 @@ class Bootstrap implements BootstrapInterface
 //        \Yii::setAlias('@mtengii','@vendor/mootensai/yii2-enhanced-gii');
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
+                $app->getModule('gii')->generators['enhanced-gii-app_template'] = 'inquid\enhancedgii\app_template\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-model'] = 'inquid\enhancedgii\model\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'inquid\enhancedgii\crud\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-app'] = 'inquid\enhancedgii\app_template\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-module'] = 'inquid\enhancedgii\module\Generator';
-//                $app->getModule('gii')->generators['enhanced-gii-crud']['templates'] = [
-//                    'default' => '@mtengii/crud/default',
-//                    'nested' => '@mtengii/crud/nested'
-//                ];
+                $app->getModule('gii')->generators['enhanced-gii-testsgenerator'] = 'inquid\enhancedgii\testsgenerator\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-migration'] = 'inquid\enhancedgii\migration\Generator';
             }
         }
