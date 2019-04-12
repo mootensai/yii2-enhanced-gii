@@ -8,5 +8,5 @@
 
 
 echo $form->field($generator, 'db');
+echo $form->field($generator, 'testPath');
 echo $form->field($generator, 'tableName');
-echo $form->field($generator, 'migrationPath');
