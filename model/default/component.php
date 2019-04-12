@@ -19,12 +19,12 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
 class <?= $componentClassName ?> extends Component
 {
 <?php
-echo "\tpublic function beforeSave(){
+echo "\tpublic function beforeSave(".$modelClassName."){
 
 \t}\n";?>
 
 <?php
-echo "\tpublic function afterSave(){
+echo "\tpublic function afterSave(".$modelClassName."){
 
 \t}\n";?>
 }
