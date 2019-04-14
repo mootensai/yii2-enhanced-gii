@@ -1,5 +1,6 @@
 # yii2-enhanced-gii
-Yii2 Gii (generator) with Relation
+All things needed to create a fully functional application just to modify the business logic to fit your needs 🚀
+
 
 [![Yii2](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=flat)](http://www.yiiframework.com/)
 [![Buy me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/inquid)
@@ -80,7 +81,7 @@ Go to your gii tools, and notice the new IO Generator for models & CRUD
           ```php
           'controllerNamespace' => '@vendor\inquid\yii2-enhanced-gii\console',
           ```
-2. Use 
+2. Use
           ```
           ./yii gii
           ```
