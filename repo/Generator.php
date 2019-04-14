@@ -1,13 +1,10 @@
 <?php
 
-namespace inquid\enhancedgii\app_template;
+namespace inquid\enhancedgii\repo;
 
-use inquid\enhancedgii\app_template\component\AppTemplate;
+use inquid\enhancedgii\repo\components\RepoHandler;
 use Yii;
-use yii\db\Connection;
-use yii\db\Schema;
 use yii\gii\CodeFile;
-use yii\db\Expression;
 
 /**
  * This generator will generate migration file for the specified database table.
@@ -18,7 +15,7 @@ use yii\db\Expression;
 class Generator extends \yii\gii\Generator
 {
     public $public_repo = false;
-    public $github_token   = '';
+    public $github_token = '';
     public $name;
     public $local_path;
     public $description;
@@ -63,8 +60,8 @@ class Generator extends \yii\gii\Generator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['public_repo', 'github_token','local_path','suffix_page'], 'filter', 'filter' => 'trim'],
-            [['public_repo'],'boolean'],
+            [['public_repo', 'github_token', 'local_path', 'suffix_page'], 'filter', 'filter' => 'trim'],
+            [['public_repo'], 'boolean'],
             [['name'], 'required']
         ]);
     }
@@ -102,10 +99,9 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         $files = [];
-        $repoHandler = new RepoHandler($this->local_path,$this->name,$this->github_token,$this->suffix_page,$this->description,$this->public_repo);
-        $files[] = new CodeFile("{$this->local_path}/{$this->name}/README.md", $this->render("README.md"));
-        Yii::debug("Creating the repo" . $repoHandler->createRepo(true));
+        $repoHandler = new RepoHandler($this->local_path, $this->name, $this->github_token, $this->suffix_page, $this->description, $this->public_repo);
+        $files[] = new CodeFile("{$this->local_path}/{$this->name}/README.md", $this->render('README.md', ['repo_name' => 'name']));
+        Yii::debug('Creating the repo' . $repoHandler->createRepo(true));
         return $files;
-        //$repoHandler->createEnv();
     }
 }
