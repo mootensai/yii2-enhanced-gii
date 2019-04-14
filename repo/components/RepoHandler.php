@@ -5,7 +5,7 @@
  * Date: 17/09/18
  * Time: 01:22 AM
  */
-namespace inquid\enhancedgii\app_template\component;
+namespace inquid\enhancedgii\repo\components;
 
 class RepoHandler
 {
@@ -15,7 +15,7 @@ class RepoHandler
     public $local_path;
     public $description;
     public $suffix_page;
-    
+
     public function init($local_path,$name,$github_token,$suffix_page,$description,$public_repo=false){
       $this->local_path = $local_path;
       $this->name=$name;
@@ -47,5 +47,5 @@ class RepoHandler
                 exec("git push /{$this->local_path}/{$this->name}/");
             }
         }
-    
+
 }
