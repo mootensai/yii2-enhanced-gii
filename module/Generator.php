@@ -7,11 +7,11 @@
 
 namespace inquid\enhancedgii\module;
 
+use inquid\enhancedgii\BaseGenerator;
+use Yii;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
-use Yii;
 use yii\helpers\StringHelper;
-use inquid\enhancedgii\BaseGenerator;
 
 /**
  * This generator will generate the skeleton code needed by a module.
@@ -126,15 +126,19 @@ EOD;
         $modulePath = $this->getModulePath();
         $files[] = new CodeFile(
             $modulePath . '/' . StringHelper::basename($this->moduleClass) . '.php',
-            $this->render("module.php")
+            $this->render('module.php')
         );
         $files[] = new CodeFile(
             $modulePath . '/controllers/DefaultController.php',
-            $this->render("controller.php")
+            $this->render('controller.php')
         );
         $files[] = new CodeFile(
             $modulePath . '/views/default/index.php',
-            $this->render("view.php")
+            $this->render('view.php')
+        );
+        $files[] = new CodeFile(
+            $modulePath . '/views/default/menu_items.php',
+            $this->render('menu_items.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
 
         return $files;

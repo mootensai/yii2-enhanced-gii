@@ -41,7 +41,7 @@ class <?= $className ?> extends \yii\base\Module
                 'url' => ['/<?= $generator->moduleID ?>/default/index'],
                 'template' => '<a href="{url}">{label}<i class="fa fa-angle-left pull-right"></i></a>',
                 'items' => [
-                    ['label' => 'Asuntos', 'url' => ['/legal/asuntos/index'], 'visible' => Yii::$app->user->identity->isAdmin],
+                    <?= '<?php include(\'menu_items.php\')' ?>
                 ],
             ];
         // custom initialization code goes here
