@@ -137,7 +137,7 @@ EOD;
             $this->render('view.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/views/default/menu_items.php',
+            $modulePath . '/menu_items.php',
             $this->render('menu_items.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
         $files[] = new CodeFile(
