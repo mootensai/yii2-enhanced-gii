@@ -5,8 +5,9 @@
 
 ?>
 <div class="module-form">
-<?php
+    <?php
+    echo $form->field($generator, 'db');
     echo $form->field($generator, 'moduleClass');
     echo $form->field($generator, 'moduleID');
-?>
+    ?>
 </div>

@@ -8,6 +8,7 @@
 namespace inquid\enhancedgii\module;
 
 use inquid\enhancedgii\BaseGenerator;
+use inquid\enhancedgii\utils\DatabaseUtils;
 use Yii;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
@@ -51,7 +52,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::rules(), [
             [['moduleID', 'moduleClass'], 'filter', 'filter' => 'trim'],
-            [['moduleID', 'moduleClass'], 'required'],
+            [['moduleID', 'moduleClass', 'db'], 'required'],
             [['moduleID'], 'match', 'pattern' => '/^[\w\\-]+$/', 'message' => 'Only word characters and dashes are allowed.'],
             [['moduleClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
             [['moduleClass'], 'validateModuleClass'],
@@ -64,6 +65,7 @@ class Generator extends BaseGenerator
     public function attributeLabels()
     {
         return [
+            'db' => 'Database Connection ID',
             'moduleID' => 'Module ID',
             'moduleClass' => 'Module Class',
         ];
@@ -75,15 +77,26 @@ class Generator extends BaseGenerator
     public function hints()
     {
         return [
+            'db' => 'This is the ID of the DB application component.',
             'moduleID' => 'This refers to the ID of the module, e.g., <code>admin</code>.',
             'moduleClass' => 'This is the fully qualified class name of the module, e.g., <code>app\modules\admin\Module</code>.',
         ];
     }
 
     /**
+     * @inheritdoc
+     */
+    public function stickyAttributes()
+    {
+        return array_merge(parent::stickyAttributes(), [
+            'db']);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function successMessage()
+    public
+    function successMessage()
     {
         if (Yii::$app->hasModule($this->moduleID)) {
             $link = Html::a('try it now', Yii::$app->getUrlManager()->createUrl($this->moduleID), ['target' => '_blank']);
@@ -112,7 +125,8 @@ EOD;
     /**
      * {@inheritdoc}
      */
-    public function requiredTemplates()
+    public
+    function requiredTemplates()
     {
         return ['module.php', 'controller.php', 'view.php'];
     }
@@ -120,10 +134,15 @@ EOD;
     /**
      * {@inheritdoc}
      */
-    public function generate()
+    public
+    function generate()
     {
         $files = [];
+        $db = $this->getDbConnection();
+        $databaseUtils = new DatabaseUtils();
+        $databaseUtils->dbConnection = $db;
         $modulePath = $this->getModulePath();
+
         $files[] = new CodeFile(
             $modulePath . '/' . StringHelper::basename($this->moduleClass) . '.php',
             $this->render('module.php')
@@ -134,7 +153,7 @@ EOD;
         );
         $files[] = new CodeFile(
             $modulePath . '/views/default/index.php',
-            $this->render('view.php')
+            $this->render('view.php', ['databaseName' => $databaseUtils->getDatabaseName()])
         );
         $files[] = new CodeFile(
             $modulePath . '/menu_items.php',
@@ -151,7 +170,8 @@ EOD;
     /**
      * Validates [[moduleClass]] to make sure it is a fully qualified class name.
      */
-    public function validateModuleClass()
+    public
+    function validateModuleClass()
     {
         if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@' . str_replace('\\', '/', $this->moduleClass), false) === false) {
             $this->addError('moduleClass', 'Module class must be properly namespaced.');
@@ -164,7 +184,8 @@ EOD;
     /**
      * @return bool the directory that contains the module class
      */
-    public function getModulePath()
+    public
+    function getModulePath()
     {
         return Yii::getAlias('@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
     }
@@ -172,7 +193,8 @@ EOD;
     /**
      * @return string the controller namespace of the module.
      */
-    public function getControllerNamespace()
+    public
+    function getControllerNamespace()
     {
         return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\controllers';
     }
