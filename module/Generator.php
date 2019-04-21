@@ -141,8 +141,8 @@ EOD;
             $this->render('menu_items.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
         $files[] = new CodeFile(
-            $modulePath . '/views/default/config.php',
-            $this->render('/config/config.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
+            $modulePath . '/config/config.php',
+            $this->render('config.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
 
         return $files;
