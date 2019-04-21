@@ -16,6 +16,8 @@ echo "<?php\n";
 
 namespace <?= $ns ?>;
 
+use Yii;
+
 /**
  * <?= $generator->moduleID ?> module definition class
  */
