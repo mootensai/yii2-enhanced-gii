@@ -7,6 +7,8 @@
  */
 
 namespace inquid\enhancedgii\utils;
+
+use Yii;
 use yii\base\UserException;
 use yii\helpers\Json;
 
@@ -14,15 +16,22 @@ class DatabaseUtils
 {
     public $dbConnection = null;
 
-    public function getDatabaseComment(string $database = null){
+    /**
+     * Get the database comment or database name
+     * @param string|null $databaseName
+     * @return false|string|null
+     * @throws UserException
+     */
+    public function getDatabaseName(string $databaseName = null)
+    {
         if ($this->dbConnection === null) {
             throw new UserException("No databse connection set");
         }
-        if ($database === null) {
-            $database = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
+        if ($databaseName === null) {
+            $databaseName = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
         }
         try {
-            $result = Yii::$app->db->createCommand("SELECT comment FROM phpmyadmin.pma__column_info WHERE db_name='{$database}';")
+            $result = Yii::$app->db->createCommand("SELECT comment FROM phpmyadmin.pma__column_info WHERE db_name='{$databaseName}';")
                 ->queryScalar();
             return ($result != null) ? $result : 'N/A';
         } catch (\yii\db\Exception $e) {

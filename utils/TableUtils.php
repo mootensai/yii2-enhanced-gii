@@ -1,9 +1,9 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: gogl92
- * Date: 2/1/19
- * Time: 11:30 AM
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace inquid\enhancedgii\utils;
@@ -12,39 +12,37 @@ use Yii;
 use yii\base\UserException;
 use yii\helpers\Json;
 
-class DatabaseUtils
+/**
+ * Utils for Table databases
+ *
+ * @author Inquid Inc <contact@inquid.co>
+ * @since 2.0
+ */
+class TableUtils
 {
+    /* @var $dbConnection */
     public $dbConnection = null;
 
     /**
-     * Get the database comment or database name
-     * @param string|null $databaseName
-     * @return false|string|null
-     * @throws UserException
+     * @param string $database
+     * @param string $table
+     * @throws \yii\db\Exception
+     * @return string
      */
-    public function getDatabaseName(string $databaseName = null)
+    public function getTableComment(string $table, string $database = null)
     {
         if ($this->dbConnection === null) {
             throw new UserException("No databse connection set");
         }
-        if ($databaseName === null) {
-            $databaseName = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
+        if ($database === null) {
+            $database = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
         }
         try {
-            $result = Yii::$app->db->createCommand("SELECT comment FROM phpmyadmin.pma__column_info WHERE db_name='{$databaseName}';")
+            $result = Yii::$app->db->createCommand("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='{$database}' AND table_name='{$table}';")
                 ->queryScalar();
             return ($result != null) ? $result : 'N/A';
         } catch (\yii\db\Exception $e) {
             return "ERROR " . Json::encode($e);
-        }
-    }
-
-    public static function getDsnAttribute($dsn, $name = 'dbname')
-    {
-        if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {
-            return $match[1];
-        } else {
-            return null;
         }
     }
 }
