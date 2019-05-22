@@ -17,7 +17,7 @@ use yii\helpers\Html;
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
 
 $this->title = <?= $generator->generateString('Agregar ' . $customName) ?>;
-$this->params['breadcrumbs'][] = ['label' => <?= $customName  ?>, 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '<?= $customName  ?>', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-create">
