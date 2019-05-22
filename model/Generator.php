@@ -76,6 +76,8 @@ class Generator extends BaseGenerator
     public $powerPointExtensions = 'ppt, pptx';
     public $genericFileExtensions = 'txt, sh';
     public $componentClass;
+    public $fileFields = [];
+
 
     /**
      * @inheritdoc
@@ -176,15 +178,15 @@ class Generator extends BaseGenerator
                 class.',
             'nameAttribute' => 'This is the (set) of name column that you use to show as label, '
                 . 'separated by comma (,) for multiple table(asterisk on Table Name).',
-            'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table. 
+            'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
-            'skippedTables' => 'Fill this field with the table name that you dont want to generate files. 
+            'skippedTables' => 'Fill this field with the table name that you dont want to generate files.
                 You can fill multiple tables, separated by comma (,).',
             'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
                 You can fill multiple relations, separated by comma (,). You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
-            'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table. 
+            'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
             'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
@@ -510,6 +512,7 @@ class Generator extends BaseGenerator
     {
         $types = [];
         $lengths = [];
+        $this->fileFields = [];
         foreach ($table->columns as $column) {
             if ($column->autoIncrement) {
                 continue;
@@ -545,18 +548,25 @@ class Generator extends BaseGenerator
                 default: // strings
                     if ($column->size > 0) {
                         if ($this->containsAnnotation($column, "@file")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "File";
                         } elseif ($this->containsAnnotation($column, "@image")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Image";
                         } elseif ($this->containsAnnotation($column, "@video")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Video";
                         } elseif ($this->containsAnnotation($column, "@pdf")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Pdf";
                         } elseif ($this->containsAnnotation($column, "@excel")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Excel";
                         } elseif ($this->containsAnnotation($column, "@word")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Word";
                         } elseif ($this->containsAnnotation($column, "@powerpoint")) {
+                            $this->fileFields[] = $column->name;
                             $types['file'][] = $column->name . "Powerpoint";
                         }
                         $lengths[$column->size][] = $column->name;
@@ -569,19 +579,19 @@ class Generator extends BaseGenerator
         /* TODO column is not avilable at this point */
         foreach ($types as $type => $columns) {
             if ($this->containsAnnotation($column, "@file")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->genericFileExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->genericFileExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@image")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->imageExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->imageExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@video")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->videoExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->videoExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@pdf")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->pdfExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->pdfExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@excel")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->excelExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->excelExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@word")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->wordExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->wordExtensions}', 'on' => 'insert', 'update']";
             } elseif ($this->containsAnnotation($column, "@powerpoint")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->powerPointExtensions}']";
+                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->powerPointExtensions}', 'on' => 'insert', 'update']";
             } else {
                 $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
             }

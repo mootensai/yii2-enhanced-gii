@@ -170,17 +170,10 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      public function actionCreate()
      {
          $model = new <?= $modelClass ?>();
+         <?php if ($generator->hasFile()) { ?>
+            $model->setScenario('insert');
+         <?php } ?>
          if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>)){
-             <?php
-             foreach ($generator->tableSchema->columns as $column) {
-                 if ($generator->containsAnnotation($column, "@file")) {
-                     echo "\$model->" . $column->name . "File = UploadedFile::getInstance(\$model, '" . $column->name . "File');\n";
-
-                 } elseif ($generator->containsAnnotation($column, "@image")) {
-                     echo "\$model->" . $column->name . "Image = UploadedFile::getInstance(\$model, '" . $column->name . "Image');\n";
-                 }
-             }
-             ?>
              if($model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
                  return $this->redirect(['view', <?= $urlParams ?>]);
              }
@@ -211,10 +204,11 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         }else{
             $model = $this->findModel(<?= $actionParams ?>);
         }
-
 <?php else: ?>
         $model = $this->findModel(<?= $actionParams ?>);
-
+         <?php if ($generator->hasFile()) { ?>
+            $model->setScenario('update');
+         <?php } ?>
 <?php endif; ?>
         if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);

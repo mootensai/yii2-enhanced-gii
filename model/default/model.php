@@ -201,7 +201,18 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
             ],
 <?php endif; ?>
-        ]<?= ($isTree) ? ")" : "" ?>;
+<?php if (count($generator->fileFields) > 0) { 
+	foreach ($generator->fileFields as $fileField) {
+		?>
+            [
+                'class' => UploadBehavior::class,
+                'attribute' => '<?= $fileField ?>',
+                'scenarios' => ['insert', 'update'],
+                'path' => '@webroot/files',
+                'url' => '@web/files',
+            ],
+	<?php }
+	} ?>]<?= ($isTree) ? ")" : "" ?>;
     }
 <?php endif; ?>
 <?php if ($queryClassName): ?>
