@@ -221,7 +221,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
                     $relFK = key($refs);
                     $relations[$table->fullName][lcfirst($relationName)] = [
-                        self::REL_TYPE => "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::className(), $link);", // relation type
+                        self::REL_TYPE => "return \$this->hasOne(\\{$this->nsModel}\\$refClassName::class, $link);", // relation type
                         self::REL_CLASS => $refClassName, //relclass
                         self::REL_IS_MULTIPLE => 0, //is multiple
                         self::REL_TABLE => $refTable, //related table
@@ -235,7 +235,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        self::REL_TYPE => "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::className(), $link);", // rel type
+                        self::REL_TYPE => "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::class, $link);", // rel type
                         self::REL_CLASS => $className, //rel class
                         self::REL_IS_MULTIPLE => $hasMany, //is multiple
                         self::REL_TABLE => $table->fullName, // rel table
@@ -348,7 +348,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $viaLink = $this->generateRelationLink([$table->primaryKey[0] => $fks[$table->primaryKey[0]][1]]);
         $relationName = $this->generateRelationName($relations, $table0Schema, $table->primaryKey[1], true);
         $relations[$table0Schema->fullName][$relationName] = [
-            "return \$this->hasMany(\\{$this->nsModel}\\$className1::className(), $link)->viaTable('"
+            "return \$this->hasMany(\\{$this->nsModel}\\$className1::class, $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className1,
             true,
@@ -358,7 +358,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $viaLink = $this->generateRelationLink([$table->primaryKey[1] => $fks[$table->primaryKey[1]][1]]);
         $relationName = $this->generateRelationName($relations, $table1Schema, $table->primaryKey[0], true);
         $relations[$table1Schema->fullName][$relationName] = [
-            "return \$this->hasMany(\\{$this->nsModel}\\$className0::className(), $link)->viaTable('"
+            "return \$this->hasMany(\\{$this->nsModel}\\$className0::class, $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className0,
             true,

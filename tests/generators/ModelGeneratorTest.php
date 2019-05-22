@@ -55,70 +55,70 @@ class ModelGeneratorTest extends GiiTestCase
             ['category', 'Category.php', [
                 [
                     'name' => 'function getCategoryPhotos()',
-                    'relation' => "\$this->hasMany(CategoryPhoto::className(), ['category_id' => 'id']);",
+                    'relation' => "\$this->hasMany(CategoryPhoto::class, ['category_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getProduct()',
-                    'relation' => "\$this->hasOne(Product::className(), ['category_id' => 'id', 'category_language_code' => 'language_code']);",
+                    'relation' => "\$this->hasOne(Product::class, ['category_id' => 'id', 'category_language_code' => 'language_code']);",
                     'expected' => true,
                 ],
             ]],
             ['category_photo', 'CategoryPhoto.php', [
                 [
                     'name' => 'function getCategory()',
-                    'relation' => "\$this->hasOne(Category::className(), ['id' => 'category_id']);",
+                    'relation' => "\$this->hasOne(Category::class, ['id' => 'category_id']);",
                     'expected' => true,
                 ],
             ]],
             ['supplier', 'Supplier.php', [
                 [
                     'name' => 'function getProducts()',
-                    'relation' => "\$this->hasMany(Product::className(), ['supplier_id' => 'id']);",
+                    'relation' => "\$this->hasMany(Product::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getAttributes0()',
-                    'relation' => "\$this->hasMany(Attribute::className(), ['supplier_id' => 'id']);",
+                    'relation' => "\$this->hasMany(Attribute::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getAttributes()',
-                    'relation' => "\$this->hasOne(Attribute::className(), ['supplier_id' => 'id']);",
+                    'relation' => "\$this->hasOne(Attribute::class, ['supplier_id' => 'id']);",
                     'expected' => false,
                 ],
                 [
                     'name' => 'function getProductLanguage()',
-                    'relation' => "\$this->hasOne(ProductLanguage::className(), ['supplier_id' => 'id']);",
+                    'relation' => "\$this->hasOne(ProductLanguage::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
             ]],
             ['product', 'Product.php', [
                 [
                     'name' => 'function getSupplier()',
-                    'relation' => "\$this->hasOne(Supplier::className(), ['id' => 'supplier_id']);",
+                    'relation' => "\$this->hasOne(Supplier::class, ['id' => 'supplier_id']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getCategory()',
-                    'relation' => "\$this->hasOne(Category::className(), ['id' => 'category_id', 'language_code' => 'category_language_code']);",
+                    'relation' => "\$this->hasOne(Category::class, ['id' => 'category_id', 'language_code' => 'category_language_code']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getProductLanguage()',
-                    'relation' => "\$this->hasOne(ProductLanguage::className(), ['supplier_id' => 'supplier_id', 'id' => 'id']);",
+                    'relation' => "\$this->hasOne(ProductLanguage::class, ['supplier_id' => 'supplier_id', 'id' => 'id']);",
                     'expected' => true,
                 ],
             ]],
             ['product_language', 'ProductLanguage.php', [
                 [
                     'name' => 'function getSupplier()',
-                    'relation' => "\$this->hasOne(Product::className(), ['supplier_id' => 'supplier_id', 'id' => 'id']);",
+                    'relation' => "\$this->hasOne(Product::class, ['supplier_id' => 'supplier_id', 'id' => 'id']);",
                     'expected' => true,
                 ],
                 [
                     'name' => 'function getSupplier0()',
-                    'relation' => "\$this->hasOne(Supplier::className(), ['id' => 'supplier_id']);",
+                    'relation' => "\$this->hasOne(Supplier::class, ['id' => 'supplier_id']);",
                     'expected' => true,
                 ],
             ]],
@@ -171,17 +171,17 @@ class ModelGeneratorTest extends GiiTestCase
     {
         return [
             ['category_photo', 'CategoryPhoto.php', [
-                "[['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],",
+                "[['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],",
                 "[['category_id', 'display_number'], 'unique', 'targetAttribute' => ['category_id', 'display_number']],",
             ]],
             ['product', 'Product.php', [
-                "[['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::className(), 'targetAttribute' => ['supplier_id' => 'id']],",
-                "[['category_id', 'category_language_code'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id', 'category_language_code' => 'language_code']],",
+                "[['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::class, 'targetAttribute' => ['supplier_id' => 'id']],",
+                "[['category_id', 'category_language_code'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id', 'category_language_code' => 'language_code']],",
                 "[['category_id', 'category_language_code'], 'unique', 'targetAttribute' => ['category_id', 'category_language_code']],"
             ]],
             ['product_language', 'ProductLanguage.php', [
-                "[['supplier_id', 'id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['supplier_id' => 'supplier_id', 'id' => 'id']],",
-                "[['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::className(), 'targetAttribute' => ['supplier_id' => 'id']],",
+                "[['supplier_id', 'id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['supplier_id' => 'supplier_id', 'id' => 'id']],",
+                "[['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::class, 'targetAttribute' => ['supplier_id' => 'id']],",
                 "[['supplier_id'], 'unique']",
                 "[['id', 'supplier_id', 'language_code'], 'unique', 'targetAttribute' => ['id', 'supplier_id', 'language_code']]",
                 "[['id', 'supplier_id'], 'unique', 'targetAttribute' => ['id', 'supplier_id']]",

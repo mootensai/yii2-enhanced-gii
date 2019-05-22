@@ -233,13 +233,14 @@ class Generator extends \yii\gii\Generator
     /**
      *
      * @param \yii\db\ColumnSchema $column
-     * @return array
+     * @return string
+     * @throws \ReflectionException
      */
     public function getSchemaType($column)
     {
         if ($this->constans === null) {
             $this->constans = [];
-            $ref = new \ReflectionClass(Schema::className());
+            $ref = new \ReflectionClass(Schema::class);
             foreach ($ref->getConstants() as $constName => $constValue) {
                 if (strpos($constName, 'TYPE_') === 0) {
                     $this->constans[$constValue] = '$this->' . $constValue;
@@ -310,6 +311,8 @@ class Generator extends \yii\gii\Generator
 
     /**
      * @return array the generated relation declarations
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\NotSupportedException
      */
     protected function generateRelations()
     {
@@ -429,6 +432,7 @@ class Generator extends \yii\gii\Generator
 
     /**
      * @return Connection the DB connection as specified by [[db]].
+     * @throws \yii\base\InvalidConfigException
      */
     protected function getDbConnection()
     {

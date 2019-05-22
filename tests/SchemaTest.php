@@ -37,26 +37,26 @@ class SchemaTest extends GiiTestCase
         return [
             ['default', 'schema1.*', 5, [
                 0 => [ // relations from junction1 table
-                    "\$this->hasOne(Schema1Table1::className(), ['id' => 'table1_id']);",
-                    "\$this->hasOne(Schema1MultiPk::className(), ['id1' => 'multi_pk_id1', 'id2' => 'multi_pk_id2']);",
+                    "\$this->hasOne(Schema1Table1::class, ['id' => 'table1_id']);",
+                    "\$this->hasOne(Schema1MultiPk::class, ['id1' => 'multi_pk_id1', 'id2' => 'multi_pk_id2']);",
                 ],
                 2 => [ // relations from multi_pk table
-                    "\$this->hasMany(Schema1Table1::className(), ['id' => 'table1_id'])->viaTable('junction1', ['multi_pk_id1' => 'id1', 'multi_pk_id2' => 'id2']);",
-                    "\$this->hasMany(Schema1Junction1::className(), ['multi_pk_id1' => 'id1', 'multi_pk_id2' => 'id2']);",
+                    "\$this->hasMany(Schema1Table1::class, ['id' => 'table1_id'])->viaTable('junction1', ['multi_pk_id1' => 'id1', 'multi_pk_id2' => 'id2']);",
+                    "\$this->hasMany(Schema1Junction1::class, ['multi_pk_id1' => 'id1', 'multi_pk_id2' => 'id2']);",
                 ],
                 3 => [ // relations from table1 table
-                    "\$this->hasMany(Schema2Table1::className(), ['fk1' => 'fk2', 'fk2' => 'fk1']);",
-                    "\$this->hasMany(Schema2Table1::className(), ['fk3' => 'fk4', 'fk4' => 'fk3']);",
-                    "\$this->hasOne(Schema2Table2::className(), ['fk1' => 'fk1', 'fk2' => 'fk2']);",
-                    "\$this->hasMany(Schema1MultiPk::className(), ['id1' => 'multi_pk_id1', 'id2' => 'multi_pk_id2'])->viaTable('junction1', ['table1_id' => 'id']);",
-                    "\$this->hasMany(Schema1Junction1::className(), ['table1_id' => 'id']);",
+                    "\$this->hasMany(Schema2Table1::class, ['fk1' => 'fk2', 'fk2' => 'fk1']);",
+                    "\$this->hasMany(Schema2Table1::class, ['fk3' => 'fk4', 'fk4' => 'fk3']);",
+                    "\$this->hasOne(Schema2Table2::class, ['fk1' => 'fk1', 'fk2' => 'fk2']);",
+                    "\$this->hasMany(Schema1MultiPk::class, ['id1' => 'multi_pk_id1', 'id2' => 'multi_pk_id2'])->viaTable('junction1', ['table1_id' => 'id']);",
+                    "\$this->hasMany(Schema1Junction1::class, ['table1_id' => 'id']);",
                 ],
             ]],
             ['default', 'schema2.*', 2, [
                 0 => [
-                    "\$this->hasOne(Schema1Table1::className(), ['fk2' => 'fk1', 'fk1' => 'fk2']);",
-                    "\$this->hasOne(Schema1Table1::className(), ['fk4' => 'fk3', 'fk3' => 'fk4']);",
-                    "\$this->hasOne(Schema2Table2::className(), ['fk5' => 'fk5', 'fk6' => 'fk6']);",
+                    "\$this->hasOne(Schema1Table1::class, ['fk2' => 'fk1', 'fk1' => 'fk2']);",
+                    "\$this->hasOne(Schema1Table1::class, ['fk4' => 'fk3', 'fk3' => 'fk4']);",
+                    "\$this->hasOne(Schema2Table2::class, ['fk5' => 'fk5', 'fk6' => 'fk6']);",
                 ],
             ]],
         ];
