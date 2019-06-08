@@ -2,11 +2,12 @@
 
 namespace yiiunit\gii;
 
-use yii\gii\generators\model\Generator as ModelGenerator;
 use Yii;
+use yii\gii\generators\model\Generator as ModelGenerator;
 
 /**
- * SchemaTest checks that Gii model generator supports multiple schemas
+ * SchemaTest checks that Gii model generator supports multiple schemas.
+ *
  * @group gii
  * @group pgsql
  */
@@ -28,8 +29,8 @@ class SchemaTest extends GiiTestCase
         }
 
         $this->assertEquals(5, count($files));
-        $this->assertEquals("Schema1Table1", basename($files[3]->path, '.php'));
-        $this->assertEquals("Schema1Table2", basename($files[4]->path, '.php'));
+        $this->assertEquals('Schema1Table1', basename($files[3]->path, '.php'));
+        $this->assertEquals('Schema1Table2', basename($files[4]->path, '.php'));
     }
 
     public function relationsProvider()

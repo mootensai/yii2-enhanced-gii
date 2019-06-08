@@ -8,7 +8,7 @@ echo "<?php
 \$this->title = '{$generator->moduleID}';
 ?>"
 ?>
-<div class="<?= $generator->moduleID . '-default-index' ?>">
+<div class="<?= $generator->moduleID.'-default-index' ?>">
     <h1><?=
         $databaseName ?></h1>
     <p>

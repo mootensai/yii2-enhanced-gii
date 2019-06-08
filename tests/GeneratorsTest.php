@@ -2,7 +2,6 @@
 
 namespace yiiunit\gii;
 
-use yii\gii\CodeFile;
 use yii\gii\generators\controller\Generator as ControllerGenerator;
 use yii\gii\generators\crud\Generator as CRUDGenerator;
 use yii\gii\generators\extension\Generator as ExtensionGenerator;
@@ -11,7 +10,8 @@ use yii\gii\generators\model\Generator as ModelGenerator;
 use yii\gii\generators\module\Generator as ModuleGenerator;
 
 /**
- * GeneratorsTest checks that Gii generators aren't throwing any errors during generation
+ * GeneratorsTest checks that Gii generators aren't throwing any errors during generation.
+ *
  * @group gii
  */
 class GeneratorsTest extends GiiTestCase
@@ -23,7 +23,7 @@ class GeneratorsTest extends GiiTestCase
         $generator->controllerClass = 'app\runtime\TestController';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $this->assertNotEmpty($generator->generate());
     }
@@ -41,7 +41,7 @@ class GeneratorsTest extends GiiTestCase
         $generator->authorEmail = 'sam@rmcreative.ru';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $this->assertNotEmpty($generator->generate());
     }
@@ -54,13 +54,13 @@ class GeneratorsTest extends GiiTestCase
         $generator->modelClass = 'Profile';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $files = $generator->generate();
         $modelCode = $files[0]->content;
 
-        $this->assertTrue(strpos($modelCode, "'id' => 'ID'") !== false, "ID label should be there:\n" . $modelCode);
-        $this->assertTrue(strpos($modelCode, "'description' => 'Description',") !== false, "Description label should be there:\n" . $modelCode);
+        $this->assertTrue(strpos($modelCode, "'id' => 'ID'") !== false, "ID label should be there:\n".$modelCode);
+        $this->assertTrue(strpos($modelCode, "'description' => 'Description',") !== false, "Description label should be there:\n".$modelCode);
     }
 
     public function testModuleGenerator()
@@ -71,11 +71,10 @@ class GeneratorsTest extends GiiTestCase
         $generator->moduleClass = 'app\modules\test\Module';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $this->assertNotEmpty($generator->generate());
     }
-
 
     public function testFormGenerator()
     {
@@ -86,7 +85,7 @@ class GeneratorsTest extends GiiTestCase
         $generator->viewPath = '@app/runtime';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $this->assertNotEmpty($generator->generate());
     }
@@ -99,7 +98,7 @@ class GeneratorsTest extends GiiTestCase
         $generator->controllerClass = 'app\TestController';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $this->assertNotEmpty($generator->generate());
     }
@@ -113,9 +112,9 @@ class GeneratorsTest extends GiiTestCase
         $this->assertTrue($generator->validate(['template']));
 
         // Validate custom template
-        \Yii::setAlias('@customTemplate', __DIR__ . '/data/templates');
+        \Yii::setAlias('@customTemplate', __DIR__.'/data/templates');
         $generator->templates = [
-            'custom' => '@customTemplate/custom'
+            'custom' => '@customTemplate/custom',
         ];
         $generator->template = 'custom';
 

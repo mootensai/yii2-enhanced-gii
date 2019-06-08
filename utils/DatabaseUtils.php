@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: gogl92
  * Date: 2/1/19
- * Time: 11:30 AM
+ * Time: 11:30 AM.
  */
 
 namespace inquid\enhancedgii\utils;
@@ -17,34 +17,39 @@ class DatabaseUtils
     public $dbConnection = null;
 
     /**
-     * Get the database comment or database name
+     * Get the database comment or database name.
+     *
      * @param string|null $databaseName
-     * @return false|string|null
+     *
      * @throws UserException
+     *
+     * @return false|string|null
      */
     public function getDatabaseName(string $databaseName = null)
     {
         if ($this->dbConnection === null) {
-            throw new UserException("No databse connection set");
+            throw new UserException('No databse connection set');
         }
         if ($databaseName === null) {
-            $databaseName = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
+            $databaseName = self::getDsnAttribute($this->dbConnection->dsn);
         }
+
         try {
             $result = Yii::$app->db->createCommand("SELECT comment FROM phpmyadmin.pma__column_info WHERE db_name='{$databaseName}';")
                 ->queryScalar();
+
             return ($result != null) ? $result : 'N/A';
         } catch (\yii\db\Exception $e) {
-            return "ERROR " . Json::encode($e);
+            return 'ERROR '.Json::encode($e);
         }
     }
 
     public static function getDsnAttribute($dsn, $name = 'dbname')
     {
-        if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {
+        if (preg_match('/'.$name.'=([^;]*)/', $dsn, $match)) {
             return $match[1];
         } else {
-            return null;
+            return;
         }
     }
 }

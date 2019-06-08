@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: gogl92
  * Date: 17/09/18
- * Time: 01:22 AM
+ * Time: 01:22 AM.
  */
 
 namespace inquid\enhancedgii\repo\components;
@@ -34,7 +34,7 @@ class RepoHandler
         print_r($client->repo()->create(
             $this->name,
             $this->description,
-            $this->name . '.' . $this->suffix_page,
+            $this->name.'.'.$this->suffix_page,
             $this->public_repo,
             null,
             true,
@@ -49,5 +49,4 @@ class RepoHandler
             exec("git push /{$this->local_path}/{$this->name}/");
         }
     }
-
 }

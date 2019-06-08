@@ -21,7 +21,7 @@ class Profile extends ActiveRecord
     {
         return [
             [['description'], 'required'],
-            [['description'], 'string', 'max' => 128]
+            [['description'], 'string', 'max' => 128],
         ];
     }
 
@@ -31,8 +31,8 @@ class Profile extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id'          => 'ID',
             'description' => 'Description',
         ];
     }
-} 
+}

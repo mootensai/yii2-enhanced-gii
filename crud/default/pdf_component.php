@@ -3,9 +3,8 @@
  * Created by PhpStorm.
  * User: gogl92
  * Date: 1/7/19
- * Time: 10:41 PM
+ * Time: 10:41 PM.
  */
-
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
@@ -38,7 +37,7 @@ class <?= $componentClass ?> extends FPDF
 <?= "public \${$modelClass};\n" ?>
 <?php
 echo "\tpublic function Header(){
-        \t\t\$this->SetTitle('" . $customName . "-' . \$this->" . $modelClass . "->id);
+        \t\t\$this->SetTitle('".$customName."-' . \$this->".$modelClass."->id);
         \t\t\$this->SetFillColor(\$this->color[0], \$this->color[1], \$this->color[2]);
         \t\t\$this->SetFont('Arial', 'B', 12);
         \t\t\$this->Cell(40, 4, '', 0, 0, 'C');
@@ -63,8 +62,8 @@ echo "    /**
      */
     public function saveToFile()
     {
-        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/" . Inflector::camel2id(StringHelper::basename($modelClass)) . "' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
-        return \Yii::getAlias('@app/web/files/PurchaseOrder/" . Inflector::camel2id(StringHelper::basename($modelClass)) . "-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
+        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
+        return \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
     }\n";
 ?>
 }
