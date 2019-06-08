@@ -14,11 +14,14 @@ use yii\db\Schema;
 
 class <?= $migrationName ?> extends \yii\db\Migration
 {
-<?php if($generator->isSafeUpDown): ?>
+<?php if ($generator->isSafeUpDown): ?>
     public function safeUp()
-<?php else: ?>
+<?php else {
+    : ?>
     public function up()
-<?php endif; ?>
+<?php endif;
+}
+?>
     {
 <?php if ($generator->createTableIfNotExists): ?>
         $tables = Yii::$app->db->schema->getTableNames();
@@ -39,35 +42,38 @@ class <?= $migrationName ?> extends \yii\db\Migration
         <?=$t?>$this->createTable('<?= $table['name'] ?>', [
 <?php foreach ($table['columns'] as $column => $definition): ?>
             <?=$t?><?= "'$column' => $definition"?>,
-<?php endforeach;?>
-<?php if(isset($table['primary'])): ?>
+<?php endforeach; ?>
+<?php if (isset($table['primary'])): ?>
             <?=$t?><?= "'{$table['primary']}'" ?>,
 <?php endif; ?>
 <?php foreach ($table['relations'] as $definition): ?>
             <?=$t?><?= "'$definition'" ?>,
-<?php endforeach;?>
+<?php endforeach; ?>
             <?=$t?>], $tableOptions);
         <?php if ($generator->createTableIfNotExists == 1) :?>
         } else {
           echo "\nTable `".Yii::$app->db->tablePrefix."<?= $tableRaw ?>` already exists!\n";
         }
          <?php endif; ?>
-<?php endforeach;?>
+<?php endforeach; ?>
         
     }
 
-<?php if($generator->isSafeUpDown): ?>
+<?php if ($generator->isSafeUpDown): ?>
     public function safeDown()
-<?php else: ?>
+<?php else {
+    : ?>
     public function down()
-<?php endif; ?>
+<?php endif;
+}
+?>
     {
 <?php if ($generator->disableFkc) : ?>
         $this->execute('SET foreign_key_checks = 0');
 <?php endif; ?>
 <?php foreach (array_reverse($tables) as $table): ?>
         $this->dropTable('<?= $table['name'] ?>');
-<?php endforeach;?>
+<?php endforeach; ?>
 <?php if ($generator->disableFkc) : ?>
         $this->execute('SET foreign_key_checks = 1');
 <?php endif; ?>

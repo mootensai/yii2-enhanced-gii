@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
- namespace inquid\enhancedgii\console;
+    namespace inquid\enhancedgii\console;
 
 use Yii;
 use yii\base\InlineAction;

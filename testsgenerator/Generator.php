@@ -99,7 +99,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function () use ($db) {
+                'tableName' => function() use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];

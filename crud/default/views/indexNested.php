@@ -29,7 +29,7 @@ use kartik\tree\Module;
 use yii\web\View;
 
 
-$this->title = <?php echo ($generator->useTableComment) ?  $tableNameComment :  ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
+$this->title = <?php echo ($generator->useTableComment) ? $tableNameComment : ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= $id ?>-index">

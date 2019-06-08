@@ -31,10 +31,10 @@ class Generator extends \yii\gii\Generator
     public $currencyCode = '$';
 
     public $db_ip_host = '';
-    public $db_ip_host_test ='';
+    public $db_ip_host_test = '';
     public $db_username = 'root';
-    public $db_password='';
-    public $db_prefix='inq_';
+    public $db_password = '';
+    public $db_prefix = 'inq_';
 
     public $db_ip_port = 3306;
     public $db_name;
@@ -55,8 +55,8 @@ class Generator extends \yii\gii\Generator
     public $github_client_id = '';
     public $github_client_secret = '';
 
-    public $confirm_with =21600;
-    public $cost=12;
+    public $confirm_with = 21600;
+    public $cost = 12;
     public $admins;
 
 

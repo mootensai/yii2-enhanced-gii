@@ -97,7 +97,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass','nsComponent'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass', 'nsComponent'], 'filter', 'filter' => 'trim'],
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -111,7 +111,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders','importExcel','useTableComment'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders', 'importExcel', 'useTableComment'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
@@ -299,7 +299,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function requiredTemplates()
     {
-        return ['controller.php','pdf_component.php'];
+        return ['controller.php', 'pdf_component.php'];
     }
 
     /**
@@ -338,7 +338,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
                 $controllerClassName = $modelClassName . 'Controller';
-                $pdfComponentClassName = $modelClassName.'PDF';
+                $pdfComponentClassName = $modelClassName . 'PDF';
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
                 $controllerClassName = (!empty($this->controllerClass)) ? $this->controllerClass : $modelClassName . 'Controller';
@@ -350,7 +350,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $this->tableSchema = $tableSchema;
 //            $this->relations = isset($relations[$tableName]) ? $relations[$tableName] : [];
             $this->controllerClass = $this->nsController . '\\' . $controllerClassName;
-            $this->componentClass = $this->nsComponent . '\\'.$pdfComponentClassName;
+            $this->componentClass = $this->nsComponent . '\\' . $pdfComponentClassName;
 
             $isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 
@@ -384,10 +384,10 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     ])
             );
 
-            if($this->pdf){
-                $files[] =   new CodeFile(
+            if ($this->pdf) {
+                $files[] = new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $pdfComponentClassName . '.php',
-                    $this->render('pdf_component.php', ['tableNameComment'=>$tableCommentName,'relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
+                    $this->render('pdf_component.php', ['tableNameComment'=>$tableCommentName, 'relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
                 );
             }
 
@@ -980,9 +980,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 return "\$form->field($model, '$attribute')->dropDownList("
                     . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', 'v-model'=>'$attribute'])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field($model, '$attribute')->$input([".(($this->placeHolders)?"'placeholder' => '$placeholder',":"")."'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input([" . (($this->placeHolders) ? "'placeholder' => '$placeholder'," : "") . "'v-model'=>'$attribute'])";
             } else {
-                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, ".(($this->placeHolders)?"'placeholder' => '$placeholder',":"")."'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, " . (($this->placeHolders) ? "'placeholder' => '$placeholder'," : "") . "'v-model'=>'$attribute'])";
             }
         }
     }
@@ -1239,8 +1239,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function containsAnnotation($column, $annotation)
     {
-        if (substr($column->comment, 0, 1) !== "@")
-            return false;
+        if (substr($column->comment, 0, 1) !== "@") {
+                    return false;
+        }
         return substr($column->comment, 0, strlen($annotation)) === $annotation;
     }
 
@@ -1250,8 +1251,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function removeAnnotation($comment)
     {
-        if (substr($comment, 0, 1) !== "@")
-            return $comment;
+        if (substr($comment, 0, 1) !== "@") {
+                    return $comment;
+        }
         if (substr($comment, 0, 5) === "@file") {
             return str_replace("@file", "", $comment);
         } elseif (substr($comment, 0, 6) === "@image") {

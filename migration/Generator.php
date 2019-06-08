@@ -126,7 +126,7 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function () use ($db) {
+                'tableName' => function() use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -270,7 +270,7 @@ class Generator extends \yii\gii\Generator
         } else {
             $result = $column->dbType;
             if (!empty($size)) {
-                $result.= '(' . implode(',', $size) . ')';
+                $result .= '(' . implode(',', $size) . ')';
             }
             if (!$column->allowNull) {
                 $result .= ' NOT NULL';

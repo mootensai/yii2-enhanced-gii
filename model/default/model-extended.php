@@ -26,7 +26,7 @@ use \<?= $generator->nsComponent ?>\<?= $className ?>Component;
 */
 class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
-<?php if($generator->excelImport): ?>
+<?php if ($generator->excelImport): ?>
     public $fileExcelImport;
 <?php endif; ?>
 <?php foreach ($generator->tableSchema->columns as $column) {

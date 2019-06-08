@@ -637,8 +637,9 @@ class Generator extends BaseGenerator
      */
     public function containsAnnotation($column, $annotation)
     {
-        if (substr($column->comment, 0, 1) !== "@")
-            return false;
+        if (substr($column->comment, 0, 1) !== "@") {
+                    return false;
+        }
         return substr($column->comment, 0, strlen($annotation)) === $annotation;
     }
 
@@ -648,8 +649,9 @@ class Generator extends BaseGenerator
      */
     public function removeAnnotation($comment)
     {
-        if (substr($comment, 0, 1) !== "@")
-            return $comment;
+        if (substr($comment, 0, 1) !== "@") {
+                    return $comment;
+        }
         if (substr($comment, 0, 5) === "@file") {
             return str_replace("@file", "", $comment);
         } elseif (substr($comment, 0, 6) === "@image") {

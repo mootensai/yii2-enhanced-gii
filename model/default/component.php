@@ -20,12 +20,12 @@ use <?= ltrim($generator->modelClass, '\\') ?>;
 class <?= $componentClassName ?> extends Component
 {
 <?php
-echo "\tpublic function beforeSave($".lcfirst($className)."){
-        return $".lcfirst($className).";
+echo "\tpublic function beforeSave($" . lcfirst($className) . "){
+        return $".lcfirst($className) . ";
 \t}\n";?>
 
 <?php
-echo "\tpublic function afterSave($".lcfirst($className)."){
-        return $".lcfirst($className).";
+echo "\tpublic function afterSave($" . lcfirst($className) . "){
+        return $".lcfirst($className) . ";
 \t}\n";?>
 }

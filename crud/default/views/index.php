@@ -23,7 +23,7 @@ use kartik\export\ExportMenu;
 use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
 
 
-$this->title = "<?php if($generator->useTableComment){ echo $tableCommentName;  } else{ echo ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)); }?>";
+$this->title = "<?php if ($generator->useTableComment) { echo $tableCommentName; } else { echo ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)); }?>";
 $this->params['breadcrumbs'][] = $this->title;
 $search = "$('.search-button').click(function(){
 	$('.search-form').toggle(1000);
@@ -84,18 +84,19 @@ if ($generator->indexWidgetType === 'grid'):
             } else {
                 echo "            // '" . $name . "',\n";
             }
-        }
-    else :
+        } else {
+        :
         foreach ($tableSchema->getColumnNames() as $attribute):
             if (!in_array($attribute, $generator->skippedColumns)) :
 ?>
         <?= $generator->generateGridViewFieldIndex($attribute, $fk, $tableSchema)?>
 <?php
             endif;
+    }
         endforeach; ?>
         [
             'class' => 'kartik\grid\ActionColumn',
-<?php if($generator->saveAsNew): ?>
+<?php if ($generator->saveAsNew): ?>
             'template' => '{save-as-new} {view} {update} {delete}',
             'buttons' => [
                 'save-as-new' => function ($url) {
@@ -118,7 +119,7 @@ if ($generator->indexWidgetType === 'grid'):
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
         ],
-<?php if(!$generator->pdf) : ?>
+<?php if (!$generator->pdf) : ?>
         'export' => false,
 <?php endif; ?>
         // your toolbar can include the additional full export menu
@@ -137,16 +138,17 @@ if ($generator->indexWidgetType === 'grid'):
                         '<li class="dropdown-header">Exportar Información</li>',
                     ],
                 ],
-<?php if(!$generator->pdf):?>
+<?php if (!$generator->pdf):?>
                 'exportConfig' => [
                     ExportMenu::FORMAT_PDF => false
                 ]
-<?php endif;?>
+<?php endif; ?>
             ]) ,
         ],
     ]); ?>
 <?php
-else:
+else {
+    :
 ?>
     <?= "<?= " ?>ListView::widget([
         'dataProvider' => $dataProvider,
@@ -157,6 +159,7 @@ else:
     ]) ?>
 <?php
 endif;
+}
 ?>
 
 </div>

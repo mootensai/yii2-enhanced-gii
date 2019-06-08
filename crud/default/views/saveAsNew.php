@@ -28,7 +28,7 @@ $this->title = <?= $generator->generateString('Duplicar {modelClass}: ', [
     ]) ?>. ' ' . $model-><?= $generator->getNameAttribute(); ?>;
 $this->params['breadcrumbs'][] = ['label' => <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
-$this->params['breadcrumbs'][] = <?= $generator->generateString('Duplicar Registro');?>;
+$this->params['breadcrumbs'][] = <?= $generator->generateString('Duplicar Registro'); ?>;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-create">
 

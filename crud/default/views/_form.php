@@ -62,9 +62,12 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
     <?php
     if ($generator->hasFile($tableSchema)):
         echo "<?php " ?>$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data','class' => 'disable-submit-buttons']]); ?>
-    <?php else: ?>
+    <?php else {
+    : ?>
         <?= "<?php " ?>$form = ActiveForm::begin(['options' => ['class' => 'disable-submit-buttons']]); ?>
-    <?php endif; ?>
+    <?php endif;
+}
+?>
 
     <?= "<?= " ?>$form->errorSummary($model); ?>
 
@@ -84,7 +87,9 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
             echo "    \n<?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
             echo "</div>";
             $rowCount++;
-            if ($rowCount % $generator->formColumns == 0) echo '</div><div class="row">';
+            if ($rowCount % $generator->formColumns == 0) {
+                echo '</div><div class="row">';
+            }
         }
     }
     echo "</div>";
@@ -135,9 +140,12 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
             <?= "    <?php if(Yii::\$app->controller->action->id != 'create'): ?>\n" ?>
             <?= "        <?= " ?>Html::submitButton(<?= $generator->generateString('Duplicar Registro') ?>, ['class' => 'btn btn-info', 'value' => '1', 'name' => '_asnew']) ?>
             <?= "    <?php endif; ?>\n" ?>
-        <?php else: ?>
+        <?php else {
+    : ?>
             <?= "        <?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Agregar') ?> : <?= $generator->generateString('Actualizar') ?>, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','data' => ['disabled-text' => 'Please Wait']]) ?>
-        <?php endif; ?>
+        <?php endif;
+}
+?>
         <?php if ($generator->cancelable): ?>
             <?= "<?= " ?>Html::a(Yii::t('app', 'Cancelar'), Yii::$app->request->referrer , ['class'=> 'btn btn-danger']) ?>
         <?php endif; ?>

@@ -19,7 +19,7 @@ $pks = $generator->tableSchema->primaryKey;
 $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
-$skippedRelations = array_map(function($value){
+$skippedRelations = array_map(function($value) {
     return "'$value'";
 },$generator->skippedRelations);
 echo "<?php\n";
@@ -32,17 +32,20 @@ use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
-<?php else : ?>
+<?php else {
+    : ?>
 use yii\data\ActiveDataProvider;
-<?php endif; ?>
+<?php endif;
+}
+?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-<?php if(isset($relations)): ?>
+<?php if (isset($relations)): ?>
 use yii\data\ArrayDataProvider;
 <?php endif; ?>
-<?php if($generator->hasFile($generator->tableSchema)):?>
+<?php if ($generator->hasFile($generator->tableSchema)):?>
 use yii\web\UploadedFile;
 <?php endif; ?>
 use inquid\google_debugger\GoogleCloudLogger;
@@ -52,7 +55,7 @@ use inquid\yiireports\ExcelHelper;
 use yii\helpers\Json;
 use Exception;
 use yii\base\InvalidConfigException;
-<?php if($generator->pdf): ?>
+<?php if ($generator->pdf): ?>
     use app\modules\<?=$generator->moduleName?>\components\<?=$modelClass?>PDF;
 <?php endif; ?>
 
@@ -71,22 +74,22 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 ],
             ],
 <?php if ($generator->loggedUserOnly):
-    $actions = ["'index'", "'view'", "'create'", "'update'","'delete'"];
-    if($generator->pdf){
-        array_push($actions,"'pdf'");
+    $actions = ["'index'", "'view'", "'create'", "'update'", "'delete'"];
+    if ($generator->pdf) {
+        array_push($actions, "'pdf'");
     }
-    if($generator->importExcel){
-        array_push($actions,"'import'");
-        array_push($actions,"'import-validate'");
-        array_push($actions,"'import-excel'");
-        array_push($actions,"'get-format'");
+    if ($generator->importExcel) {
+        array_push($actions, "'import'");
+        array_push($actions, "'import-validate'");
+        array_push($actions, "'import-excel'");
+        array_push($actions, "'get-format'");
     }
-    if($generator->saveAsNew){
-        array_push($actions,"'save-as-new'");
+    if ($generator->saveAsNew) {
+        array_push($actions, "'save-as-new'");
     }
-    foreach ($relations as $name => $rel){
-        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
-            array_push($actions,"'".\yii\helpers\Inflector::camel2id('add'.$rel[1])."'");
+    foreach ($relations as $name => $rel) {
+        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
+            array_push($actions, "'" . \yii\helpers\Inflector::camel2id('add' . $rel[1]) . "'");
         }
     }
 ?>
@@ -96,7 +99,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                     [
                         'allow' => true,
                         'actions' => [
-                                    <?= implode(",\n\t\t\t\t\t\t\t\t\t",$actions)?><?= "\n" ?>
+                                    <?= implode(",\n\t\t\t\t\t\t\t\t\t", $actions)?><?= "\n" ?>
                         ],
                         'roles' => ['@']
                     ],
@@ -123,7 +126,8 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-<?php else : ?>
+<?php else {
+    : ?>
         $dataProvider = new ActiveDataProvider([
             'query' => <?= $modelClass ?>::find(),
         ]);
@@ -131,7 +135,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
-<?php endif; ?>
+<?php endif;
+}
+?>
     }
 
     /**
@@ -197,7 +203,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function actionUpdate(<?= $actionParams ?>)
     {
-<?php if($generator->saveAsNew) : ?>
+<?php if ($generator->saveAsNew) : ?>
         if (Yii::$app->request->post('_asnew') == '1') {
             $model = new <?= $modelClass ?>();
         }else{
@@ -209,7 +215,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             $model->setScenario('update');
          <?php } ?>
 <?php endif; ?>
-        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
+        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
@@ -256,7 +262,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 <?php endif; ?>
 
-<?php if($generator->saveAsNew):?>
+<?php if ($generator->saveAsNew):?>
     /**
     * Creates a new <?= $modelClass ?> model by another data,
     * so user don't need to input all field from scratch.
@@ -273,7 +279,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             $model = $this->findModel(<?= $actionParams; ?>);
         }
 
-        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
+        if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('saveAsNew', [
@@ -347,8 +353,9 @@ if (count($pks) === 1) {
                 ->select([
 <?php
     foreach ($generator->getColumnNames() as $name) {
-        if (!in_array($name, $generator->skippedColumns))
-            echo "            '" . $name . "',\n";
+        if (!in_array($name, $generator->skippedColumns)) {
+                    echo "            '" . $name . "',\n";
+        }
     }
 ?>
                 ]);
@@ -361,7 +368,7 @@ if (count($pks) === 1) {
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
         if (!in_array($name, $generator->skippedColumns))
-            echo "            ['coordinate' => '".(new ExcelHelper())->getNameFromNumber($key+1)."1', 'title' => '" . $name . "'],\n";
+            echo "            ['coordinate' => '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "1', 'title' => '" . $name . "'],\n";
     }
 ?>
                 ]);
@@ -369,7 +376,7 @@ if (count($pks) === 1) {
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
         if (!in_array($name, $generator->skippedColumns))
-            echo "            '".(new ExcelHelper())->getNameFromNumber($key+1)."',\n";
+            echo "            '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "',\n";
     }
 ?>
             ]);
@@ -447,8 +454,9 @@ if (count($pks) === 1) {
             }
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-        if (!in_array($name, $generator->skippedColumns))
-            echo "              \$personal->{$name} = (string)\$datum[{$key}];\n";
+        if (!in_array($name, $generator->skippedColumns)) {
+                    echo "              \$personal->{$name} = (string)\$datum[{$key}];\n";
+        }
     }
 ?>
             if ($test) {

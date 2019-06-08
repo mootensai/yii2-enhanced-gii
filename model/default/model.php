@@ -50,7 +50,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 {
 <?= (!$isTree) ? "use RelationTrait;\n" : "" ?>
 
-<?php if($generator->deletedBy): ?>
+<?php if ($generator->deletedBy): ?>
     private $_rt_softdelete;
     private $_rt_softrestore;
 
@@ -58,13 +58,13 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
         parent::__construct();
         $this->_rt_softdelete = [
             '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
-<?php if($generator->deletedAt): ?>
+<?php if ($generator->deletedAt): ?>
             '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValue)) ? 1 : $generator->deletedAtValue ?>,
 <?php endif; ?>
         ];
         $this->_rt_softrestore = [
             '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValueRestored)) ? 0 : $generator->deletedByValueRestored ?>,
-<?php if($generator->deletedAt): ?>
+<?php if ($generator->deletedAt): ?>
             '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValueRestored)) ? 0 : $generator->deletedAtValueRestored ?>,
 <?php endif; ?>
         ];
@@ -135,7 +135,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
         ];
     }
 <?php foreach ($relations as $name => $relation): ?>
-    <?php if(!in_array($name, $generator->skippedRelations)): ?>
+    <?php if (!in_array($name, $generator->skippedRelations)): ?>
 
     /**
      * @return \yii\db\ActiveQuery
@@ -162,14 +162,20 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
                 'class' => TimestampBehavior::class,
 <?php if (!empty($generator->createdAt)):?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
-<?php else :?>
+<?php else {
+    :?>
                 'createdAtAttribute' => false,
-<?php endif; ?>
+<?php endif;
+}
+?>
 <?php if (!empty($generator->updatedAt)):?>
                 'updatedAtAttribute' => '<?= $generator->updatedAt?>',
-<?php else :?>
+<?php else {
+    :?>
                 'updatedAtAttribute' => false,
-<?php endif; ?>
+<?php endif;
+}
+?>
 <?php if (!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
                 'value' => <?= $generator->timestampValue?>,
 <?php endif; ?>
@@ -180,14 +186,20 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
                 'class' => BlameableBehavior::class,
 <?php if (!empty($generator->createdBy)):?>
                 'createdByAttribute' => '<?= $generator->createdBy?>',
-<?php else :?>
+<?php else {
+    :?>
                 'createdByAttribute' => false,
-<?php endif; ?>
+<?php endif;
+}
+?>
 <?php if (!empty($generator->updatedBy)):?>
                 'updatedByAttribute' => '<?= $generator->updatedBy?>',
-<?php else :?>
+<?php else {
+    :?>
                 'updatedByAttribute' => false,
-<?php endif; ?>
+<?php endif;
+}
+?>
 <?php if (!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id'):?>
                 'value' => <?= $generator->blameableValue?>,
 <?php endif; ?>
@@ -202,8 +214,8 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
             ],
 <?php endif; ?>
 <?php if (count($generator->fileFields) > 0) { 
-	foreach ($generator->fileFields as $fileField) {
-		?>
+    foreach ($generator->fileFields as $fileField) {
+        ?>
             [
                 'class' => UploadBehavior::class,
                 'attribute' => '<?= $fileField ?>',
@@ -212,7 +224,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
                 'url' => '@web/files',
             ],
 	<?php }
-	} ?>]<?= ($isTree) ? ")" : "" ?>;
+    } ?>]<?= ($isTree) ? ")" : "" ?>;
     }
 <?php endif; ?>
 <?php if ($queryClassName): ?>
@@ -220,7 +232,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     $queryClassFullName = '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
 ?>
-<?php if( $generator->deletedBy): ?>
+<?php if ($generator->deletedBy): ?>
     /**
      * The following code shows how to apply a default condition for all queries:
      *
@@ -250,12 +262,15 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
      */
     public static function find()
     {
-<?php if($generator->deletedBy): ?>
+<?php if ($generator->deletedBy): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
         return $query->where(['<?= $tableName ?>.<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
-<?php else: ?>
+<?php else {
+    : ?>
         return new <?= $queryClassFullName ?>(get_called_class());
-<?php endif; ?>
+<?php endif;
+}
+?>
     }
 <?php endif; ?>
 }

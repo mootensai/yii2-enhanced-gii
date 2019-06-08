@@ -60,7 +60,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function () use ($db) {
+                'tableName' => function() use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -81,7 +81,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         }
     }
 
-    public function validateModuleExist(){
+    public function validateModuleExist() {
         //TODO validate that module exist
     }
 

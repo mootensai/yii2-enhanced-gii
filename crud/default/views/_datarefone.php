@@ -46,10 +46,10 @@ use kartik\grid\GridView;
                     echo "            // '" . $name . "',\n";
                 }
             }
-        } else{
-            foreach($tableSchema->getColumnNames() as $attribute){
-                if(!in_array($attribute, $generator->skippedColumns)) {
-                    echo "            ".$generator->generateDetailViewField($attribute,$fk, $tableSchema);
+        } else {
+            foreach ($tableSchema->getColumnNames() as $attribute) {
+                if (!in_array($attribute, $generator->skippedColumns)) {
+                    echo "            " . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
             }
         }?>
