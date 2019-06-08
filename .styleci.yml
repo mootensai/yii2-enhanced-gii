@@ -6,4 +6,6 @@ finder:
   exclude:
     - "tests"
     - "crud/default"
+    - "migration/default"
+    - "model/default"
     
