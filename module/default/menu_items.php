@@ -1,4 +1,6 @@
-<?php echo "<?php
+<?php
+
+echo "<?php
 /**
  * List all the controllers and actions you need in your module
  */

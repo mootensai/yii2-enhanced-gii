@@ -59,7 +59,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function() use ($db) {
+                'tableName' => function () use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -240,7 +240,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][lcfirst($relationName)] = [
-                        self::REL_TYPE        => 'return $this->' . ($hasMany ? 'hasMany' : 'hasOne') . "(\\{$this->nsModel}\\$className::class, $link);", // rel type
+                        self::REL_TYPE        => 'return $this->'.($hasMany ? 'hasMany' : 'hasOne')."(\\{$this->nsModel}\\$className::class, $link);", // rel type
                         self::REL_CLASS       => $className, //rel class
                         self::REL_IS_MULTIPLE => $hasMany, //is multiple
                         self::REL_TABLE       => $table->fullName, // rel table
@@ -327,10 +327,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
                     $relations[$table->fullName][$leftRelationName][0] =
                         rtrim($relations[$table->fullName][$leftRelationName][0], ';')
-                        ."->inverseOf('" . lcfirst($rightRelationName) . "');";
+                        ."->inverseOf('".lcfirst($rightRelationName)."');";
                     $relations[$refTableSchema->fullName][$rightRelationName][0] =
                         rtrim($relations[$refTableSchema->fullName][$rightRelationName][0], ';')
-                        ."->inverseOf('" . lcfirst($leftRelationName) . "');";
+                        ."->inverseOf('".lcfirst($leftRelationName)."');";
                 }
             }
         }
@@ -363,7 +363,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $relationName = $this->generateRelationName($relations, $table0Schema, $table->primaryKey[1], true);
         $relations[$table0Schema->fullName][$relationName] = [
             "return \$this->hasMany(\\{$this->nsModel}\\$className1::class, $link)->viaTable('"
-            .$this->generateTableName($table->name) . "', $viaLink);",
+            .$this->generateTableName($table->name)."', $viaLink);",
             $className1,
             true,
         ];
@@ -373,7 +373,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $relationName = $this->generateRelationName($relations, $table1Schema, $table->primaryKey[0], true);
         $relations[$table1Schema->fullName][$relationName] = [
             "return \$this->hasMany(\\{$this->nsModel}\\$className0::class, $link)->viaTable('"
-            .$this->generateTableName($table->name) . "', $viaLink);",
+            .$this->generateTableName($table->name)."', $viaLink);",
             $className0,
             true,
         ];
@@ -395,7 +395,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
             $pairs[] = "'$a' => '$b'";
         }
 
-        return '[' . implode(', ', $pairs) . ']';
+        return '['.implode(', ', $pairs).']';
     }
 
     /**
@@ -416,7 +416,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $fullTableName = $tableName;
         if (($pos = strrpos($tableName, '.')) !== false) {
             if (($useSchemaName === null && $this->useSchemaName) || $useSchemaName) {
-                $schemaName = substr($tableName, 0, $pos) . '_';
+                $schemaName = substr($tableName, 0, $pos).'_';
             }
             $tableName = substr($tableName, $pos + 1);
         }
@@ -430,7 +430,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
             if (($pos = strrpos($pattern, '.')) !== false) {
                 $pattern = substr($pattern, $pos + 1);
             }
-            $patterns[] = '/^' . str_replace('*', '(\w+)', $pattern) . '$/';
+            $patterns[] = '/^'.str_replace('*', '(\w+)', $pattern).'$/';
         }
         $className = $tableName;
         foreach ($patterns as $pattern) {
@@ -440,7 +440,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
             }
         }
 
-        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName . $className, '_');
+        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName.$className, '_');
     }
 
     /**
@@ -474,13 +474,13 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $name = $rawName = Inflector::id2camel($key, '_');
         $i = 0;
         while (isset($baseModel) && $baseModel->hasProperty(lcfirst($name))) {
-            $name = $rawName . ($i++);
+            $name = $rawName.($i++);
         }
         while (isset($table->columns[lcfirst($name)])) {
-            $name = $rawName . ($i++);
+            $name = $rawName.($i++);
         }
         while (isset($relations[$table->fullName][$name])) {
-            $name = $rawName . ($i++);
+            $name = $rawName.($i++);
         }
 
         return lcfirst($name);
@@ -518,15 +518,15 @@ abstract class BaseGenerator extends \yii\gii\Generator
         if (strpos($this->tableName, '*') !== false) {
             if (($pos = strrpos($this->tableName, '.')) !== false) {
                 $schema = substr($this->tableName, 0, $pos);
-                $pattern = '/^' . str_replace('*', '\w+', substr($this->tableName, $pos + 1)) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', substr($this->tableName, $pos + 1)).'$/';
             } else {
                 $schema = '';
-                $pattern = '/^' . str_replace('*', '\w+', $this->tableName) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', $this->tableName).'$/';
             }
 
             foreach ($db->schema->getTableNames($schema) as $table) {
                 if (preg_match($pattern, $table)) {
-                    $tableNames[] = $schema === '' ? $table : ($schema . '.' . $table);
+                    $tableNames[] = $schema === '' ? $table : ($schema.'.'.$table);
                 }
             }
         } elseif (($table = $db->getTableSchema($this->tableName, true)) !== null) {
@@ -561,9 +561,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
         $db = $this->getDbConnection();
         if (preg_match("/^{$db->tablePrefix}(.*?)$/", $tableName, $matches)) {
-            $tableName = '{{%' . $matches[1] . '}}';
+            $tableName = '{{%'.$matches[1].'}}';
         } elseif (preg_match("/^(.*?){$db->tablePrefix}$/", $tableName, $matches)) {
-            $tableName = '{{' . $matches[1] . '%}}';
+            $tableName = '{{'.$matches[1].'%}}';
         }
 
         return $tableName;

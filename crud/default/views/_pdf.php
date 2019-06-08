@@ -37,15 +37,15 @@ $this->params['breadcrumbs'][] = $this->title;
 if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
-            echo "            '" . $name . "',\n";
+            echo "            '".$name."',\n";
         } else {
-            echo "            // '" . $name . "',\n";
+            echo "            // '".$name."',\n";
         }
     }
 } else {
     foreach ($tableSchema->getColumnNames() as $attribute) {
         if (!in_array($attribute, $generator->skippedColumns)) {
-            echo '        ' . $generator->generateGridViewField($attribute, $fk, $tableSchema);
+            echo '        '.$generator->generateGridViewField($attribute, $fk, $tableSchema);
         }
     }
 }?>
@@ -70,13 +70,13 @@ if($provider<?= $rel[1] ?>->totalCount){
         if ($relTableSchema === false) {
             foreach ($relTableSchema->getColumnNames() as $attribute) {
                 if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) {
-                    echo "        '" . $attribute . "',\n";
+                    echo "        '".$attribute."',\n";
                 }
             }
         } else {
             foreach ($relTableSchema->getColumnNames() as $attribute) {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo '        ' . $generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
+                    echo '        '.$generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
                 }
             }
         }
@@ -90,7 +90,7 @@ if($provider<?= $rel[1] ?>->totalCount){
         ],
         'panelHeadingTemplate' => '<h4>{heading}</h4>{summary}',
         'toggleData' => false,
-        'columns' => $gridColumn<?= $rel[1] . "\n" ?>
+        'columns' => $gridColumn<?= $rel[1]."\n" ?>
     ]);
 }
 <?= "?>\n" ?>

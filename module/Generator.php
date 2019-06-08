@@ -1,6 +1,7 @@
 <?php
 /**
  * @link http://www.yiiframework.com/
+ *
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
@@ -21,13 +22,13 @@ use yii\helpers\StringHelper;
  * @property bool $modulePath The directory that contains the module class. This property is read-only.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
+ *
  * @since 2.0
  */
 class Generator extends BaseGenerator
 {
     public $moduleClass;
     public $moduleID;
-
 
     /**
      * {@inheritdoc}
@@ -65,8 +66,8 @@ class Generator extends BaseGenerator
     public function attributeLabels()
     {
         return [
-            'db' => 'Database Connection ID',
-            'moduleID' => 'Module ID',
+            'db'          => 'Database Connection ID',
+            'moduleID'    => 'Module ID',
             'moduleClass' => 'Module Class',
         ];
     }
@@ -77,26 +78,25 @@ class Generator extends BaseGenerator
     public function hints()
     {
         return [
-            'db' => 'This is the ID of the DB application component.',
-            'moduleID' => 'This refers to the ID of the module, e.g., <code>admin</code>.',
+            'db'          => 'This is the ID of the DB application component.',
+            'moduleID'    => 'This refers to the ID of the module, e.g., <code>admin</code>.',
             'moduleClass' => 'This is the fully qualified class name of the module, e.g., <code>app\modules\admin\Module</code>.',
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function stickyAttributes()
     {
         return array_merge(parent::stickyAttributes(), [
-            'db']);
+            'db', ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public
-    function successMessage()
+    public function successMessage()
     {
         if (Yii::$app->hasModule($this->moduleID)) {
             $link = Html::a('try it now', Yii::$app->getUrlManager()->createUrl($this->moduleID), ['target' => '_blank']);
@@ -104,7 +104,7 @@ class Generator extends BaseGenerator
             return "The module has been generated successfully. You may $link.";
         }
 
-        $output = <<<EOD
+        $output = <<<'EOD'
 <p>The module has been generated successfully.</p>
 <p>To access the module, you need to add this to your application configuration:</p>
 EOD;
@@ -119,14 +119,13 @@ EOD;
     ......
 EOD;
 
-        return $output . '<pre>' . highlight_string($code, true) . '</pre>';
+        return $output.'<pre>'.highlight_string($code, true).'</pre>';
     }
 
     /**
      * {@inheritdoc}
      */
-    public
-    function requiredTemplates()
+    public function requiredTemplates()
     {
         return ['module.php', 'controller.php', 'view.php'];
     }
@@ -134,8 +133,7 @@ EOD;
     /**
      * {@inheritdoc}
      */
-    public
-    function generate()
+    public function generate()
     {
         $files = [];
         $db = $this->getDbConnection();
@@ -144,23 +142,23 @@ EOD;
         $modulePath = $this->getModulePath();
 
         $files[] = new CodeFile(
-            $modulePath . '/' . StringHelper::basename($this->moduleClass) . '.php',
+            $modulePath.'/'.StringHelper::basename($this->moduleClass).'.php',
             $this->render('module.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/controllers/DefaultController.php',
+            $modulePath.'/controllers/DefaultController.php',
             $this->render('controller.php')
         );
         $files[] = new CodeFile(
-            $modulePath . '/views/default/index.php',
+            $modulePath.'/views/default/index.php',
             $this->render('view.php', ['databaseName' => $databaseUtils->getDatabaseName()])
         );
         $files[] = new CodeFile(
-            $modulePath . '/menu_items.php',
+            $modulePath.'/menu_items.php',
             $this->render('menu_items.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
         $files[] = new CodeFile(
-            $modulePath . '/config/config.php',
+            $modulePath.'/config/config.php',
             $this->render('config.php', ['moduleID' => $this->moduleID, 'moduleClass' => $this->moduleClass])
         );
 
@@ -170,10 +168,9 @@ EOD;
     /**
      * Validates [[moduleClass]] to make sure it is a fully qualified class name.
      */
-    public
-    function validateModuleClass()
+    public function validateModuleClass()
     {
-        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@' . str_replace('\\', '/', $this->moduleClass), false) === false) {
+        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@'.str_replace('\\', '/', $this->moduleClass), false) === false) {
             $this->addError('moduleClass', 'Module class must be properly namespaced.');
         }
         if (empty($this->moduleClass) || substr_compare($this->moduleClass, '\\', -1, 1) === 0) {
@@ -184,18 +181,16 @@ EOD;
     /**
      * @return bool the directory that contains the module class
      */
-    public
-    function getModulePath()
+    public function getModulePath()
     {
-        return Yii::getAlias('@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
+        return Yii::getAlias('@'.str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
     }
 
     /**
      * @return string the controller namespace of the module.
      */
-    public
-    function getControllerNamespace()
+    public function getControllerNamespace()
     {
-        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\controllers';
+        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')).'\controllers';
     }
 }

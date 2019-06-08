@@ -1,6 +1,7 @@
 <?php
 /**
  * @link http://www.diemeisterei.de/
+ *
  * @copyright Copyright (c) 2014 diemeisterei GmbH, Stuttgart
  *
  * For the full copyright and license information, please view the LICENSE
@@ -12,15 +13,13 @@ namespace inquid\enhancedgii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
-
 /**
- * Class Bootstrap
- * @package inquid\yii2-enhanced-gii
+ * Class Bootstrap.
+ *
  * @author Tobias Munk <tobias@diemeisterei.de>
  */
 class Bootstrap implements BootstrapInterface
 {
-
     /**
      * Bootstrap method to be called during application bootstrap stage.
      *

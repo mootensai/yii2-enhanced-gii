@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 /* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->nsModel, '\\') . '\\' . $relations[$generator::REL_CLASS] ?> */
+/* @var $model <?= ltrim($generator->nsModel, '\\').'\\'.$relations[$generator::REL_CLASS] ?> */
 /* @var $form yii\widgets\ActiveForm */
 
 <?php
@@ -48,7 +48,7 @@ $modelClass = StringHelper::basename($generator->modelClass);
 <?php
 foreach ($tableSchema->getColumnNames() as $attribute) {
     if (!in_array($attribute, $generator->skippedColumns) && !in_array($attribute, array_keys($fk))) {
-        echo '    <?= ' . $generator->generateActiveField($attribute, $fk, $tableSchema, $relations) . " ?>\n\n";
+        echo '    <?= '.$generator->generateActiveField($attribute, $fk, $tableSchema, $relations)." ?>\n\n";
     }
 }
 ?>

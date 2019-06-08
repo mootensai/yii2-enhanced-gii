@@ -10,6 +10,7 @@ use yii\gii\CodeFile;
  * This generator will generate migration file for the specified database table.
  *
  * @author Inquid INC <contact@inquid.co>
+ *
  * @since 0.9
  */
 class Generator extends \yii\gii\Generator
@@ -21,9 +22,8 @@ class Generator extends \yii\gii\Generator
     public $description;
     public $suffix_page;
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -31,7 +31,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -39,7 +39,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -55,44 +55,44 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return array_merge(parent::rules(), [
             [['public_repo', 'github_token', 'local_path', 'suffix_page'], 'filter', 'filter' => 'trim'],
             [['public_repo'], 'boolean'],
-            [['name'], 'required']
+            [['name'], 'required'],
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'public_repo' => 'Is this a public repository?',
+            'public_repo'  => 'Is this a public repository?',
             'github_token' => 'Given Github token',
-            'name' => 'Repository Name',
-            'local_path' => 'Local Repository path destination',
-            'description' => 'Repository Description',
-            'suffix_page' => 'Suffix Page'
+            'name'         => 'Repository Name',
+            'local_path'   => 'Local Repository path destination',
+            'description'  => 'Repository Description',
+            'suffix_page'  => 'Suffix Page',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'public_repo' => 'Is this a public repository?',
+            'public_repo'  => 'Is this a public repository?',
             'github_token' => 'Given Github token',
-            'name' => 'Repository Name',
-            'local_path' => 'Local Repository path destination',
-            'description' => 'Repository Description',
-            'suffix_page' => 'Suffix Page'
+            'name'         => 'Repository Name',
+            'local_path'   => 'Local Repository path destination',
+            'description'  => 'Repository Description',
+            'suffix_page'  => 'Suffix Page',
         ]);
     }
 
@@ -101,7 +101,8 @@ class Generator extends \yii\gii\Generator
         $files = [];
         $repoHandler = new RepoHandler($this->local_path, $this->name, $this->github_token, $this->suffix_page, $this->description, $this->public_repo);
         $files[] = new CodeFile("{$this->local_path}/{$this->name}/README.md", $this->render('README.md', ['repo_name' => 'name']));
-        Yii::debug('Creating the repo' . $repoHandler->createRepo(true));
+        Yii::debug('Creating the repo'.$repoHandler->createRepo(true));
+
         return $files;
     }
 }

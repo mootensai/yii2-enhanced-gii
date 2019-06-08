@@ -13,7 +13,11 @@ use kartik\tabs\TabsX;
 use yii\helpers\Url;
 $items = [
     [
-        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?php if ($generator->useTableComment) {echo $tableCommentName; } else { echo $generator->generateString(StringHelper::basename($generator->modelClass)); }?>),
+        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?php if ($generator->useTableComment) {
+    echo $tableCommentName;
+} else {
+    echo $generator->generateString(StringHelper::basename($generator->modelClass));
+}?>),
         'content' => $this->render('_detail', [
             'model' => $model,
         ]),

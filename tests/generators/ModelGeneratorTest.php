@@ -1,11 +1,13 @@
 <?php
+
 namespace yiiunit\gii\generators;
 
 use yii\gii\generators\model\Generator as ModelGenerator;
 use yiiunit\gii\GiiTestCase;
 
 /**
- * ModelGeneratorTest checks that Gii model generator produces valid results
+ * ModelGeneratorTest checks that Gii model generator produces valid results.
+ *
  * @group gii
  */
 class ModelGeneratorTest extends GiiTestCase
@@ -25,7 +27,7 @@ class ModelGeneratorTest extends GiiTestCase
         $generator->queryNs = 'app\models';
 
         $valid = $generator->validate();
-        $this->assertTrue($valid, 'Validation failed: ' . print_r($generator->getErrors(), true));
+        $this->assertTrue($valid, 'Validation failed: '.print_r($generator->getErrors(), true));
 
         $files = $generator->generate();
         $this->assertEquals(8, count($files));
@@ -54,70 +56,70 @@ class ModelGeneratorTest extends GiiTestCase
         return [
             ['category', 'Category.php', [
                 [
-                    'name' => 'function getCategoryPhotos()',
+                    'name'     => 'function getCategoryPhotos()',
                     'relation' => "\$this->hasMany(CategoryPhoto::class, ['category_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getProduct()',
+                    'name'     => 'function getProduct()',
                     'relation' => "\$this->hasOne(Product::class, ['category_id' => 'id', 'category_language_code' => 'language_code']);",
                     'expected' => true,
                 ],
             ]],
             ['category_photo', 'CategoryPhoto.php', [
                 [
-                    'name' => 'function getCategory()',
+                    'name'     => 'function getCategory()',
                     'relation' => "\$this->hasOne(Category::class, ['id' => 'category_id']);",
                     'expected' => true,
                 ],
             ]],
             ['supplier', 'Supplier.php', [
                 [
-                    'name' => 'function getProducts()',
+                    'name'     => 'function getProducts()',
                     'relation' => "\$this->hasMany(Product::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getAttributes0()',
+                    'name'     => 'function getAttributes0()',
                     'relation' => "\$this->hasMany(Attribute::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getAttributes()',
+                    'name'     => 'function getAttributes()',
                     'relation' => "\$this->hasOne(Attribute::class, ['supplier_id' => 'id']);",
                     'expected' => false,
                 ],
                 [
-                    'name' => 'function getProductLanguage()',
+                    'name'     => 'function getProductLanguage()',
                     'relation' => "\$this->hasOne(ProductLanguage::class, ['supplier_id' => 'id']);",
                     'expected' => true,
                 ],
             ]],
             ['product', 'Product.php', [
                 [
-                    'name' => 'function getSupplier()',
+                    'name'     => 'function getSupplier()',
                     'relation' => "\$this->hasOne(Supplier::class, ['id' => 'supplier_id']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getCategory()',
+                    'name'     => 'function getCategory()',
                     'relation' => "\$this->hasOne(Category::class, ['id' => 'category_id', 'language_code' => 'category_language_code']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getProductLanguage()',
+                    'name'     => 'function getProductLanguage()',
                     'relation' => "\$this->hasOne(ProductLanguage::class, ['supplier_id' => 'supplier_id', 'id' => 'id']);",
                     'expected' => true,
                 ],
             ]],
             ['product_language', 'ProductLanguage.php', [
                 [
-                    'name' => 'function getSupplier()',
+                    'name'     => 'function getSupplier()',
                     'relation' => "\$this->hasOne(Product::class, ['supplier_id' => 'supplier_id', 'id' => 'id']);",
                     'expected' => true,
                 ],
                 [
-                    'name' => 'function getSupplier0()',
+                    'name'     => 'function getSupplier0()',
                     'relation' => "\$this->hasOne(Supplier::class, ['id' => 'supplier_id']);",
                     'expected' => true,
                 ],
@@ -127,6 +129,7 @@ class ModelGeneratorTest extends GiiTestCase
 
     /**
      * @dataProvider relationsProvider
+     *
      * @param $tableName string
      * @param $fileName string
      * @param $relations array
@@ -148,14 +151,14 @@ class ModelGeneratorTest extends GiiTestCase
             $this->assertTrue(
                 $relation['expected'] === $found,
                 "Relation \"{$relation['relation']}\" should"
-                . ($relation['expected'] ? '' : ' not')." be there:\n" . $code
+                .($relation['expected'] ? '' : ' not')." be there:\n".$code
             );
 
             $found = strpos($code, $relation['name']) !== false;
             $this->assertTrue(
                 $relation['expected'] === $found,
                 "Relation Name \"{$relation['name']}\" should"
-                . ($relation['expected'] ? '' : ' not')." be there:\n" . $code
+                .($relation['expected'] ? '' : ' not')." be there:\n".$code
             );
         }
     }
@@ -177,7 +180,7 @@ class ModelGeneratorTest extends GiiTestCase
             ['product', 'Product.php', [
                 "[['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::class, 'targetAttribute' => ['supplier_id' => 'id']],",
                 "[['category_id', 'category_language_code'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id', 'category_language_code' => 'language_code']],",
-                "[['category_id', 'category_language_code'], 'unique', 'targetAttribute' => ['category_id', 'category_language_code']],"
+                "[['category_id', 'category_language_code'], 'unique', 'targetAttribute' => ['category_id', 'category_language_code']],",
             ]],
             ['product_language', 'ProductLanguage.php', [
                 "[['supplier_id', 'id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['supplier_id' => 'supplier_id', 'id' => 'id']],",
@@ -210,27 +213,27 @@ class ModelGeneratorTest extends GiiTestCase
         foreach ($rules as $rule) {
             $location = strpos($code, $rule);
             $this->assertTrue($location !== false,
-                "Rule \"{$rule}\" should be there:\n" . $code
+                "Rule \"{$rule}\" should be there:\n".$code
             );
         }
     }
 
     public function testGenerateStandardizedCapitalsForClassNames()
     {
-        $modelGenerator = new ModelGeneratorMock;
+        $modelGenerator = new ModelGeneratorMock();
         $modelGenerator->standardizeCapitals = true;
 
         $tableNames = [
-            'lower_underline_name' => 'LowerUnderlineName',
+            'lower_underline_name'   => 'LowerUnderlineName',
             'Ucwords_Underline_Name' => 'UcwordsUnderlineName',
-            'UPPER_UNDERLINE_NAME' => 'UpperUnderlineName',
-            'lower-hyphen-name' => 'LowerHyphenName',
-            'Ucwords-Hyphen-Name' => 'UcwordsHyphenName',
-            'UPPER-HYPHEN-NAME' => 'UpperHyphenName',
-            'CamelCaseName' => 'CamelCaseName',
-            'lowerUcwordsName' => 'LowerUcwordsName',
-            'lowername' => 'Lowername',
-            'UPPERNAME' => 'Uppername',
+            'UPPER_UNDERLINE_NAME'   => 'UpperUnderlineName',
+            'lower-hyphen-name'      => 'LowerHyphenName',
+            'Ucwords-Hyphen-Name'    => 'UcwordsHyphenName',
+            'UPPER-HYPHEN-NAME'      => 'UpperHyphenName',
+            'CamelCaseName'          => 'CamelCaseName',
+            'lowerUcwordsName'       => 'LowerUcwordsName',
+            'lowername'              => 'Lowername',
+            'UPPERNAME'              => 'Uppername',
         ];
 
         foreach ($tableNames as $tableName => $expectedClassName) {
@@ -241,22 +244,22 @@ class ModelGeneratorTest extends GiiTestCase
 
     public function testGenerateNotStandardizedCapitalsForClassNames()
     {
-        $modelGenerator = new ModelGeneratorMock;
+        $modelGenerator = new ModelGeneratorMock();
         $modelGenerator->standardizeCapitals = false;
 
         $tableNames = [
-            'lower_underline_name' => 'LowerUnderlineName',
+            'lower_underline_name'   => 'LowerUnderlineName',
             'Ucwords_Underline_Name' => 'UcwordsUnderlineName',
-            'UPPER_UNDERLINE_NAME' => 'UPPERUNDERLINENAME',
-            'ABBRMyTable' => 'ABBRMyTable',
-            'lower-hyphen-name' => 'Lower-hyphen-name',
-            'Ucwords-Hyphen-Name' => 'Ucwords-Hyphen-Name',
-            'UPPER-HYPHEN-NAME' => 'UPPER-HYPHEN-NAME',
-            'CamelCaseName' => 'CamelCaseName',
-            'lowerUcwordsName' => 'LowerUcwordsName',
-            'lowername' => 'Lowername',
-            'UPPERNAME' => 'UPPERNAME',
-            'PARTIALUpperName' => 'PARTIALUpperName',
+            'UPPER_UNDERLINE_NAME'   => 'UPPERUNDERLINENAME',
+            'ABBRMyTable'            => 'ABBRMyTable',
+            'lower-hyphen-name'      => 'Lower-hyphen-name',
+            'Ucwords-Hyphen-Name'    => 'Ucwords-Hyphen-Name',
+            'UPPER-HYPHEN-NAME'      => 'UPPER-HYPHEN-NAME',
+            'CamelCaseName'          => 'CamelCaseName',
+            'lowerUcwordsName'       => 'LowerUcwordsName',
+            'lowername'              => 'Lowername',
+            'UPPERNAME'              => 'UPPERNAME',
+            'PARTIALUpperName'       => 'PARTIALUpperName',
         ];
 
         foreach ($tableNames as $tableName => $expectedClassName) {

@@ -126,7 +126,7 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function() use ($db) {
+                'tableName' => function () use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -176,8 +176,8 @@ class Generator extends \yii\gii\Generator
             ];
         }
 
-        $migrationName = 'm' . $this->migrationTime . '_' . $this->migrationName;
-        $file = rtrim(Yii::getAlias($this->migrationPath), '/') . "/{$migrationName}.php";
+        $migrationName = 'm'.$this->migrationTime.'_'.$this->migrationName;
+        $file = rtrim(Yii::getAlias($this->migrationPath), '/')."/{$migrationName}.php";
         $files = new CodeFile($file, $this->render('migration.php', [
             'tables'        => $this->reorderTables($tables, $relations),
             'migrationName' => $migrationName,
@@ -248,7 +248,7 @@ class Generator extends \yii\gii\Generator
             $ref = new \ReflectionClass(Schema::class);
             foreach ($ref->getConstants() as $constName => $constValue) {
                 if (strpos($constName, 'TYPE_') === 0) {
-                    $this->constans[$constValue] = '$this->' . $constValue;
+                    $this->constans[$constValue] = '$this->'.$constValue;
                 }
             }
             $this->constans['smallint'] = '$this->smallInteger';
@@ -264,27 +264,27 @@ class Generator extends \yii\gii\Generator
         }
         $result = '';
         if (isset($this->constans[$column->type])) {
-            $result = $this->constans[$column->type] . '(' . implode(',', $size) . ')';
+            $result = $this->constans[$column->type].'('.implode(',', $size).')';
             if (!$column->allowNull) {
                 $result .= '->notNull()';
             }
             if ($column->defaultValue !== null) {
-                $default = is_string($column->defaultValue) ? "'" . addslashes($column->defaultValue) . "'" : $column->defaultValue;
+                $default = is_string($column->defaultValue) ? "'".addslashes($column->defaultValue)."'" : $column->defaultValue;
                 $result .= "->defaultValue({$default})";
             }
         } else {
             $result = $column->dbType;
             if (!empty($size)) {
-                $result .= '(' . implode(',', $size) . ')';
+                $result .= '('.implode(',', $size).')';
             }
             if (!$column->allowNull) {
                 $result .= ' NOT NULL';
             }
             if ($column->defaultValue !== null) {
-                $default = is_string($column->defaultValue) ? "'" . addslashes($column->defaultValue) . "'" : $column->defaultValue;
+                $default = is_string($column->defaultValue) ? "'".addslashes($column->defaultValue)."'" : $column->defaultValue;
                 $result .= " DEFAULT {$default}";
             }
-            $result = '"' . $result . '"';
+            $result = '"'.$result.'"';
         }
 
         return $result;
@@ -402,15 +402,15 @@ class Generator extends \yii\gii\Generator
         if (strpos($this->tableName, '*') !== false) {
             if (($pos = strrpos($this->tableName, '.')) !== false) {
                 $schema = substr($this->tableName, 0, $pos);
-                $pattern = '/^' . str_replace('*', '\w+', substr($this->tableName, $pos + 1)) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', substr($this->tableName, $pos + 1)).'$/';
             } else {
                 $schema = '';
-                $pattern = '/^' . str_replace('*', '\w+', $this->tableName) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', $this->tableName).'$/';
             }
 
             foreach ($db->schema->getTableNames($schema) as $table) {
                 if (preg_match($pattern, $table)) {
-                    $tableNames[] = $schema === '' ? $table : ($schema . '.' . $table);
+                    $tableNames[] = $schema === '' ? $table : ($schema.'.'.$table);
                 }
             }
         } elseif (($table = $db->getTableSchema($this->tableName, true)) !== null) {
@@ -436,9 +436,9 @@ class Generator extends \yii\gii\Generator
 
         $db = $this->getDbConnection();
         if (preg_match("/^{$db->tablePrefix}(.*?)$/", $tableName, $matches)) {
-            $tableName = '{{%' . $matches[1] . '}}';
+            $tableName = '{{%'.$matches[1].'}}';
         } elseif (preg_match("/^(.*?){$db->tablePrefix}$/", $tableName, $matches)) {
-            $tableName = '{{' . $matches[1] . '%}}';
+            $tableName = '{{'.$matches[1].'%}}';
         }
 
         return $tableName;

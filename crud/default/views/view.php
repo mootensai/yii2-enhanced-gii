@@ -34,26 +34,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->pdf): ?>
 <?= '<?= ' ?>
             <?= "
-             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . ".$generator->generateString('PDF') . ",
+             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . ".$generator->generateString('PDF').",
                 ['pdf', $urlParams],
                 [
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
                     'data-toggle' => 'tooltip',
-                    'title' => " . $generator->generateString('Abrir PDF en una nueva ventana') . "
+                    'title' => ".$generator->generateString('Abrir PDF en una nueva ventana')."
                 ]
             )?>\n"
             ?>
 <?php endif; ?>
 <?php if ($generator->saveAsNew): ?>
-<?= '            <?= Html::a(' . $generator->generateString('Duplicar Registro') . ", ['save-as-new', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-info']) ?>" ?>
+<?= '            <?= Html::a('.$generator->generateString('Duplicar Registro').", ['save-as-new', ".$generator->generateUrlParams()."], ['class' => 'btn btn-info']) ?>" ?>
 <?php endif; ?>
             <?= '
-            <?= Html::a('.$generator->generateString('Actualizar') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(".$generator->generateString('Eliminar') . ", ['delete', " . $generator->generateUrlParams() . "], [
+            <?= Html::a('.$generator->generateString('Actualizar').", ['update', ".$generator->generateUrlParams()."], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(".$generator->generateString('Eliminar').", ['delete', ".$generator->generateUrlParams()."], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => " . $generator->generateString('¿Desea Eliminar este elemento?') . ",
+                    'confirm' => ".$generator->generateString('¿Desea Eliminar este elemento?').",
                     'method' => 'post',
                 ],
             ])
@@ -67,21 +67,20 @@ $this->params['breadcrumbs'][] = $this->title;
     $gridColumn = [
 <?php
 if ($tableSchema === false) {
-    foreach ($generator->getColumnNames() as $name) {
-        if (++$count < 6) {
-            echo "            '" . $name . "',\n";
-        } else {
-            echo "            // '" . $name . "',\n";
-        }
-    }
-} else {
-    foreach ($tableSchema->getColumnNames() as $attribute) {
-        if (!in_array($attribute, $generator->skippedColumns)) {
-            echo '        ' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
-
-        }
-    }
-}?>
+                foreach ($generator->getColumnNames() as $name) {
+                    if (++$count < 6) {
+                        echo "            '".$name."',\n";
+                    } else {
+                        echo "            // '".$name."',\n";
+                    }
+                }
+            } else {
+                foreach ($tableSchema->getColumnNames() as $attribute) {
+                    if (!in_array($attribute, $generator->skippedColumns)) {
+                        echo '        '.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
+                    }
+                }
+            }?>
     ];
     echo DetailView::widget([
         'model' => $model,
@@ -105,13 +104,13 @@ if($provider<?= $rel[1] ?>->totalCount){
             if ($tableSchema === false) {
                 foreach ($relTableSchema->getColumnNames() as $attribute) {
                     if (!in_array($attribute, $generator->skippedColumns)) {
-                        echo "            '" . $attribute . "',\n";
+                        echo "            '".$attribute."',\n";
                     }
                 }
             } else {
                 foreach ($relTableSchema->getColumnNames() as $attribute) {
                     if (!in_array($attribute, $generator->skippedColumns)) {
-                        echo '            ' . $generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
+                        echo '            '.$generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
                     }
                 }
             }
@@ -128,7 +127,7 @@ if($provider<?= $rel[1] ?>->totalCount){
 <?php if (!$generator->pdf): ?>
         'export' => false,
 <?php endif; ?>
-        'columns' => $gridColumn<?= $rel[1] . "\n" ?>
+        'columns' => $gridColumn<?= $rel[1]."\n" ?>
     ]);
 }
 <?= "?>\n" ?>
@@ -149,11 +148,11 @@ if($provider<?= $rel[1] ?>->totalCount){
         }
         if ($relTableSchema === false) {
             if (!in_array($attribute, $generator->skippedColumns)) {
-                echo "        '" . $attribute . "',\n";
+                echo "        '".$attribute."',\n";
             }
         } else {
             if (!in_array($attribute, $generator->skippedColumns)) {
-                echo '        ' . $generator->generateDetailViewField($attribute, $fkRel);
+                echo '        '.$generator->generateDetailViewField($attribute, $fkRel);
             }
         }
     }

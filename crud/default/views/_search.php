@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
 <div class="form-<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
 
-    <?= "<?php " ?>$form = ActiveForm::begin([
+    <?= '<?php ' ?>$form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
@@ -31,18 +31,18 @@ $count = 0;
 foreach ($generator->getColumnNames() as $attribute) {
     if (!in_array($attribute, $generator->skippedColumns)) {
         if (++$count < 6) {
-            echo "    <?= " . $generator->generateActiveField($attribute, $fk) . " ?>\n\n";
+            echo '    <?= '.$generator->generateActiveField($attribute, $fk)." ?>\n\n";
         } else {
-            echo "    <?php /* echo " . $generator->generateActiveField($attribute, $fk) . " */ ?>\n\n";
+            echo '    <?php /* echo '.$generator->generateActiveField($attribute, $fk)." */ ?>\n\n";
         }
     }
 }
 ?>
     <div class="form-group">
-        <?= "<?= " ?>Html::submitButton(<?= $generator->generateString('Buscar') ?>, ['class' => 'btn btn-primary']) ?>
-        <?= "<?= " ?>Html::resetButton(<?= $generator->generateString('Borrar Busqueda') ?>, ['class' => 'btn btn-default']) ?>
+        <?= '<?= ' ?>Html::submitButton(<?= $generator->generateString('Buscar') ?>, ['class' => 'btn btn-primary']) ?>
+        <?= '<?= ' ?>Html::resetButton(<?= $generator->generateString('Borrar Busqueda') ?>, ['class' => 'btn btn-default']) ?>
     </div>
 
-    <?= "<?php " ?>ActiveForm::end(); ?>
+    <?= '<?php ' ?>ActiveForm::end(); ?>
 
 </div>

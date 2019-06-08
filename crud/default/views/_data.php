@@ -4,9 +4,9 @@
 /* @var $generator \inquid\enhancedgii\crud\Generator */
 
 use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+
 ?>
-<?= "<?php" ?>
+<?= '<?php' ?>
 
 use yii\helpers\Html;
 use kartik\tabs\TabsX;

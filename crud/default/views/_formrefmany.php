@@ -33,7 +33,7 @@ echo TabularForm::widget([
 <?php foreach ($tableSchema->getColumnNames() as $attribute) :
     $column = $tableSchema->getColumn($attribute);
     if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) {
-        echo '        ' . $generator->generateTabularFormField($attribute, $fk, $tableSchema) . ",\n";
+        echo '        '.$generator->generateTabularFormField($attribute, $fk, $tableSchema).",\n";
     }
 endforeach; ?>
         'del' => [
@@ -52,7 +52,7 @@ endforeach; ?>
             'type' => GridView::TYPE_DEFAULT,
             'before' => false,
             'footer' => false,
-            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Agregar ' . $humanize) ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[$generator::REL_CLASS]; ?>()']),
+            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Agregar '.$humanize) ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[$generator::REL_CLASS]; ?>()']),
         ]
     ]
 ]);
