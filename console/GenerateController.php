@@ -1,11 +1,12 @@
 <?php
 /**
  * @link http://www.yiiframework.com/
+ *
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
-    namespace inquid\enhancedgii\console;
+namespace inquid\enhancedgii\console;
 
 use Yii;
 use yii\base\InlineAction;
@@ -23,6 +24,7 @@ use yii\console\Controller;
  *
  * @author Tobias Munk <schmunk@usrbin.de>
  * @author Qiang Xue <qiang.xue@gmail.com>
+ *
  * @since 2.0
  */
 class GenerateController extends Controller
@@ -33,8 +35,8 @@ class GenerateController extends Controller
     public $module;
     /**
      * @var bool whether to overwrite all existing code files when in non-interactive mode.
-     * Defaults to false, meaning none of the existing code files will be overwritten.
-     * This option is used only when `--interactive=0`.
+     *           Defaults to false, meaning none of the existing code files will be overwritten.
+     *           This option is used only when `--interactive=0`.
      */
     public $overwrite = false;
     /**
@@ -46,7 +48,6 @@ class GenerateController extends Controller
      * @var array generator option values
      */
     private $_options = [];
-
 
     /**
      * {@inheritdoc}
@@ -85,6 +86,7 @@ class GenerateController extends Controller
         foreach ($this->_options as $name => $value) {
             $action->generator->$name = $value;
         }
+
         return $action;
     }
 
@@ -96,10 +98,11 @@ class GenerateController extends Controller
         $actions = [];
         foreach ($this->generators as $name => $generator) {
             $actions[$name] = [
-                'class' => 'yii\gii\console\GenerateAction',
+                'class'     => 'yii\gii\console\GenerateAction',
                 'generator' => $generator,
             ];
         }
+
         return $actions;
     }
 
@@ -130,6 +133,7 @@ class GenerateController extends Controller
 
         $attributes = $this->generators[$id]->attributes;
         unset($attributes['templates']);
+
         return array_merge(
             $options,
             array_keys($attributes)
@@ -145,7 +149,7 @@ class GenerateController extends Controller
             return parent::getActionHelpSummary($action);
         }
 
-        /** @var $action GenerateAction */
+        /* @var $action GenerateAction */
         return $action->generator->getName();
     }
 
@@ -189,10 +193,10 @@ class GenerateController extends Controller
         foreach ($attributes as $name => $value) {
             $type = gettype($value);
             $options[$name] = [
-                'type' => $type === 'NULL' ? 'string' : $type,
+                'type'     => $type === 'NULL' ? 'string' : $type,
                 'required' => $value === null && $action->generator->isAttributeRequired($name),
-                'default' => $value,
-                'comment' => isset($hints[$name]) ? $this->formatHint($hints[$name]) : '',
+                'default'  => $value,
+                'comment'  => isset($hints[$name]) ? $this->formatHint($hints[$name]) : '',
             ];
         }
 
@@ -203,6 +207,7 @@ class GenerateController extends Controller
     {
         $hint = preg_replace('%<code>(.*?)</code>%', '\1', $hint);
         $hint = preg_replace('/\s+/', ' ', $hint);
+
         return wordwrap($hint);
     }
 }

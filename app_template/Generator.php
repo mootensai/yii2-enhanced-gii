@@ -4,15 +4,13 @@ namespace inquid\enhancedgii\app_template;
 
 use inquid\enhancedgii\app_template\component\AppTemplate;
 use Yii;
-use yii\db\Connection;
-use yii\db\Schema;
 use yii\gii\CodeFile;
-use yii\db\Expression;
 
 /**
  * This generator will generate migration file for the specified database table.
  *
  * @author Inquid INC <contact@inquid.co>
+ *
  * @since 0.9
  */
 class Generator extends \yii\gii\Generator
@@ -59,9 +57,8 @@ class Generator extends \yii\gii\Generator
     public $cost = 12;
     public $admins;
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -69,7 +66,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -77,7 +74,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -93,37 +90,37 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return array_merge(parent::rules(), [
             [['path', 'repo'], 'filter', 'filter' => 'trim'],
-            [['appName'], 'required']
+            [['appName'], 'required'],
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
             'appName' => 'Application Name',
-            'path' => 'Directory Path',
-            'repo' => 'Repository URL'
+            'path'    => 'Directory Path',
+            'repo'    => 'Repository URL',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
             'appName' => 'Application Name',
-            'path' => 'Directory Path',
-            'repo' => 'Repository URL'
+            'path'    => 'Directory Path',
+            'repo'    => 'Repository URL',
         ]);
     }
 
@@ -131,8 +128,9 @@ class Generator extends \yii\gii\Generator
     {
         $files = [];
         $appName = new AppTemplate(strtolower(str_replace(' ', '_', $this->appName)), $this->repo, $this->path);
-        Yii::debug("Creating app" . $appName->createApp($this->updateDependencies));
-        $files[] = new CodeFile("{$this->path}/{$this->appName}/.env", $this->render(".env"));
+        Yii::debug('Creating app'.$appName->createApp($this->updateDependencies));
+        $files[] = new CodeFile("{$this->path}/{$this->appName}/.env", $this->render('.env'));
+
         return $files;
         //$appName->createEnv();
     }

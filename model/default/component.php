@@ -4,11 +4,10 @@
  * User: gogl92
  * Date: 2019-02-24
  * Time: 01:18
-   TODO: Add PHPDOc comments to the modules beforeSave and afterSave
+ * TODO: Add PHPDOc comments to the modules beforeSave and afterSave.
  */
 echo "<?php\n";
 
-use yii\helpers\StringHelper;
 ?>
 
 namespace <?= $generator->nsComponent ?>;
@@ -21,11 +20,11 @@ class <?= $componentClassName ?> extends Component
 {
 <?php
 echo "\tpublic function beforeSave($" . lcfirst($className) . "){
-        return $".lcfirst($className) . ";
+        return $" . lcfirst($className) . ";
 \t}\n";?>
 
 <?php
-echo "\tpublic function afterSave($" . lcfirst($className) . "){
-        return $".lcfirst($className) . ";
+echo "\tpublic function afterSave($".lcfirst($className)."){
+        return $" . lcfirst($className) . ";
 \t}\n";?>
 }

@@ -6,12 +6,12 @@ use Yii;
 use yii\db\Connection;
 use yii\db\Schema;
 use yii\gii\CodeFile;
-use yii\db\Expression;
 
 /**
  * This generator will generate migration file for the specified database table.
  *
  * @author Misbahul D Munir <misbahuldmunir@gmail.com>
+ *
  * @since 1.1
  */
 class Generator extends \yii\gii\Generator
@@ -28,7 +28,7 @@ class Generator extends \yii\gii\Generator
     public $isSafeUpDown = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -37,7 +37,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -45,7 +45,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -53,7 +53,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -74,37 +74,37 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'migrationPath' => 'Migration Path',
-            'db' => 'Database Connection ID',
-            'tableName' => 'Table Name',
-            'migrationName' => 'Migration Name',
-            'migrationTime' => 'Migration Time',
-            'generateRelations' => 'Generate Relations',
+            'migrationPath'          => 'Migration Path',
+            'db'                     => 'Database Connection ID',
+            'tableName'              => 'Table Name',
+            'migrationName'          => 'Migration Name',
+            'migrationTime'          => 'Migration Time',
+            'generateRelations'      => 'Generate Relations',
             'createTableIfNotExists' => 'If table exist',
-            'disableFkc' => 'Disable foreign key checks',
-            'isSafeUpDown' => 'Generate with safeUp() and safeDown()',
+            'disableFkc'             => 'Disable foreign key checks',
+            'isSafeUpDown'           => 'Generate with safeUp() and safeDown()',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
             'migrationPath' => 'Path to store generated file, e.g., <code>@app/migrations</code>',
-            'db' => 'This is the ID of the DB application component.',
-            'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
+            'db'            => 'This is the ID of the DB application component.',
+            'tableName'     => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
                 will match tables who name starts with <code>tbl_</code>.',
-            'migrationName' => 'The name of the new migration. This should only contain letters, digits and/or underscores.',
-            'migrationTime' => 'Time of the new migration. This should only has format <code>yymmdd_hhiiss</code>.',
+            'migrationName'     => 'The name of the new migration. This should only contain letters, digits and/or underscores.',
+            'migrationTime'     => 'Time of the new migration. This should only has format <code>yymmdd_hhiiss</code>.',
             'generateRelations' => 'This indicates whether the generator should generate relations based on
                 foreign key constraints it detects in the database. Note that if your database contains too many tables,
                 you may want to uncheck this option to accelerate the code generation process.',
@@ -113,13 +113,13 @@ class Generator extends \yii\gii\Generator
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the migration
                 will use the table name as <code>{{%post}}</code>.',
             'createTableIfNotExists' => 'Skip table if it exists in database.',
-            'disableFkc' => 'Disable foreign key checks when migrating down (drop table).',
-            'isSafeUpDown' => 'Option to generate whether use <code>up() down()</code> or <code>safeUp() safeDown()</code>'
+            'disableFkc'             => 'Disable foreign key checks when migrating down (drop table).',
+            'isSafeUpDown'           => 'Option to generate whether use <code>up() down()</code> or <code>safeUp() safeDown()</code>',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function autoCompleteData()
     {
@@ -136,7 +136,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function requiredTemplates()
     {
@@ -144,7 +144,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function stickyAttributes()
     {
@@ -152,7 +152,7 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {
@@ -169,26 +169,29 @@ class Generator extends \yii\gii\Generator
                 $primary = null;
             }
             $tables[$tableSchema->name] = [
-                'name' => $this->generateTableName($tableSchema->name),
-                'columns' => $columns,
-                'primary' => $primary,
+                'name'      => $this->generateTableName($tableSchema->name),
+                'columns'   => $columns,
+                'primary'   => $primary,
                 'relations' => isset($relations[$tableSchema->name]) ? $relations[$tableSchema->name] : [],
             ];
         }
 
-        $migrationName = 'm' . $this->migrationTime . '_' . $this->migrationName;
-        $file = rtrim(Yii::getAlias($this->migrationPath), '/') . "/{$migrationName}.php";
+        $migrationName = 'm'.$this->migrationTime.'_'.$this->migrationName;
+        $file = rtrim(Yii::getAlias($this->migrationPath), '/')."/{$migrationName}.php";
         $files = new CodeFile($file, $this->render('migration.php', [
-            'tables' => $this->reorderTables($tables, $relations),
+            'tables'        => $this->reorderTables($tables, $relations),
             'migrationName' => $migrationName,
         ]));
+
         return [$files];
     }
 
     /**
      * Reorder tables acourding with dependencies.
+     *
      * @param array $tables
      * @param array $relations
+     *
      * @return array
      */
     protected function reorderTables($tables, $relations)
@@ -208,11 +211,11 @@ class Generator extends \yii\gii\Generator
                 $result[] = $tables[$value];
             }
         }
+
         return $result;
     }
 
     /**
-     *
      * @param array $tableNames
      * @param array $depencies
      * @param array $orders
@@ -228,13 +231,15 @@ class Generator extends \yii\gii\Generator
             }
         }
     }
+
     protected $constans;
 
     /**
-     *
      * @param \yii\db\ColumnSchema $column
-     * @return string
+     *
      * @throws \ReflectionException
+     *
+     * @return string
      */
     public function getSchemaType($column)
     {
@@ -243,7 +248,7 @@ class Generator extends \yii\gii\Generator
             $ref = new \ReflectionClass(Schema::class);
             foreach ($ref->getConstants() as $constName => $constValue) {
                 if (strpos($constName, 'TYPE_') === 0) {
-                    $this->constans[$constValue] = '$this->' . $constValue;
+                    $this->constans[$constValue] = '$this->'.$constValue;
                 }
             }
             $this->constans['smallint'] = '$this->smallInteger';
@@ -259,12 +264,12 @@ class Generator extends \yii\gii\Generator
         }
         $result = '';
         if (isset($this->constans[$column->type])) {
-            $result = $this->constans[$column->type] . '(' . implode(',', $size) . ')';
+            $result = $this->constans[$column->type].'('.implode(',', $size).')';
             if (!$column->allowNull) {
                 $result .= '->notNull()';
             }
             if ($column->defaultValue !== null) {
-                $default = is_string($column->defaultValue) ? "'" . addslashes($column->defaultValue) . "'" : $column->defaultValue;
+                $default = is_string($column->defaultValue) ? "'".addslashes($column->defaultValue)."'" : $column->defaultValue;
                 $result .= "->defaultValue({$default})";
             }
         } else {
@@ -276,17 +281,20 @@ class Generator extends \yii\gii\Generator
                 $result .= ' NOT NULL';
             }
             if ($column->defaultValue !== null) {
-                $default = is_string($column->defaultValue) ? "'" . addslashes($column->defaultValue) . "'" : $column->defaultValue;
+                $default = is_string($column->defaultValue) ? "'".addslashes($column->defaultValue)."'" : $column->defaultValue;
                 $result .= " DEFAULT {$default}";
             }
-            $result = '"' . $result . '"';
+            $result = '"'.$result.'"';
         }
+
         return $result;
     }
 
     /**
      * Generates validation rules for the specified table.
+     *
      * @param \yii\db\TableSchema $table the table schema
+     *
      * @return array the generated validation rules
      */
     protected function generateColumns($table)
@@ -310,9 +318,10 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @return array the generated relation declarations
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\NotSupportedException
+     *
+     * @return array the generated relation declarations
      */
     protected function generateRelations()
     {
@@ -343,6 +352,7 @@ class Generator extends \yii\gii\Generator
                 $relations[$tableName][$refTable] = $relation;
             }
         }
+
         return $relations;
     }
 
@@ -373,6 +383,7 @@ class Generator extends \yii\gii\Generator
             $this->addError('tableName', "Table '{$this->tableName}' does not exist.");
         }
     }
+
     protected $tableNames;
 
     /**
@@ -391,15 +402,15 @@ class Generator extends \yii\gii\Generator
         if (strpos($this->tableName, '*') !== false) {
             if (($pos = strrpos($this->tableName, '.')) !== false) {
                 $schema = substr($this->tableName, 0, $pos);
-                $pattern = '/^' . str_replace('*', '\w+', substr($this->tableName, $pos + 1)) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', substr($this->tableName, $pos + 1)).'$/';
             } else {
                 $schema = '';
-                $pattern = '/^' . str_replace('*', '\w+', $this->tableName) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', $this->tableName).'$/';
             }
 
             foreach ($db->schema->getTableNames($schema) as $table) {
                 if (preg_match($pattern, $table)) {
-                    $tableNames[] = $schema === '' ? $table : ($schema . '.' . $table);
+                    $tableNames[] = $schema === '' ? $table : ($schema.'.'.$table);
                 }
             }
         } elseif (($table = $db->getTableSchema($this->tableName, true)) !== null) {
@@ -412,7 +423,9 @@ class Generator extends \yii\gii\Generator
     /**
      * Generates the table name by considering table prefix.
      * If [[useTablePrefix]] is false, the table name will be returned without change.
+     *
      * @param string $tableName the table name (which may contain schema prefix)
+     *
      * @return string the generated table name
      */
     public function generateTableName($tableName)
@@ -423,16 +436,18 @@ class Generator extends \yii\gii\Generator
 
         $db = $this->getDbConnection();
         if (preg_match("/^{$db->tablePrefix}(.*?)$/", $tableName, $matches)) {
-            $tableName = '{{%' . $matches[1] . '}}';
+            $tableName = '{{%'.$matches[1].'}}';
         } elseif (preg_match("/^(.*?){$db->tablePrefix}$/", $tableName, $matches)) {
-            $tableName = '{{' . $matches[1] . '%}}';
+            $tableName = '{{'.$matches[1].'%}}';
         }
+
         return $tableName;
     }
 
     /**
-     * @return Connection the DB connection as specified by [[db]].
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return Connection the DB connection as specified by [[db]].
      */
     protected function getDbConnection()
     {

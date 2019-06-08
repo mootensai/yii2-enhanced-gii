@@ -16,15 +16,15 @@ use yii\helpers\VarDumper;
 use yii\web\Controller;
 
 /**
- * Generates Relational CRUD
+ * Generates Relational CRUD.
  *
  *
  * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+ *
  * @since 2.0
  */
 class Generator extends \inquid\enhancedgii\BaseGenerator
 {
-
     public $nameAttribute = 'name, title, username, nombre';
     public $hiddenColumns = 'id, lock';
     public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
@@ -60,7 +60,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $cancelable;
     public $saveAsNew;
     public $pdf;
-    public $viewPath = "@app/modules/module/views";
+    public $viewPath = '@app/modules/module/views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $relations;
@@ -74,8 +74,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     /* PDF */
     public $nsComponent = 'app\components';
     public $componentClass;
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -83,7 +84,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -92,12 +93,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass', 'nsComponent'], 'filter', 'filter' => 'trim'],
+            [['db', 'nsModel', 'viewPath', 'queryNs', 'nsController', 'nsSearchModel', 'tableName', 'modelClass', 'searchModelClass', 'baseControllerClass','nsComponent'], 'filter', 'filter' => 'trim'],
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -111,55 +112,55 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
 //            [['modelClass'], 'validateModelClass'],
-            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders', 'importExcel', 'useTableComment'], 'boolean'],
+            [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders','importExcel','useTableComment'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
                 'controllerClass', 'blameableValue', 'nameAttribute',
                 'hiddenColumns', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
-                'UUIDColumn', 'saveAsNew'], 'safe'],
-            [['modelSort'], 'string', 'max' => '9']
+                'UUIDColumn', 'saveAsNew', ], 'safe'],
+            [['modelSort'], 'string', 'max' => '9'],
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'db' => 'Database Connection ID',
-            'moduleName' => 'Module Name',
-            'modelClass' => 'Model Class',
-            'generateQuery' => 'Generate ActiveQuery',
-            'queryNs' => 'ActiveQuery Namespace',
-            'queryClass' => 'ActiveQuery Class',
-            'nsModel' => 'Model Namespace',
-            'nsSearchModel' => 'Search Model Namespace',
-            'UUIDColumn' => 'UUID Column',
-            'nsController' => 'Controller Namespace',
-            'nsComponent' => 'Component Namespace',
-            'viewPath' => 'View Path',
+            'db'                  => 'Database Connection ID',
+            'moduleName'          => 'Module Name',
+            'modelClass'          => 'Model Class',
+            'generateQuery'       => 'Generate ActiveQuery',
+            'queryNs'             => 'ActiveQuery Namespace',
+            'queryClass'          => 'ActiveQuery Class',
+            'nsModel'             => 'Model Namespace',
+            'nsSearchModel'       => 'Search Model Namespace',
+            'UUIDColumn'          => 'UUID Column',
+            'nsController'        => 'Controller Namespace',
+            'nsComponent'         => 'Component Namespace',
+            'viewPath'            => 'View Path',
             'baseControllerClass' => 'Base Controller Class',
-            'indexWidgetType' => 'Widget Used in Index Page',
-            'searchModelClass' => 'Search Model Class',
-            'expandable' => 'Expandable Index Grid View',
-            'cancelable' => 'Add Cancel Button On Form',
-            'pdf' => 'PDF Printable View',
-            'importExcel' => 'Import From Excel',
-            'modelSort' => 'Model Sort Order',
-            'placeHolders'=>'Enable Or Disable Placeholders'
+            'indexWidgetType'     => 'Widget Used in Index Page',
+            'searchModelClass'    => 'Search Model Class',
+            'expandable'          => 'Expandable Index Grid View',
+            'cancelable'          => 'Add Cancel Button On Form',
+            'pdf'                 => 'PDF Printable View',
+            'importExcel'         => 'Import From Excel',
+            'modelSort'           => 'Model Sort Order',
+            'placeHolders'        => 'Enable Or Disable Placeholders',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'db' => 'This is the ID of the DB application component.',
+            'db'         => 'This is the ID of the DB application component.',
             'moduleName' => 'The module where the files will be placed',
-            'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
+            'tableName'  => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
                 will match tables who name starts with <code>tbl_</code>. In this case, multiple ActiveRecord classes
@@ -167,7 +168,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 the matching characters. For example, table <code>tbl_post</code> will generate <code>Post</code>
                 class.',
             'nameAttribute' => 'This is the (set) of name column that you use to show as label, '
-                . 'separated by comma (,) for multiple table(asterisk on Table Name).',
+                .'separated by comma (,) for multiple table(asterisk on Table Name).',
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
@@ -176,23 +177,23 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
-            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'nsModel'    => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
                 the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
-            'baseModelClass' => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
-            'nsSearchModel' => 'This is the namespace of the search model class to be generated, e.g., <code>app\models</code>',
+            'baseModelClass'   => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
+            'nsSearchModel'    => 'This is the namespace of the search model class to be generated, e.g., <code>app\models</code>',
             'searchModelClass' => 'This is the name of the search class to be generated. The class name should not contain
                 the namespace part as it is specified in "Search Model Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple search model classes will be generated.',
-            'generateQuery' => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
+            'generateQuery'              => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
             'generateLabelsFromComments' => 'This indicates whether the generator should generate attribute labels
                 by using the comments of the corresponding DB columns.',
             'useTablePrefix' => 'This indicates whether the table name returned by the generated ActiveRecord class
                 should consider the <code>tablePrefix</code> setting of the DB connection. For example, if the
                 table name is <code>tbl_post</code> and <code>tablePrefix=tbl_</code>, the ActiveRecord class
                 will return the table name as <code>{{%post}}</code>.',
-            'useTableComment'=>'Use the table comment as the title label for views',
+            'useTableComment'     => 'Use the table comment as the title label for views',
             'generateSearchModel' => 'This indicates whether the generator should generate search model based on
                 columns it detects in the database.',
             'generateRelations' => 'This indicates whether the generator should generate relations based on
@@ -201,41 +202,41 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'generateMigrations' => 'This indicates whether the generator should generate migrations based on
                 table structure.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
-                . 'Enter this field with optimistic lock column name. '
-                . 'Empty this field if you want to disable this feature.',
+                .'Enter this field with optimistic lock column name. '
+                .'Empty this field if you want to disable this feature.',
             'createdAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-                . 'Enter this field with Created At column name. '
-                . 'Empty "Created At" & "Updated At" field if you want to disable this feature.',
+                .'Enter this field with Created At column name. '
+                .'Empty "Created At" & "Updated At" field if you want to disable this feature.',
             'updatedAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-                . 'Enter this field with Updated At column name. '
-                . 'Empty "Created At" & "Updated At" field if you want to disable this feature.',
+                .'Enter this field with Updated At column name. '
+                .'Empty "Created At" & "Updated At" field if you want to disable this feature.',
             'timestampValue' => 'This will generate the </code>value</code> configuration entry for Timestamp Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
-            'createdBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-                . 'Enter this field with Created By column name. '
-                . 'Empty "Created By" & "Updated By" field if you want to disable this feature.',
+            'createdBy'      => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
+                .'Enter this field with Created By column name. '
+                .'Empty "Created By" & "Updated By" field if you want to disable this feature.',
             'updatedBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-                . 'Enter this field with Updated By column name. '
-                . 'Empty "Created By" & "Updated By" field if you want to disable this feature.',
+                .'Enter this field with Updated By column name. '
+                .'Empty "Created By" & "Updated By" field if you want to disable this feature.',
             'blameableValue' => 'This will generate the </code>value</code> configuration entry for Blameable Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
-            'UUIDColumn' => 'This indicates whether the generator should generate UUID Behaviors feature for Model. '
-                . 'Enter this field with UUID column name. '
-                . 'Empty "UUID Column" field if you want to disable this feature.',
+            'UUIDColumn'     => 'This indicates whether the generator should generate UUID Behaviors feature for Model. '
+                .'Enter this field with UUID column name. '
+                .'Empty "UUID Column" field if you want to disable this feature.',
             'deletedBy' => 'This indicates whether the generator should generate Soft Delete feature for Model. '
-                . 'Enter this field with Deleted By column name. '
-                . 'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
+                .'Enter this field with Deleted By column name. '
+                .'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
             'deletedAt' => 'This indicates whether the generator should generate Soft Delete feature for Model. '
-                . 'Enter this field with Updated By column name. '
-                . 'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
-            'nsController' => 'This is the namespace of the Controller class to be generated, e.g., <code>app\controllers</code>',
+                .'Enter this field with Updated By column name. '
+                .'Empty "Deleted By" & "Deleted At" field if you want to disable this feature.',
+            'nsController'    => 'This is the namespace of the Controller class to be generated, e.g., <code>app\controllers</code>',
             'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
                 the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
-            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
-            'pluralize' => 'Set the generator to generate pluralize for label',
+            'nsModel'    => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'pluralize'  => 'Set the generator to generate pluralize for label',
             'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
             'cancelable' => 'Set the generator to generate cancel button to return to grid view at form',
-            'pdf' => 'Set the generator to generate printable PDF generator at view',
-            'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
+            'pdf'        => 'Set the generator to generate printable PDF generator at view',
+            'viewPath'   => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
                 to <code>@app/views/ControllerID</code>',
             'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
@@ -248,22 +249,22 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
                 the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
-            'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
+            'queryNs'    => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
-            'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
-            'saveAsNew' => 'Creates a new model by another data, so user don\'t need to input all field from scratch.',
-            'modelSort' => 'Sort order of the grids, ASC or DESC of the ID',
-            'placeHolders'=>'Enable or Disable the place holders in all fields including lists',
-            'generateDocumentation'=>'',
-            'importExcel'=>'Import Data from Excel sheet',
-            'nsComponent'=>'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
+            'queryBaseClass'       => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
+            'saveAsNew'            => 'Creates a new model by another data, so user don\'t need to input all field from scratch.',
+            'modelSort'            => 'Sort order of the grids, ASC or DESC of the ID',
+            'placeHolders'         => 'Enable or Disable the place holders in all fields including lists',
+            'generateDocumentation'=> '',
+            'importExcel'          => 'Import Data from Excel sheet',
+            'nsComponent'          => 'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function stickyAttributes()
     {
@@ -291,19 +292,19 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'UUIDColumn',
             'baseControllerClass',
             'indexWidgetType',
-            'viewPath']);
+            'viewPath', ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function requiredTemplates()
     {
-        return ['controller.php', 'pdf_component.php'];
+        return ['controller.php','pdf_component.php'];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {
@@ -341,8 +342,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 $pdfComponentClassName = $modelClassName . 'PDF';
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
-                $controllerClassName = (!empty($this->controllerClass)) ? $this->controllerClass : $modelClassName . 'Controller';
-                $pdfComponentClassName = (!empty($this->componentClass)) ? $this->componentClass : $modelClassName . 'PDF';
+                $controllerClassName = (!empty($this->controllerClass)) ? $this->controllerClass : $modelClassName.'Controller';
+                $pdfComponentClassName = (!empty($this->componentClass)) ? $this->componentClass : $modelClassName.'PDF';
             }
 //            $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
@@ -357,23 +358,23 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             // search model :
             if ($this->generateSearchModel && !$isTree) {
                 if (empty($this->searchModelClass) || strpos($this->tableName, '*') !== false) {
-                    $searchModelClassName = $modelClassName . 'Search';
+                    $searchModelClassName = $modelClassName.'Search';
                 } else {
                     if ($this->nsSearchModel === $this->nsModel && $this->searchModelClass === $modelClassName) {
-                        $searchModelClassName = $this->searchModelClass . 'Search';
+                        $searchModelClassName = $this->searchModelClass.'Search';
                     } else {
                         $searchModelClassName = $this->searchModelClass;
                     }
                 }
-                $this->searchModelClass = $this->nsSearchModel . '\\' . $searchModelClassName;
-                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
+                $this->searchModelClass = $this->nsSearchModel.'\\'.$searchModelClassName;
+                $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\').'.php'));
                 $files[] = new CodeFile($searchModel, $this->render('search.php',
                     ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
             }
 
             //controller
             $files[] = new CodeFile(
-                Yii::getAlias('@' . str_replace('\\', '/', $this->nsController)) . '/' . $controllerClassName . '.php',
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsController)).'/'.$controllerClassName.'.php',
                 ($isTree) ?
                     $this->render('controllerNested.php', [
                         'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
@@ -384,17 +385,16 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                     ])
             );
 
-            if ($this->pdf) {
-                $files[] = new CodeFile(
+            if($this->pdf){
+                $files[] =   new CodeFile(
                     Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $pdfComponentClassName . '.php',
-                    $this->render('pdf_component.php', ['tableNameComment'=>$tableCommentName, 'relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
+                    $this->render('pdf_component.php', ['tableNameComment'=>$tableCommentName,'relations' => isset($relations[$tableName]) ? $relations[$tableName] : []])
                 );
             }
 
-
             // views :
             $viewPath = $this->getViewPath();
-            $templatePath = $this->getTemplatePath() . '/views';
+            $templatePath = $this->getTemplatePath().'/views';
             foreach (scandir($templatePath) as $file) {
 //                if($file === '_formNested.php')
 //                    echo  $file;
@@ -417,66 +417,66 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 if (!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')) {
                     continue;
                 }
-                if (is_file($templatePath . '/' . $file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                if (is_file($templatePath.'/'.$file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
                     $fileName = ($isTree) ? str_replace('Nested', '', $file) : $file;
                     $files[] = new CodeFile("$viewPath/$fileName", $this->render("views/$file", [
-                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                        'isTree' => $isTree,
-                        'tableCommentName' => $tableCommentName
+                        'relations'        => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                        'isTree'           => $isTree,
+                        'tableCommentName' => $tableCommentName,
                     ]));
                 }
             }
             if ($this->expandable) {
-                $files[] = new CodeFile("$viewPath/_expand.php", $this->render("views/_expand.php", [
-                    'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                    'tableCommentName' => $tableCommentName
+                $files[] = new CodeFile("$viewPath/_expand.php", $this->render('views/_expand.php', [
+                    'relations'        => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    'tableCommentName' => $tableCommentName,
                 ]));
             }
-            
+
             if ($this->importExcel) {
-                $files[] = new CodeFile("$viewPath/import.php", $this->render("views/import.php", [
-                    'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                    'tableCommentName' => $tableCommentName
+                $files[] = new CodeFile("$viewPath/import.php", $this->render('views/import.php', [
+                    'relations'        => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                    'tableCommentName' => $tableCommentName,
                 ]));
             }
 
             if ($this->saveAsNew) {
-                $files[] = new CodeFile("$viewPath/saveAsNew.php", $this->render("views/saveAsNew.php", [
+                $files[] = new CodeFile("$viewPath/saveAsNew.php", $this->render('views/saveAsNew.php', [
                     'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
                 ]));
             }
 
             if (isset($relations[$tableName]) && !$isTree) {
                 if ($this->expandable) {
-                    $files[] = new CodeFile("$viewPath/_detail.php", $this->render("views/_detail.php", [
-                        'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                        'tableCommentName' => $tableCommentName
+                    $files[] = new CodeFile("$viewPath/_detail.php", $this->render('views/_detail.php', [
+                        'relations'        => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                        'tableCommentName' => $tableCommentName,
                     ]));
                 }
                 foreach ($relations[$tableName] as $name => $rel) {
                     if ($rel[self::REL_IS_MULTIPLE] && isset($rel[self::REL_TABLE]) && !in_array($name, $this->skippedRelations)) {
-                        $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefmany.php", [
-                            'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                            'tableCommentName' => $tableCommentName
+                        $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render('views/_formrefmany.php', [
+                            'relations'        => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            'tableCommentName' => $tableCommentName,
                         ]));
                         if ($this->expandable) {
-                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefmany.php", [
-                                'relName' => $name,
-                                'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                                'tableCommentName' => $tableCommentName
+                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render('views/_datarefmany.php', [
+                                'relName'          => $name,
+                                'relations'        => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                                'tableCommentName' => $tableCommentName,
                             ]));
                         }
-                    } else if (isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)) {
-                        $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render("views/_formrefone.php", [
-                            'relName' => $name,
-                            'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                            'tableCommentName' => $tableCommentName
+                    } elseif (isset($rel[self::REL_IS_MASTER]) && !$rel[self::REL_IS_MASTER] && !in_array($name, $this->skippedRelations)) {
+                        $files[] = new CodeFile("$viewPath/_form{$rel[self::REL_CLASS]}.php", $this->render('views/_formrefone.php', [
+                            'relName'          => $name,
+                            'relations'        => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                            'tableCommentName' => $tableCommentName,
                         ]));
                         if ($this->expandable) {
-                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render("views/_datarefone.php", [
-                                'relName' => $name,
-                                'relations' => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
-                                'tableCommentName' => $tableCommentName
+                            $files[] = new CodeFile("$viewPath/_data{$rel[self::REL_CLASS]}.php", $this->render('views/_datarefone.php', [
+                                'relName'          => $name,
+                                'relations'        => isset($relations[$tableName]) ? $relations[$tableName][$name] : [],
+                                'tableCommentName' => $tableCommentName,
                             ]));
                         }
                     }
@@ -528,12 +528,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public function getViewPath()
     {
         if (isset($this->moduleName)) {
-            return Yii::getAlias("@app/modules/{$this->moduleName}/views/" . $this->getControllerID());
+            return Yii::getAlias("@app/modules/{$this->moduleName}/views/".$this->getControllerID());
         }
         if (empty($this->viewPath)) {
-            return Yii::getAlias('@app/views/' . $this->getControllerID());
+            return Yii::getAlias('@app/views/'.$this->getControllerID());
         } else {
-            return Yii::getAlias($this->viewPath . '/' . $this->getControllerID());
+            return Yii::getAlias($this->viewPath.'/'.$this->getControllerID());
         }
     }
 
@@ -577,23 +577,24 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 foreach ($tableSchema->foreignKeys as $value) {
                     if (isset($relations[self::REL_FOREIGN_KEY]) && $relations[self::REL_TABLE] == $value[self::FK_TABLE_NAME]) {
                         if ($tableSchema->fullName == $value[self::FK_TABLE_NAME] && $relations[self::REL_IS_MULTIPLE]) { // In case of self-referenced tables (credit to : github.com/iurijacob)
-
                         } else {
                             $fk[$relations[5]] = $relations;
                             $fk[$relations[5]][] = $name;
                         }
-
                     }
                 }
             }
         }
+
         return $fk;
     }
 
     /**
-     * Generates code for Grid View field
-     * @param string $attribute
+     * Generates code for Grid View field.
+     *
+     * @param string      $attribute
      * @param TableSchema $tableSchema
+     *
      * @return string
      */
     public function generateDetailViewField($attribute, $fk, $tableSchema = null)
@@ -607,7 +608,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
-                return "";
+                return '';
             } else {
                 return "'$attribute',\n";
             }
@@ -625,19 +626,22 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
             'attribute' => '$rel[7].$labelCol',
-            'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
+            'label' => ".$this->generateString(ucwords(Inflector::humanize($rel[5]))).",
         ],\n";
+
             return $output;
         } else {
-            return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
+            return "'$attribute".($format === 'text' ? '' : ':'.$format)."',\n";
         }
     }
 
     /**
-     * Generates code for Grid View field
-     * @param string $attribute
-     * @param array $fk
+     * Generates code for Grid View field.
+     *
+     * @param string      $attribute
+     * @param array       $fk
      * @param TableSchema $tableSchema
+     *
      * @return string
      */
     public function generateGridViewField($attribute, $fk, $tableSchema = null)
@@ -651,7 +655,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         }
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
-                return "";
+                return '';
             } else {
                 return "'$attribute',\n";
             }
@@ -663,25 +667,28 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (array_key_exists($attribute, $fk)) {
             $rel = $fk[$attribute];
             if ($rel[self::REL_CLASS] == $baseClass) {
-                return "";
+                return '';
             }
             $labelCol = $this->getNameAttributeFK($rel[3]);
 //            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             $output = "[
                 'attribute' => '$rel[7].$labelCol',
-                'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . "
+                'label' => ".$this->generateString(ucwords(Inflector::humanize($rel[5])))."
             ],\n";
+
             return $output;
         } else {
-            return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
+            return "'$attribute".($format === 'text' ? '' : ':'.$format)."',\n";
         }
     }
 
     /**
-     * Generates code for Grid View field
-     * @param string $attribute
-     * @param array $fk
+     * Generates code for Grid View field.
+     *
+     * @param string      $attribute
+     * @param array       $fk
      * @param TableSchema $tableSchema
+     *
      * @return string
      */
     public function generateGridViewFieldIndex($attribute, $fk, $tableSchema = null)
@@ -695,7 +702,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 //        $humanize = Inflector::humanize($attribute, true);
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
-                return "";
+                return '';
             } else {
                 return "'$attribute',\n";
             }
@@ -709,12 +716,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $rel = $fk[$attribute];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
-            $id = 'grid-' . Inflector::camel2id(StringHelper::basename($this->searchModelClass)) . '-' . $attribute;
+            $id = 'grid-'.Inflector::camel2id(StringHelper::basename($this->searchModelClass)).'-'.$attribute;
 //            $modelRel = $rel[2] ? lcfirst(Inflector::pluralize($rel[1])) : lcfirst($rel[1]);
             if ($column->allowNull) {
                 $output = "[
                 'attribute' => '$attribute',
-                'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
+                'label' => ".$this->generateString(ucwords(Inflector::humanize($rel[5]))).",
                 'value' => function(\$model){
                     if (\$model->$rel[7])
                     {return \$model->$rel[7]->$labelCol;}
@@ -726,13 +733,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
-                'filterInputOptions' => [" . (($this->placeHolders) ? "'placeholder' => '$humanize'," : "") . " 'id' => '$id']
+                'filterInputOptions' => [".(($this->placeHolders) ? "'placeholder' => '$humanize'," : '')." 'id' => '$id']
             ],\n";
+
                 return $output;
             } else {
                 $output = "[
                 'attribute' => '$attribute',
-                'label' => " . $this->generateString(ucwords(Inflector::humanize($rel[5]))) . ",
+                'label' => ".$this->generateString(ucwords(Inflector::humanize($rel[5]))).",
                 'value' => function(\$model){
                     return \$model->$rel[7]->$labelCol;
                 },
@@ -741,18 +749,21 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
-                'filterInputOptions' => [" . (($this->placeHolders) ? "'placeholder' => '$humanize'," : "") . "'id' => '$id']
+                'filterInputOptions' => [".(($this->placeHolders) ? "'placeholder' => '$humanize'," : '')."'id' => '$id']
             ],\n";
+
                 return $output;
             }
         } else {
-            return "'$attribute" . ($format === 'text' ? "" : ":" . $format) . "',\n";
+            return "'$attribute".($format === 'text' ? '' : ':'.$format)."',\n";
         }
     }
 
     /**
-     * Generates code for Kartik Tabular Form field
+     * Generates code for Kartik Tabular Form field.
+     *
      * @param string $attribute
+     *
      * @return string
      */
     public function generateTabularFormField($attribute, $fk, $tableSchema = null)
@@ -791,7 +802,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'ajaxConversion' => false,
                 'options' => [
                     'pluginOptions' => ["
-                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                .(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize).',' : '').
                 "'autoclose' => true
                     ]
                 ],
@@ -806,7 +817,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'ajaxConversion' => true,
                 'options' => [
                     'pluginOptions' => ["
-                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                .(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize).',' : '').
                 "'autoclose' => true
                     ]
                 ]
@@ -821,32 +832,33 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 'ajaxConversion' => true,
                 'options' => [
                     'pluginOptions' => ["
-                . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) . "," : '') .
+                .(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize).',' : '').
                 "'autoclose' => true,
                     ]
                 ],
             ]
         ]";
-        } elseif ($this->containsAnnotation($column, "@file")) {
-            return "";
-        } elseif ($this->containsAnnotation($column, "@image")) {
-            return "";
+        } elseif ($this->containsAnnotation($column, '@file')) {
+            return '';
+        } elseif ($this->containsAnnotation($column, '@image')) {
+            return '';
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[self::REL_TABLE]);
             $humanize = Inflector::humanize($rel[self::REL_TABLE]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
-            $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[self::REL_CLASS];
+            $fkClassFQ = '\\'.$this->nsModel.'\\'.$rel[self::REL_CLASS];
             $output = "'$attribute' => [
             'label' => '$humanize',
             'type' => TabularForm::INPUT_WIDGET,
             'widgetClass' => \\kartik\\widgets\\Select2::class,
             'options' => [
                 'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$labelCol')->asArray()->all(), '{$rel[self::REL_PRIMARY_KEY]}', '$labelCol'),
-                'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
+                'options' => [".(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize) : '')."],
             ],
             'columnOptions' => ['width' => '200px']
         ]";
+
             return $output;
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
@@ -859,13 +871,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 foreach ($column->enumValues as $enumValue) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
+
                 return "'$attribute' => ['type' => TabularForm::INPUT_DROPDOWN_LIST,
-                    'items' => " . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ",
+                    'items' => ".preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).",
                     'options' => [
                         'columnOptions' => ['width' => '185px'],
-                        'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
+                        'options' => [".(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize) : '').'],
                     ]
-        ]";
+        ]';
             } elseif ($column->phpType !== 'string' || $column->size === null) {
                 return "'$attribute' => ['type' => TabularForm::$input]";
             } else {
@@ -875,18 +888,20 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * Generates code for active field
+     * Generates code for active field.
+     *
      * @param string $attribute
+     *
      * @return string
      */
     public function generateActiveField($attribute, $fk, $tableSchema = null, $relations = null, $isTree = false)
     {
         if ($isTree) {
-            $model = "\$node";
-        } else if (is_null($relations)) {
-            $model = "\$model";
+            $model = '$node';
+        } elseif (is_null($relations)) {
+            $model = '$model';
         } else {
-            $model = '$' . $relations[self::REL_CLASS];
+            $model = '$'.$relations[self::REL_CLASS];
         }
 
         if (is_null($tableSchema)) {
@@ -901,7 +916,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return "\$form->field($model, '$attribute')->passwordInput()";
-            } else if (in_array($attribute, $this->hiddenColumns)) {
+            } elseif (in_array($attribute, $this->hiddenColumns)) {
                 return "\$form->field($model, '$attribute')->hiddenInput()";
             } else {
                 return "\$form->field($model, '$attribute')";
@@ -919,7 +934,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         'ajaxConversion' => true,
         'options' => [
             'pluginOptions' => [
-                'placeholder' => " . $this->generateString('Seleccione ' . $placeholder) . ",
+                'placeholder' => ".$this->generateString('Seleccione '.$placeholder).",
                 'autoclose' => true
             ]
         ],
@@ -931,7 +946,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         'ajaxConversion' => true,
         'options' => [
             'pluginOptions' => [
-                'placeholder' => " . $this->generateString('Seleccione ' . $placeholder) . ",
+                'placeholder' => ".$this->generateString('Seleccione '.$placeholder).",
                 'autoclose' => true
             ]
         ]
@@ -943,28 +958,29 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         'ajaxConversion' => true,
         'options' => [
             'pluginOptions' => [
-                'placeholder' => " . $this->generateString('Seleccione ' . $placeholder) . ",
+                'placeholder' => ".$this->generateString('Seleccione '.$placeholder).",
                 'autoclose' => true,
             ]
         ],
     ]);";
-        } elseif ($this->containsAnnotation($column, "@file")) {
-            return "\$form->field($model, '" . $column->name . "File')->fileInput()";
-        } elseif ($this->containsAnnotation($column, "@image")) {
-            return "\$form->field($model, '" . $column->name . "Image')->fileInput()";
+        } elseif ($this->containsAnnotation($column, '@file')) {
+            return "\$form->field($model, '".$column->name."File')->fileInput()";
+        } elseif ($this->containsAnnotation($column, '@image')) {
+            return "\$form->field($model, '".$column->name."Image')->fileInput()";
         } elseif (array_key_exists($column->name, $fk)) {
             $rel = $fk[$column->name];
             $labelCol = $this->getNameAttributeFK($rel[3]);
             $humanize = Inflector::humanize($rel[3]);
 //            $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
-            $fkClassFQ = "\\" . $this->nsModel . "\\" . $rel[1];
+            $fkClassFQ = '\\'.$this->nsModel.'\\'.$rel[1];
             $output = "\$form->field($model, '$attribute')->widget(\\kartik\\widgets\\Select2::class, [
         'data' => \\yii\\helpers\\ArrayHelper::map($fkClassFQ::find()->orderBy('$rel[4]')->asArray()->all(), '$rel[4]', '$labelCol'),
-        'options' => [" . (($this->placeHolders) ? "'placeholder' => " . $this->generateString('Seleccione ' . $humanize) : "") . "],
+        'options' => [".(($this->placeHolders) ? "'placeholder' => ".$this->generateString('Seleccione '.$humanize) : '')."],
         'pluginOptions' => [
             'allowClear' => true
         ],
     ]);";
+
             return $output;
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
@@ -977,19 +993,22 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 foreach ($column->enumValues as $enumValue) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
+
                 return "\$form->field($model, '$attribute')->dropDownList("
-                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => '', 'v-model'=>'$attribute'])";
+                    .preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => '', 'v-model'=>'$attribute'])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return "\$form->field($model, '$attribute')->$input([" . (($this->placeHolders) ? "'placeholder' => '$placeholder'," : "") . "'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input([" . (($this->placeHolders) ? "'placeholder' => '$placeholder',":"") . "'v-model'=>'$attribute'])";
             } else {
-                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, " . (($this->placeHolders) ? "'placeholder' => '$placeholder'," : "") . "'v-model'=>'$attribute'])";
+                return "\$form->field($model, '$attribute')->$input(['maxlength' => true, " . (($this->placeHolders) ? "'placeholder' => '$placeholder',":"") . "'v-model'=>'$attribute'])";
             }
         }
     }
 
     /**
-     * Generates column format
+     * Generates column format.
+     *
      * @param ColumnSchema $column
+     *
      * @return string
      */
     public function generateColumnFormat($column)
@@ -1012,7 +1031,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * Generates URL parameters
+     * Generates URL parameters.
+     *
      * @return string
      */
     public function generateUrlParams()
@@ -1039,7 +1059,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * Generates action parameters
+     * Generates action parameters.
+     *
      * @return string
      */
     public function generateActionParams()
@@ -1048,12 +1069,13 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (count($pks) === 1) {
             return '$id';
         } else {
-            return '$' . implode(', $', $pks);
+            return '$'.implode(', $', $pks);
         }
     }
 
     /**
-     * Generates parameter tags for phpdoc
+     * Generates parameter tags for phpdoc.
+     *
      * @return array parameter tags for phpdoc
      */
     public function generateActionParamComments()
@@ -1063,17 +1085,17 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (($table = $this->getTableSchema()) === false) {
             $params = [];
             foreach ($pks as $pk) {
-                $params[] = '@param ' . (substr(strtolower($pk), -2) == 'id' ? 'integer' : 'string') . ' $' . $pk;
+                $params[] = '@param '.(substr(strtolower($pk), -2) == 'id' ? 'integer' : 'string').' $'.$pk;
             }
 
             return $params;
         }
         if (count($pks) === 1) {
-            return ['@param ' . $table->columns[$pks[0]]->phpType . ' $id'];
+            return ['@param '.$table->columns[$pks[0]]->phpType.' $id'];
         } else {
             $params = [];
             foreach ($pks as $pk) {
-                $params[] = '@param ' . $table->columns[$pk]->phpType . ' $' . $pk;
+                $params[] = '@param '.$table->columns[$pk]->phpType.' $'.$pk;
             }
 
             return $params;
@@ -1082,12 +1104,13 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
     /**
      * Generates validation rules for the search model.
+     *
      * @return array the generated validation rules
      */
     public function generateSearchRules()
     {
         if (($table = $this->getTableSchema()) === false) {
-            return ["[['" . implode("', '", $this->getColumnNames()) . "'], 'safe']"];
+            return ["[['".implode("', '", $this->getColumnNames())."'], 'safe']"];
         }
         $types = [];
         foreach ($table->columns as $column) {
@@ -1118,7 +1141,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
         $rules = [];
         foreach ($types as $type => $columns) {
-            $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
+            $rules[] = "[['".implode("', '", $columns)."'], '$type']";
         }
 
         return $rules;
@@ -1126,6 +1149,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
     /**
      * Generates the attribute labels for the search model.
+     *
      * @return array the generated attribute labels (name => label)
      */
     public function generateSearchLabels()
@@ -1143,7 +1167,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 } else {
                     $label = Inflector::camel2words($name);
                     if (!empty($label) && substr_compare($label, ' id', -3, 3, true) === 0) {
-                        $label = substr($label, 0, -3) . ' ID';
+                        $label = substr($label, 0, -3).' ID';
                     }
                     $labels[$name] = $label;
                 }
@@ -1162,7 +1186,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * Generates search conditions
+     * Generates search conditions.
+     *
      * @return array
      */
     public function generateSearchConditions()
@@ -1208,11 +1233,11 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $conditions = [];
         if (!empty($hashConditions)) {
             $conditions[] = "\$query->andFilterWhere([\n"
-                . str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $hashConditions)
-                . "\n" . str_repeat(' ', 8) . "]);\n";
+                .str_repeat(' ', 12).implode("\n".str_repeat(' ', 12), $hashConditions)
+                ."\n".str_repeat(' ', 8)."]);\n";
         }
         if (!empty($likeConditions)) {
-            $conditions[] = "\$query" . implode("\n" . str_repeat(' ', 12), $likeConditions) . ";\n";
+            $conditions[] = '$query'.implode("\n".str_repeat(' ', 12), $likeConditions).";\n";
         }
 
         return $conditions;
@@ -1221,46 +1246,48 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public function hasFile($table)
     {
         foreach ($table->columns as $column) {
-            if ($this->containsAnnotation($column, "@file") || $this->containsAnnotation($column, "@image")
-             || $this->containsAnnotation($column, "@vide") || $this->containsAnnotation($column, "@pdf")
-              || $this->containsAnnotation($column, "@word") || $this->containsAnnotation($column, "@excel")
-               || $this->containsAnnotation($column, "@powerpoint")
+            if ($this->containsAnnotation($column, '@file') || $this->containsAnnotation($column, '@image')
+             || $this->containsAnnotation($column, '@vide') || $this->containsAnnotation($column, '@pdf')
+              || $this->containsAnnotation($column, '@word') || $this->containsAnnotation($column, '@excel')
+               || $this->containsAnnotation($column, '@powerpoint')
             ) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * @param $column
      * @param $annotation
+     *
      * @return bool
      */
     public function containsAnnotation($column, $annotation)
     {
-        if (substr($column->comment, 0, 1) !== "@") {
-                    return false;
+        if (substr($column->comment, 0, 1) !== '@'){
+            return false;
         }
+
         return substr($column->comment, 0, strlen($annotation)) === $annotation;
     }
 
     /**
      * @param $comment
+     *
      * @return mixed
      */
     public function removeAnnotation($comment)
     {
-        if (substr($comment, 0, 1) !== "@") {
-                    return $comment;
+        if (substr($comment, 0, 1) !== "@")
+            return $comment;
+        if (substr($comment, 0, 5) === '@file') {
+            return str_replace('@file', '', $comment);
+        } elseif (substr($comment, 0, 6) === '@image') {
+            return str_replace('@image', '', $comment);
         }
-        if (substr($comment, 0, 5) === "@file") {
-            return str_replace("@file", "", $comment);
-        } elseif (substr($comment, 0, 6) === "@image") {
-            return str_replace("@image", "", $comment);
-        }
+
         return $comment;
     }
-
-
 }

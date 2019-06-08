@@ -24,7 +24,7 @@ use kartik\grid\GridView;
 
     <div class="row">
         <div class="col-sm-9">
-            <h2><?= "<?= " ?>Html::encode($model-><?= $generator->getNameAttribute() ?>) ?></h2>
+            <h2><?= '<?= ' ?>Html::encode($model-><?= $generator->getNameAttribute() ?>) ?></h2>
         </div>
     </div>
 
@@ -35,15 +35,15 @@ use kartik\grid\GridView;
 if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
-            echo "            '" . $name . "',\n";
+            echo "            '".$name."',\n";
         } else {
-            echo "            // '" . $name . "',\n";
+            echo "            // '".$name."',\n";
         }
     }
-} else {
-    foreach ($tableSchema->getColumnNames() as $attribute) {
-        if (!in_array($attribute, $generator->skippedColumns)) {
-            echo "        " . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
+} else{
+    foreach($tableSchema->getColumnNames() as $attribute){
+        if(!in_array($attribute, $generator->skippedColumns)) {
+            echo '        ' .$generator->generateDetailViewField($attribute,$fk, $tableSchema);
 
         }
     }

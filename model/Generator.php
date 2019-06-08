@@ -2,6 +2,7 @@
 
 /**
  * @link http://www.yiiframework.com/
+ *
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
@@ -18,7 +19,7 @@ use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 
 /**
- * Generates CRUD
+ * Generates CRUD.
  *
  * @property array $columnNames Model column names. This property is read-only.
  * @property string $controllerID The controller ID (without the module ID prefix). This property is
@@ -28,11 +29,11 @@ use yii\helpers\Inflector;
  * @property TableSchema $tableSchema The TableSchema of this model.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
+ *
  * @since 2.0
  */
 class Generator extends BaseGenerator
 {
-
     /* @var $tableSchema TableSchema */
 
     public $nsModel = 'app\models';
@@ -78,9 +79,8 @@ class Generator extends BaseGenerator
     public $componentClass;
     public $fileFields = [];
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -88,7 +88,7 @@ class Generator extends BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -96,7 +96,7 @@ class Generator extends BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -110,66 +110,66 @@ class Generator extends BaseGenerator
             [['queryBaseClass', 'queryClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::class]],
             [['db'], 'validateDb'],
             [['enableI18N', 'generateQuery', 'generateLabelsFromComments',
-                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly', 'excelImport'], 'boolean'],
+                'useTablePrefix', 'generateMigrations', 'generateAttributeHints', 'generateBaseOnly', 'excelImport', ], 'boolean'],
             [['generateRelations'], 'in', 'range' => [self::RELATIONS_NONE, self::RELATIONS_ALL, self::RELATIONS_ALL_INVERSE]],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
 
             [['skippedTables', 'skippedColumns', 'skippedRelations',
                 'blameableValue', 'nameAttribute', 'hiddenColumns', 'timestampValue',
                 'optimisticLock', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy',
-                'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue'], 'safe'],
-            [['imageExtensions', 'videoExtensions', 'excelImport', 'wordExtensions', 'powerPointExtensions', 'pdfExtensions', 'genericFileExtensions'], 'string']
+                'blameableValue', 'UUIDColumn', 'deletedBy', 'deletedByValue', 'deletedAt', 'deletedAtValue', ], 'safe'],
+            [['imageExtensions', 'videoExtensions', 'excelImport', 'wordExtensions', 'powerPointExtensions', 'pdfExtensions', 'genericFileExtensions'], 'string'],
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'db' => 'Database Connection ID',
-            'moduleName' => 'Module Name',
-            'modelClass' => 'Model Class',
+            'db'             => 'Database Connection ID',
+            'moduleName'     => 'Module Name',
+            'modelClass'     => 'Model Class',
             'timestampValue' => 'Value',
             'blameableValue' => 'Value',
-            'generateQuery' => 'Generate ActiveQuery',
-            'queryNs' => 'ActiveQuery Namespace',
-            'queryClass' => 'ActiveQuery Class',
-            'nsModel' => 'Model Namespace',
-            'nsSearchModel' => 'Search Model Namespace',
-            'UUIDColumn' => 'UUID Column',
-            'viewPath' => 'View Path',
+            'generateQuery'  => 'Generate ActiveQuery',
+            'queryNs'        => 'ActiveQuery Namespace',
+            'queryClass'     => 'ActiveQuery Class',
+            'nsModel'        => 'Model Namespace',
+            'nsSearchModel'  => 'Search Model Namespace',
+            'UUIDColumn'     => 'UUID Column',
+            'viewPath'       => 'View Path',
 //            'baseControllerClass' => 'Base Controller Class',
 //            'indexWidgetType' => 'Widget Used in Index Page',
 //            'searchModelClass' => 'Search Model Class',
-            'generateBaseOnly' => 'Generate Base Model Only',
-            'deletedBy' => 'Column',
-            'deletedByValue' => 'Value',
+            'generateBaseOnly'       => 'Generate Base Model Only',
+            'deletedBy'              => 'Column',
+            'deletedByValue'         => 'Value',
             'deletedByValueRestored' => 'Column Restored Value',
-            'deletedAt' => 'Info Column',
-            'deletedAtValue' => 'Info Value',
+            'deletedAt'              => 'Info Column',
+            'deletedAtValue'         => 'Info Value',
             'deletedAtValueRestored' => 'Info Restored Value',
-            'excelImport' => 'Import From Excel',
-            'imageExtensions' => 'Accepted Image Extensions',
-            'videoExtensions' => 'Accepted Video Extensions',
-            'wordExtensions' => 'Accepted Word Extensions',
-            'excelExtensions' => 'Accepted Excel Extensions',
-            'powerpointExtensions' => 'Accepted PowerPoint Extensions',
-            'genericFileExtensions' => 'Generic files accepted',
-            'nsComponent' => 'Component Namespace',
+            'excelImport'            => 'Import From Excel',
+            'imageExtensions'        => 'Accepted Image Extensions',
+            'videoExtensions'        => 'Accepted Video Extensions',
+            'wordExtensions'         => 'Accepted Word Extensions',
+            'excelExtensions'        => 'Accepted Excel Extensions',
+            'powerpointExtensions'   => 'Accepted PowerPoint Extensions',
+            'genericFileExtensions'  => 'Generic files accepted',
+            'nsComponent'            => 'Component Namespace',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'db' => 'This is the ID of the DB application component.',
+            'db'         => 'This is the ID of the DB application component.',
             'moduleName' => 'The module where the models will be placed',
-            'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
+            'tableName'  => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
                 will match tables who name starts with <code>tbl_</code>. In this case, multiple ActiveRecord classes
@@ -177,7 +177,7 @@ class Generator extends BaseGenerator
                 the matching characters. For example, table <code>tbl_post</code> will generate <code>Post</code>
                 class.',
             'nameAttribute' => 'This is the (set) of name column that you use to show as label, '
-                . 'separated by comma (,) for multiple table(asterisk on Table Name).',
+                .'separated by comma (,) for multiple table(asterisk on Table Name).',
             'skippedColumns' => 'Fill this field with the column name that you dont want to generate form & labels for the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will not be generated at all models & CRUD.',
@@ -189,16 +189,16 @@ class Generator extends BaseGenerator
             'hiddenColumns' => 'Fill this field with the column name that you want to generate form with the hidden field of the table.
                 You can fill multiple columns, separated by comma (,). You may specify the column name
                 although "Table Name" ends with asterisk, in which case all columns will be generated with hidden field at the forms',
-            'nsModel' => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
+            'nsModel'    => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
                 the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'baseModelClass' => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
-            'nsSearchModel' => 'This is the namespace of the search model class to be generated, e.g., <code>app\models</code>',
+            'nsSearchModel'  => 'This is the namespace of the search model class to be generated, e.g., <code>app\models</code>',
 //            'searchModelClass' => 'This is the name of the search class to be generated. The class name should not contain
 //                the namespace part as it is specified in "Search Model Namespace". You do not need to specify the class name
 //                if "Table Name" ends with asterisk, in which case multiple search model classes will be generated.',
-            'generateQuery' => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
+            'generateQuery'              => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
             'generateLabelsFromComments' => 'This indicates whether the generator should generate attribute labels
                 by using the comments of the corresponding DB columns.',
             'useTablePrefix' => 'This indicates whether the table name returned by the generated ActiveRecord class
@@ -209,55 +209,55 @@ class Generator extends BaseGenerator
                 foreign key constraints it detects in the database. Note that if your database contains too many tables,
                 you may want to uncheck this option to accelerate the code generation process.',
             'generateAttributeHints' => 'This indicates whether the generator generate attribute hints on the extended models',
-            'generateMigrations' => 'This indicates whether the generator should generate migrations based on
+            'generateMigrations'     => 'This indicates whether the generator should generate migrations based on
                 table structure.',
             'optimisticLock' => 'This indicates whether the generator should generate optimistic lock feature for Model. '
-                . 'Enter this field with optimistic lock column name. '
-                . 'Empty this field if you want to disable this feature.',
+                .'Enter this field with optimistic lock column name. '
+                .'Empty this field if you want to disable this feature.',
             'createdAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-                . 'Enter this field with Created At column name. '
-                . 'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
+                .'Enter this field with Created At column name. '
+                .'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
             'updatedAt' => 'This indicates whether the generator should generate Timestamp Behaviors feature for Model. '
-                . 'Enter this field with Updated At column name. '
-                . 'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
+                .'Enter this field with Updated At column name. '
+                .'Empty <code>Created At</code> & <code>Updated At</code> field if you want to disable this feature.',
             'timestampValue' => 'This will generate the <code>value</code> configuration entry for Timestamp Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
-            'createdBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-                . 'Enter this field with Created By column name. '
-                . 'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
+            'createdBy'      => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
+                .'Enter this field with Created By column name. '
+                .'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
             'updatedBy' => 'This indicates whether the generator should generate Blameable Behaviors feature for Model. '
-                . 'Enter this field with Updated By column name. '
-                . 'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
+                .'Enter this field with Updated By column name. '
+                .'Empty <code>Created By</code> & <code>Updated By</code> field if you want to disable this feature.',
             'blameableValue' => 'This will generate the </code>value</code> configuration entry for Blameable Behaviors.  e.g., <code>new Expression(\'NOW()\')</code>',
-            'UUIDColumn' => 'This indicates whether the generator should generate UUID Behaviors feature for Model. '
-                . 'Enter this field with UUID column name. '
-                . 'Empty <code>UUID Column</code> field if you want to disable this feature.',
-            'deletedBy' => 'This indicates whether the generator should generate Soft Delete feature for Model or not. ' .
-                'Enter this field with column name to tell whether row is deleted or not. ' .
-                'For example, You could use <code>is_deleted</code> for boolean value, or you could use my default value example. ' .
+            'UUIDColumn'     => 'This indicates whether the generator should generate UUID Behaviors feature for Model. '
+                .'Enter this field with UUID column name. '
+                .'Empty <code>UUID Column</code> field if you want to disable this feature.',
+            'deletedBy' => 'This indicates whether the generator should generate Soft Delete feature for Model or not. '.
+                'Enter this field with column name to tell whether row is deleted or not. '.
+                'For example, You could use <code>is_deleted</code> for boolean value, or you could use my default value example. '.
                 'If <code>Column</code> field is empty, then <code>Soft Deletion will not run!</code> ',
-            'deletedByValue' => 'This will generate the <code>value</code> marker entry for Soft Delete feature for model ' .
-                'Enter this field with value to give info like <code>1</code> or even <code>date(\'Y-m-d H:i:s\')</code>. ' .
-                'This entry will not be quoted by <code>\' \'</code>. Default <code>value</code> is <code>1</code>' .
+            'deletedByValue' => 'This will generate the <code>value</code> marker entry for Soft Delete feature for model '.
+                'Enter this field with value to give info like <code>1</code> or even <code>date(\'Y-m-d H:i:s\')</code>. '.
+                'This entry will not be quoted by <code>\' \'</code>. Default <code>value</code> is <code>1</code>'.
                 'Empty <code>Column</code> field if you want to disable this feature. ',
-            'deletedByValueRestored' => 'This will generate the <code>value</code> marker for entry that is not deleted ' .
-                'Enter this field with simple value like <code>0</code>. ' .
-                'Because this field will be called everytime you run query from <code>find()</code>.' .
-                'Empty <code>Column</code> field if you want to disable this feature. Default <code>value</code> is <code>0</code>' .
+            'deletedByValueRestored' => 'This will generate the <code>value</code> marker for entry that is not deleted '.
+                'Enter this field with simple value like <code>0</code>. '.
+                'Because this field will be called everytime you run query from <code>find()</code>.'.
+                'Empty <code>Column</code> field if you want to disable this feature. Default <code>value</code> is <code>0</code>'.
                 'If <code>Column</code> field is empty, then this field will not work!',
-            'deletedAt' => 'This give additional info for deleted row of Model. ' .
-                'You could add more info by manually adding <code>$_rt_softdelete</code> array value at base model.' .
-                'Enter this field with column name to store additional info. ' .
-                'Empty this field if you don\'t want to add additional info and disable this feature. ' .
+            'deletedAt' => 'This give additional info for deleted row of Model. '.
+                'You could add more info by manually adding <code>$_rt_softdelete</code> array value at base model.'.
+                'Enter this field with column name to store additional info. '.
+                'Empty this field if you don\'t want to add additional info and disable this feature. '.
                 'This field only work when <code>Column</code> field is not empty ',
-            'deletedAtValue' => 'Enter this field with additional <code>value</code> to be saved. You could enter PHP function here. ' .
-                'This entry will not be quoted by <code>\' \'</code>. ' .
-                'Empty <code>Info Column</code> field if you want to disable this feature. ' .
+            'deletedAtValue' => 'Enter this field with additional <code>value</code> to be saved. You could enter PHP function here. '.
+                'This entry will not be quoted by <code>\' \'</code>. '.
+                'Empty <code>Info Column</code> field if you want to disable this feature. '.
                 'If <code>Column</code> field is empty, then this field will not work!',
-            'deletedAtValueRestored' => 'This will generate the <code>value</code> information when restored. ' .
-                'Enter this field with value to give info like <code>\Yii::$app->user->id</code> ' .
-                'or even <code>date(\'Y-m-d H:i:s\')</code> to know when it is restored or by who. ' .
-                'This entry will not be quoted by <code>\' \'</code>. ' .
-                'Empty <code>Info Column</code> field if you want to disable this feature. ' .
+            'deletedAtValueRestored' => 'This will generate the <code>value</code> information when restored. '.
+                'Enter this field with value to give info like <code>\Yii::$app->user->id</code> '.
+                'or even <code>date(\'Y-m-d H:i:s\')</code> to know when it is restored or by who. '.
+                'This entry will not be quoted by <code>\' \'</code>. '.
+                'Empty <code>Info Column</code> field if you want to disable this feature. '.
                 'If <code>Column</code> field is empty, then this field will not work!',
 
 //            'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
@@ -273,27 +273,27 @@ class Generator extends BaseGenerator
 //                if "Table Name" ends with asterisk, in which case all relations will be generated.',
 //            'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
 //                You may choose either <code>GridView</code> or <code>ListView</code>',
-            'queryNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
+            'queryNs'    => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple ActiveQuery classes will be generated.',
-            'queryBaseClass' => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
+            'queryBaseClass'   => 'This is the base class of the new ActiveQuery class. It should be a fully qualified namespaced class name.',
             'generateBaseOnly' => 'This indicates whether the generator should generate extended model(where you write your code) or not. '
-                . 'You usually re-generate models when you make changes on your database.',
-            'excelImport' => 'Prepare the model to be filled from a Excel Sheet',
-            'imageExtensions' => 'Accepted image extensions, should be spearated by a comma',
-            'videoExtensions' => 'Accepted video extensions, should be spearated by a comma',
-            'pdfExtensions' => 'Accepted PDF extensions, should be spearated by a comma',
-            'excelExtensions' => 'Accepted Excel extensions, should be spearated by a comma',
-            'wordExtensions' => 'Accepted Word extensions, should be spearated by a comma',
-            'powerpointExtensions' => 'Accepted PowerPoint extensions, should be spearated by a comma',
+                .'You usually re-generate models when you make changes on your database.',
+            'excelImport'           => 'Prepare the model to be filled from a Excel Sheet',
+            'imageExtensions'       => 'Accepted image extensions, should be spearated by a comma',
+            'videoExtensions'       => 'Accepted video extensions, should be spearated by a comma',
+            'pdfExtensions'         => 'Accepted PDF extensions, should be spearated by a comma',
+            'excelExtensions'       => 'Accepted Excel extensions, should be spearated by a comma',
+            'wordExtensions'        => 'Accepted Word extensions, should be spearated by a comma',
+            'powerpointExtensions'  => 'Accepted PowerPoint extensions, should be spearated by a comma',
             'genericFileExtensions' => 'Files that should be accepted using the @file annotation at the column comments',
-            'nsComponent' => 'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>'
+            'nsComponent'           => 'This is the namespace of the Components class to be generated, e.g., <code>app\components</code>',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function stickyAttributes()
     {
@@ -321,7 +321,7 @@ class Generator extends BaseGenerator
             'deletedByValue',
             'deletedByValueRestored',
             'UUIDColumn',
-            'generateRelations'
+            'generateRelations',
 //            'baseControllerClass',
 //            'indexWidgetType',
 //            'viewPath'
@@ -329,7 +329,7 @@ class Generator extends BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function requiredTemplates()
     {
@@ -339,7 +339,7 @@ class Generator extends BaseGenerator
     public $isTree;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {
@@ -376,7 +376,6 @@ class Generator extends BaseGenerator
         }*/
 
         foreach ($this->getTableNames() as $tableName) {
-
             if (in_array($tableName, $this->skippedTables)):
                 continue;
             endif;
@@ -387,7 +386,7 @@ class Generator extends BaseGenerator
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
             }
-            $componentClassName = $modelClassName . 'Component';
+            $componentClassName = $modelClassName.'Component';
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
@@ -397,37 +396,37 @@ class Generator extends BaseGenerator
             $this->isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
 //            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
             $params = [
-                'tableName' => $tableName,
-                'className' => $modelClassName,
-                'componentClass' =>$this->componentClass,
+                'tableName'          => $tableName,
+                'className'          => $modelClassName,
+                'componentClass'     => $this->componentClass,
                 'componentClassName' => $componentClassName,
-                'queryClassName' => $queryClassName,
-                'tableSchema' => $tableSchema,
-                'labels' => $this->generateLabels($tableSchema),
-                'rules' => $this->generateRules($tableSchema),
-                'relations' => isset($relations[$tableName]) ? $relations[$tableName] : [],
-                'isTree' => $this->isTree
+                'queryClassName'     => $queryClassName,
+                'tableSchema'        => $tableSchema,
+                'labels'             => $this->generateLabels($tableSchema),
+                'rules'              => $this->generateRules($tableSchema),
+                'relations'          => isset($relations[$tableName]) ? $relations[$tableName] : [],
+                'isTree'             => $this->isTree,
             ];
             // model :
             $files[] = new CodeFile(
-                Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/base/' . $modelClassName . '.php', $this->render('model.php', $params)
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/base/'.$modelClassName.'.php', $this->render('model.php', $params)
             );
             if (!$this->generateBaseOnly) {
                 $files[] = new CodeFile(
-                    Yii::getAlias('@' . str_replace('\\', '/', $this->nsModel)) . '/' . $modelClassName . '.php', $this->render('model-extended.php', $params)
+                    Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/'.$modelClassName.'.php', $this->render('model-extended.php', $params)
                 );
             }
             $files[] = new CodeFile(
-                Yii::getAlias('@' . str_replace('\\', '/', $this->nsComponent)) . '/' . $componentClassName . '.php', $this->render('component.php', $params)
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsComponent)).'/'.$componentClassName.'.php', $this->render('component.php', $params)
             );
             // query :
             if ($queryClassName) {
                 $params = [
-                    'className' => $queryClassName,
+                    'className'      => $queryClassName,
                     'modelClassName' => $modelClassName,
                 ];
                 $files[] = new CodeFile(
-                    Yii::getAlias('@' . str_replace('\\', '/', $this->queryNs)) . '/' . $queryClassName . '.php', $this->render('query.php', $params)
+                    Yii::getAlias('@'.str_replace('\\', '/', $this->queryNs)).'/'.$queryClassName.'.php', $this->render('query.php', $params)
                 );
             }
 
@@ -449,9 +448,11 @@ class Generator extends BaseGenerator
 
     /**
      * Checks if any of the specified columns is auto incremental.
-     * @param \yii\db\TableSchema $table the table schema
-     * @param array $columns columns to check for autoIncrement property
-     * @return boolean whether any of the specified columns is auto incremental.
+     *
+     * @param \yii\db\TableSchema $table   the table schema
+     * @param array               $columns columns to check for autoIncrement property
+     *
+     * @return bool whether any of the specified columns is auto incremental.
      */
     protected function isColumnAutoIncremental($table, $columns)
     {
@@ -466,7 +467,9 @@ class Generator extends BaseGenerator
 
     /**
      * Generates the attribute labels for the specified table.
+     *
      * @param \yii\db\TableSchema $table the table schema
+     *
      * @return array the generated attribute labels (name => label)
      */
     public function generateLabels($table)
@@ -491,21 +494,26 @@ class Generator extends BaseGenerator
 
     /**
      * Generates a query class name from the specified model class name.
+     *
      * @param string $modelClassName model class name
+     *
      * @return string generated class name
      */
     protected function generateQueryClassName($modelClassName)
     {
         $queryClassName = $this->queryClass;
         if (empty($queryClassName) || strpos($this->tableName, '*') !== false) {
-            $queryClassName = $modelClassName . 'Query';
+            $queryClassName = $modelClassName.'Query';
         }
+
         return $queryClassName;
     }
 
     /**
      * Generates validation rules for the specified table.
+     *
      * @param \yii\db\TableSchema $table the table schema
+     *
      * @return array the generated validation rules
      */
     public function generateRules($table)
@@ -519,7 +527,6 @@ class Generator extends BaseGenerator
             }
             if (!$column->allowNull && $column->defaultValue === null) {
                 if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl'])) {
-
                 } else {
                     $types['required'][] = $column->name;
                 }
@@ -547,27 +554,27 @@ class Generator extends BaseGenerator
                     break;
                 default: // strings
                     if ($column->size > 0) {
-                        if ($this->containsAnnotation($column, "@file")) {
+                        if ($this->containsAnnotation($column, '@file')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "File";
-                        } elseif ($this->containsAnnotation($column, "@image")) {
+                            $types['file'][] = $column->name.'File';
+                        } elseif ($this->containsAnnotation($column, '@image')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Image";
-                        } elseif ($this->containsAnnotation($column, "@video")) {
+                            $types['file'][] = $column->name.'Image';
+                        } elseif ($this->containsAnnotation($column, '@video')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Video";
-                        } elseif ($this->containsAnnotation($column, "@pdf")) {
+                            $types['file'][] = $column->name.'Video';
+                        } elseif ($this->containsAnnotation($column, '@pdf')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Pdf";
-                        } elseif ($this->containsAnnotation($column, "@excel")) {
+                            $types['file'][] = $column->name.'Pdf';
+                        } elseif ($this->containsAnnotation($column, '@excel')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Excel";
-                        } elseif ($this->containsAnnotation($column, "@word")) {
+                            $types['file'][] = $column->name.'Excel';
+                        } elseif ($this->containsAnnotation($column, '@word')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Word";
-                        } elseif ($this->containsAnnotation($column, "@powerpoint")) {
+                            $types['file'][] = $column->name.'Word';
+                        } elseif ($this->containsAnnotation($column, '@powerpoint')) {
                             $this->fileFields[] = $column->name;
-                            $types['file'][] = $column->name . "Powerpoint";
+                            $types['file'][] = $column->name.'Powerpoint';
                         }
                         $lengths[$column->size][] = $column->name;
                     } else {
@@ -578,26 +585,26 @@ class Generator extends BaseGenerator
         $rules = [];
         /* TODO column is not avilable at this point */
         foreach ($types as $type => $columns) {
-            if ($this->containsAnnotation($column, "@file")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->genericFileExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@image")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->imageExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@video")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->videoExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@pdf")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->pdfExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@excel")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->excelExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@word")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->wordExtensions}', 'on' => 'insert', 'update']";
-            } elseif ($this->containsAnnotation($column, "@powerpoint")) {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type','extensions'=>'{$this->powerPointExtensions}', 'on' => 'insert', 'update']";
+            if ($this->containsAnnotation($column, '@file')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->genericFileExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@image')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->imageExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@video')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->videoExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@pdf')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->pdfExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@excel')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->excelExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@word')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->wordExtensions}', 'on' => 'insert', 'update']";
+            } elseif ($this->containsAnnotation($column, '@powerpoint')) {
+                $rules[] = "[['".implode("', '", $columns)."'], '$type','extensions'=>'{$this->powerPointExtensions}', 'on' => 'insert', 'update']";
             } else {
-                $rules[] = "[['" . implode("', '", $columns) . "'], '$type']";
+                $rules[] = "[['".implode("', '", $columns)."'], '$type']";
             }
         }
         foreach ($lengths as $length => $columns) {
-            $rules[] = "[['" . implode("', '", $columns) . "'], 'string', 'max' => $length]";
+            $rules[] = "[['".implode("', '", $columns)."'], 'string', 'max' => $length]";
         }
 
         // Unique indexes rules
@@ -610,18 +617,18 @@ class Generator extends BaseGenerator
                     $attributesCount = count($uniqueColumns);
 
                     if ($attributesCount == 1) {
-                        $rules[] = "[['" . $uniqueColumns[0] . "'], 'unique']";
+                        $rules[] = "[['".$uniqueColumns[0]."'], 'unique']";
                     } elseif ($attributesCount > 1) {
                         $labels = array_intersect_key($this->generateLabels($table), array_flip($uniqueColumns));
                         $lastLabel = array_pop($labels);
                         $columnsList = implode("', '", $uniqueColumns);
-                        $rules[] = "[['" . $columnsList . "'], 'unique', 'targetAttribute' => ['" . $columnsList . "'], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']";
+                        $rules[] = "[['".$columnsList."'], 'unique', 'targetAttribute' => ['".$columnsList."'], 'message' => 'The combination of ".implode(', ', $labels).' and '.$lastLabel." has already been taken.']";
                     }
                 }
             }
             if (!empty($this->optimisticLock)) {
-                $rules[] = "[['" . $this->optimisticLock . "'], 'default', 'value' => '0']";
-                $rules[] = "[['" . $this->optimisticLock . "'], 'mootensai\\components\\OptimisticLockValidator']";
+                $rules[] = "[['".$this->optimisticLock."'], 'default', 'value' => '0']";
+                $rules[] = "[['".$this->optimisticLock."'], 'mootensai\\components\\OptimisticLockValidator']";
             }
         } catch (NotSupportedException $e) {
             // doesn't support unique indexes information...do nothing
@@ -633,30 +640,34 @@ class Generator extends BaseGenerator
     /**
      * @param $column
      * @param $annotation
+     *
      * @return bool
      */
     public function containsAnnotation($column, $annotation)
     {
-        if (substr($column->comment, 0, 1) !== "@") {
-                    return false;
+        if (substr($column->comment, 0, 1) !== '@') {
+            return false;
         }
+
         return substr($column->comment, 0, strlen($annotation)) === $annotation;
     }
 
     /**
      * @param $comment
+     *
      * @return mixed
      */
     public function removeAnnotation($comment)
     {
         if (substr($comment, 0, 1) !== "@") {
-                    return $comment;
+            return $comment;
         }
-        if (substr($comment, 0, 5) === "@file") {
-            return str_replace("@file", "", $comment);
-        } elseif (substr($comment, 0, 6) === "@image") {
-            return str_replace("@image", "", $comment);
+        if (substr($comment, 0, 5) === '@file') {
+            return str_replace('@file', '', $comment);
+        } elseif (substr($comment, 0, 6) === '@image') {
+            return str_replace('@image', '', $comment);
         }
+
         return $comment;
     }
 }

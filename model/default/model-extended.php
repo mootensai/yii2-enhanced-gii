@@ -2,16 +2,15 @@
 /**
  * This is the template for generating the model class of a specified table.
  *
- * @var yii\web\View $this
+ * @var yii\web\View
  * @var inquid\enhancedgii\model\Generator $generator
- * @var string $tableName full table name
- * @var string $className class name
- * @var yii\db\TableSchema $tableSchema
- * @var string[] $labels list of attribute labels (name => label)
- * @var string[] $rules list of validation rules
- * @var array $relations list of relations (name => relation declaration)
+ * @var string                             $tableName full table name
+ * @var string                             $className class name
+ * @var yii\db\TableSchema                 $tableSchema
+ * @var string[]                           $labels list of attribute labels (name => label)
+ * @var string[]                           $rules list of validation rules
+ * @var array                              $relations list of relations (name => relation declaration)
  */
-
 echo "<?php\n";
 ?>
 
@@ -24,16 +23,16 @@ use \<?= $generator->nsComponent ?>\<?= $className ?>Component;
 /**
 * This is the model class for table "<?= $tableName ?>".
 */
-class <?= $className ?> extends Base<?= $className . "\n" ?>
+class <?= $className ?> extends Base<?= $className."\n" ?>
 {
 <?php if ($generator->excelImport): ?>
     public $fileExcelImport;
 <?php endif; ?>
 <?php foreach ($generator->tableSchema->columns as $column) {
-    if ($generator->containsAnnotation($column, "@file")) {
-        echo "public $" . $column->name . "File;\n";
-    } elseif ($generator->containsAnnotation($column, "@image")) {
-        echo "public $" . $column->name . "Image;\n";
+    if ($generator->containsAnnotation($column, '@file')) {
+        echo 'public $'.$column->name."File;\n";
+    } elseif ($generator->containsAnnotation($column, '@image')) {
+        echo 'public $'.$column->name."Image;\n";
     }
 } ?>
 <?php if ($generator->generateAttributeHints): ?>
@@ -45,7 +44,7 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
     return [
     <?php foreach ($labels as $name => $label): ?>
         <?php if (!in_array($name, $generator->skippedColumns)): ?>
-            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+            <?= "'$name' => ".$generator->generateString($label).",\n" ?>
         <?php endif; ?>
     <?php endforeach; ?>
     ];

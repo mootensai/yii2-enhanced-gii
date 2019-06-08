@@ -48,7 +48,7 @@ $modelClass = StringHelper::basename($generator->modelClass);
 <?php
 foreach ($tableSchema->getColumnNames() as $attribute) {
     if (!in_array($attribute, $generator->skippedColumns) && !in_array($attribute, array_keys($fk))) {
-        echo "    <?= " . $generator->generateActiveField($attribute, $fk, $tableSchema, $relations) . " ?>\n\n";
+        echo '    <?= '.$generator->generateActiveField($attribute, $fk, $tableSchema, $relations)." ?>\n\n";
     }
 }
 ?>

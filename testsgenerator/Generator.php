@@ -24,7 +24,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $skipAllExistingTables = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -32,7 +32,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -40,7 +40,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -48,7 +48,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -63,36 +63,36 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'testPath' => 'Migration Path',
+            'testPath'   => 'Migration Path',
             'moduleName' => 'Module Name',
-            'db' => 'Database Connection ID',
-            'tableName' => 'Table Name'
+            'db'         => 'Database Connection ID',
+            'tableName'  => 'Table Name',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'testPath' => 'Path to store generated file, e.g., <code>@app/migrations</code>',
-            'db' => 'This is the ID of the DB application component.',
+            'testPath'  => 'Path to store generated file, e.g., <code>@app/migrations</code>',
+            'db'        => 'This is the ID of the DB application component.',
             'tableName' => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
                 The table name may end with asterisk to match multiple table names, e.g. <code>tbl_*</code>
                 will match tables who name starts with <code>tbl_</code>.',
-            'moduleName' => 'The module where the models will be placed'
+            'moduleName' => 'The module where the models will be placed',
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function autoCompleteData()
     {
@@ -109,7 +109,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function requiredTemplates()
     {
@@ -117,7 +117,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function stickyAttributes()
     {
@@ -125,7 +125,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function generate()
     {
@@ -152,14 +152,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $columns = [];
             $tableSchema = $db->getTableSchema($tableName);
             $className = $this->generateClassName($tableName);
-            $testName = $className . 'UnitTest';
-            $file = rtrim(Yii::getAlias($this->testPath), '/') . "/{$testName}.php";
+            $testName = $className.'UnitTest';
+            $file = rtrim(Yii::getAlias($this->testPath), '/')."/{$testName}.php";
             $files[] = new CodeFile($file, $this->render('unit_test.php', [
-                'testName' => $testName,
-                'className' => $className,
-                'columns' => $columns,
-                'tableSchema' => $tableSchema,
-                'skippedColumns' => $this->skippedColumns
+                'testName'       => $testName,
+                'className'      => $className,
+                'columns'        => $columns,
+                'tableSchema'    => $tableSchema,
+                'skippedColumns' => $this->skippedColumns,
             ]));
         }
 
@@ -197,8 +197,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     protected $tableNames;
 
     /**
-     * @return array the table names that match the pattern specified by [[tableName]].
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return array the table names that match the pattern specified by [[tableName]].
      */
     protected function getTableNames()
     {
@@ -213,15 +214,15 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (strpos($this->tableName, '*') !== false) {
             if (($pos = strrpos($this->tableName, '.')) !== false) {
                 $schema = substr($this->tableName, 0, $pos);
-                $pattern = '/^' . str_replace('*', '\w+', substr($this->tableName, $pos + 1)) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', substr($this->tableName, $pos + 1)).'$/';
             } else {
                 $schema = '';
-                $pattern = '/^' . str_replace('*', '\w+', $this->tableName) . '$/';
+                $pattern = '/^'.str_replace('*', '\w+', $this->tableName).'$/';
             }
 
             foreach ($db->schema->getTableNames($schema) as $table) {
                 if (preg_match($pattern, $table)) {
-                    $tableNames[] = $schema === '' ? $table : ($schema . '.' . $table);
+                    $tableNames[] = $schema === '' ? $table : ($schema.'.'.$table);
                 }
             }
         } elseif (($table = $db->getTableSchema($this->tableName, true)) !== null) {
@@ -234,9 +235,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     /**
      * Generates the table name by considering table prefix.
      * If [[useTablePrefix]] is false, the table name will be returned without change.
+     *
      * @param string $tableName the table name (which may contain schema prefix)
-     * @return string the generated table name
+     *
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return string the generated table name
      */
     public function generateTableName($tableName)
     {
@@ -246,16 +250,18 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
         $db = $this->getDbConnection();
         if (preg_match("/^{$db->tablePrefix}(.*?)$/", $tableName, $matches)) {
-            $tableName = '{{%' . $matches[1] . '}}';
+            $tableName = '{{%'.$matches[1].'}}';
         } elseif (preg_match("/^(.*?){$db->tablePrefix}$/", $tableName, $matches)) {
-            $tableName = '{{' . $matches[1] . '%}}';
+            $tableName = '{{'.$matches[1].'%}}';
         }
+
         return $tableName;
     }
 
     /**
-     * @return Connection the DB connection as specified by [[db]].
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return Connection the DB connection as specified by [[db]].
      */
     public function getDbConnection()
     {
@@ -264,10 +270,13 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
     /**
      * Generates a class name from the specified table name.
-     * @param string $tableName the table name (which may contain schema prefix)
-     * @param boolean $useSchemaName should schema name be included in the class name, if present
-     * @return string the generated class name
+     *
+     * @param string $tableName     the table name (which may contain schema prefix)
+     * @param bool   $useSchemaName should schema name be included in the class name, if present
+     *
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return string the generated class name
      */
     protected function generateClassName($tableName, $useSchemaName = null)
     {
@@ -279,7 +288,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $fullTableName = $tableName;
         if (($pos = strrpos($tableName, '.')) !== false) {
             if (($useSchemaName === null && $this->useSchemaName) || $useSchemaName) {
-                $schemaName = substr($tableName, 0, $pos) . '_';
+                $schemaName = substr($tableName, 0, $pos).'_';
             }
             $tableName = substr($tableName, $pos + 1);
         }
@@ -293,7 +302,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             if (($pos = strrpos($pattern, '.')) !== false) {
                 $pattern = substr($pattern, $pos + 1);
             }
-            $patterns[] = '/^' . str_replace('*', '(\w+)', $pattern) . '$/';
+            $patterns[] = '/^'.str_replace('*', '(\w+)', $pattern).'$/';
         }
         $className = $tableName;
         foreach ($patterns as $pattern) {
@@ -302,21 +311,23 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 break;
             }
         }
-        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName . $className, '_');
+
+        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName.$className, '_');
     }
 
     /**
      * @param ColumnSchema $column
+     *
      * @return string
      */
     public function generateFakerType($column)
     {
         /* IDs */
         if ($column->name == 'id' && $column->type == 'integer') {
-            return "\$id";
+            return '$id';
         }
         if ($column->name == 'uuid' && $column->type == 'varchar') {
-            return "\$faker->uuid()";
+            return '$faker->uuid()';
         }
         if ($column->name == 'id' && $column->type == 'varchar') {
             return "\$faker->generateRandomString($column->size)";
@@ -390,42 +401,42 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             return "\$faker->date($column->size)";
         }
         if ($column->name == 'year') {
-            return "\$faker->year()";
+            return '$faker->year()';
         }
         if ($column->name == 'month' && $column->type == 'integer') {
-            return "\$faker->month()";
+            return '$faker->month()';
         }
         if ($column->name == 'monthName' && $column->type == 'varchar') {
-            return "\$faker->monthName()";
+            return '$faker->monthName()';
         }
         if ($column->name == 'timezone' || $column->type == 'timeZone' || $column->type == 'time_zone') {
-            return "\$faker->timezone()";
+            return '$faker->timezone()';
         }
         /* Text */
         if ($column->type == 'text') {
-            return "\$faker->paragraph()";
+            return '$faker->paragraph()';
         }
         /* Payment Info */
         if ($column->name == 'creditCardType' || $column->type == 'cardType' || $column->type == 'card') {
-            return "\$faker->creditCardType()";
+            return '$faker->creditCardType()';
         }
         if ($column->name == 'creditCardNumber' || $column->name == 'card_number' || $column->name == 'credit_card_number') {
-            return "\$faker->creditCardNumber()";
+            return '$faker->creditCardNumber()';
         }
         if ($column->name == 'creditCardExpirationDate' || $column->name == 'creditCardExp') {
-            return "\$faker->creditCardExpirationDate()";
+            return '$faker->creditCardExpirationDate()';
         }
 
         if ($column->name == 'iban') {
-            return "\$faker->iban()";
+            return '$faker->iban()';
         }
         if ($column->name == 'swiftBicNumber' || $column->name == 'swiftNumber' || $column->name == 'swift') {
-            return "\$faker->swiftBicNumber()";
+            return '$faker->swiftBicNumber()';
         }
 
         // TODO improve this
         if ($column->name == 'clabe' || $column->size == 18) {
-            return "\$faker->number(18)";
+            return '$faker->number(18)';
         }
 
         /* Color */
@@ -438,10 +449,10 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             return "\$faker->file($column->size)";
         }
         if ($column->name == 'fileExtension' || $column->name == 'extension') {
-            return "\$faker->fileExtension()";
+            return '$faker->fileExtension()';
         }
         if ($column->name == 'image' || $column->name == 'photo') {
-            return "\$faker->image()";
+            return '$faker->image()';
         }
 
         return '$faker->text(10)';
@@ -452,7 +463,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (strpos($haystack, $needle) !== false) {
             return true;
         }
+
         return false;
     }
-
 }

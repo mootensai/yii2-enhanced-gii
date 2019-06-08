@@ -11,12 +11,12 @@ use yii\widgets\DetailView;
 ?>
 
 <div class="row">
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-7" : "col-sm-9"; ?>">
-        <h2><?= "<?= " ?>Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]) ?></h2>
+    <div class="<?= ($generator->saveAsNew) ? "col-sm-7" : "col-sm-9";?>">
+        <h2><?= '<?= ' ?>Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]) ?></h2>
     </div>
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3"; ?>" style="margin-top: 15px">
-<?php if ($generator->pdf): ?>
-        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Generar PDF')?>,
+    <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3";?>" style="margin-top: 15px">
+<?php if($generator->pdf): ?>
+        <?= '<?= ' ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Generar PDF')?>,
             ['pdf', <?= $urlParams ?>],
             [
                 'class' => 'btn btn-danger',
@@ -26,12 +26,12 @@ use yii\widgets\DetailView;
             ]
         )?>
 <?php endif; ?>
-<?php if ($generator->saveAsNew): ?>
-        <?= "<?= " ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Duplicar Registro')?>,
+<?php if($generator->saveAsNew): ?>
+        <?= '<?= ' ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Duplicar Registro')?>,
             ['save-as-new', <?= $urlParams ?>], ['class' => 'btn btn-info'])?>
 <?php endif; ?>
-        <?= "<?=" ?> Html::a(Yii::t('app', 'Update'), ['update', <?= $urlParams ?>], ['class' => 'btn btn-primary']) ?>
-        <?= "<?=" ?> Html::a(Yii::t('app', 'Delete'), ['delete', <?= $urlParams ?>], [
+        <?= '<?=' ?> Html::a(Yii::t('app', 'Update'), ['update', <?= $urlParams ?>], ['class' => 'btn btn-primary']) ?>
+        <?= '<?=' ?> Html::a(Yii::t('app', 'Delete'), ['delete', <?= $urlParams ?>], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', '¿Desea eliminar este elemento?'),
@@ -47,22 +47,20 @@ use yii\widgets\DetailView;
     if ($tableSchema === false) {
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
-                echo "            '" . $name . "',\n";
+                echo "            '".$name."',\n";
             } else {
-                echo "            // '" . $name . "',\n";
+                echo "            // '".$name."',\n";
             }
         }
-    } else {
-        foreach ($tableSchema->getColumnNames() as $attribute) {
+    } else{
+        foreach($tableSchema->getColumnNames() as $attribute){
             if (++$count < 6) {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo "        " . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
-
+                    echo '        '.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
-            } else {
+            }else{
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo "        //" . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
-
+                    echo '        //'.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
             }
         }

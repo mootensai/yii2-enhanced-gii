@@ -33,7 +33,7 @@ echo TabularForm::widget([
 <?php foreach ($tableSchema->getColumnNames() as $attribute) :
     $column = $tableSchema->getColumn($attribute);
     if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) {
-        echo "        " . $generator->generateTabularFormField($attribute, $fk, $tableSchema) . ",\n";
+        echo '        '.$generator->generateTabularFormField($attribute, $fk, $tableSchema).",\n";
     }
 endforeach; ?>
         'del' => [
