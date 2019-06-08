@@ -49,18 +49,18 @@ use yii\widgets\DetailView;
             if (++$count < 6) {
                 echo "            '" . $name . "',\n";
             } else {
-                echo "            // '".$name."',\n";
+                echo "            // '" . $name . "',\n";
             }
         }
-    } else{
-        foreach($tableSchema->getColumnNames() as $attribute){
+    } else {
+        foreach ($tableSchema->getColumnNames() as $attribute) {
             if (++$count < 6) {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo '        '.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
+                    echo '        ' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
-            } else{
+            } else {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo '        //'.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
+                    echo '        //' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
             }
         }
