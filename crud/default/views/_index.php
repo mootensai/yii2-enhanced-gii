@@ -11,11 +11,11 @@ use yii\widgets\DetailView;
 ?>
 
 <div class="row">
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-7" : "col-sm-9";?>">
+    <div class="<?= ($generator->saveAsNew) ? "col-sm-7" : "col-sm-9"; ?>">
         <h2><?= '<?= ' ?>Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]) ?></h2>
     </div>
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3";?>" style="margin-top: 15px">
-<?php if($generator->pdf): ?>
+    <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3"; ?>" style="margin-top: 15px">
+<?php if ($generator->pdf): ?>
         <?= '<?= ' ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Generar PDF')?>,
             ['pdf', <?= $urlParams ?>],
             [
@@ -26,7 +26,7 @@ use yii\widgets\DetailView;
             ]
         )?>
 <?php endif; ?>
-<?php if($generator->saveAsNew): ?>
+<?php if ($generator->saveAsNew): ?>
         <?= '<?= ' ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Duplicar Registro')?>,
             ['save-as-new', <?= $urlParams ?>], ['class' => 'btn btn-info'])?>
 <?php endif; ?>
@@ -58,7 +58,7 @@ use yii\widgets\DetailView;
                 if (!in_array($attribute, $generator->skippedColumns)) {
                     echo '        '.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
-            }else{
+            } else{
                 if (!in_array($attribute, $generator->skippedColumns)) {
                     echo '        //'.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }

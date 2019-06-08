@@ -99,7 +99,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function () use ($db) {
+                'tableName' => function() use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -152,8 +152,8 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             $columns = [];
             $tableSchema = $db->getTableSchema($tableName);
             $className = $this->generateClassName($tableName);
-            $testName = $className.'UnitTest';
-            $file = rtrim(Yii::getAlias($this->testPath), '/')."/{$testName}.php";
+            $testName = $className . 'UnitTest';
+            $file = rtrim(Yii::getAlias($this->testPath), '/') . "/{$testName}.php";
             $files[] = new CodeFile($file, $this->render('unit_test.php', [
                 'testName'       => $testName,
                 'className'      => $className,
@@ -214,15 +214,15 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         if (strpos($this->tableName, '*') !== false) {
             if (($pos = strrpos($this->tableName, '.')) !== false) {
                 $schema = substr($this->tableName, 0, $pos);
-                $pattern = '/^'.str_replace('*', '\w+', substr($this->tableName, $pos + 1)).'$/';
+                $pattern = '/^' . str_replace('*', '\w+', substr($this->tableName, $pos + 1)) . '$/';
             } else {
                 $schema = '';
-                $pattern = '/^'.str_replace('*', '\w+', $this->tableName).'$/';
+                $pattern = '/^' . str_replace('*', '\w+', $this->tableName) . '$/';
             }
 
             foreach ($db->schema->getTableNames($schema) as $table) {
                 if (preg_match($pattern, $table)) {
-                    $tableNames[] = $schema === '' ? $table : ($schema.'.'.$table);
+                    $tableNames[] = $schema === '' ? $table : ($schema . '.' . $table);
                 }
             }
         } elseif (($table = $db->getTableSchema($this->tableName, true)) !== null) {
@@ -250,9 +250,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
 
         $db = $this->getDbConnection();
         if (preg_match("/^{$db->tablePrefix}(.*?)$/", $tableName, $matches)) {
-            $tableName = '{{%'.$matches[1].'}}';
+            $tableName = '{{%' . $matches[1] . '}}';
         } elseif (preg_match("/^(.*?){$db->tablePrefix}$/", $tableName, $matches)) {
-            $tableName = '{{'.$matches[1].'%}}';
+            $tableName = '{{' . $matches[1] . '%}}';
         }
 
         return $tableName;
@@ -288,7 +288,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $fullTableName = $tableName;
         if (($pos = strrpos($tableName, '.')) !== false) {
             if (($useSchemaName === null && $this->useSchemaName) || $useSchemaName) {
-                $schemaName = substr($tableName, 0, $pos).'_';
+                $schemaName = substr($tableName, 0, $pos) . '_';
             }
             $tableName = substr($tableName, $pos + 1);
         }
@@ -302,7 +302,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             if (($pos = strrpos($pattern, '.')) !== false) {
                 $pattern = substr($pattern, $pos + 1);
             }
-            $patterns[] = '/^'.str_replace('*', '(\w+)', $pattern).'$/';
+            $patterns[] = '/^' . str_replace('*', '(\w+)', $pattern) . '$/';
         }
         $className = $tableName;
         foreach ($patterns as $pattern) {
@@ -312,7 +312,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             }
         }
 
-        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName.$className, '_');
+        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName . $className, '_');
     }
 
     /**

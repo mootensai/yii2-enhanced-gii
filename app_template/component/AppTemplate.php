@@ -101,6 +101,6 @@ ROBOT_EMAIL    = robot@yii2-starter-kit.dev
 
 # GITHUB_CLIENT_ID = your-client-id
 # GITHUB_CLIENT_SECRET = your-client-secret';
-        file_put_contents("{$this->path}/{$this->appFolder}/.env",$env);
+        file_put_contents("{$this->path}/{$this->appFolder}/.env", $env);
     }
 }

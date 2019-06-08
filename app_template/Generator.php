@@ -128,7 +128,7 @@ class Generator extends \yii\gii\Generator
     {
         $files = [];
         $appName = new AppTemplate(strtolower(str_replace(' ', '_', $this->appName)), $this->repo, $this->path);
-        Yii::debug('Creating app'.$appName->createApp($this->updateDependencies));
+        Yii::debug('Creating app' . $appName->createApp($this->updateDependencies));
         $files[] = new CodeFile("{$this->path}/{$this->appName}/.env", $this->render('.env'));
 
         return $files;

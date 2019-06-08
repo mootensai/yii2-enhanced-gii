@@ -209,12 +209,15 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         }else{
             $model = $this->findModel(<?= $actionParams ?>);
         }
-<?php else: ?>
+<?php else {
+    : ?>
         $model = $this->findModel(<?= $actionParams ?>);
          <?php if ($generator->hasFile()) { ?>
             $model->setScenario('update');
          <?php } ?>
-<?php endif; ?>
+<?php endif;
+}
+?>
         if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
@@ -367,16 +370,18 @@ if (count($pks) === 1) {
                 [
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-        if (!in_array($name, $generator->skippedColumns))
-            echo "            ['coordinate' => '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "1', 'title' => '" . $name . "'],\n";
+        if (!in_array($name, $generator->skippedColumns)) {
+                    echo "            ['coordinate' => '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "1', 'title' => '" . $name . "'],\n";
+        }
     }
 ?>
                 ]);
         $excel->autoSizeColumns([
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
-        if (!in_array($name, $generator->skippedColumns))
-            echo "            '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "',\n";
+        if (!in_array($name, $generator->skippedColumns)) {
+                    echo "            '" . (new ExcelHelper())->getNameFromNumber($key + 1) . "',\n";
+        }
     }
 ?>
             ]);
