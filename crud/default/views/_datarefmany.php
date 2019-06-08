@@ -21,35 +21,29 @@ use yii\data\ArrayDataProvider;
         'key' => function($model){
             return [<?= implode(', ', $key); ?>];
         }
-<?php else {
-    :?>
+<?php else:?>
         'key' => '<?= $tableSchema->primaryKey[0] ?>'
-<?php endif;
-}
-?>
+<?php endif; ?>
     ]);
     $gridColumns = [
         ['class' => 'yii\grid\SerialColumn'],
-<?php 
+<?php
 if ($tableSchema === false) :
     foreach ($generator->getColumnNames() as $name) {
-        if ($name == $relations[4]) {
-            continue;
-        }
+        if ($name == $relations[4]) continue;
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
         } else {
             echo "            // '" . $name . "',\n";
         }
-    } else {
-    :
-foreach ($tableSchema->getColumnNames() as $attribute): 
+    }
+else :
+foreach ($tableSchema->getColumnNames() as $attribute):
 if (!in_array($attribute, $generator->skippedColumns) && $attribute != $relations[5]) :
 ?>
         <?= $generator->generateGridViewField($attribute, $fk, $tableSchema)?>
 <?php
 endif;
-}
 endforeach;
 endif; ?>
         [
@@ -57,7 +51,7 @@ endif; ?>
             'controller' => '<?= \yii\helpers\Inflector::camel2id($relations[1])?>'
         ],
     ];
-    
+
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => $gridColumns,

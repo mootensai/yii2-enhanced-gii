@@ -18,7 +18,7 @@ $pks = $generator->tableSchema->primaryKey;
 $urlParams = $generator->generateUrlParams();
 $actionParams = $generator->generateActionParams();
 $actionParamComments = $generator->generateActionParamComments();
-$skippedRelations = array_map(function($value) {
+$skippedRelations = array_map(function($value){
     return "'$value'";
 },$generator->skippedRelations);
 echo "<?php\n";
@@ -30,12 +30,9 @@ use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
-<?php else {
-    : ?>
+<?php else : ?>
 use yii\data\ActiveDataProvider;
-<?php endif;
-}
-?>
+<?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -55,16 +52,16 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 ],
             ],
 <?php if ($generator->loggedUserOnly):
-    $actions = ["'index'", "'view'", "'create'", "'update'", "'delete'"];
-    if ($generator->pdf) {
-        array_push($actions, "'pdf'");
+    $actions = ["'index'", "'view'", "'create'", "'update'","'delete'"];
+    if($generator->pdf){
+        array_push($actions,"'pdf'");
     }
-    if ($generator->saveAsNew) {
-        array_push($actions, "'save-as-new'");
+    if($generator->saveAsNew){
+        array_push($actions,"'save-as-new'");
     }
-    foreach ($relations as $name => $rel) {
-        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)) {
-            array_push($actions, "'" . \yii\helpers\Inflector::camel2id('add' . $rel[1]) . "'");
+    foreach ($relations as $name => $rel){
+        if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
+            array_push($actions,"'".\yii\helpers\Inflector::camel2id('add'.$rel[1])."'");
         }
     }
 ?>
@@ -73,7 +70,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => [<?= implode(', ', $actions)?>],
+                        'actions' => [<?= implode(', ',$actions)?>],
                         'roles' => ['@']
                     ],
                     [
@@ -99,8 +96,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-<?php else {
-    : ?>
+<?php else : ?>
         $dataProvider = new ActiveDataProvider([
             'query' => <?= $modelClass ?>::find(),
         ]);
@@ -108,8 +104,6 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
-<?php endif;
-}
-?>
+<?php endif; ?>
     }
 }
