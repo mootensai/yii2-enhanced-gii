@@ -40,9 +40,9 @@ use kartik\grid\GridView;
         if ($tableSchema === false) {
             foreach ($tableSchema->getColumnNames() as $name) {
                 if (++$count < 6) {
-                    echo "            '".$name."',\n";
+                    echo "            '" . $name . "',\n";
                 } else {
-                    echo "            // '".$name."',\n";
+                    echo "            // '" . $name . "',\n";
                 }
             }
         } else{

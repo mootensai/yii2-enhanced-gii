@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 if ($tableSchema === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
-            echo "            '".$name."',\n";
+            echo "            '" . $name . "',\n";
         } else {
             echo "            // '".$name."',\n";
         }
@@ -45,7 +45,7 @@ if ($tableSchema === false) {
 }else{
     foreach($tableSchema->getColumnNames() as $attribute){
         if(!in_array($attribute, $generator->skippedColumns)) {
-            echo '        ' .$generator->generateGridViewField($attribute,$fk, $tableSchema);
+            echo '        ' . $generator->generateGridViewField($attribute,$fk, $tableSchema);
         }
     }
 }?>
@@ -90,7 +90,7 @@ if($provider<?= $rel[1] ?>->totalCount){
         ],
         'panelHeadingTemplate' => '<h4>{heading}</h4>{summary}',
         'toggleData' => false,
-        'columns' => $gridColumn<?= $rel[1] . "\n" ?>
+        'columns' => $gridColumn<?= $rel[1]."\n" ?>
     ]);
 }
 <?= "?>\n" ?>

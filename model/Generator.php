@@ -659,7 +659,7 @@ class Generator extends BaseGenerator
      */
     public function removeAnnotation($comment)
     {
-        if (substr($comment, 0, 1) !== "@") {
+        if (substr($comment, 0, 1) !== '@') {
             return $comment;
         }
         if (substr($comment, 0, 5) === '@file') {

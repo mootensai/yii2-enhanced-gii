@@ -7,7 +7,11 @@ use yii\helpers\StringHelper;
 /* @var $generator yii\gii\generators\crud\Generator */
 
 echo "<?php\n";
-if ($generator->useTableComment) {$customName = $tableCommentName; } else { $customName = ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))); }
+if ($generator->useTableComment) {
+    $customName = $tableCommentName;
+} else {
+    $customName = ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass)));
+}
 ?>
 
 use yii\helpers\Html;

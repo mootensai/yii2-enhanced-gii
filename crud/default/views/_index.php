@@ -47,7 +47,7 @@ use yii\widgets\DetailView;
     if ($tableSchema === false) {
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
-                echo "            '".$name."',\n";
+                echo "            '" . $name . "',\n";
             } else {
                 echo "            // '".$name."',\n";
             }

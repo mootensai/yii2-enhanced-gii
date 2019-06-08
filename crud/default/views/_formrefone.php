@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 /* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->nsModel, '\\') . '\\' . $relations[$generator::REL_CLASS] ?> */
+/* @var $model <?= ltrim($generator->nsModel, '\\').'\\'.$relations[$generator::REL_CLASS] ?> */
 /* @var $form yii\widgets\ActiveForm */
 
 <?php

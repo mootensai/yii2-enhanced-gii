@@ -59,7 +59,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         if ($db !== null) {
             return [
-                'tableName' => function() use ($db) {
+                'tableName' => function () use ($db) {
                     return $db->getSchema()->getTableNames();
                 },
             ];
@@ -80,7 +80,8 @@ abstract class BaseGenerator extends \yii\gii\Generator
         }
     }
 
-    public function validateModuleExist() {
+    public function validateModuleExist()
+    {
         //TODO validate that module exist
     }
 
@@ -89,8 +90,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
      */
     public function validateTableName()
     {
-        if (strpos($this->tableName, '*') !== false && substr_compare($this->tableName, '*', -1, 1))
-        {
+        if (strpos($this->tableName, '*') !== false && substr_compare($this->tableName, '*', -1, 1)) {
             $this->addError('tableName', 'Asterisk is only allowed as the last character.');
 
             return;

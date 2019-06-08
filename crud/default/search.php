@@ -2,7 +2,6 @@
 /**
  * This is the template for generating CRUD search class of the specified model.
  */
-
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
@@ -11,7 +10,7 @@ use yii\helpers\StringHelper;
 $modelClass = StringHelper::basename($generator->modelClass);
 
 if ($modelClass === $generator->searchModelClass) {
-    $modelAlias = $modelClass . 'Model';
+    $modelAlias = $modelClass.'Model';
 }
 $rules = $generator->generateSearchRules();
 $labels = $generator->generateSearchLabels();
