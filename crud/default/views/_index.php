@@ -11,10 +11,10 @@ use yii\widgets\DetailView;
 ?>
 
 <div class="row">
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-7" : "col-sm-9"; ?>">
+    <div class="<?= ($generator->saveAsNew) ? 'col-sm-7' : 'col-sm-9'; ?>">
         <h2><?= '<?= ' ?>Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]) ?></h2>
     </div>
-    <div class="<?= ($generator->saveAsNew) ? "col-sm-5" : "col-sm-3"; ?>" style="margin-top: 15px">
+    <div class="<?= ($generator->saveAsNew) ? 'col-sm-5' : 'col-sm-3'; ?>" style="margin-top: 15px">
 <?php if ($generator->pdf): ?>
         <?= '<?= ' ?>Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> ' . <?= $generator->generateString('Generar PDF')?>,
             ['pdf', <?= $urlParams ?>],
@@ -47,20 +47,20 @@ use yii\widgets\DetailView;
     if ($tableSchema === false) {
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
-                echo "            '" . $name . "',\n";
+                echo "            '".$name."',\n";
             } else {
-                echo "            // '" . $name . "',\n";
+                echo "            // '".$name."',\n";
             }
         }
     } else {
         foreach ($tableSchema->getColumnNames() as $attribute) {
             if (++$count < 6) {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo '        ' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
+                    echo '        '.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
             } else {
                 if (!in_array($attribute, $generator->skippedColumns)) {
-                    echo '        //' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
+                    echo '        //'.$generator->generateDetailViewField($attribute, $fk, $tableSchema);
                 }
             }
         }
