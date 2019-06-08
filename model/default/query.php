@@ -10,7 +10,7 @@
 
 $modelFullClassName = $modelClassName;
 if ($generator->nsModel !== $generator->queryNs) {
-    $modelFullClassName = '\\'.$generator->queryNs.'\\'.$modelFullClassName;
+    $modelFullClassName = '\\' . $generator->queryNs . '\\' . $modelFullClassName;
 }
 
 echo "<?php\n";
@@ -21,9 +21,9 @@ namespace <?= $generator->queryNs ?>;
 /**
  * This is the ActiveQuery class for [[<?= $modelFullClassName ?>]].
  *
- * @see <?= $modelFullClassName."\n" ?>
+ * @see <?= $modelFullClassName . "\n" ?>
  */
-class <?= $className ?> extends <?= '\\'.ltrim($generator->queryBaseClass, '\\')."\n" ?>
+class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\') . "\n" ?>
 {
     /*public function active()
     {

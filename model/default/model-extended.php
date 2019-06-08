@@ -23,16 +23,16 @@ use \<?= $generator->nsComponent ?>\<?= $className ?>Component;
 /**
 * This is the model class for table "<?= $tableName ?>".
 */
-class <?= $className ?> extends Base<?= $className."\n" ?>
+class <?= $className ?> extends Base<?= $className . "\n" ?>
 {
 <?php if ($generator->excelImport): ?>
     public $fileExcelImport;
 <?php endif; ?>
 <?php foreach ($generator->tableSchema->columns as $column) {
     if ($generator->containsAnnotation($column, '@file')) {
-        echo 'public $'.$column->name."File;\n";
+        echo 'public $' . $column->name . "File;\n";
     } elseif ($generator->containsAnnotation($column, '@image')) {
-        echo 'public $'.$column->name."Image;\n";
+        echo 'public $' . $column->name . "Image;\n";
     }
 } ?>
 <?php if ($generator->generateAttributeHints): ?>
@@ -44,7 +44,7 @@ class <?= $className ?> extends Base<?= $className."\n" ?>
     return [
     <?php foreach ($labels as $name => $label): ?>
         <?php if (!in_array($name, $generator->skippedColumns)): ?>
-            <?= "'$name' => ".$generator->generateString($label).",\n" ?>
+            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
         <?php endif; ?>
     <?php endforeach; ?>
     ];

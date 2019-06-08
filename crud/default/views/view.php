@@ -27,10 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
 
     <div class="row">
-        <div class="<?= ($generator->saveAsNew) ? 'col-sm-8' : 'col-sm-9';?>">
+        <div class="<?= ($generator->saveAsNew) ? 'col-sm-8' : 'col-sm-9'; ?>">
             <h2><?= '<?= ' ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
         </div>
-        <div class="<?= ($generator->saveAsNew) ? 'col-sm-4' : 'col-sm-3';?>" style="margin-top: 15px">
+        <div class="<?= ($generator->saveAsNew) ? 'col-sm-4' : 'col-sm-3'; ?>" style="margin-top: 15px">
 <?php if ($generator->pdf): ?>
 <?= '<?= ' ?>
             <?= "
@@ -40,20 +40,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'btn btn-danger',
                     'target' => '_blank',
                     'data-toggle' => 'tooltip',
-                    'title' => " . $generator->generateString('Abrir PDF en una nueva ventana')."
+                    'title' => " . $generator->generateString('Abrir PDF en una nueva ventana') . "
                 ]
             )?>\n"
             ?>
 <?php endif; ?>
-<?php if($generator->saveAsNew): ?>
+<?php if ($generator->saveAsNew): ?>
 <?= '            <?= Html::a(' . $generator->generateString('Duplicar Registro') . ", ['save-as-new', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-info']) ?>" ?>
-<?php endif;?>
+<?php endif; ?>
             <?= '
-            <?= Html::a('.$generator->generateString('Actualizar') . ", ['update', ".$generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(".$generator->generateString('Eliminar') . ", ['delete', ".$generator->generateUrlParams() . "], [
+            <?= Html::a('.$generator->generateString('Actualizar') . ", ['update', " . $generator->generateUrlParams() . "], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(".$generator->generateString('Eliminar') . ", ['delete', " . $generator->generateUrlParams() . "], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => " . $generator->generateString('¿Desea Eliminar este elemento?').",
+                    'confirm' => " . $generator->generateString('¿Desea Eliminar este elemento?') . ",
                     'method' => 'post',
                 ],
             ])
@@ -74,10 +74,10 @@ if ($tableSchema === false) {
             echo "            // '" . $name . "',\n";
         }
     }
-} else{
-    foreach($tableSchema->getColumnNames() as $attribute){
-        if(!in_array($attribute, $generator->skippedColumns)) {
-            echo '        ' .$generator->generateDetailViewField($attribute,$fk, $tableSchema);
+} else {
+    foreach ($tableSchema->getColumnNames() as $attribute) {
+        if (!in_array($attribute, $generator->skippedColumns)) {
+            echo '        ' . $generator->generateDetailViewField($attribute, $fk, $tableSchema);
 
         }
     }
@@ -104,14 +104,14 @@ if($provider<?= $rel[1] ?>->totalCount){
         $fkRel = $generator->generateFK($relTableSchema);
             if ($tableSchema === false) {
                 foreach ($relTableSchema->getColumnNames() as $attribute) {
-                    if (!in_array($attribute, $generator->skippedColumns)){
-                        echo "            '".$attribute."',\n";
+                    if (!in_array($attribute, $generator->skippedColumns)) {
+                        echo "            '" . $attribute . "',\n";
                     }
                 }
             } else {
-                foreach ($relTableSchema->getColumnNames() as $attribute){
-                    if (!in_array($attribute, $generator->skippedColumns)){
-                        echo '            '.$generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
+                foreach ($relTableSchema->getColumnNames() as $attribute) {
+                    if (!in_array($attribute, $generator->skippedColumns)) {
+                        echo '            ' . $generator->generateGridViewField($attribute, $fkRel, $relTableSchema);
                     }
                 }
             }
@@ -125,16 +125,16 @@ if($provider<?= $rel[1] ?>->totalCount){
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
         ],
-<?php if(!$generator->pdf): ?>
+<?php if (!$generator->pdf): ?>
         'export' => false,
 <?php endif; ?>
-        'columns' => $gridColumn<?= $rel[1]."\n" ?>
+        'columns' => $gridColumn<?= $rel[1] . "\n" ?>
     ]);
 }
 <?= "?>\n" ?>
         </div>
     </div>
-<?php elseif(empty($rel[2])): ?>
+<?php elseif (empty($rel[2])): ?>
     <div class="row">
         <h4><?= $rel[1] ?><?= '<?= ' ?>' '. Html::encode($this->title) ?></h4>
     </div>
@@ -143,17 +143,17 @@ if($provider<?= $rel[1] ?>->totalCount){
 <?php
     $relTableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
     $fkRel = $generator->generateFK($relTableSchema);
-    foreach($relTableSchema->getColumnNames() as $attribute){
-        if($attribute == $rel[5]){
+    foreach ($relTableSchema->getColumnNames() as $attribute) {
+        if ($attribute == $rel[5]) {
             continue;
         }
         if ($relTableSchema === false) {
-            if (!in_array($attribute, $generator->skippedColumns)){
-                echo "        '" . $attribute."',\n";
+            if (!in_array($attribute, $generator->skippedColumns)) {
+                echo "        '" . $attribute . "',\n";
             }
-        } else{
-            if(!in_array($attribute, $generator->skippedColumns)){
-                echo '        ' . $generator->generateDetailViewField($attribute,$fkRel);
+        } else {
+            if (!in_array($attribute, $generator->skippedColumns)) {
+                echo '        ' . $generator->generateDetailViewField($attribute, $fkRel);
             }
         }
     }

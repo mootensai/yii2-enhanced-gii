@@ -15,7 +15,7 @@ $fk = $generator->generateFK($tableSchema);
 $modelClass = StringHelper::basename($generator->modelClass);
 $searchModelClass = StringHelper::basename($generator->searchModelClass);
 if ($modelClass === $searchModelClass) {
-    $searchModelAlias = $searchModelClass.'Search';
+    $searchModelAlias = $searchModelClass . 'Search';
 }
 ?>
 <?= '<?php' ?>
