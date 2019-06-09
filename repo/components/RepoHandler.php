@@ -52,9 +52,9 @@ class RepoHandler
         }
     }
 
-    public function createTemplate($init_code = false){
+    public function createTemplate($init_code = false)
+    {
         $client = new Client();
         $client->authenticate($this->github_token, null, Client::AUTH_HTTP_TOKEN);
-
     }
 }
