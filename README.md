@@ -100,3 +100,8 @@ I'm open for any improvement
 3. kartik-v (https://github.com/kartik-v) for most of widgets
 4. schmunk42 (https://github.com/schmunk42) for bootstrap & model base & extension
 5. mdmunir (https://github.com/mdmunir) for JsBlock & Migration Generator (from https://github.com/deesoft/yii2-gii)
+
+## Social
+* Slack (https://inquidgii.slack.com/)
+* Trello (https://trello.com/b/q3Siz2mm/inquid-enhanced-gii)
+* GitPod (https://gitpod.io/#https://github.com/inquid/yii2-enhanced-gii)
