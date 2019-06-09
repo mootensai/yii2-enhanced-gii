@@ -8,6 +8,8 @@
 
 namespace inquid\enhancedgii\repo\components;
 
+use Github\Client;
+
 class RepoHandler
 {
     public $public_repo = false;
@@ -29,8 +31,8 @@ class RepoHandler
 
     public function createRepo($init_code = false)
     {
-        $client = new \Github\Client();
-        $client->authenticate($this->github_token, null, \Github\Client::AUTH_HTTP_TOKEN);
+        $client = new Client();
+        $client->authenticate($this->github_token, null, Client::AUTH_HTTP_TOKEN);
         print_r($client->repo()->create(
             $this->name,
             $this->description,
@@ -48,5 +50,11 @@ class RepoHandler
             exec("git commit -m \"init\" /{$this->local_path}/{$this->name}/");
             exec("git push /{$this->local_path}/{$this->name}/");
         }
+    }
+
+    public function createTemplate($init_code = false){
+        $client = new Client();
+        $client->authenticate($this->github_token, null, Client::AUTH_HTTP_TOKEN);
+
     }
 }

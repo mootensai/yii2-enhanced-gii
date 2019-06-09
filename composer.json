@@ -21,6 +21,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "yiisoft/yii2-faker": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.1.0",
         "mootensai/yii2-uuid-behavior": "*",
         "mootensai/yii2-relation-trait": "*",
         "mootensai/yii2-jsblock": "*",
@@ -48,10 +49,17 @@
         "yii2mod/yii2-editable": "*",
         "mohorev/yii2-upload-behavior": "*"
     },
+    "require-dev": {
+        "yiisoft/yii2-coding-standards": "~2.0",
+        "phpunit/phpunit": "<8"
+    },
     "autoload": {
         "psr-4": {
             "inquid\\enhancedgii\\": ""
-        }
+        },
+        "classmap": [
+            "tests\\bootstrap.php"
+        ]
     },
     "extra": {
         "bootstrap": "inquid\\enhancedgii\\Bootstrap"

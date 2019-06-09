@@ -2,20 +2,29 @@
 
 namespace yiiunit\gii;
 
-use Yii;
-use yii\gii\Module;
+use inquid\enhancedgii\module\Generator;
+use PHPUnit\Framework\TestCase;
 
 class ModuleTest extends TestCase
 {
-    public function testDefaultVersion()
+    public function autoload()
     {
-        Yii::$app->extensions['yiisoft/yii2-gii'] = [
-            'name'    => 'yiisoft/yii2-gii',
-            'version' => '2.0.6',
-        ];
+        require_once __DIR__ . '/../vendor/autoload.php';
+        require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+    }
 
-        $module = new Module('gii');
+    public function testModuleName(): void
+    {
+        $this->autoload();
+        $generator = new Generator();
+        $this->assertEquals('INQUID Generator (Module)', $generator->getName());
+    }
 
-        $this->assertEquals('2.0.6', $module->getVersion());
+    public function testDbConnection(): void
+    {
+        $this->autoload();
+        $generator = new Generator();
+        $generator->validateDb();
+        $this->assertCount(0, $generator->getErrors());
     }
 }
