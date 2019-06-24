@@ -5,6 +5,10 @@ namespace yiiunit\gii;
 use inquid\enhancedgii\module\Generator;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class ModuleTest
+ * @package yiiunit\gii
+ */
 class ModuleTest extends TestCase
 {
     public function autoload()
