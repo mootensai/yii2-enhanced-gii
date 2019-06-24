@@ -55,7 +55,7 @@
     },
     "autoload": {
         "psr-4": {
-            "inquid\\enhancedgii\\": ""
+            "inquid\\enhancedgii\\": "src"
         },
         "classmap": [
             "tests\\bootstrap.php"
