@@ -6,3 +6,9 @@
      steps:
        - checkout
        - run: echo "A first hello"
+ build:
+   nodes:
+     my-tests:
+       dependencies:
+         before:
+           - pecl install php-zip
