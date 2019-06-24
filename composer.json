@@ -58,7 +58,7 @@
             "inquid\\enhancedgii\\": ""
         },
         "classmap": [
-            "tests\\bootstrap.php"
+            "tests/bootstrap.php"
         ]
     },
     "extra": {
