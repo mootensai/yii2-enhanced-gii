@@ -169,7 +169,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      public function actionCreate()
      {
          $model = new <?= $modelClass ?>();
-         <?php if ($generator->hasFile()) { ?>
+         <?php if ($generator->hasFile($generator->tableSchema)) { ?>
             $model->setScenario('insert');
          <?php } ?>
          if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>)){
@@ -205,7 +205,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         }
 <?php else: ?>
         $model = $this->findModel(<?= $actionParams ?>);
-         <?php if ($generator->hasFile()) { ?>
+         <?php if ($generator->hasFile($generator->tableSchema)) { ?>
             $model->setScenario('update');
          <?php } ?>
 <?php endif; ?>
