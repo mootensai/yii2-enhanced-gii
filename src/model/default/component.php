@@ -13,6 +13,8 @@ echo "<?php\n";
 namespace <?= $generator->nsComponent ?>;
 use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
+use yii\base\Component;
+
 /**
 * <?= $componentClassName ?> implements all the functionality and business layer of the <?= $generator->generateTableName($tableName) ?> table.
 */
