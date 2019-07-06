@@ -29,14 +29,14 @@ jobs: # a collection of steps
                 mysql -h 127.0.0.1 -u user -ppassw0rd test_db < sql-data/dummy.sql
                 mysql -h 127.0.0.1 -u user -ppassw0rd --execute="SELECT * FROM test_db.Persons"
       - image: circleci/php:7.1-node-browsers # ...with this image as the primary container; this is where all `steps` will run
-          working_directory: ~/yii-enhanced-gii # directory where steps will run
-          steps: # a set of executable commands
-            - checkout # special step to check out source code to working directory
-            - run: sudo apt install -y libsqlite3-dev zlib1g-dev
-            - run: sudo docker-php-ext-install zip
-            - run: sudo composer self-update
-            - restore_cache: # special step to restore the dependency cache if `composer.lock` does not change
-                keys:
+    working_directory: ~/yii-enhanced-gii # directory where steps will run
+    steps: # a set of executable commands
+      - checkout # special step to check out source code to working directory
+      - run: sudo apt install -y libsqlite3-dev zlib1g-dev
+      - run: sudo docker-php-ext-install zip
+      - run: sudo composer self-update
+      - restore_cache: # special step to restore the dependency cache if `composer.lock` does not change
+           keys:
                   - composer-v1-{{ checksum "composer.lock" }}
                   # fallback to using the latest cache if no exact match is found (See https://circleci.com/docs/2.0/caching/)
                   - composer-v1-
