@@ -1,68 +1,84 @@
 {
-    "name": "inquid/yii2-enhanced-gii",
-    "description": "Generate Relational (hasMany, hasOne, belongsTo, & nested) Models & CRUD.",
-    "keywords": ["inquid","relation", "gii", "yii2", "yii", "enhanced"],
-    "license": "BSD-3-Clause",
-    "type": "yii2-extension",
-    "authors": [
-        {
-            "name": "Inquid",
-            "email": "contact@inquid.co"
-        },
-        {
-            "name": "Yohanes Candrajaya",
-            "email": "moo.tensai@gmail.com"
-        },
-        {
-            "name": "Jiwantoro Ndaru",
-            "email": "jiwanndaru@gmail.com"
-        }
-    ],
-    "require": {
-        "yiisoft/yii2": "*",
-        "yiisoft/yii2-faker": "~2.0.0",
-        "yiisoft/yii2-gii": "~2.1.0",
-        "mootensai/yii2-uuid-behavior": "*",
-        "mootensai/yii2-relation-trait": "*",
-        "mootensai/yii2-jsblock": "*",
-        "mootensai/yii2-optimistic-lock-validator": "*",
-        "kartik-v/yii2-builder": "dev-master",
-        "kartik-v/yii2-grid": "*",
-        "kartik-v/yii2-widgets": "*",
-        "kartik-v/yii2-export": "*",
-        "kartik-v/yii2-mpdf": "dev-master",
-        "kartik-v/yii2-tree-manager": "dev-master",
-        "kartik-v/yii2-tabs-x": "*",
-        "kartik-v/yii2-datecontrol": "@dev",
-        "faryshta/yii2-disable-submit-buttons": "*",
-        "inquid/yii2-vue": "*",
-        "inquid/yii2-fpdf": "*",
-        "inquid/yii2-godaddy": "dev-master",
-        "inquid/yii-reports": "dev-master",
-        "dominus77/yii2-sweetalert2-widget": "dev-master",
-        "yiisoft/yii2-apidoc": "~2.1.0",
-        "yiidoc/yii2-redactor": "*",
-        "mikehaertl/php-shellcommand":"dev-master",
-        "knplabs/github-api": "^2.8",
-        "php-http/guzzle6-adapter": "^1.1",
-        "drsdre/yii2-wizardwidget": "*",
-        "bizley/contenttools": "^1.2",
-        "yii2mod/yii2-editable": "*",
-        "mohorev/yii2-upload-behavior": "*"
+  "name": "inquid/yii2-enhanced-gii",
+  "description": "Generate Relational (hasMany, hasOne, belongsTo, & nested) Models & CRUD.",
+  "keywords": [
+    "inquid",
+    "relation",
+    "gii",
+    "yii2",
+    "yii",
+    "enhanced"
+  ],
+  "license": "BSD-3-Clause",
+  "type": "yii2-extension",
+  "authors": [
+    {
+      "name": "Inquid",
+      "email": "contact@inquid.co"
     },
-    "require-dev": {
-        "yiisoft/yii2-coding-standards": "~2.0",
-        "phpunit/phpunit": "<8"
+    {
+      "name": "Yohanes Candrajaya",
+      "email": "moo.tensai@gmail.com"
     },
-    "autoload": {
-        "psr-4": {
-            "inquid\\enhancedgii\\": "src"
-        },
-        "classmap": [
-            "src/tests/bootstrap.php"
-        ]
-    },
-    "extra": {
-        "bootstrap": "inquid\\enhancedgii\\Bootstrap"
+    {
+      "name": "Jiwantoro Ndaru",
+      "email": "jiwanndaru@gmail.com"
     }
+  ],
+  "require": {
+    "yiisoft/yii2-faker": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.1.0",
+    "mootensai/yii2-uuid-behavior": "*",
+    "mootensai/yii2-relation-trait": "*",
+    "mootensai/yii2-jsblock": "*",
+    "mootensai/yii2-optimistic-lock-validator": "*",
+    "kartik-v/yii2-builder": "dev-master",
+    "kartik-v/yii2-grid": "*",
+    "kartik-v/yii2-widgets": "*",
+    "kartik-v/yii2-export": "*",
+    "kartik-v/yii2-mpdf": "dev-master",
+    "kartik-v/yii2-tree-manager": "dev-master",
+    "kartik-v/yii2-tabs-x": "*",
+    "kartik-v/yii2-datecontrol": "@dev",
+    "faryshta/yii2-disable-submit-buttons": "*",
+    "inquid/yii2-vue": "*",
+    "inquid/yii2-fpdf": "*",
+    "inquid/yii2-godaddy": "dev-master",
+    "inquid/yii-reports": "dev-master",
+    "dominus77/yii2-sweetalert2-widget": "dev-master",
+    "yiisoft/yii2-apidoc": "~2.1.0",
+    "yiidoc/yii2-redactor": "*",
+    "mikehaertl/php-shellcommand": "dev-master",
+    "knplabs/github-api": "^2.8",
+    "php-http/guzzle6-adapter": "^1.1",
+    "drsdre/yii2-wizardwidget": "*",
+    "bizley/contenttools": "^1.2",
+    "yii2mod/yii2-editable": "*",
+    "mohorev/yii2-upload-behavior": "*"
+  },
+  "require-dev": {
+    "yiisoft/yii2": "*",
+    "yiisoft/yii2-coding-standards": "~2.0",
+    "phpunit/phpunit": "<8"
+  },
+  "autoload": {
+    "psr-4": {
+      "inquid\\enhancedgii\\": "src"
+    },
+    "classmap": [
+      "./tests/bootstrap.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "inquid\\tests\\": "tests"
+    },
+    "classmap": [
+      "./tests/bootstrap.php"
+    ]
+  },
+  "extra": {
+    "bootstrap": "inquid\\enhancedgii\\Bootstrap",
+    "tests": "inquid\\tests\\Bootstrap"
+  }
 }

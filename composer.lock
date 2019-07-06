@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1466672a5fbd88776cba4762b7ce5b69",
+    "content-hash": "ec94bad49f479b3d14eda4fcfe0d9757",
     "packages": [
         {
             "name": "bizley/contenttools",
@@ -1068,16 +1068,16 @@
         },
         {
             "name": "google/cloud",
-            "version": "v0.103.0",
+            "version": "v0.105.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php.git",
-                "reference": "b4e559c2d803ea92c5e7bfe7fb78299f939799f6"
+                "reference": "27be9ef0000a45241d3d4fe94a42b3e07ed594b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/b4e559c2d803ea92c5e7bfe7fb78299f939799f6",
-                "reference": "b4e559c2d803ea92c5e7bfe7fb78299f939799f6",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php/zipball/27be9ef0000a45241d3d4fe94a42b3e07ed594b8",
+                "reference": "27be9ef0000a45241d3d4fe94a42b3e07ed594b8",
                 "shasum": ""
             },
             "require": {
@@ -1093,41 +1093,41 @@
                 "rize/uri-template": "~0.3"
             },
             "replace": {
-                "google/cloud-asset": "0.3.3",
+                "google/cloud-asset": "0.3.4",
                 "google/cloud-automl": "0.2.2",
                 "google/cloud-bigquery": "1.7.0",
-                "google/cloud-bigquerydatatransfer": "0.10.4",
-                "google/cloud-bigtable": "0.12.4",
+                "google/cloud-bigquerydatatransfer": "0.12.0",
+                "google/cloud-bigtable": "0.13.0",
                 "google/cloud-common-protos": "0.2.0",
-                "google/cloud-container": "0.10.3",
-                "google/cloud-core": "1.28.1",
+                "google/cloud-container": "0.10.4",
+                "google/cloud-core": "1.29.0",
                 "google/cloud-dataproc": "0.12.0",
-                "google/cloud-datastore": "1.9.4",
-                "google/cloud-debugger": "0.18.4",
-                "google/cloud-dialogflow": "0.8.3",
-                "google/cloud-dlp": "0.18.4",
-                "google/cloud-error-reporting": "0.14.4",
-                "google/cloud-firestore": "1.6.1",
-                "google/cloud-iot": "0.7.4",
-                "google/cloud-kms": "1.3.4",
-                "google/cloud-language": "0.19.3",
-                "google/cloud-logging": "1.16.4",
-                "google/cloud-monitoring": "0.16.4",
-                "google/cloud-oslogin": "0.9.4",
-                "google/cloud-pubsub": "1.12.2",
-                "google/cloud-redis": "0.8.4",
+                "google/cloud-datastore": "1.9.5",
+                "google/cloud-debugger": "0.18.5",
+                "google/cloud-dialogflow": "0.8.4",
+                "google/cloud-dlp": "0.20.0",
+                "google/cloud-error-reporting": "0.14.5",
+                "google/cloud-firestore": "1.6.2",
+                "google/cloud-iot": "0.7.5",
+                "google/cloud-kms": "1.4.0",
+                "google/cloud-language": "0.19.4",
+                "google/cloud-logging": "1.16.5",
+                "google/cloud-monitoring": "0.16.5",
+                "google/cloud-oslogin": "0.9.5",
+                "google/cloud-pubsub": "1.13.0",
+                "google/cloud-redis": "0.9.0",
                 "google/cloud-scheduler": "1.0.1",
                 "google/cloud-security-center": "0.1.1",
-                "google/cloud-spanner": "1.15.4",
-                "google/cloud-speech": "0.24.0",
-                "google/cloud-storage": "1.12.2",
+                "google/cloud-spanner": "1.15.6",
+                "google/cloud-speech": "0.24.1",
+                "google/cloud-storage": "1.12.3",
                 "google/cloud-talent": "0.4.0",
-                "google/cloud-tasks": "1.1.0",
-                "google/cloud-text-to-speech": "0.4.3",
-                "google/cloud-trace": "0.14.3",
+                "google/cloud-tasks": "1.1.1",
+                "google/cloud-text-to-speech": "0.4.4",
+                "google/cloud-trace": "0.14.4",
                 "google/cloud-translate": "1.2.9",
-                "google/cloud-videointelligence": "1.5.3",
-                "google/cloud-vision": "0.22.4",
+                "google/cloud-videointelligence": "1.6.1",
+                "google/cloud-vision": "0.22.5",
                 "google/cloud-web-risk": "0.1.1",
                 "google/cloud-web-security-scanner": "0.1.0"
             },
@@ -1285,7 +1285,7 @@
                 "translation",
                 "vision"
             ],
-            "time": "2019-06-03T20:07:05+00:00"
+            "time": "2019-06-27T20:27:31+00:00"
         },
         {
             "name": "google/common-protos",
@@ -1328,16 +1328,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "48387fb818c6882296710a2302a0aa973b99afb2"
+                "reference": "0877185cbf4bc7648685a25f466fec8e531d0370"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/48387fb818c6882296710a2302a0aa973b99afb2",
-                "reference": "48387fb818c6882296710a2302a0aa973b99afb2",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/0877185cbf4bc7648685a25f466fec8e531d0370",
+                "reference": "0877185cbf4bc7648685a25f466fec8e531d0370",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-04-23T22:57:39+00:00"
+            "time": "2019-06-25T18:06:46+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -1458,16 +1458,16 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.19.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "0f1ffdde45bfb9257c5d9eab81695d0f042bea22"
+                "reference": "88235e786ef9b55fcb049f00c5c5202f8086a299"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/0f1ffdde45bfb9257c5d9eab81695d0f042bea22",
-                "reference": "0f1ffdde45bfb9257c5d9eab81695d0f042bea22",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/88235e786ef9b55fcb049f00c5c5202f8086a299",
+                "reference": "88235e786ef9b55fcb049f00c5c5202f8086a299",
                 "shasum": ""
             },
             "require": {
@@ -1495,7 +1495,7 @@
             "keywords": [
                 "rpc"
             ],
-            "time": "2019-02-27T04:47:56+00:00"
+            "time": "2019-07-03T19:57:39+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1615,33 +1615,37 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.5.2",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115"
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9f83dded91781a01c63574e387eaa769be769115",
-                "reference": "9f83dded91781a01c63574e387eaa769be769115",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
                 "psr/http-message": "~1.0",
-                "ralouphie/getallheaders": "^2.0.5"
+                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
             },
             "provide": {
                 "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
+                "ext-zlib": "*",
                 "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+            },
+            "suggest": {
+                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -1678,28 +1682,28 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-12-04T20:46:45+00:00"
+            "time": "2019-07-01T23:21:34+00:00"
         },
         {
             "name": "imagine/imagine",
-            "version": "v0.7.1",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa"
+                "reference": "69ce33008b73a64f5ea25449d1b69146437144fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/a9a702a946073cbca166718f1b02a1e72d742daa",
-                "reference": "a9a702a946073cbca166718f1b02a1e72d742daa",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/69ce33008b73a64f5ea25449d1b69146437144fd",
+                "reference": "69ce33008b73a64f5ea25449d1b69146437144fd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "sami/sami": "^3.3",
-                "symfony/phpunit-bridge": "^3.2"
+                "friendsofphp/php-cs-fixer": "2.2.*",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.4"
             },
             "suggest": {
                 "ext-gd": "to use the GD implementation",
@@ -1713,8 +1717,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Imagine": "lib/"
+                "psr-4": {
+                    "Imagine\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1736,7 +1740,53 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2017-05-16T10:31:22+00:00"
+            "time": "2019-06-03T15:06:06+00:00"
+        },
+        {
+            "name": "inquid/yii-reports",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inquid/yii-reports.git",
+                "reference": "9d0985c411af7510376fa1e88fa6819d8dbdfca2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inquid/yii-reports/zipball/9d0985c411af7510376fa1e88fa6819d8dbdfca2",
+                "reference": "9d0985c411af7510376fa1e88fa6819d8dbdfca2",
+                "shasum": ""
+            },
+            "require": {
+                "inquid/yii2-fpdf": "*",
+                "phpoffice/phpspreadsheet": "*",
+                "yiisoft/yii2": ">=2.0.5"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "inquid\\yiireports\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Inquid",
+                    "email": "contact@inquid.co"
+                }
+            ],
+            "description": "Yii Format Reports, use to create BIlls, Quotes, Purchase Orders and other general PDF / Excel Reports.",
+            "keywords": [
+                "excel",
+                "extension",
+                "inquid",
+                "pdf",
+                "reports",
+                "yii2"
+            ],
+            "time": "2019-05-22T06:52:35+00:00"
         },
         {
             "name": "inquid/yii2-fpdf",
@@ -1924,16 +1974,16 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "02943efa746d5a08a6a07f38815734603bdc83a6"
+                "reference": "94474f4a0f84fa35a08eb8724f8b8391c9806eb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/02943efa746d5a08a6a07f38815734603bdc83a6",
-                "reference": "02943efa746d5a08a6a07f38815734603bdc83a6",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/94474f4a0f84fa35a08eb8724f8b8391c9806eb9",
+                "reference": "94474f4a0f84fa35a08eb8724f8b8391c9806eb9",
                 "shasum": ""
             },
             "type": "library",
@@ -1973,7 +2023,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2019-05-12T09:48:54+00:00"
+            "time": "2019-06-30T07:33:24+00:00"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
@@ -2165,12 +2215,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-builder.git",
-                "reference": "e21cd937e055b13d0d35aea4d0e7adef38ea6bf3"
+                "reference": "7983d4a640292119efbbcba44e403be5f3c0cd67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-builder/zipball/e21cd937e055b13d0d35aea4d0e7adef38ea6bf3",
-                "reference": "e21cd937e055b13d0d35aea4d0e7adef38ea6bf3",
+                "url": "https://api.github.com/repos/kartik-v/yii2-builder/zipball/7983d4a640292119efbbcba44e403be5f3c0cd67",
+                "reference": "7983d4a640292119efbbcba44e403be5f3c0cd67",
                 "shasum": ""
             },
             "require": {
@@ -2209,7 +2259,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-05-25T07:12:02+00:00"
+            "time": "2019-06-19T07:34:40+00:00"
         },
         {
             "name": "kartik-v/yii2-datecontrol",
@@ -2436,16 +2486,16 @@
         },
         {
             "name": "kartik-v/yii2-grid",
-            "version": "v3.3.1",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-grid.git",
-                "reference": "0f80a28661883c997441dd89aff5d2a59c51e221"
+                "reference": "9405dc8ae9f16c9c45cad1989bd66350ee13e5d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/0f80a28661883c997441dd89aff5d2a59c51e221",
-                "reference": "0f80a28661883c997441dd89aff5d2a59c51e221",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/9405dc8ae9f16c9c45cad1989bd66350ee13e5d6",
+                "reference": "9405dc8ae9f16c9c45cad1989bd66350ee13e5d6",
                 "shasum": ""
             },
             "require": {
@@ -2484,7 +2534,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-05-17T06:55:03+00:00"
+            "time": "2019-06-18T14:29:05+00:00"
         },
         {
             "name": "kartik-v/yii2-helpers",
@@ -2595,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-mpdf.git",
-                "reference": "6eed5cfadef55ae19d2863a46a24dabb61ee9ccd"
+                "reference": "c4141e4e8ed8dc395189ae134078d79ffe2484cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-mpdf/zipball/6eed5cfadef55ae19d2863a46a24dabb61ee9ccd",
-                "reference": "6eed5cfadef55ae19d2863a46a24dabb61ee9ccd",
+                "url": "https://api.github.com/repos/kartik-v/yii2-mpdf/zipball/c4141e4e8ed8dc395189ae134078d79ffe2484cf",
+                "reference": "c4141e4e8ed8dc395189ae134078d79ffe2484cf",
                 "shasum": ""
             },
             "require": {
@@ -2639,7 +2689,7 @@
                 "utf8",
                 "yii2"
             ],
-            "time": "2019-05-25T07:26:13+00:00"
+            "time": "2019-06-19T08:04:04+00:00"
         },
         {
             "name": "kartik-v/yii2-sortable",
@@ -4457,16 +4507,16 @@
         },
         {
             "name": "mpdf/mpdf",
-            "version": "v8.0.1",
+            "version": "v8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "2b6fab3d2a539a475d6e765bb06d8d2185955e55"
+                "reference": "ab0662606cc2396015616633946f3b8918d818a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/2b6fab3d2a539a475d6e765bb06d8d2185955e55",
-                "reference": "2b6fab3d2a539a475d6e765bb06d8d2185955e55",
+                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/ab0662606cc2396015616633946f3b8918d818a7",
+                "reference": "ab0662606cc2396015616633946f3b8918d818a7",
                 "shasum": ""
             },
             "require": {
@@ -4522,7 +4572,7 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2019-05-07T14:10:43+00:00"
+            "time": "2019-06-17T09:03:49+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -4781,28 +4831,29 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651"
+                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
-                "reference": "684855f2c2e9d0a61868b8f8d6bd0295c8a4b651",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/e822f86a6983790aa17ab13aa7e69631e86806b6",
+                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || ^7.0"
+                "php": "^7.1"
             },
             "conflict": {
                 "nyholm/psr7": "<1.0"
             },
             "require-dev": {
+                "akeneo/phpspec-skip-example-extension": "^4.0",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
-                "phpspec/phpspec": "^2.4",
+                "phpspec/phpspec": "^5.1",
                 "puli/composer-plugin": "1.0.0-beta10"
             },
             "suggest": {
@@ -4812,7 +4863,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -4841,7 +4892,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2019-02-23T07:42:53+00:00"
+            "time": "2019-06-30T09:04:27+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -5236,16 +5287,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.7.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "84e09df79855ed3da84e2eab6850eb7741d8cbda"
+                "reference": "352c7002fefe4e4037d02654d853a1b09520946f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/84e09df79855ed3da84e2eab6850eb7741d8cbda",
-                "reference": "84e09df79855ed3da84e2eab6850eb7741d8cbda",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/352c7002fefe4e4037d02654d853a1b09520946f",
+                "reference": "352c7002fefe4e4037d02654d853a1b09520946f",
                 "shasum": ""
             },
             "require": {
@@ -5326,7 +5377,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2019-05-26T02:50:36+00:00"
+            "time": "2019-07-01T20:46:51+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -5559,24 +5610,24 @@
         },
         {
             "name": "ralouphie/getallheaders",
-            "version": "2.0.5",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ralouphie/getallheaders.git",
-                "reference": "5601c8a83fbba7ef674a7369456d12f1e0d0eafa"
+                "reference": "120b605dfeb996808c31b6477290a714d356e822"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/5601c8a83fbba7ef674a7369456d12f1e0d0eafa",
-                "reference": "5601c8a83fbba7ef674a7369456d12f1e0d0eafa",
+                "url": "https://api.github.com/repos/ralouphie/getallheaders/zipball/120b605dfeb996808c31b6477290a714d356e822",
+                "reference": "120b605dfeb996808c31b6477290a714d356e822",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
+                "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "~3.7.0",
-                "satooshi/php-coveralls": ">=1.0"
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -5595,7 +5646,7 @@
                 }
             ],
             "description": "A polyfill for getallheaders.",
-            "time": "2016-02-11T07:05:27+00:00"
+            "time": "2019-03-08T08:55:37+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -5820,16 +5871,16 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "914e0edcb7cd0c9f494bc023b1d47534f4542332"
+                "reference": "40762ead607c8f792ee4516881369ffa553fee6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/914e0edcb7cd0c9f494bc023b1d47534f4542332",
-                "reference": "914e0edcb7cd0c9f494bc023b1d47534f4542332",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/40762ead607c8f792ee4516881369ffa553fee6f",
+                "reference": "40762ead607c8f792ee4516881369ffa553fee6f",
                 "shasum": ""
             },
             "require": {
@@ -5870,7 +5921,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-05-10T05:38:46+00:00"
+            "time": "2019-06-13T11:01:17+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -6022,16 +6073,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.20",
+            "version": "2.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "bd05e0e0ac353cb239997da78f459d0960a1fe9f"
+                "reference": "417299927ed14adcd51c69a9d75311c5fc33d227"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/bd05e0e0ac353cb239997da78f459d0960a1fe9f",
-                "reference": "bd05e0e0ac353cb239997da78f459d0960a1fe9f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/417299927ed14adcd51c69a9d75311c5fc33d227",
+                "reference": "417299927ed14adcd51c69a9d75311c5fc33d227",
                 "shasum": ""
             },
             "require": {
@@ -6118,7 +6169,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-06-04T19:10:59+00:00"
+            "time": "2019-07-02T20:28:40+00:00"
         },
         {
             "name": "yiisoft/yii2-apidoc",
@@ -6447,21 +6498,24 @@
         },
         {
             "name": "yiisoft/yii2-imagine",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-imagine.git",
-                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841"
+                "reference": "8637f63ee2eb81b7fe1f4c0e16cc8cc474a68bae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/a8a1a068862a86e3395e665bc86e63d5c9b60841",
-                "reference": "a8a1a068862a86e3395e665bc86e63d5c9b60841",
+                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/8637f63ee2eb81b7fe1f4c0e16cc8cc474a68bae",
+                "reference": "8637f63ee2eb81b7fe1f4c0e16cc8cc474a68bae",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "~0.6.0 | ~0.7.1",
+                "imagine/imagine": "^0.6 | ^0.7 | ^1.0",
                 "yiisoft/yii2": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "<7"
             },
             "type": "yii2-extension",
             "extra": {
@@ -6491,7 +6545,7 @@
                 "imagine",
                 "yii2"
             ],
-            "time": "2018-02-22T11:57:06+00:00"
+            "time": "2019-06-04T12:38:50+00:00"
         }
     ],
     "packages-dev": [
@@ -6655,16 +6709,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
                 "shasum": ""
             },
             "require": {
@@ -6685,8 +6739,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Prophecy\\": "src/"
+                "psr-4": {
+                    "Prophecy\\": "src/Prophecy"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6714,7 +6768,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-08-05T17:53:17+00:00"
+            "time": "2019-06-13T12:50:23+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -6970,16 +7024,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.12",
+            "version": "7.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c"
+                "reference": "b9278591caa8630127f96c63b598712b699e671c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c",
-                "reference": "9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b9278591caa8630127f96c63b598712b699e671c",
+                "reference": "b9278591caa8630127f96c63b598712b699e671c",
                 "shasum": ""
             },
             "require": {
@@ -7050,7 +7104,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-05-28T11:59:40+00:00"
+            "time": "2019-06-19T12:01:51+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -7671,16 +7725,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8"
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/1c42705be2b6c1de5904f8afacef5895cab44bf8",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
                 "shasum": ""
             },
             "require": {
@@ -7707,7 +7761,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2019-04-04T09:56:43+00:00"
+            "time": "2019-06-13T22:48:21+00:00"
         },
         {
             "name": "yiisoft/yii2-coding-standards",
@@ -7786,6 +7840,7 @@
         "kartik-v/yii2-tree-manager": 20,
         "kartik-v/yii2-datecontrol": 20,
         "inquid/yii2-godaddy": 20,
+        "inquid/yii-reports": 20,
         "dominus77/yii2-sweetalert2-widget": 20,
         "mikehaertl/php-shellcommand": 20
     },
