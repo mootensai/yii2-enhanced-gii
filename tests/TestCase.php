@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: gogl92
@@ -10,12 +11,13 @@ namespace inquid\tests;
 
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Yii;
 
 /**
  * This is the base class for all yii framework unit tests.
  */
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * Clean up after test.
@@ -49,6 +51,13 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',
             'components' => [
+                'db' => [
+                    'class' => 'yii\db\Connection',
+                    'dsn' => 'mysql:host=localhost;dbname=enhanced_gii',
+                    'username' => 'root',
+                    'password' => '123456',
+                    'charset' => 'utf8',
+                ],
                 'request' => [
                     'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
                     'scriptFile' => __DIR__ . '/index.php',
