@@ -89,8 +89,7 @@ class Generator extends BaseGenerator
      */
     public function stickyAttributes()
     {
-        return array_merge(parent::stickyAttributes(), [
-            'db', ]);
+        return array_merge(parent::stickyAttributes(), ['db']);
     }
 
     /**
