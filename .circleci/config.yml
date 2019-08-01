@@ -42,9 +42,9 @@ jobs: # a collection of steps
           - composer-v1-
           - run: composer install -n --prefer-dist
           - save_cache: # special step to save the dependency cache with the `composer.lock` cache key template
-            key: composer-v1-{{ checksum "composer.lock" }}
+              key: composer-v1-{{ checksum "composer.lock" }}
               paths:
-              - vendor
+                - vendor
           - run: touch storage/testing.sqlite
             #- run: php artisan migrate --env=testing --database=sqlite_testing --force
           - run: ./vendor/bin/phpunit
