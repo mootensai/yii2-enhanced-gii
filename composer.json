@@ -59,7 +59,7 @@
   "require-dev": {
     "yiisoft/yii2": "*",
     "yiisoft/yii2-coding-standards": "~2.0",
-    "phpunit/phpunit": "<8"
+    "phpunit/phpunit": "<9"
   },
   "autoload": {
     "psr-4": {
