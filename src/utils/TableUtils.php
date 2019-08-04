@@ -30,10 +30,11 @@ class TableUtils
 
     /**
      * @param string $table
-     *
      * @param string $database
-     * @return string
+     *
      * @throws UserException
+     *
+     * @return string
      */
     public function getTableComment(string $table, string $database = null): ?string
     {
@@ -52,7 +53,7 @@ class TableUtils
 
             return $result ?? 'N/A';
         } catch (Exception $e) {
-            return 'ERROR ' . Json::encode($e);
+            return 'ERROR '.Json::encode($e);
         }
     }
 }

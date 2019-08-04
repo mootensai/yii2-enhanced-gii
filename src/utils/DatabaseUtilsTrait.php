@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: gogl92
  * Date: 2019-08-01
- * Time: 23:25
+ * Time: 23:25.
  */
 
 namespace inquid\enhancedgii\utils;
@@ -11,8 +11,7 @@ namespace inquid\enhancedgii\utils;
 use yii\base\UserException;
 
 /**
- * Trait DatabaseUtilsTrait
- * @package inquid\enhancedgii\utils
+ * Trait DatabaseUtilsTrait.
  */
 trait DatabaseUtilsTrait
 {
@@ -28,6 +27,7 @@ trait DatabaseUtilsTrait
 
     /**
      * @param string $database
+     *
      * @return array|null
      */
     protected function getDatabase(string $database): ?string
@@ -35,11 +35,13 @@ trait DatabaseUtilsTrait
         if ($database === null) {
             return DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
         }
+
         return $database;
     }
 
     /**
      * @param string|null $databaseName
+     *
      * @return string
      */
     protected function getTableName($databaseName = null): string
@@ -50,11 +52,12 @@ trait DatabaseUtilsTrait
     /**
      * @param $dsn
      * @param string $name
+     *
      * @return string|null
      */
     public static function getDsnAttribute($dsn, $name = 'dbname'): ?string
     {
-        return preg_match('/' . $name . '=([^;]*)/', $dsn, $match) ?
+        return preg_match('/'.$name.'=([^;]*)/', $dsn, $match) ?
             $match[1] : null;
     }
 }

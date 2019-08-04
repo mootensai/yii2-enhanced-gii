@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: gogl92
@@ -13,8 +15,7 @@ use yii\base\UserException;
 use yii\db\Exception;
 
 /**
- * Class DatabaseUtils
- * @package inquid\enhancedgii\utils
+ * Class DatabaseUtils.
  */
 class DatabaseUtils
 {
@@ -43,6 +44,7 @@ class DatabaseUtils
                      FROM phpmyadmin.pma__column_info
                      WHERE db_name='{$databaseName}';")
                 ->queryScalar();
+
             return $result ?? 'N/A';
         } catch (Exception $e) {
             throw new UserException("Database Error {$e->getMessage()}");
