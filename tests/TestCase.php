@@ -9,16 +9,26 @@
 
 namespace inquid\tests;
 
+use Dotenv\Dotenv;
+use PHPUnit\Framework\TestCase as PHPUnitBaseTestCase;
+use Yii;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
-use PHPUnit\Framework\TestCase as BaseTestCase;
-use Yii;
 
 /**
  * This is the base class for all yii framework unit tests.
  */
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends PHPUnitBaseTestCase
 {
+    /** @var array */
+    protected $env;
+
+    protected function setUp()
+    {
+        $this->env = Dotenv::create(__DIR__)->load();
+        parent::setUp();
+    }
+
     /**
      * Clean up after test.
      * By default the application created with [[mockApplication]] will be destroyed.
@@ -27,6 +37,15 @@ abstract class TestCase extends BaseTestCase
     {
         parent::tearDown();
         $this->destroyApplication();
+    }
+
+    public function generateTestDatabase(): void
+    {
+        $query = /** @lang mysql */
+            'CREATE DATABASE ';
+        Yii::$app->my_db->createCommand($query)
+            ->bindValue(':ID', 1)
+            ->queryOne();
     }
 
     /**
@@ -53,7 +72,35 @@ abstract class TestCase extends BaseTestCase
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
-                    'dsn' => 'mysql:host=localhost;dbname=enhanced_gii',
+                    'dsn' => $this->env['DB_CONNECTION'] .
+                        ':host='.$this->env['DB_HOST'].';dbname='.$this->env['DB_DATABASE'],
+                    'username' => $this->env['DB_USERNAME'],
+                    'password' => $this->env['DB_PASSWORD'],
+                    'charset' => 'utf8',
+                ],
+                'request' => [
+                    'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
+                    'scriptFile' => __DIR__ . '/index.php',
+                    'scriptUrl' => '/index.php',
+                ],
+            ],
+        ], $config));
+    }
+
+    /**
+     * @param array $config
+     * @param string $appClass
+     */
+    protected function mockWebApplicationInvalid($config = [], $appClass = '\yii\web\Application')
+    {
+        new $appClass(ArrayHelper::merge([
+            'id' => 'testapp',
+            'basePath' => __DIR__,
+            'vendorPath' => dirname(__DIR__) . '/vendor',
+            'components' => [
+                'db' => [
+                    'class' => 'yii\db\Connection',
+                    'dsn' => 'mysql:host=invalidhost;dbname=invaliddtabase',
                     'username' => 'root',
                     'password' => '123456',
                     'charset' => 'utf8',

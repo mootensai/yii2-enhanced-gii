@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $generator inquid\enhancedgii\module\Generator */

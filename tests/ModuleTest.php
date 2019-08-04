@@ -1,8 +1,10 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace inquid\tests;
 
 use inquid\enhancedgii\BaseGenerator;
 use inquid\enhancedgii\module\Generator;
+use yii\base\UserException;
 use yii\gii\Generator as YiiBaseGenerator;
 use yii\helpers\StringHelper;
 
@@ -14,16 +16,31 @@ class ModuleTest extends TestCase
 {
     /** @var Generator $generator */
     public $generator;
+    public $generatedFiles;
+    public $modulePath;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->generator = new Generator();
+        $this->generatedFiles = $this->generateFiles();
+    }
+
+    /**
+     * @return array
+     */
+    protected function generateFiles(): array {
+        $this->mockWebApplication();
+        $this->modulePath = 'myModule';
+        $this->generator->moduleClass = "app\\modules\\{$this->modulePath}\\MyCustomClass1";
+        $this->generator->moduleID = 'myCustomModuleId';
+        return $this->generator->generate();
     }
 
     public function testValidGenerator(): void
     {
-        $this->assertTrue($this->generator instanceof BaseGenerator);
-        $this->assertTrue($this->generator instanceof YiiBaseGenerator);
+        $this->assertInstanceOf(BaseGenerator::class, $this->generator);
+        $this->assertInstanceOf(YiiBaseGenerator::class, $this->generator);
     }
 
     /**
@@ -40,8 +57,8 @@ class ModuleTest extends TestCase
      */
     public function testGeneratorDescription(): void
     {
-        $this->assertEquals('This generator helps you to generate
-         the skeleton code needed by a Yii module.',
+        $this->assertEquals('This generator helps you to generate'.
+         ' the skeleton code needed by a Yii module.',
             $this->generator->getDescription());
     }
 
@@ -94,30 +111,174 @@ class ModuleTest extends TestCase
     }
 
 
-
     /**
      * Test can get a valid DB connection
      */
     public function testDbConnection(): void
     {
         $this->mockWebApplication();
-        $generator = new Generator();
-        $generator->validateDb();
+        $this->generator->validateDb();
 
-        $this->assertEmpty($generator->getErrors());
+        $this->assertEmpty($this->generator->getErrors());
     }
 
-    public function testGenerateModuleSuccessfully(){
+    public function testFailsWhenNoValidDatabaseGiven(): void
+    {
+        $this->expectException(UserException::class);
+        try {
+            $this->mockWebApplicationInvalid();
+            $this->generator->generate();
+        } catch (UserException $userException) {
+            throw $userException;
+        }
+    }
+
+    public function testGenerateModuleSuccessfully(): void
+    {
+        $this->setUp();
         $this->mockWebApplication();
-        $generator = new Generator();
-        $generator->moduleClass = 'app\modules\testing\Test';
-        $generator->moduleID = 'testingModuleId';
+        $this->generator->generate();
 
-        $result = $generator->generate();
-        $this->assertNotEmpty($result);
-        $this->assertCount('5', $result);
+        $this->assertNotEmpty($this->generateFiles());
+        $this->assertCount(5, $this->generateFiles());
 
-        print_r($result);
-        $this->assertEquals($generator->modulePath . '/' . StringHelper::basename($generator->moduleClass) . '.php', $result[0]->path);
+        $this->assertEquals(
+            $this->generator->modulePath .
+            '/' .
+            StringHelper::basename($this->generator->moduleClass) .
+            '.php', $this->generateFiles()[0]->path);
+
+        $this->assertEquals(
+            $this->generator->modulePath .
+            '/' .
+            StringHelper::dirname($this->generator->baseModelClass)
+            .'controllers/DefaultController.php',
+            $this->generateFiles()[1]->path);
+
+        $this->assertEquals(
+            $this->generator->modulePath .
+            '/' .
+            StringHelper::dirname($this->generator->baseModelClass)
+            .'views/default/index.php',
+            $this->generateFiles()[2]->path);
+
+        $this->assertEquals(
+            $this->generator->modulePath .
+            '/' .
+            StringHelper::dirname($this->generator->baseModelClass)
+            .'menu_items.php',
+            $this->generateFiles()[3]->path);
+
+        $this->assertEquals(
+            $this->generator->modulePath .
+            '/' .
+            StringHelper::dirname($this->generator->baseModelClass)
+            .'config/config.php',
+            $this->generateFiles()[4]->path);
+    }
+
+    public function testContentGeneratedCorrectly(): void
+    {
+        $this->setUp();
+        $this->mockWebApplication();
+        $this->generator->generate();
+
+        $this->assertNotEmpty($this->generateFiles());
+        $this->assertCount(5, $this->generateFiles());
+
+        $this->assertEquals(
+            "<?php
+
+namespace app\\modules\\".$this->modulePath.";
+
+use Yii;
+
+/**
+ * {$this->generator->moduleID} module definition class
+ */
+class ".StringHelper::basename($this->generator->moduleClass)." extends \\yii\\base\\Module
+{
+    public \$menu = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public \$controllerNamespace = 'app\\modules\\".$this->modulePath."\\controllers';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+        Yii::configure(\$this, require(__DIR__ . '/config/config.php'));
+        if (isset(Yii::\$app->user->identity))
+            \$this->menu = ['label' => 'Opciones',
+                'visible' => !Yii::\$app->user->isGuest && Yii::\$app->user->identity->isAdmin,
+                'url' => ['/{$this->generator->moduleID}/default/index'],
+                'template' => '<a href=\"{url}\">{label}<i class=\"fa fa-angle-left pull-right\"></i></a>',
+                'items' => 
+                    include('menu_items.php')                ,
+            ];
+        // custom initialization code goes here
+    }
+}
+",
+            $this->generateFiles()[0]->content
+        );
+
+        $this->assertEquals(
+            "<?php
+
+namespace app\\modules\\".$this->modulePath."\\controllers;
+
+use yii\\web\\Controller;
+
+/**
+ * Default controller for the `{$this->generator->moduleID}` module
+ */
+class DefaultController extends Controller
+{
+    /**
+     * Renders the index view for the module
+     * @return string
+     */
+    public function actionIndex()
+    {
+        return \$this->render('index');
+    }
+}
+",
+            $this->generateFiles()[1]->content
+        );
+
+        $this->assertEquals(
+            "<?php 
+\$this->title = '{$this->generator->moduleID}';
+?><div class=\"{$this->generator->moduleID}-default-index\">
+    <h1>Inquid</h1>
+    <p>
+        <?= \$this->title ?>    </p>
+</div>
+",
+            $this->generateFiles()[2]->content);
+
+        $this->assertEquals(
+            "<?php
+/**
+ * List all the controllers and actions you need in your module
+ */
+return [
+  ['label' => 'Index', 'url' => [\"/{$this->generator->moduleID}/index\"], 'visible' => Yii::\$app->user->identity->isAdmin]
+];",
+            $this->generateFiles()[3]->content);
+
+        $this->assertEquals(
+            '<?php
+return [];
+',
+            $this->generateFiles()[4]->content);
+
+        print_r($this->generateFiles());
     }
 }

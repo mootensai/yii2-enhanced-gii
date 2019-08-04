@@ -11,6 +11,7 @@ namespace inquid\enhancedgii\utils;
 
 use Yii;
 use yii\base\UserException;
+use yii\db\Exception;
 use yii\helpers\Json;
 
 /**
@@ -22,33 +23,36 @@ use yii\helpers\Json;
  */
 class TableUtils
 {
+    use DatabaseUtilsTrait;
+
     /* @var $dbConnection */
-    public $dbConnection = null;
+    public $dbConnection;
 
     /**
-     * @param string $database
      * @param string $table
      *
-     * @throws \yii\db\Exception
-     *
+     * @param string $database
      * @return string
+     * @throws UserException
      */
-    public function getTableComment(string $table, string $database = null)
+    public function getTableComment(string $table, string $database = null): ?string
     {
-        if ($this->dbConnection === null) {
-            throw new UserException('No databse connection set');
-        }
-        if ($database === null) {
-            $database = DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
-        }
+        $this->validateDbConnection();
+
+        $this->getDatabase($database);
 
         try {
-            $result = Yii::$app->db->createCommand("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='{$database}' AND table_name='{$table}';")
+            $result = Yii::$app->db->createCommand(
+                "SELECT table_comment
+                     FROM INFORMATION_SCHEMA.TABLES
+                     WHERE table_schema='{$database}'
+                     AND table_name='{$table}';"
+            )
                 ->queryScalar();
 
-            return ($result != null) ? $result : 'N/A';
-        } catch (\yii\db\Exception $e) {
-            return 'ERROR '.Json::encode($e);
+            return $result ?? 'N/A';
+        } catch (Exception $e) {
+            return 'ERROR ' . Json::encode($e);
         }
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: gogl92
@@ -10,6 +10,7 @@ namespace inquid\tests;
 
 
 use inquid\enhancedgii\utils\DatabaseUtils;
+use yii\base\UserException;
 
 class DatabaseUtilsTest extends TestCase
 {
@@ -21,13 +22,27 @@ class DatabaseUtilsTest extends TestCase
         $this->databaseUtils = new DatabaseUtils();
     }
 
-    public function testGetDatabaseName()
+    /**
+     * @throws UserException
+     */
+    public function testGetDatabaseName(): void
     {
         $this->databaseUtils = '';
     }
 
-    public function testGetDsnAttribute()
+    public function testGetDsnAttribute(): void
     {
 
+    }
+
+    public function testValidateException(): void
+    {
+        $this->expectException(UserException::class);
+        try{
+            $this->databaseUtils->dbConnection = null;
+            $this->databaseUtils->getDatabaseName();
+        }catch (UserException $userException){
+            throw $userException;
+        }
     }
 }

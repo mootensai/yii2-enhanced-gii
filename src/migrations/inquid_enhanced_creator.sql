@@ -44,7 +44,7 @@ CREATE TABLE `ccolumn` (
   `relation` varchar(100) DEFAULT NULL,
   `relation_type` int(11) DEFAULT NULL COMMENT 'One to one relation\nOne to Many\nMany to Many',
   `relation_field` varchar(100) DEFAULT NULL COMMENT 'The column name of the Foregin table to be used.\nThe connection will be seen as spinner or combobox and this column need to contain the values to show.',
-  `default_values` text COMMENT 'Default values to be inserted in the databse.',
+  `default_values` text COMMENT 'Default values to be inserted in the database.',
   `id_table` int(11) NOT NULL COMMENT 'Table',
   `input_widget` enum('textInput','textarea','password','email','file','checkBox','checkBoxGroup','radioButtonGroup','button','dropdown','datePicker','starRating','switchInput','rangeInput','spinner') DEFAULT NULL COMMENT 'Widget to be displayed',
   `display_widget` enum('default','image','video','map','whatsapp') DEFAULT NULL,

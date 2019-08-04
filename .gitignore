@@ -7,3 +7,8 @@ themes/classic/views/
 nbproject/*
 .idea/*
 vendor/*
+.DS_Store
+.env
+.env.dev
+.env.prod
+.env.deploy

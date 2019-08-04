@@ -54,7 +54,8 @@
     "drsdre/yii2-wizardwidget": "*",
     "bizley/contenttools": "^1.2",
     "yii2mod/yii2-editable": "*",
-    "mohorev/yii2-upload-behavior": "*"
+    "mohorev/yii2-upload-behavior": "*",
+    "vlucas/phpdotenv": "^3.4"
   },
   "require-dev": {
     "yiisoft/yii2": "*",

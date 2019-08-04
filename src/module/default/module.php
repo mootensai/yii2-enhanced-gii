@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This is the template for generating a module class file.
  */

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: gogl92
@@ -10,11 +10,17 @@ namespace inquid\enhancedgii\utils;
 
 use Yii;
 use yii\base\UserException;
-use yii\helpers\Json;
+use yii\db\Exception;
 
+/**
+ * Class DatabaseUtils
+ * @package inquid\enhancedgii\utils
+ */
 class DatabaseUtils
 {
-    public $dbConnection = null;
+    use DatabaseUtilsTrait;
+
+    public $dbConnection;
 
     /**
      * Get the database comment or database name.
@@ -25,31 +31,21 @@ class DatabaseUtils
      *
      * @return false|string|null
      */
-    public function getDatabaseName(string $databaseName = null)
+    public function getDatabaseName($databaseName = null)
     {
-        if ($this->dbConnection === null) {
-            throw new UserException('No databse connection set');
-        }
-        if ($databaseName === null) {
-            $databaseName = self::getDsnAttribute($this->dbConnection->dsn);
-        }
+        $this->validateDbConnection();
+
+        $databaseName = $this->getTableName($databaseName);
 
         try {
-            $result = Yii::$app->db->createCommand("SELECT comment FROM phpmyadmin.pma__column_info WHERE db_name='{$databaseName}';")
+            $result = Yii::$app->db->createCommand(
+                "SELECT comment
+                     FROM phpmyadmin.pma__column_info
+                     WHERE db_name='{$databaseName}';")
                 ->queryScalar();
-
-            return ($result != null) ? $result : 'N/A';
-        } catch (\yii\db\Exception $e) {
-            return 'ERROR '.Json::encode($e);
-        }
-    }
-
-    public static function getDsnAttribute($dsn, $name = 'dbname')
-    {
-        if (preg_match('/'.$name.'=([^;]*)/', $dsn, $match)) {
-            return $match[1];
-        } else {
-            return;
+            return $result ?? 'N/A';
+        } catch (Exception $e) {
+            throw new UserException("Database Error {$e->getMessage()}");
         }
     }
 }

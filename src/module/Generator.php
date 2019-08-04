@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @link http://www.yiiframework.com/
  *
@@ -132,7 +132,7 @@ EOD;
     /**
      * {@inheritdoc}
      */
-    public function generate()
+    public function generate(): array
     {
         $files = [];
         $db = $this->getDbConnection();
