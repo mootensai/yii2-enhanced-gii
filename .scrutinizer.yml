@@ -4,4 +4,5 @@ build:
       version: 7.2
   dependencies:
       before:
+        - sudo apt-get update && sudo apt-get upgrade  -y
         - sudo apt-get -y install php-zip zip
