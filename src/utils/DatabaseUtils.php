@@ -45,9 +45,13 @@ class DatabaseUtils
                      WHERE db_name='{$databaseName}';")
                 ->queryScalar();
 
-            return $result ?? 'N/A';
+            $result = $result ?? 'N/A';
         } catch (Exception $e) {
-            throw new UserException("Database Error {$e->getMessage()}");
+            $result = '';
+            //throw new UserException("Database Error {$e->getMessage()}");
+            // Do not throw an exception if the phpMyAdmin database is not present
+            // refer to https://github.com/inquid/yii2-enhanced-gii/issues/25
         }
+        return $result;
     }
 }
