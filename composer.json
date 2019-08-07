@@ -26,6 +26,7 @@
     }
   ],
   "require": {
+    "php": ">=7.1.0",
     "ext-zip": "*",
     "yiisoft/yii2-faker": "~2.0.0",
     "yiisoft/yii2-gii": "~2.1.0",
