@@ -302,6 +302,9 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = Yii::$app->request->post('<?= $rel[1] ?>');
+            if (!empty($row)) {
+                $row = array_values($row);
+            }
             if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
                 $row[] = [];
             return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
