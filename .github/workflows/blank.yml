@@ -9,9 +9,13 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Get Composer
+      run: curl -sS https://getcomposer.org/installer | php
+    - name: Move composer file
+      run: sudo mv composer.phar /usr/local/bin/composer
+    - name: Execute composer
+      run: composer install
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - name: Execute Module Tests
+      run: ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/ModuleTest.php
