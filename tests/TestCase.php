@@ -23,7 +23,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
     /** @var array */
     protected $env;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->env = Dotenv::create(__DIR__)->load();
         parent::setUp();
