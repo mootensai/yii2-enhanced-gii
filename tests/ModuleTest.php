@@ -4,6 +4,7 @@ namespace inquid\tests;
 
 use inquid\enhancedgii\BaseGenerator;
 use inquid\enhancedgii\module\Generator;
+use Yii;
 use yii\base\UserException;
 use yii\gii\Generator as YiiBaseGenerator;
 use yii\helpers\StringHelper;
@@ -124,13 +125,15 @@ class ModuleTest extends TestCase
 
     public function testFailsWhenNoValidDatabaseGiven(): void
     {
-        $this->expectException(UserException::class);
-        try {
-            $this->mockWebApplicationInvalid();
-            $this->generator->generate();
-        } catch (UserException $userException) {
-            throw $userException;
-        }
+        //$this->expectException(UserException::class);
+        $this->generator = new Generator();
+        $this->mockWebApplicationInvalid();
+        $this->modulePath = 'myModule';
+        $this->generator->moduleClass = "app\\modules\\{$this->modulePath}\\MyCustomClass1";
+        $this->generator->moduleID = 'myCustomModuleId';
+        $this->generator->generate();
+        $this->generator->validateDb();
+        $this->assertNotEmpty($this->generator->getErrors());
     }
 
     public function testGenerateModuleSuccessfully(): void

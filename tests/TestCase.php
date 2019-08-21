@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase as PHPUnitBaseTestCase;
 use Yii;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
+use yii\web\Application;
 
 /**
  * This is the base class for all yii framework unit tests.
@@ -90,10 +91,11 @@ abstract class TestCase extends PHPUnitBaseTestCase
     /**
      * @param array $config
      * @param string $appClass
+     * @return Application
      */
-    protected function mockWebApplicationInvalid($config = [], $appClass = '\yii\web\Application')
+    protected function mockWebApplicationInvalid($config = [], $appClass = '\yii\web\Application'): Application
     {
-        new $appClass(ArrayHelper::merge([
+        return new $appClass(ArrayHelper::merge([
             'id' => 'testapp',
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',

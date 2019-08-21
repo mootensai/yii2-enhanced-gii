@@ -9,11 +9,18 @@
 namespace inquid\enhancedgii;
 
 use Yii;
+use yii\base\Component;
 use yii\base\NotSupportedException;
 use yii\db\Connection;
 use yii\db\TableSchema;
 use yii\helpers\Inflector;
 
+/**
+ *
+ * @property array $columnNames
+ * @property string[] $schemaNames
+ * @property \yii\base\Component|object $dbConnection
+ */
 abstract class BaseGenerator extends \yii\gii\Generator
 {
     public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
@@ -71,7 +78,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Validates the [[db]] attribute.
      */
-    public function validateDb()
+    public function validateDb(): void
     {
         if (!Yii::$app->has($this->db)) {
             $this->addError('db', 'There is no application component named "db".');
@@ -487,14 +494,19 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * @return Connection the DB connection as specified by [[db]].
+     * Connection the DB connection as specified by [[db]].
+     * @return object|Component
+     * @throws \yii\base\InvalidConfigException
      */
     public function getDbConnection()
     {
         return Yii::$app->get($this->db, false);
     }
 
-    public function getTableSchema()
+    /**
+     * @return TableSchema
+     */
+    public function getTableSchema(): TableSchema
     {
         return $this->tableSchema;
     }
@@ -503,9 +515,11 @@ abstract class BaseGenerator extends \yii\gii\Generator
     protected $classNames;
 
     /**
-     * @return array the table names that match the pattern specified by [[tableName]].
+     * Returns an array of the table names that match the pattern specified by [[tableName]].
+     * @return array
+     * @throws \yii\base\InvalidConfigException
      */
-    protected function getTableNames()
+    protected function getTableNames(): array
     {
         if ($this->tableNames !== null) {
             return $this->tableNames;
@@ -538,9 +552,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * @return int[] model column names
+     * The column names of the schema
+     * @return array
      */
-    public function getColumnNames()
+    public function getColumnNames(): array
     {
         return $this->getTableSchema()->getColumnNames();
     }
@@ -552,8 +567,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
      * @param string $tableName the table name (which may contain schema prefix)
      *
      * @return string the generated table name
+     * @throws \yii\base\InvalidConfigException
      */
-    public function generateTableName($tableName)
+    public function generateTableName($tableName): string
     {
         if (!$this->useTablePrefix) {
             return $tableName;
