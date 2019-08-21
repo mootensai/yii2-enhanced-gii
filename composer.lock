@@ -5826,29 +5826,62 @@
         },
         {
             "name": "scrivo/highlight.php",
-            "version": "v8.9.1",
+            "version": "v9.15.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scrivo/highlight.php.git",
-                "reference": "d861aee53999963aed4b742cfe21181bec178f35"
+                "reference": "fdc7a5109fc2202c9452adb2a21b8d31e7ce5900"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/d861aee53999963aed4b742cfe21181bec178f35",
-                "reference": "d861aee53999963aed4b742cfe21181bec178f35",
+                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/fdc7a5109fc2202c9452adb2a21b8d31e7ce5900",
+                "reference": "fdc7a5109fc2202c9452adb2a21b8d31e7ce5900",
                 "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.7",
+                "symfony/finder": "^2.8"
+            },
+            "suggest": {
+                "ext-dom": "Needed to make use of the features in the utilities namespace"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Highlight\\": ""
-                }
+                    "Highlight\\": "",
+                    "HighlightUtilities\\": ""
+                },
+                "files": [
+                    "HighlightUtilities/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Server side syntax highlighter that supports over 90 languages. It's a PHP port of highlight.js",
+            "authors": [
+                {
+                    "name": "Geert Bergman",
+                    "role": "Project Author",
+                    "homepage": "http://www.scrivo.org/"
+                },
+                {
+                    "name": "Vladimir Jimenez",
+                    "role": "Contributor",
+                    "homepage": "https://allejo.io"
+                },
+                {
+                    "name": "Martin Folkers",
+                    "role": "Contributor",
+                    "homepage": "https://twobrain.io"
+                }
+            ],
+            "description": "Server side syntax highlighter that supports 185 languages. It's a PHP port of highlight.js",
             "keywords": [
                 "code",
                 "highlight",
@@ -5856,7 +5889,7 @@
                 "highlight.php",
                 "syntax"
             ],
-            "time": "2015-12-31T20:33:22+00:00"
+            "time": "2019-08-09T05:01:28+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -6275,29 +6308,32 @@
         },
         {
             "name": "yiisoft/yii2-apidoc",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-apidoc.git",
-                "reference": "31d7e1f9a7ab2ac7afe03eaf4f23ed5719a47699"
+                "reference": "7aa9c96ea1405a31365cc7e62462968964dd7ca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-apidoc/zipball/31d7e1f9a7ab2ac7afe03eaf4f23ed5719a47699",
-                "reference": "31d7e1f9a7ab2ac7afe03eaf4f23ed5719a47699",
+                "url": "https://api.github.com/repos/yiisoft/yii2-apidoc/zipball/7aa9c96ea1405a31365cc7e62462968964dd7ca7",
+                "reference": "7aa9c96ea1405a31365cc7e62462968964dd7ca7",
                 "shasum": ""
             },
             "require": {
                 "cebe/js-search": "~0.9.3",
-                "cebe/markdown": "~1.0.0 | ~1.1.0",
+                "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
                 "cebe/markdown-latex": "~1.0",
                 "nikic/php-parser": "^1.0",
                 "php": ">=5.4",
                 "phpdocumentor/reflection": "^3.0.1",
                 "phpdocumentor/reflection-docblock": "^2.0.4",
-                "scrivo/highlight.php": "~8.0",
+                "scrivo/highlight.php": "~9.13",
                 "yiisoft/yii2": "~2.0.13",
                 "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "<7"
             },
             "bin": [
                 "apidoc"
@@ -6331,7 +6367,7 @@
                 "phpdoc",
                 "yii2"
             ],
-            "time": "2018-11-14T10:03:21+00:00"
+            "time": "2019-08-20T23:39:54+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
