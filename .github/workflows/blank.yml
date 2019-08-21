@@ -15,7 +15,11 @@ jobs:
       run: sudo mv composer.phar /usr/local/bin/composer
     - name: Execute composer
       run: composer install
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - name: Init docker
+      run: docker swarm init
+    - name: Start MySQL
+      run: docker stack deploy -c docker/stack.yml mysql
+    - name: Init env file
+      run: mv tests/.env.example  tests/.env
     - name: Execute Module Tests
-      run: ./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/ModuleTest.php
+      run: ./vendor/bin/phpunit tests/ModuleTest.php --bootstrap tests/bootstrap.php
