@@ -80,7 +80,7 @@ GOOGLE_PROJECT_NAME = project_id
 SQL_INSTANCE_NAME   = sql
 GOOGLE_BUCKET = bucket
 
-TEST_DB_DSN           = mysql:host=localhost;port=3306;dbname=yii2-starter-kit-test
+TEST_DB_DSN           = mysql:host=localhost;port=3306;dbname=yii2-starter-kit-test.yml
 TEST_DB_USERNAME      = root
 TEST_DB_PASSWORD      = root
 

@@ -9,7 +9,7 @@ use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 
 /**
- * This generator will generate all the test necessary for test the CRUD.
+ * This generator will generate all the test.yml necessary for test.yml the CRUD.
  *
  * @author Luis Gonzalez <contact@inquid.co>
  *
@@ -46,7 +46,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      */
     public function getDescription()
     {
-        return 'This generator generates all test needed for the CRUD';
+        return 'This generator generates all test.yml needed for the CRUD';
     }
 
     /**
