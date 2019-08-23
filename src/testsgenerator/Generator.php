@@ -12,6 +12,8 @@ use yii\helpers\Inflector;
  * This generator will generate all the test necessary for test the CRUD.
  *
  * @author Luis Gonzalez <contact@inquid.co>
+ *
+ * @property string $name
  */
 class Generator extends \inquid\enhancedgii\BaseGenerator
 {
@@ -169,7 +171,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     /**
      * Validates the [[db]] attribute.
      */
-    public function validateDb()
+    public function validateDb(): void
     {
         if (!Yii::$app->has($this->db)) {
             $this->addError('db', 'There is no application component named "db".');
@@ -201,7 +203,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      *
      * @return array the table names that match the pattern specified by [[tableName]].
      */
-    protected function getTableNames()
+    protected function getTableNames(): array
     {
         if ($this->tableNames !== null) {
             return $this->tableNames;
@@ -242,7 +244,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      *
      * @return string the generated table name
      */
-    public function generateTableName($tableName)
+    public function generateTableName($tableName): string
     {
         if (!$this->useTablePrefix) {
             return $tableName;
@@ -458,12 +460,13 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         return '$faker->text(10)';
     }
 
-    public function contains($needle, $haystack)
+    /**
+     * @param $needle
+     * @param $haystack
+     * @return bool
+     */
+    public function contains($needle, $haystack): bool
     {
-        if (strpos($haystack, $needle) !== false) {
-            return true;
-        }
-
-        return false;
+        return strpos($haystack, $needle) !== false;
     }
 }
