@@ -31,6 +31,7 @@ class Bootstrap implements BootstrapInterface
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
                 $app->getModule('gii')->generators['enhanced-gii-repo'] = 'inquid\enhancedgii\repo\Generator';
+                $app->getModule('gii')->generators['enhanced-gii-domain'] = 'inquid\enhancedgii\domain\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-app_template'] = 'inquid\enhancedgii\app_template\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-model'] = 'inquid\enhancedgii\model\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'inquid\enhancedgii\crud\Generator';

@@ -2,7 +2,7 @@
 
 namespace inquid\enhancedgii\repo;
 
-use inquid\enhancedgii\repo\components\RepoHandler;
+use inquid\enhancedgii\repo\components\DomainHandler;
 use Yii;
 use yii\gii\CodeFile;
 
@@ -99,7 +99,7 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         $files = [];
-        $repoHandler = new RepoHandler($this->local_path, $this->name, $this->github_token, $this->suffix_page, $this->description, $this->public_repo);
+        $repoHandler = new DomainHandler($this->local_path, $this->name, $this->github_token, $this->suffix_page, $this->description, $this->public_repo);
         $files[] = new CodeFile("{$this->local_path}/{$this->name}/README.md", $this->render('README.md', ['repo_name' => 'name']));
         Yii::debug('Creating the repo'.$repoHandler->createRepo(true));
 
