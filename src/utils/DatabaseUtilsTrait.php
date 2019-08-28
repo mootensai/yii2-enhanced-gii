@@ -30,7 +30,7 @@ trait DatabaseUtilsTrait
      *
      * @return array|null
      */
-    protected function getDatabase(string $database): ?string
+    protected function getDatabase(?string $database): ?string
     {
         if ($database === null) {
             return DatabaseUtils::getDsnAttribute($this->dbConnection->dsn);
