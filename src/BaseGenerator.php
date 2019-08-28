@@ -16,7 +16,6 @@ use yii\db\TableSchema;
 use yii\helpers\Inflector;
 
 /**
- *
  * @property array $columnNames
  * @property string[] $schemaNames
  * @property \yii\base\Component|object $dbConnection
@@ -495,8 +494,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
     /**
      * Connection the DB connection as specified by [[db]].
-     * @return object|Component
+     *
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return object|Component
      */
     public function getDbConnection()
     {
@@ -516,8 +517,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
     /**
      * Returns an array of the table names that match the pattern specified by [[tableName]].
-     * @return array
+     *
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return array
      */
     protected function getTableNames(): array
     {
@@ -552,7 +555,8 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * The column names of the schema
+     * The column names of the schema.
+     *
      * @return array
      */
     public function getColumnNames(): array
@@ -566,8 +570,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
      *
      * @param string $tableName the table name (which may contain schema prefix)
      *
-     * @return string the generated table name
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return string the generated table name
      */
     public function generateTableName($tableName): string
     {

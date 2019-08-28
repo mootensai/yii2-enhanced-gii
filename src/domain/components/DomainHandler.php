@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: gogl92
@@ -9,14 +11,11 @@
 namespace inquid\enhancedgii\domain\components;
 
 /**
- * Class DomainHandler
- * @package inquid\enhancedgii\repo\components
+ * Class DomainHandler.
  */
 class DomainHandler
 {
-
     public function init()
     {
-
     }
 }

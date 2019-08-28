@@ -463,6 +463,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     /**
      * @param $needle
      * @param $haystack
+     *
      * @return bool
      */
     public function contains($needle, $haystack): bool

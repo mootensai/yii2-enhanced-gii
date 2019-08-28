@@ -52,7 +52,7 @@ class DatabaseUtils
             // Do not throw an exception if the phpMyAdmin database is not present
             // refer to https://github.com/inquid/yii2-enhanced-gii/issues/25
         }
-        
+
         return $result;
     }
 }

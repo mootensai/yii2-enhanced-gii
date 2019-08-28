@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace inquid\enhancedgii\domain;
 
 use inquid\godaddy\Godaddy;
 use Yii;
-use yii\gii\CodeFile;
 
 /**
  * This generator will generate migration file for the specified database table.
@@ -63,8 +64,8 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::rules(), [
             [['name'], 'filter', 'filter' => 'trim'],
             [['ttl'], 'integer'],
-            [['godaddy_key','godaddy_secret','domain','ip','type'], 'string'],
-            [['godaddy_key','godaddy_secret'], 'required'],
+            [['godaddy_key', 'godaddy_secret', 'domain', 'ip', 'type'], 'string'],
+            [['godaddy_key', 'godaddy_secret'], 'required'],
         ]);
     }
 
@@ -74,13 +75,13 @@ class Generator extends \yii\gii\Generator
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'name' => 'subdomain',
-            'ttl' => 'TTL',
-            'godaddy_key' => 'Godaddy Key',
+            'name'           => 'subdomain',
+            'ttl'            => 'TTL',
+            'godaddy_key'    => 'Godaddy Key',
             'godaddy_secret' => 'Godaddy Secret',
-            'domain' => 'domain',
-            'ip' => 'IP',
-            'type' => 'type',
+            'domain'         => 'domain',
+            'ip'             => 'IP',
+            'type'           => 'type',
         ]);
     }
 
@@ -90,13 +91,13 @@ class Generator extends \yii\gii\Generator
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'name' => 'subdomain',
-            'ttl' => 'TTL',
-            'godaddy_key' => 'Godaddy Key',
+            'name'           => 'subdomain',
+            'ttl'            => 'TTL',
+            'godaddy_key'    => 'Godaddy Key',
             'godaddy_secret' => 'Godaddy Secret',
-            'domain' => 'domain',
-            'ip' => 'IP',
-            'type' => 'type',
+            'domain'         => 'domain',
+            'ip'             => 'IP',
+            'type'           => 'type',
         ]);
     }
 
@@ -109,6 +110,7 @@ class Generator extends \yii\gii\Generator
         $response = $godaddyClient->getDomainAviability(['domain' => $this->domain]);
         Yii::debug(json_encode($response));
         Yii::debug('Creating the domain'.$this->domain);
+
         return $files;
     }
 }
