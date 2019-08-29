@@ -493,7 +493,7 @@ class Generator extends BaseGenerator {
                     }
                 }
             }
-            if (!empty($this->optimisticLock)) {
+            if (!empty($this->optimisticLock) && isset($table->columns[$this->optimisticLock])) {
                 $rules[] = "[['" . $this->optimisticLock . "'], 'default', 'value' => '0']";
                 $rules[] = "[['" . $this->optimisticLock . "'], 'mootensai\\components\\OptimisticLockValidator']";
             }
