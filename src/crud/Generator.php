@@ -22,6 +22,10 @@ use yii\web\Controller;
  * @author Yohanes Candrajaya <moo.tensai@gmail.com>
  *
  * @since 2.0
+ *
+ * @property string $controllerID
+ * @property string $name
+ * @property array $searchAttributes
  */
 class Generator extends \inquid\enhancedgii\BaseGenerator
 {
@@ -231,7 +235,6 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
                 the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
                 if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
-            'nsModel'    => 'This is the namespace of the ActiveRecord class to be generated, e.g., <code>app\models</code>',
             'pluralize'  => 'Set the generator to generate pluralize for label',
             'expandable' => 'Set the generator to generate expandable/collapsible row for related at index',
             'cancelable' => 'Set the generator to generate cancel button to return to grid view at form',
@@ -246,9 +249,6 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 if "Table Name" ends with asterisk, in which case all relations will be generated.',
             'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
                 You may choose either <code>GridView</code> or <code>ListView</code>',
-            'modelClass' => 'This is the name of the Model class to be generated. The class name should not contain
-                the namespace part as it is specified in "Model Namespace". You do not need to specify the class name
-                if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'queryNs'    => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
