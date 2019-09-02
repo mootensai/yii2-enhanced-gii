@@ -4,7 +4,6 @@
  * User: gogl92
  * Date: 2019-02-24
  * Time: 01:18
- * TODO: Add PHPDOc comments to the modules beforeSave and afterSave.
  */
 echo "<?php\n";
 
@@ -23,7 +22,7 @@ class <?= $componentClassName ?> extends Component
 <?php
 echo
 "\t/**
-\t * @param " . $className . " " . lcfirst($className)."
+\t * @param " . $className . ' ' . lcfirst($className)."
 \t * @return " . $className . "
 \t */
 \tpublic function beforeSave($" . lcfirst($className) . '): ' . $className . "
@@ -33,7 +32,7 @@ echo
 
 <?php
 echo "\t/**
-\t * @param " . $className . " " . lcfirst($className)."
+\t * @param " . $className . ' ' . lcfirst($className)."
 \t * @return " . $className . "
 \t */
 \tpublic function afterSave($" . lcfirst($className) . '): ' . $className . "

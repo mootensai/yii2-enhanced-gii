@@ -18,7 +18,7 @@ echo "<?php\n";
 
 namespace <?= $generator->nsModel ?>\base;
 
-<?= (!$isTree) ? "use \\mootensai\\relation\\RelationTrait;\n" : "" ?>
+<?= (!$isTree) ? "use \\mootensai\\relation\\RelationTrait;\n" : '' ?>
 use Yii;
 use yii\db\ActiveRecord;
 <?php if ($generator->createdAt || $generator->updatedAt): ?>
@@ -46,9 +46,9 @@ use mootensai\behaviors\UUIDBehavior;
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClass, '\\') . "\n" ?>
+class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClass, '\\') . "\n" ?>
 {
-<?= (!$isTree) ? "use RelationTrait;\n" : "" ?>
+<?= (!$isTree) ? "use RelationTrait;\n" : '' ?>
 
 <?php if($generator->deletedBy): ?>
     private $_rt_softdelete;
@@ -57,15 +57,15 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     public function __construct(){
         parent::__construct();
         $this->_rt_softdelete = [
-            '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValue)) ? 1 : $generator->deletedByValue ?>,
+            '<?= $generator->deletedBy ?>' => <?= empty($generator->deletedByValue) ? 1 : $generator->deletedByValue ?>,
 <?php if($generator->deletedAt): ?>
-            '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValue)) ? 1 : $generator->deletedAtValue ?>,
+            '<?= $generator->deletedAt ?>' => <?= empty($generator->deletedAtValue) ? 1 : $generator->deletedAtValue ?>,
 <?php endif; ?>
         ];
         $this->_rt_softrestore = [
-            '<?= $generator->deletedBy ?>' => <?= (empty($generator->deletedByValueRestored)) ? 0 : $generator->deletedByValueRestored ?>,
+            '<?= $generator->deletedBy ?>' => <?= empty($generator->deletedByValueRestored) ? 0 : $generator->deletedByValueRestored ?>,
 <?php if($generator->deletedAt): ?>
-            '<?= $generator->deletedAt ?>' => <?= (empty($generator->deletedAtValueRestored)) ? 0 : $generator->deletedAtValueRestored ?>,
+            '<?= $generator->deletedAt ?>' => <?= empty($generator->deletedAtValueRestored) ? 0 : $generator->deletedAtValueRestored ?>,
 <?php endif; ?>
         ];
     }
@@ -156,7 +156,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
      */
     public function behaviors()
     {
-        return <?= ($isTree) ? "array_merge(parent::behaviors(), " : ""; ?>[
+        return <?= $isTree ? 'array_merge(parent::behaviors(), ' : ''; ?>[
 <?php if ($generator->createdAt || $generator->updatedAt):?>
             'timestamp' => [
                 'class' => TimestampBehavior::class,
@@ -212,7 +212,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
                 'url' => '@web/files',
             ],
 	<?php }
-	} ?>]<?= ($isTree) ? ")" : "" ?>;
+	} ?>]<?= $isTree ? ')' : '' ?>;
     }
 <?php endif; ?>
 <?php if ($queryClassName): ?>
