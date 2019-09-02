@@ -28,9 +28,9 @@ class DatabaseUtils
      *
      * @param string|null $databaseName
      *
-     * @throws UserException
      *
      * @return false|string|null
+     * @throws UserException
      */
     public function getDatabaseName($databaseName = null)
     {
@@ -40,14 +40,14 @@ class DatabaseUtils
 
         try {
             $result = Yii::$app->db->createCommand(
-                "SELECT comment
-                     FROM phpmyadmin.pma__column_info
-                     WHERE db_name='{$databaseName}';")
+                "SELECT value_param
+                     FROM {$databaseName}.inquid_params
+                     WHERE key_param='database_nickname';")
                 ->queryScalar();
 
-            $result = $result ?? 'N/A';
+            $result = $result ?? 'DATABASE nickname invalid';
         } catch (Exception $e) {
-            $result = '';
+            $result = 'No DATABASE nickname Found';
             //throw new UserException("Database Error {$e->getMessage()}");
             // Do not throw an exception if the phpMyAdmin database is not present
             // refer to https://github.com/inquid/yii2-enhanced-gii/issues/25

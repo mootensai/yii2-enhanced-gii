@@ -12,6 +12,7 @@ namespace inquid\tests;
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase as PHPUnitBaseTestCase;
 use Yii;
+use yii\db\Schema;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use yii\web\Application;
@@ -117,9 +118,37 @@ abstract class TestCase extends PHPUnitBaseTestCase
     }
 
     /**
+     *
+     */
+    protected function createTestDatabase(): void
+    {
+        Yii::$app->db->createCommand()->createTable(
+            'inquid_params',
+            [
+                'id' => Schema::TYPE_PK,
+                'key_param' => Schema::TYPE_STRING,
+                'value_param' => Schema::TYPE_TEXT
+            ]
+        )
+            ->addUnique('name_uq', 'inquid_params', 'key_param')
+            ->insert('inquid_params', [
+                'key_param' => 'database_nickname',
+                'value_param' => 'Inquid Test Database',
+            ]);
+    }
+
+    /**
+     *
+     */
+    protected function destroyDatabase(): void
+    {
+
+    }
+
+    /**
      * Destroys application in Yii::$app by setting it to null.
      */
-    protected function destroyApplication()
+    protected function destroyApplication(): void
     {
         Yii::$app = null;
         Yii::$container = new Container();

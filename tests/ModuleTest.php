@@ -4,8 +4,6 @@ namespace inquid\tests;
 
 use inquid\enhancedgii\BaseGenerator;
 use inquid\enhancedgii\module\Generator;
-use Yii;
-use yii\base\UserException;
 use yii\gii\Generator as YiiBaseGenerator;
 use yii\helpers\StringHelper;
 
@@ -123,17 +121,17 @@ class ModuleTest extends TestCase
         $this->assertEmpty($this->generator->getErrors());
     }
 
-    public function testFailsWhenNoValidDatabaseGiven(): void
+    public function testGetNAWhenNoValidDatabaseGiven(): void
     {
-        //$this->expectException(UserException::class);
-        $this->generator = new Generator();
         $this->mockWebApplicationInvalid();
+        $this->generator = new Generator();
         $this->modulePath = 'myModule';
         $this->generator->moduleClass = "app\\modules\\{$this->modulePath}\\MyCustomClass1";
         $this->generator->moduleID = 'myCustomModuleId';
-        $this->generator->generate();
+        $files = $this->generator->generate();
         $this->generator->validateDb();
-        $this->assertNotEmpty($this->generator->getErrors());
+        $this->assertNotEmpty($files);
+        $this->assertEquals('No DATABASE nickname Found', $this->generator->databaseName);
     }
 
     public function testGenerateModuleSuccessfully(): void
@@ -184,6 +182,7 @@ class ModuleTest extends TestCase
     {
         $this->setUp();
         $this->mockWebApplication();
+        $this->createTestDatabase();
         $this->generator->generate();
 
         $this->assertNotEmpty($this->generateFiles());
@@ -259,7 +258,7 @@ class DefaultController extends Controller
             "<?php 
 \$this->title = '{$this->generator->moduleID}';
 ?><div class=\"{$this->generator->moduleID}-default-index\">
-    <h1>Inquid</h1>
+    <h1>Inquid Test Database</h1>
     <p>
         <?= \$this->title ?>    </p>
 </div>

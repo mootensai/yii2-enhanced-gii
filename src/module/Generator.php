@@ -31,6 +31,7 @@ class Generator extends BaseGenerator
 {
     public $moduleClass;
     public $moduleID;
+    public $databaseName = 'N/A';
 
     /**
      * {@inheritdoc}
@@ -133,6 +134,8 @@ EOD;
 
     /**
      * {@inheritdoc}
+     * @throws \yii\base\UserException
+     * @throws \yii\base\InvalidConfigException
      */
     public function generate(): array
     {
@@ -141,6 +144,7 @@ EOD;
         $databaseUtils = new DatabaseUtils();
         $databaseUtils->dbConnection = $db;
         $modulePath = $this->getModulePath();
+        $this->databaseName = $databaseUtils->getDatabaseName();
 
         $files[] = new CodeFile(
             $modulePath.'/'.StringHelper::basename($this->moduleClass).'.php',
@@ -152,7 +156,7 @@ EOD;
         );
         $files[] = new CodeFile(
             $modulePath.'/views/default/index.php',
-            $this->render('view.php', ['databaseName' => $databaseUtils->getDatabaseName()])
+            $this->render('view.php', ['databaseName' => $this->databaseName])
         );
         $files[] = new CodeFile(
             $modulePath.'/menu_items.php',
