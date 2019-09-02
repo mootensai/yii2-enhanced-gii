@@ -73,20 +73,20 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php if ($generator->loggedUserOnly):
     $actions = ["'index'", "'view'", "'create'", "'update'","'delete'"];
     if($generator->pdf){
-        array_push($actions,"'pdf'");
+        $actions[] = "'pdf'";
     }
     if($generator->importExcel){
-        array_push($actions,"'import'");
-        array_push($actions,"'import-validate'");
-        array_push($actions,"'import-excel'");
-        array_push($actions,"'get-format'");
+        $actions[] = "'import'";
+        $actions[] = "'import-validate'";
+        $actions[] = "'import-excel'";
+        $actions[] = "'get-format'";
     }
     if($generator->saveAsNew){
-        array_push($actions,"'save-as-new'");
+        $actions[] = "'save-as-new'";
     }
     foreach ($relations as $name => $rel){
         if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)){
-            array_push($actions,"'".\yii\helpers\Inflector::camel2id('add'.$rel[1])."'");
+            $actions[] = "'" . \yii\helpers\Inflector::camel2id('add' . $rel[1]) . "'";
         }
     }
 ?>
@@ -324,16 +324,22 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = Yii::$app->request->post('<?= $rel[1] ?>');
+			if ($id = Yii::$app->request->post('id'))
+				$model = $this->findModel($id);
+			else
+				$model = null;
             if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
                 $row[] = [];
-            return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row]);
+            return $this->renderAjax('_form<?= $rel[1] ?>', ['row' => $row, 'parent' => $model]);
         } else {
             throw new NotFoundHttpException(<?= $generator->generateString('La página solicitada no existe.')?>);
         }
     }
 <?php endif; ?>
 <?php endforeach; ?>
-
+<?php
+$generator->skippedColumns[] = 'lock';
+?>
         /* Excel Zone */
     /**
      * @param int $id
@@ -353,7 +359,11 @@ if (count($pks) === 1) {
 ?>
                 ]);
             if ($format) {
-                $data->where(['id' => -1]);
+                $data->where([
+                <?php foreach ($pks as $pk) { ?>
+                    '<?=$pk?>' => -1,
+                <?php } ?>
+                ]);
             }
             $excel->createExportTable(
                 $data->asArray()->all(),
@@ -373,11 +383,13 @@ if (count($pks) === 1) {
     }
 ?>
             ]);
-            return $this->redirect($excel->saveExcel('files/formats', 'FormatoImportar<?= $modelClass ?>'));
+            return $this->redirect($excel->saveExcel('files/formats', 'ImportFormat<?= $modelClass ?>'));
         } catch (Exception $e) {
-            return false;
+            Yii::$app->session->setFlash(Alert::TYPE_ERROR, $e->getMessage());
+            return $this->redirect(Yii::$app->request->referrer);
         } catch (InvalidConfigException $e) {
-            return false;
+            Yii::$app->session->setFlash(Alert::TYPE_ERROR, $e->getMessage());
+            return $this->redirect(Yii::$app->request->referrer);
         }
     }
     /**
@@ -396,8 +408,11 @@ if (count($pks) === 1) {
     {
         $personal = new <?= $modelClass ?>();
         $personal->fileExcelImport = UploadedFile::getInstanceByName('fileExcelTest');
-        $personal->fileExcelImport->saveAs('files/<?= $modelClass ?>/tmp_' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension);
-        $path = './files/<?= $modelClass ?>/tmp_' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension;
+        $path = Yii::getAlias('@app/web/files/<?= $modelClass ?>/');
+        if (!is_dir($path)){ mkdir($path, 0775, true); }
+        $path = $path.'tmp_' . $personal->fileExcelImport->baseName . '_' .
+        $personal->{$keyField} . $personal->fileExcelImport->extension;
+        $personal->fileExcelImport->saveAs($path);
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
         $spreadsheet = $reader->load($path);
@@ -418,8 +433,11 @@ if (count($pks) === 1) {
     {
         $personal = new <?= $modelClass ?>();
         $personal->fileExcelImport = UploadedFile::getInstanceByName('fileExcel');
-        $personal->fileExcelImport->saveAs('files/<?= $modelClass ?>/' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension);
-        $path = './files/<?= $modelClass ?>/' . $personal->fileExcelImport->baseName . '_' . $personal->id . $personal->fileExcelImport->extension;
+        $path = Yii::getAlias('@app/web/files/<?= $modelClass ?>/');
+        if (!is_dir($path)){ mkdir($path, 0775, true); }
+        $path = $path.'tmp_' . $personal->fileExcelImport->baseName . '_' .
+        $personal->{$keyField} . $personal->fileExcelImport->extension;
+        $personal->fileExcelImport->saveAs($path);
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
         $spreadsheet = $reader->load($path);
@@ -441,14 +459,14 @@ if (count($pks) === 1) {
         Yii::debug('Data to import to movements' . Json::encode($data), GoogleCloudLogger::INVENTARIOS_LOG);
         unset($data[0]);
         foreach ($data as $datum) {
-            $personal = <?= $modelClass ?>::find()->where(['id' => (int)$datum[0]])->one();
+            $personal = <?= $modelClass ?>::find()->where(['<?= $pks[0] ?>' => (int)$datum[0]])->one();
             if ($personal === null) {
                 $personal = new <?= $modelClass ?>();
             }
 <?php
     foreach ($generator->getColumnNames() as $key => $name) {
         if (!in_array($name, $generator->skippedColumns))
-            echo "              \$personal->{$name} = (string)\$datum[{$key}];\n";
+            echo "              \$personal->{$name} = \$personal->processImport('{$name}',(string)\$datum[{$key}]);\n";
     }
 ?>
             if ($test) {
@@ -467,3 +485,6 @@ if (count($pks) === 1) {
     }
         //END EXCEL Zone
 }
+<?php
+array_pop($generator->skippedColumns);
+?>

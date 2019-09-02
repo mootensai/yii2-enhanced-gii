@@ -2,11 +2,14 @@
 /* @var $generator \inquid\enhancedgii\crud\Generator */
 /* @var $relations array */
 
+$tableSchema = $generator->getTableSchema();
+$pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
 $fk = $generator->generateFK($tableSchema);
 $relID = \yii\helpers\Inflector::camel2id($relations[$generator::REL_CLASS]);
 $humanize = \yii\helpers\Inflector::humanize($relations[$generator::REL_TABLE], true);
-echo "<div class=\"form-group\" id=\"add-$relID\">\n";
+echo '<div class="form-group" id="add-$relID">';
+echo '<input type="hidden" name="id" value="<?=$parent?$parent->' .$pk. ':null?>"/>';
 echo "<?php\n";
 ?>
 use kartik\grid\GridView;

@@ -258,4 +258,15 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
 <?php endif; ?>
     }
 <?php endif; ?>
+
+	/**
+     * @param $name attribute name
+	 * @param $value raw value from Excel
+     * @return mixed processed value to save
+     */
+	 public function processImport($name, $value)
+	 {
+		 //return raw value by default
+		 return $value;
+	 }
 }

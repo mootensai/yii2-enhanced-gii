@@ -1246,10 +1246,14 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public function hasFile($table)
     {
         foreach ($table->columns as $column) {
-            if ($this->containsAnnotation($column, '@file') || $this->containsAnnotation($column, '@image')
-             || $this->containsAnnotation($column, '@vide') || $this->containsAnnotation($column, '@pdf')
-              || $this->containsAnnotation($column, '@word') || $this->containsAnnotation($column, '@excel')
-               || $this->containsAnnotation($column, '@powerpoint')
+            if (
+                $this->containsAnnotation($column, '@file') ||
+                $this->containsAnnotation($column, '@image') ||
+                $this->containsAnnotation($column, '@vide') ||
+                $this->containsAnnotation($column, '@pdf') ||
+                $this->containsAnnotation($column, '@word') ||
+                $this->containsAnnotation($column, '@excel') ||
+                $this->containsAnnotation($column, '@powerpoint')
             ) {
                 return true;
             }

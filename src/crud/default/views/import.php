@@ -10,7 +10,7 @@ echo "
 use dominus77\sweetalert2\Alert;";
 
 echo "/* @var \$this \yii\web\View */
-\$this->title = 'Importar'; ?>"
+\$this->title = 'Import'; ?>"
 ?>
 <?= "<?= Alert::widget(['useSessionFlash' => true]); ?>" ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-create">
@@ -28,7 +28,7 @@ echo "/* @var \$this \yii\web\View */
                     </ul>
                 </div>
                 <div class="col-sm-4">
-                    <h1>Validar Formato</h1>
+                    <h1>Validate Format</h1>
                     <?= "<?= \kartik\\file\FileInput::widget([
                         'name' => 'fileExcelTest',
                         'id' => 'fileExcelTest',
@@ -39,7 +39,7 @@ echo "/* @var \$this \yii\web\View */
                             'showPreview' => false,
                             'showCaption' => false,
                             'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
-                            'browseLabel' => 'Importar desde excel',
+                            'browseLabel' => 'Import From Excel',
                             'elCaptionText' => '#customCaption',
                             'uploadUrl' => \yii\helpers\Url::to(['import-validate']),
                             'allowedFileTypes' => 'object',
@@ -48,7 +48,7 @@ echo "/* @var \$this \yii\web\View */
                     ]); ?>"?>
                 </div>
                 <div class="col-sm-4">
-                    <h1>Importar Formato</h1>
+                    <h1>Import Format</h1>
                     <?= "<?= \kartik\\file\FileInput::widget([
                         'name' => 'fileExcel',
                         'id' => 'fileExcel',
@@ -59,7 +59,7 @@ echo "/* @var \$this \yii\web\View */
                             'showPreview' => false,
                             'showCaption' => false,
                             'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
-                            'browseLabel' => 'Importar desde excel',
+                            'browseLabel' => 'Import from Excel',
                             'elCaptionText' => '#customCaption',
                             'uploadUrl' => \yii\helpers\Url::to(['import-excel']),
                             'allowedFileTypes' => 'object',
