@@ -74,7 +74,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
-                    'dsn' => "mysql:host=db;port=33061;dbname=generator",
+                    'dsn' => "mysql:host=db;dbname=generator",
                     'username' => $this->env['DB_USERNAME'],
                     'password' => $this->env['DB_PASSWORD'],
                     'charset' => 'utf8',

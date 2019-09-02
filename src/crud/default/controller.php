@@ -324,6 +324,9 @@ if (count($pks) === 1) {
     {
         if (Yii::$app->request->isAjax) {
             $row = Yii::$app->request->post('<?= $rel[1] ?>');
+            if (!empty($row)) {
+                $row = array_values($row);
+            }
 			if ($id = Yii::$app->request->post('id'))
 				$model = $this->findModel($id);
 			else
