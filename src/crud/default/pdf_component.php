@@ -5,6 +5,7 @@
  * Date: 1/7/19
  * Time: 10:41 PM.
  */
+
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
@@ -34,12 +35,20 @@ class <?= $componentClass ?> extends FPDF
 {
     /** @var array $color */
     private $color = ['5', '100', '36'];
-<?= "public \${$modelClass};\n" ?>
+    /** @var <?= $modelClass ?> */
+    <?= 'public ${' . strtolower($modelClass) . "};\n" ?>
+<?php
+echo "\tpublic function __construct(string \$orientation = 'P', string \$unit = 'mm', string \$size = 'A4')
+        \t\t\{
+        \t\t\$this->".strtolower($modelClass). ' = ' .strtolower($modelClass)."::find()->where(['id'=> Yii::\$app->request->get('id')])->one();
+        \t\tparent::__construct(\$orientation, \$unit, \$size);
+    }";
+?>
 <?php
 echo "\tpublic function Header(){
         \t\t\$this->SetTitle('".$customName."-' . \$this->".$modelClass."->id);
-        \t\t\$this->SetFillColor(\$this->color[0], \$this->color[1], \$this->color[2]);
         \t\t\$this->SetFont('Arial', 'B', 12);
+        \t\t\$this->SetFillColor(\$this->color[0], \$this->color[1], \$this->color[2]);
         \t\t\$this->Cell(40, 4, '', 0, 0, 'C');
         \t\t\$this->Cell(105, 4, utf8_decode('Título ...'), 0, 0, 'C');
 \t}\n";

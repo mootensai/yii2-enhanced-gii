@@ -28,7 +28,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
 <?php if ($generator->UUIDColumn): ?>
-use mootensai\behaviors\UUIDBehavior;
+use inquid\behaviors\UUIDBehaviorUUID4;
 <?php endif; ?>
 
 /**
@@ -195,7 +195,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
 <?php endif; ?>
 <?php if ($generator->UUIDColumn):?>
             'uuid' => [
-                'class' => UUIDBehavior::class,
+                'class' => UUIDBehaviorUUID4::class,
 <?php if (!empty($generator->UUIDColumn)):?>
                 'column' => '<?= $generator->UUIDColumn?>',
 <?php endif; ?>

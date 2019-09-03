@@ -22,7 +22,7 @@ or add
 
 to the `require` section of your `composer.json` file.
 
-> I separate the mpdf & tree-manager because the package is big & not everyone will use it.
+> I separate the tree-manager because the package is big & not everyone will use it.
 
 Then you must add this code at your config\main.php.
 
