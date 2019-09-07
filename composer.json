@@ -56,7 +56,10 @@
     "bizley/contenttools": "^1.2",
     "yii2mod/yii2-editable": "*",
     "mohorev/yii2-upload-behavior": "*",
-    "vlucas/phpdotenv": "^3.4"
+    "vlucas/phpdotenv": "^3.4",
+    "bower-asset/vue": "*",
+    "bower-asset/axios" : "*"
+    "bower-asset/sweetalert2" : "*"
   },
   "require-dev": {
     "yiisoft/yii2": "*",
