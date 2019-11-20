@@ -31,7 +31,10 @@ class <?= $className ?> extends Base<?= $className . "\n" ?>
     public function rules()
     {
         return array_replace_recursive(parent::rules(),
-	    [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>]);
+	        [
+                //Add your custom rules here
+            ]
+        );
     }
 	
 <?php if ($generator->generateAttributeHints): ?>
