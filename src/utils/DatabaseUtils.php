@@ -28,9 +28,9 @@ class DatabaseUtils
      *
      * @param string|null $databaseName
      *
+     * @throws UserException
      *
      * @return false|string|null
-     * @throws UserException
      */
     public function getDatabaseName($databaseName = null)
     {

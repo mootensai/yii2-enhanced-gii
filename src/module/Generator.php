@@ -134,6 +134,7 @@ EOD;
 
     /**
      * {@inheritdoc}
+     *
      * @throws \yii\base\UserException
      * @throws \yii\base\InvalidConfigException
      */
