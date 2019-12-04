@@ -1,0 +1,33 @@
+{
+  "name": "yii2-enhanced-gii",
+  "version": "1.0.0",
+  "description": "Generate Relational (hasMany, hasOne, belongsTo, & nested) Models & CRUD.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inquid/yii2-enhanced-gii.git"
+  },
+  "keywords": [
+    "inquid",
+    "yii2",
+    "gii"
+  ],
+  "author": "Inquid Inc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inquid/yii2-enhanced-gii/issues"
+  },
+  "homepage": "https://github.com/inquid/yii2-enhanced-gii#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "sweetalert2": "^9.4.3",
+    "vue": "^2.6.10"
+  }
+}

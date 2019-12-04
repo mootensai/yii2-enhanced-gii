@@ -12,3 +12,4 @@ vendor/*
 .env.dev
 .env.prod
 .env.deploy
+node_modules/*
