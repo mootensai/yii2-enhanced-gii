@@ -20,6 +20,6 @@ jobs:
       - name: Start MySQL
         run: docker stack deploy -c docker/stack.yml mysql
       - name: Init env file
-        run: mv tests/.env.example  tests/.env
+        run: cp tests/.env.example  tests/.env
       - name: Execute Module Tests
         run: ./vendor/bin/phpunit tests/ModuleTest.php --bootstrap tests/bootstrap.php

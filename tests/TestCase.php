@@ -74,7 +74,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
             'components' => [
                 'db' => [
                     'class' => 'yii\db\Connection',
-                    'dsn' => "mysql:host=db;dbname=generator",
+                    'dsn' => 'mysql:host=db;dbname=generator',
                     'username' => $this->env['DB_USERNAME'],
                     'password' => $this->env['DB_PASSWORD'],
                     'charset' => 'utf8',
@@ -121,6 +121,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
      */
     protected function createTestDatabase(): void
     {
+        echo json_encode(Yii::$app->db);
         Yii::$app->db->createCommand()->createTable(
             'inquid_params',
             [
