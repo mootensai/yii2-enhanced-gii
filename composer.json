@@ -46,7 +46,7 @@
     "inquid/yii2-fpdf": "*",
     "inquid/yii2-godaddy": "dev-master",
     "inquid/yii-reports": "dev-master",
-    "dominus77/yii2-sweetalert2-widget": "dev-master",
+    "inquid/yii2-sweetalert2-widget": "dev-master",
     "yiisoft/yii2-apidoc": "~2.1.0",
     "yiidoc/yii2-redactor": "*",
     "mikehaertl/php-shellcommand": "dev-master",
