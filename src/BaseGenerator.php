@@ -10,6 +10,7 @@ namespace inquid\enhancedgii;
 
 use Yii;
 use yii\base\Component;
+use yii\base\InvalidConfigException as InvalidConfigExceptionAlias;
 use yii\base\NotSupportedException;
 use yii\db\Connection;
 use yii\db\TableSchema;
@@ -495,13 +496,25 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Connection the DB connection as specified by [[db]].
      *
-     * @throws \yii\base\InvalidConfigException
-     *
      * @return object|Component
+     * @throws InvalidConfigExceptionAlias
+     *
      */
     public function getDbConnection()
     {
         return Yii::$app->get($this->db, false);
+    }
+
+    /**
+     * Connection the DB connection as specified by [[db]].
+     *
+     * @return object|Component
+     * @throws InvalidConfigExceptionAlias
+     *
+     */
+    public function getDbNoSQLConnection()
+    {
+        return Yii::$app->mongodb->getDatabase()->listCollections();
     }
 
     /**
@@ -518,9 +531,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Returns an array of the table names that match the pattern specified by [[tableName]].
      *
-     * @throws \yii\base\InvalidConfigException
-     *
      * @return array
+     * @throws InvalidConfigExceptionAlias
+     *
      */
     protected function getTableNames(): array
     {
@@ -570,9 +583,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
      *
      * @param string $tableName the table name (which may contain schema prefix)
      *
-     * @throws \yii\base\InvalidConfigException
-     *
      * @return string the generated table name
+     *@throws InvalidConfigExceptionAlias
+     *
      */
     public function generateTableName($tableName): string
     {

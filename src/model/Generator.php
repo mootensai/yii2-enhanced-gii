@@ -101,8 +101,14 @@ class Generator extends BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
-            [['tableName', 'db'], 'required'],
+            [['db', 'db_no_sql', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
+            [['db'], 'required', 'when' => function($model) {
+                return $model->db_no_sql == null;
+            }],
+            [['db_no_sql'], 'required', 'when' => function($model) {
+                return $model->db == null;
+            }],
+            [['tableName'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
             [['nsModel', 'baseModelClass', 'queryNs', 'queryBaseClass'], 'match', 'pattern' => '/^[\w\\\\]+$/', 'message' => 'Only word characters and backslashes are allowed.'],
@@ -129,6 +135,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::attributeLabels(), [
             'db'             => 'Database Connection ID',
+            'db_no_sql'      => 'MongoDB Connection ID',
             'moduleName'     => 'Module Name',
             'modelClass'     => 'Model Class',
             'timestampValue' => 'Value',
@@ -168,6 +175,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::hints(), [
             'db'         => 'This is the ID of the DB application component.',
+            'db_no_sql'  => 'This is the ID of the MongoDB application component.',
             'moduleName' => 'The module where the models will be placed',
             'tableName'  => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
@@ -299,6 +307,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::stickyAttributes(), [
             'db',
+            'db_no_sql',
 //            'skippedColumns',
 //            'hiddenColumns',
             'nameAttribute',
