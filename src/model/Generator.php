@@ -389,7 +389,8 @@ class Generator extends BaseGenerator
         }*/
 
         if ($this->dbNoSql != null) {
-            return $this->generateNoSqlModel($this->collectionNames());
+            // @TODO WIP
+            //return $this->generateNoSqlModel($this->collectionNames());
         }
 
         foreach ($this->getTableNames() as $tableName) {
@@ -696,60 +697,6 @@ class Generator extends BaseGenerator
      */
     protected function generateNoSqlModel(array $collection): array
     {
-        $files = [];
-
-        $componentClassName = $modelClassName . 'Component';
-        $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
-        $tableSchema = $db->getTableSchema($tableName);
-        $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
-        $this->componentClass = "{$this->nsComponent}\\{$componentClassName}";
-
-        $this->tableSchema = $tableSchema;
-        $this->isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
-//            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
-        $params = [
-            'tableName'          => $tableName,
-            'className'          => $modelClassName,
-            'componentClass'     => $this->componentClass,
-            'componentClassName' => $componentClassName,
-            'queryClassName'     => $queryClassName,
-            'tableSchema'        => $tableSchema,
-            'labels'             => $this->generateLabels($tableSchema),
-            'rules'              => $this->generateRules($tableSchema),
-            'relations'          => isset($relations[$tableName]) ? $relations[$tableName] : [],
-            'isTree'             => $this->isTree,
-        ];
-        // model :
-        $files[] = new CodeFile(
-            Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/base/'.$modelClassName.'.php', $this->render('model.php', $params)
-        );
-        if (!$this->generateBaseOnly) {
-            $files[] = new CodeFile(
-                Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/'.$modelClassName.'.php', $this->render('model-extended.php', $params)
-            );
-        }
-        $files[] = new CodeFile(
-            Yii::getAlias('@'.str_replace('\\', '/', $this->nsComponent)).'/'.$componentClassName.'.php', $this->render('component.php', $params)
-        );
-        // query :
-        if ($queryClassName) {
-            $params = [
-                'className'      => $queryClassName,
-                'modelClassName' => $modelClassName,
-            ];
-            $files[] = new CodeFile(
-                Yii::getAlias('@'.str_replace('\\', '/', $this->queryNs)).'/'.$queryClassName.'.php', $this->render('query.php', $params)
-            );
-        }
-
-        if (strpos($this->tableName, '*') !== false) {
-            $this->modelClass = '';
-//                $this->controllerClass = '';
-        } else {
-            $this->modelClass = $modelClassName;
-//                $this->controllerClass = $modelClassName . 'Controller';
-        }
-
-        return $files;
+        return [];
     }
 }
