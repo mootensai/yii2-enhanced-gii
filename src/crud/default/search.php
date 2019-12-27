@@ -16,6 +16,7 @@ $rules = $generator->generateSearchRules();
 $labels = $generator->generateSearchLabels();
 $searchAttributes = $generator->getSearchAttributes();
 $searchConditions = $generator->generateSearchConditions();
+$pks = $generator->tableSchema->primaryKey;
 
 echo "<?php\n";
 ?>
@@ -67,7 +68,9 @@ use <?= ltrim($generator->nsModel.'\\'.$modelClass, '\\').(isset($modelAlias) ? 
             'query' => $query,
         ]);
 
-        $query->orderBy(['id' => <?= $generator->modelSort ?>]);
+        if (!isset($params['sort'])) {
+            $query->orderBy(['<?= $pks[0] ?>' => <?= $generator->modelSort ?>]);
+        }
 
         $this->load($params);
 
