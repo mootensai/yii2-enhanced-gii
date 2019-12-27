@@ -6,9 +6,12 @@
  * Time: 10:41 PM.
  */
 
+use inquid\enhancedgii\crud\Generator;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
+/** @var Generator $generator */
+/** @var string $tableNameComment */
 $componentClass = StringHelper::basename($generator->componentClass);
 $modelClass = StringHelper::basename($generator->modelClass);
 
@@ -36,10 +39,10 @@ class <?= $componentClass ?> extends FPDF
     /** @var array $color */
     private $color = ['5', '100', '36'];
     /** @var <?= $modelClass ?> */
-    <?= 'public ${' . strtolower($modelClass) . "};\n" ?>
+    <?= 'public $' . strtolower($modelClass) . ";\n" ?>
 <?php
 echo "\tpublic function __construct(string \$orientation = 'P', string \$unit = 'mm', string \$size = 'A4')
-        \t\t\{
+        \t\t{
         \t\t\$this->".strtolower($modelClass). ' = ' .strtolower($modelClass)."::find()->where(['id'=> Yii::\$app->request->get('id')])->one();
         \t\tparent::__construct(\$orientation, \$unit, \$size);
     }";
@@ -71,8 +74,8 @@ echo "    /**
      */
     public function saveToFile()
     {
-        \$this->Output('F', \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
-        return \Yii::getAlias('@app/web/files/PurchaseOrder/".Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
+        \$this->Output('F', \Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
+        return \Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
     }\n";
 ?>
 }

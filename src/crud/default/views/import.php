@@ -7,7 +7,10 @@ use yii\helpers\StringHelper;
 
 echo "
 <?php
-use dominus77\sweetalert2\Alert;";
+use dominus77\sweetalert2\Alert;
+use \yii\helpers\Url;
+use kartik\\file\FileInput;
+";
 
 echo "/* @var \$this \yii\web\View */
 \$this->title = 'Import'; ?>"
@@ -29,7 +32,7 @@ echo "/* @var \$this \yii\web\View */
                 </div>
                 <div class="col-sm-4">
                     <h1>Validate Format</h1>
-                    <?= "<?= \kartik\\file\FileInput::widget([
+                    <?= "<?= FileInput::widget([
                         'name' => 'fileExcelTest',
                         'id' => 'fileExcelTest',
                         'pluginEvents' => [
@@ -41,7 +44,7 @@ echo "/* @var \$this \yii\web\View */
                             'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
                             'browseLabel' => 'Import From Excel',
                             'elCaptionText' => '#customCaption',
-                            'uploadUrl' => \yii\helpers\Url::to(['import-validate']),
+                            'uploadUrl' => Url::to(['import-validate']),
                             'allowedFileTypes' => 'object',
                             'allowedFileExtensions' => ['xls', 'xlsx']
                         ],
@@ -49,7 +52,7 @@ echo "/* @var \$this \yii\web\View */
                 </div>
                 <div class="col-sm-4">
                     <h1>Import Format</h1>
-                    <?= "<?= \kartik\\file\FileInput::widget([
+                    <?= "<?= FileInput::widget([
                         'name' => 'fileExcel',
                         'id' => 'fileExcel',
                         'pluginEvents' => [
@@ -61,7 +64,7 @@ echo "/* @var \$this \yii\web\View */
                             'browseIcon' => '<i class=\"glyphicon glyphicon-file\"></i> ',
                             'browseLabel' => 'Import from Excel',
                             'elCaptionText' => '#customCaption',
-                            'uploadUrl' => \yii\helpers\Url::to(['import-excel']),
+                            'uploadUrl' => Url::to(['import-excel']),
                             'allowedFileTypes' => 'object',
                             'allowedFileExtensions' => ['xls', 'xlsx']
                         ],
