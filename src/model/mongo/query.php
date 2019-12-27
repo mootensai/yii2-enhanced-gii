@@ -18,12 +18,14 @@ echo "<?php\n";
 
 namespace <?= $generator->queryNs ?>;
 
+use yii\mongodb\ActiveQuery;
+
 /**
  * This is the ActiveQuery class for [[<?= $modelFullClassName ?>]].
  *
  * @see <?= $modelFullClassName."\n" ?>
  */
-class <?= $className ?> extends <?= '\\'.ltrim($generator->queryBaseClass, '\\')."\n" ?>
+class <?= $className ?> extends ActiveQuery
 {
     /*public function active()
     {

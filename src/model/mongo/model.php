@@ -27,6 +27,7 @@ use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
 <?php if ($generator->UUIDColumn): ?>
 use inquid\behaviors\UUIDBehaviorUUID4;
+use yii\mongodb\ActiveQuery;
 <?php endif; ?>
 
 /**
@@ -147,7 +148,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     <?php if(!in_array($name, $generator->skippedRelations)): ?>
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function get<?= ucfirst($name) ?>()
     {
