@@ -41,6 +41,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     const FK_FIELD_NAME = 1;
 
     public $db = 'db';
+    public $dbNoSql = 'mongodb';
     /* @var $tableSchema TableSchema */
     public $tableSchema;
     public $tableName;
@@ -87,9 +88,18 @@ abstract class BaseGenerator extends \yii\gii\Generator
         }
     }
 
-    public function validateModuleExist()
+    /**
+     * Validate if the module exist in the app
+     *
+     * @return bool
+     */
+    public function validateModuleExist(): bool
     {
-        //TODO validate that module exist
+        if (isset(Yii::$app->modules[$this->moduleName])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
