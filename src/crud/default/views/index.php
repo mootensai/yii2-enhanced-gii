@@ -58,6 +58,16 @@ if ($generator->indexWidgetType === 'grid'):
 <?= "<?php \n" ?>
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
+        [
+            'class' => 'yii\grid\CheckboxColumn', 'checkboxOptions' => function ($model) {
+            return [
+                'value' => $model-><?= $tableSchema->primaryKey[0] ?>,
+                'contentOptions' => [
+                    'class' => 'short_row'
+                ]
+            ];
+        },
+        ],
 <?php
     if ($generator->expandable && !empty($fk)):
 ?>
