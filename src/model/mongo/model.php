@@ -19,7 +19,7 @@ echo "<?php\n";
 namespace <?= $generator->nsModel ?>\base;
 
 <?= (!$isTree) ? "use \\mootensai\\relation\\NoSqlRelationTrait;\n" : '' ?>
-use Carbon\Carbon;
+use mongosoft\mongodb\MongoDateBehavior;
 use Yii;
 use yii\mongodb\ActiveRecord;
 <?php if ($generator->createdBy || $generator->updatedBy): ?>
@@ -157,7 +157,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
         return <?= $isTree ? 'array_merge(parent::behaviors(), ' : ''; ?>[
 <?php if ($generator->createdAt || $generator->updatedAt):?>
             'timestamp' => [
-                'class' => TimestampBehavior::class,
+                'class' => MongoDateBehavior::class,
 <?php if (!empty($generator->createdAt)):?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
 <?php else :?>
@@ -167,9 +167,6 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
                 'updatedAtAttribute' => '<?= $generator->updatedAt?>',
 <?php else :?>
                 'updatedAtAttribute' => false,
-<?php endif; ?>
-<?php if (!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
-                'value' => <?= $generator->timestampValueMongo ?>,
 <?php endif; ?>
             ],
 <?php endif; ?>

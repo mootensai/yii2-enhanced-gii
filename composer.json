@@ -56,7 +56,8 @@
     "bizley/contenttools": "^1.2",
     "yii2mod/yii2-editable": "*",
     "mohorev/yii2-upload-behavior": "*",
-    "vlucas/phpdotenv": "^4.1"
+    "vlucas/phpdotenv": "^4.1",
+    "mongosoft/yii2-mongodate-behavior": "*"
   },
   "require-dev": {
     "yiisoft/yii2": "*",

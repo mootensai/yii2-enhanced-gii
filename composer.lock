@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccc55ff2f70d337e7733a8d9d16663b8",
+    "content-hash": "cac741f7c5f51645a71477924a76540d",
     "packages": [
         {
             "name": "bizley/contenttools",
@@ -1870,16 +1870,16 @@
         },
         {
             "name": "inquid/yii2-relation-traits",
-            "version": "1.1.8",
+            "version": "1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inquid/yii2-relation-traits.git",
-                "reference": "8149499fb4dc168c13bb1b97ebc23b6f570c425a"
+                "reference": "1751869f3c79c0428f94a1a68882c47b1841668e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inquid/yii2-relation-traits/zipball/8149499fb4dc168c13bb1b97ebc23b6f570c425a",
-                "reference": "8149499fb4dc168c13bb1b97ebc23b6f570c425a",
+                "url": "https://api.github.com/repos/inquid/yii2-relation-traits/zipball/1751869f3c79c0428f94a1a68882c47b1841668e",
+                "reference": "1751869f3c79c0428f94a1a68882c47b1841668e",
                 "shasum": ""
             },
             "require": {
@@ -1898,16 +1898,22 @@
             ],
             "authors": [
                 {
+                    "name": "Luis Gonzalez",
+                    "email": "contact@inquid.co"
+                },
+                {
                     "name": "Yohanes Candrajaya",
                     "email": "moo.tensai@gmail.com"
                 }
             ],
-            "description": "Yii 2 Models load with relation, & transaction save with relation",
-            "homepage": "http://github.com/mootensai/yii2-relation-trait",
+            "description": "Yii 2 Models load with relation, & transaction save with relation for MongoDB",
+            "homepage": "http://github.com/inquid/yii2-mongo-relation-trait",
             "keywords": [
                 "load",
                 "loadall",
                 "loadwithrelation",
+                "mongo",
+                "mongodb",
                 "related",
                 "relation",
                 "save",
@@ -1916,7 +1922,7 @@
                 "transaction",
                 "yii2"
             ],
-            "time": "2017-10-18T04:48:35+00:00"
+            "time": "2019-12-24T07:44:02+00:00"
         },
         {
             "name": "inquid/yii2-sweetalert2-widget",
@@ -1924,12 +1930,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inquid/yii2-sweetalert2-widget.git",
-                "reference": "719c1b2b518eb7d05274682a6eb776418feda337"
+                "reference": "09af2c8f76ef607af5b1c36f9db43646f1a63bb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inquid/yii2-sweetalert2-widget/zipball/719c1b2b518eb7d05274682a6eb776418feda337",
-                "reference": "719c1b2b518eb7d05274682a6eb776418feda337",
+                "url": "https://api.github.com/repos/inquid/yii2-sweetalert2-widget/zipball/09af2c8f76ef607af5b1c36f9db43646f1a63bb5",
+                "reference": "09af2c8f76ef607af5b1c36f9db43646f1a63bb5",
                 "shasum": ""
             },
             "require": {
@@ -1968,7 +1974,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-12-23T22:22:22+00:00"
+            "time": "2019-12-25T17:10:36+00:00"
         },
         {
             "name": "inquid/yii2-uuid-behavior",
@@ -4346,6 +4352,52 @@
             "time": "2018-08-10T07:58:22+00:00"
         },
         {
+            "name": "mongosoft/yii2-mongodate-behavior",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mohorev/yii2-mongodate-behavior.git",
+                "reference": "8d82f10db26daeda2c538c5cc4837c526649f583"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mohorev/yii2-mongodate-behavior/zipball/8d82f10db26daeda2c538c5cc4837c526649f583",
+                "reference": "8d82f10db26daeda2c538c5cc4837c526649f583",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mongodb": ">=1.0.0",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "mongosoft\\mongodb\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Mohorev",
+                    "email": "dev.mohorev@gmail.com"
+                }
+            ],
+            "description": "MongoDate behavior for Yii 2",
+            "homepage": "https://github.com/mongosoft/yii2-mongodate-behavior",
+            "keywords": [
+                "Behavior",
+                "extension",
+                "mongodate",
+                "mongodb",
+                "yii2"
+            ],
+            "time": "2016-07-08T13:21:17+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.0.2",
             "source": {
@@ -4717,24 +4769,24 @@
         },
         {
             "name": "php-http/cache-plugin",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/cache-plugin.git",
-                "reference": "8e2505d2090316fac7cce637b39b6bbb5249c5a8"
+                "reference": "d137d46523343297e340cef697747381b6caeb66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/cache-plugin/zipball/8e2505d2090316fac7cce637b39b6bbb5249c5a8",
-                "reference": "8e2505d2090316fac7cce637b39b6bbb5249c5a8",
+                "url": "https://api.github.com/repos/php-http/cache-plugin/zipball/d137d46523343297e340cef697747381b6caeb66",
+                "reference": "d137d46523343297e340cef697747381b6caeb66",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
+                "php": "^7.1",
                 "php-http/client-common": "^1.9 || ^2.0",
                 "php-http/message-factory": "^1.0",
                 "psr/cache": "^1.0",
-                "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0"
+                "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "henrikbjorn/phpspec-code-coverage": "^1.0",
@@ -4769,7 +4821,7 @@
                 "httplug",
                 "plugin"
             ],
-            "time": "2019-01-23T16:51:58+00:00"
+            "time": "2019-12-26T16:14:58+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -4834,16 +4886,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6"
+                "reference": "6a5cb62bd1a7bd1e24d63efa680be027cad91f02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/e822f86a6983790aa17ab13aa7e69631e86806b6",
-                "reference": "e822f86a6983790aa17ab13aa7e69631e86806b6",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/6a5cb62bd1a7bd1e24d63efa680be027cad91f02",
+                "reference": "6a5cb62bd1a7bd1e24d63efa680be027cad91f02",
                 "shasum": ""
             },
             "require": {
@@ -4895,7 +4947,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2019-06-30T09:04:27+00:00"
+            "time": "2019-12-17T07:42:44+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -5993,25 +6045,25 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.4.2",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "2be23e63f33de16b49294ea6581f462932a77e2f"
+                "reference": "1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/2be23e63f33de16b49294ea6581f462932a77e2f",
-                "reference": "2be23e63f33de16b49294ea6581f462932a77e2f",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68",
+                "reference": "1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3"
+                "php": "^7.2.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -6043,7 +6095,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-10-28T21:57:16+00:00"
+            "time": "2019-11-18T17:27:11+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -7208,16 +7260,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.5.0",
+            "version": "8.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3ee1c1fd6fc264480c25b6fb8285edefe1702dab"
+                "reference": "7870c78da3c5e4883eaef36ae47853ebb3cb86f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3ee1c1fd6fc264480c25b6fb8285edefe1702dab",
-                "reference": "3ee1c1fd6fc264480c25b6fb8285edefe1702dab",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7870c78da3c5e4883eaef36ae47853ebb3cb86f2",
+                "reference": "7870c78da3c5e4883eaef36ae47853ebb3cb86f2",
                 "shasum": ""
             },
             "require": {
@@ -7287,7 +7339,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-12-06T05:41:38+00:00"
+            "time": "2019-12-25T14:49:39+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
