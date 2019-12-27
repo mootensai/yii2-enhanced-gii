@@ -21,7 +21,8 @@ namespace <?= $generator->nsModel ?>\base;
 <?= (!$isTree) ? "use \\mootensai\\relation\\NoSqlRelationTrait;\n" : '' ?>
 use mongosoft\mongodb\MongoDateBehavior;
 use Yii;
-use yii\mongodb\ActiveRecord;
+use \mootensai\relation\NoSqlRelationTrait;
+use yii\mongodb\ActiveRecord as ActiveRecordNoSql;
 <?php if ($generator->createdBy || $generator->updatedBy): ?>
 use yii\behaviors\BlameableBehavior;
 <?php endif; ?>
@@ -44,9 +45,9 @@ use inquid\behaviors\UUIDBehaviorUUID4;
 <?php endforeach; ?>
 <?php endif; ?>
  */
-class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClass, '\\') . "\n" ?>
+class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClassNoSql, '\\') . "\n" ?>
 {
-<?= (!$isTree) ? "use NoSqlRelationTrait;\n" : '' ?>
+<?= (!$isTree) ? "\tuse NoSqlRelationTrait;\n" : '' ?>
 
 <?php if($generator->deletedBy): ?>
     private $_rt_softdelete;
@@ -71,7 +72,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
 <?php if (!$isTree): ?>
 
     /**
-    * This function helps \mootensai\relation\NoSqlRelationTrait runs faster
+    * This function helps NoSqlRelationTrait runs faster
     * @return array relation names of this model
     */
     public function relationNames()
@@ -91,9 +92,20 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function collectionName()
     {
         return '<?= $generator->generateTableName($tableName) ?>';
+    }
+
+    /**
+     * @return array
+     */
+    public function attributes(): array {
+        return [
+<?php foreach ($tableSchema->columns as $column): ?>
+            <?= "'{$column->name}',\n" ?>
+<?php endforeach; ?>
+        ];
     }
 <?php if ($generator->db !== 'db'): ?>
 
@@ -256,8 +268,8 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
 
 	/**
      * @param $name attribute name
-	 * @param $value raw value from Excel
-     * @return mixed processed value to save
+	 * @param $value string value from Excel
+     * @return mixed string value to save
      */
 	 public function processImport($name, $value)
 	 {

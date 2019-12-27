@@ -58,7 +58,7 @@ class Generator extends BaseGenerator
     public $updatedBy = 'updated_by';
     public $blameableValue = '\Yii::$app->user->id';
     public $deletedBy = 'deleted_by';
-    public $deletedByValue = '\Yii::$app->user->id';
+    public $deletedByValue = 'Yii::$app->user->id';
     public $deletedByValueRestored = '0';
     public $deletedAt = 'deleted_at';
     public $deletedAtValue = 'date(\'Y-m-d H:i:s\')';

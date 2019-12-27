@@ -48,6 +48,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     public $modelClass;
     public $moduleName;
     public $baseModelClass = 'ActiveRecord';
+    public $baseModelClassNoSql = 'ActiveRecordNoSql';
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
     public $skippedRelations;
