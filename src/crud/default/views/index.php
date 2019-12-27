@@ -118,6 +118,12 @@ if ($generator->indexWidgetType === 'grid'):
             'type' => GridView::TYPE_PRIMARY,
             'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
         ],
+        'rowOptions' => function ($model) {
+            if (Yii::$app->request->get('id') == $model-><?= $tableSchema->primaryKey[0] ?>) {
+                return ['class' => 'short_row', 'style' => 'background-color:#dff0d8;'];
+            }
+            return [];
+        },
 <?php if(!$generator->pdf) : ?>
         'export' => false,
 <?php endif; ?>

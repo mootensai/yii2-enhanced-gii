@@ -74,8 +74,8 @@ echo "    /**
      */
     public function saveToFile()
     {
-        \$this->Output('F', \Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
-        return \Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
+        \$this->Output('F', Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf'));
+        return Yii::getAlias('@app/web/files/".strtolower($modelClass).'/'.Inflector::camel2id(StringHelper::basename($modelClass))."-' . DateTimeHandler::getDateTime('Y-m-d') . '.pdf');
     }\n";
 ?>
 }
