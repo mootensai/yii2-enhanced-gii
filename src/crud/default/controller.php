@@ -174,7 +174,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
          <?php } ?>
          if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [" . implode(", ", $skippedRelations) . "]" : ""; ?>)){
              if($model->saveAll(<?= !empty($generator->skippedRelations) ? "[" . implode(", ", $skippedRelations) . "]" : ""; ?>)) {
-                 return $this->redirect(['view', <?= $urlParams ?>]);
+                 return $this->redirect(['index', <?= $urlParams ?>]);
              }
                  return $this->render('create', [
                  'model' => $model,
@@ -210,7 +210,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
          <?php } ?>
 <?php endif; ?>
         if ($model->loadAll(Yii::$app->request->post()<?= !empty($generator->skippedRelations) ? ", [".implode(", ", $skippedRelations)."]" : ""; ?>) && $model->saveAll(<?= !empty($generator->skippedRelations) ? "[".implode(", ", $skippedRelations)."]" : ""; ?>)) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
+            return $this->redirect(['index', <?= $urlParams ?>]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -414,7 +414,7 @@ $generator->skippedColumns[] = 'lock';
         $path = Yii::getAlias('@app/web/files/<?= $modelClass ?>/');
         if (!is_dir($path)){ mkdir($path, 0775, true); }
         $path = $path.'tmp_' . $personal->fileExcelImport->baseName . '_' .
-        $personal->{$keyField} . $personal->fileExcelImport->extension;
+        $personal->_id . $personal->fileExcelImport->extension;
         $personal->fileExcelImport->saveAs($path);
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
@@ -439,7 +439,7 @@ $generator->skippedColumns[] = 'lock';
         $path = Yii::getAlias('@app/web/files/<?= $modelClass ?>/');
         if (!is_dir($path)){ mkdir($path, 0775, true); }
         $path = $path.'tmp_' . $personal->fileExcelImport->baseName . '_' .
-        $personal->{$keyField} . $personal->fileExcelImport->extension;
+        $personal->_id . $personal->fileExcelImport->extension;
         $personal->fileExcelImport->saveAs($path);
         $inputFileType = IOFactory::identify($path);
         $reader = IOFactory::createReader($inputFileType);
