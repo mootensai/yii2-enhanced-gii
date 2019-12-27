@@ -21,7 +21,6 @@ namespace <?= $generator->nsModel ?>\base;
 <?= (!$isTree) ? "use \\mootensai\\relation\\NoSqlRelationTrait;\n" : '' ?>
 use mongosoft\mongodb\MongoDateBehavior;
 use Yii;
-use \mootensai\relation\NoSqlRelationTrait;
 use yii\mongodb\ActiveRecord as ActiveRecordNoSql;
 <?php if ($generator->createdBy || $generator->updatedBy): ?>
 use yii\behaviors\BlameableBehavior;
