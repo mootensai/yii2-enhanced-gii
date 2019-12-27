@@ -259,7 +259,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     {
 <?php if($generator->deletedBy): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
-        return $query->where(['<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
+        return $query->where(['<?= $generator->deletedBy ?>' => null]);
 <?php else: ?>
         return new <?= $queryClassFullName ?>(get_called_class());
 <?php endif; ?>
@@ -267,9 +267,9 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
 <?php endif; ?>
 
 	/**
-     * @param $name attribute name
+     * @param $name string name
 	 * @param $value string value from Excel
-     * @return mixed string value to save
+     * @return mixed processed value to save
      */
 	 public function processImport($name, $value)
 	 {
