@@ -33,8 +33,13 @@ class Bootstrap implements BootstrapInterface
                 $app->getModule('gii')->generators['enhanced-gii-repo'] = 'inquid\enhancedgii\repo\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-domain'] = 'inquid\enhancedgii\domain\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-app_template'] = 'inquid\enhancedgii\app_template\Generator';
-                $app->getModule('gii')->generators['enhanced-gii-model'] = 'inquid\enhancedgii\model\Generator';
-                $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'inquid\enhancedgii\crud\Generator';
+                $app->getModule('gii')->generators['enhanced-gii-model'] = [
+                    'class'=>'inquid\enhancedgii\model\Generator',
+                    'templates' => [ //setting for out templates
+                        'default' => '@vendor/inquid/yii2-enhanced-gii/src/model/default',
+                        'mongo' => '@vendor/inquid/yii2-enhanced-gii/src/model/mongo',
+                    ]
+                ];                $app->getModule('gii')->generators['enhanced-gii-crud']['class'] = 'inquid\enhancedgii\crud\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-module'] = 'inquid\enhancedgii\module\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-testsgenerator'] = 'inquid\enhancedgii\testsgenerator\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-migration'] = 'inquid\enhancedgii\migration\Generator';
