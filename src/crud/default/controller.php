@@ -467,9 +467,10 @@ $generator->skippedColumns[] = 'lock';
                 $personal = new <?= $modelClass ?>();
             }
 <?php
-    foreach ($generator->getColumnNames() as $key => $name) {
-        if (!in_array($name, $generator->skippedColumns))
+    foreach (array_diff($generator->getColumnNames(), $pks) as $key => $name) {
+        if (!in_array($name, $generator->skippedColumns)){
             echo "              \$personal->{$name} = \$personal->processImport('{$name}',(string)\$datum[{$key}]);\n";
+        }
     }
 ?>
             if ($test) {
