@@ -19,6 +19,7 @@ echo "<?php\n";
 namespace <?= $generator->nsModel ?>\base;
 
 <?= (!$isTree) ? "use \\mootensai\\relation\\NoSqlRelationTrait;\n" : '' ?>
+use Carbon\Carbon;
 use Yii;
 use yii\mongodb\ActiveRecord;
 <?php if ($generator->createdBy || $generator->updatedBy): ?>
@@ -168,7 +169,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
                 'updatedAtAttribute' => false,
 <?php endif; ?>
 <?php if (!empty($generator->timestampValue) && $generator->timestampValue != 'time()'):?>
-                'value' => <?= $generator->timestampValue?>,
+                'value' => <?= $generator->timestampValueMongo ?>,
 <?php endif; ?>
             ],
 <?php endif; ?>
@@ -249,7 +250,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     {
 <?php if($generator->deletedBy): ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
-        return $query->where(['<?= $tableName ?>.<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
+        return $query->where(['<?= $generator->deletedBy ?>' => <?= $generator->deletedByValueRestored ?>]);
 <?php else: ?>
         return new <?= $queryClassFullName ?>(get_called_class());
 <?php endif; ?>

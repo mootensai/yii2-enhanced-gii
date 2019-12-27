@@ -12,7 +12,7 @@
     </blockquote>
 <?php
 echo $form->field($generator, 'db');
-echo $form->field($generator, 'db_no_sql');
+echo $form->field($generator, 'dbNoSql');
 echo $form->field($generator, 'skippedTables');
 echo $form->field($generator, 'skipAllExistingTables')->checkbox();
 echo $form->field($generator, 'tableName');

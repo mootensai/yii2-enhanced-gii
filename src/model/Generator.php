@@ -54,6 +54,7 @@ class Generator extends BaseGenerator
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
     public $timestampValue = "new \\yii\\db\\Expression('CONVERT_TZ(NOW(),\"+00:00\",\"-05:00\")')";
+    public $timestampValueMongo = "Carbon::now()";
     public $createdBy = 'created_by';
     public $updatedBy = 'updated_by';
     public $blameableValue = '\Yii::$app->user->id';
@@ -101,13 +102,17 @@ class Generator extends BaseGenerator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['db', 'db_no_sql', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
-            [['db'], 'required', 'when' => function($model) {
-                return $model->db_no_sql == null;
-            }],
-            [['db_no_sql'], 'required', 'when' => function($model) {
+            [['db', 'dbNoSql', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
+            ['db', 'required', 'when' => function($model) {
+                return $model->dbNoSql == null;
+            }, 'whenClient' => "
+                return $('#generator-db').css('display') === 'block';
+            "],
+            ['dbNoSql', 'required', 'when' => function($model) {
                 return $model->db == null;
-            }],
+            }, 'whenClient' => "
+                return $('#generator-dbnosql').css('display') === 'block';
+            "],
             [['tableName'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
@@ -135,7 +140,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::attributeLabels(), [
             'db'             => 'Database Connection ID',
-            'db_no_sql'      => 'MongoDB Connection ID',
+            'dbNoSql'        => 'MongoDB Connection ID',
             'moduleName'     => 'Module Name',
             'modelClass'     => 'Model Class',
             'timestampValue' => 'Value',
@@ -175,7 +180,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::hints(), [
             'db'         => 'This is the ID of the DB application component.',
-            'db_no_sql'  => 'This is the ID of the MongoDB application component.',
+            'dbNoSql'  => 'This is the ID of the MongoDB application component.',
             'moduleName' => 'The module where the models will be placed',
             'tableName'  => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
@@ -307,7 +312,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::stickyAttributes(), [
             'db',
-            'db_no_sql',
+            'dbNoSql',
 //            'skippedColumns',
 //            'hiddenColumns',
             'nameAttribute',
@@ -384,6 +389,10 @@ class Generator extends BaseGenerator
             }
         }*/
 
+        if ($this->dbNoSql != null) {
+            return $this->generateNoSqlModel($this->collectionNames());
+        }
+
         foreach ($this->getTableNames() as $tableName) {
             if (in_array($tableName, $this->skippedTables)):
                 continue;
@@ -395,7 +404,7 @@ class Generator extends BaseGenerator
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
             }
-            $componentClassName = $modelClassName.'Component';
+            $componentClassName = $modelClassName . 'Component';
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
@@ -678,5 +687,70 @@ class Generator extends BaseGenerator
         }
 
         return $comment;
+    }
+
+    /**
+     * Generates a NoSQLModel
+     *
+     * @param array $collection
+     * @return array
+     */
+    protected function generateNoSqlModel(array $collection): array
+    {
+        $files = [];
+
+        $componentClassName = $modelClassName . 'Component';
+        $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
+        $tableSchema = $db->getTableSchema($tableName);
+        $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
+        $this->componentClass = "{$this->nsComponent}\\{$componentClassName}";
+
+        $this->tableSchema = $tableSchema;
+        $this->isTree = !array_diff(self::getTreeColumns(), $tableSchema->columnNames);
+//            $this->controllerClass = $this->nsController . '\\' . $modelClassName . 'Controller';
+        $params = [
+            'tableName'          => $tableName,
+            'className'          => $modelClassName,
+            'componentClass'     => $this->componentClass,
+            'componentClassName' => $componentClassName,
+            'queryClassName'     => $queryClassName,
+            'tableSchema'        => $tableSchema,
+            'labels'             => $this->generateLabels($tableSchema),
+            'rules'              => $this->generateRules($tableSchema),
+            'relations'          => isset($relations[$tableName]) ? $relations[$tableName] : [],
+            'isTree'             => $this->isTree,
+        ];
+        // model :
+        $files[] = new CodeFile(
+            Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/base/'.$modelClassName.'.php', $this->render('model.php', $params)
+        );
+        if (!$this->generateBaseOnly) {
+            $files[] = new CodeFile(
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/'.$modelClassName.'.php', $this->render('model-extended.php', $params)
+            );
+        }
+        $files[] = new CodeFile(
+            Yii::getAlias('@'.str_replace('\\', '/', $this->nsComponent)).'/'.$componentClassName.'.php', $this->render('component.php', $params)
+        );
+        // query :
+        if ($queryClassName) {
+            $params = [
+                'className'      => $queryClassName,
+                'modelClassName' => $modelClassName,
+            ];
+            $files[] = new CodeFile(
+                Yii::getAlias('@'.str_replace('\\', '/', $this->queryNs)).'/'.$queryClassName.'.php', $this->render('query.php', $params)
+            );
+        }
+
+        if (strpos($this->tableName, '*') !== false) {
+            $this->modelClass = '';
+//                $this->controllerClass = '';
+        } else {
+            $this->modelClass = $modelClassName;
+//                $this->controllerClass = $modelClassName . 'Controller';
+        }
+
+        return $files;
     }
 }
