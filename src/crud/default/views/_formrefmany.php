@@ -8,8 +8,8 @@ $tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generat
 $fk = $generator->generateFK($tableSchema);
 $relID = \yii\helpers\Inflector::camel2id($relations[$generator::REL_CLASS]);
 $humanize = \yii\helpers\Inflector::humanize($relations[$generator::REL_TABLE], true);
-echo '<div class="form-group" id="add-$relID">';
-echo '<input type="hidden" name="id" value="<?=$parent?$parent->' .$pk. ':null?>"/>';
+echo "<div class=\"form-group\" id=\"add-$relID\">\n";
+echo "<input type=\"hidden\" name=\"id\" value=\"<?=\$parent?\$parent->".$pk.":null?>\"/>";
 echo "<?php\n";
 ?>
 use kartik\grid\GridView;

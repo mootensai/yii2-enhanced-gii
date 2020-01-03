@@ -185,10 +185,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * @throws NotSupportedException
-     *
      * @return string[] all db schema names or an array with a single empty string
      *
+     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
     protected function getSchemaNames()
@@ -215,8 +214,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
 
     /**
      * @return array the generated relation declarations
+     * @throws InvalidConfigExceptionAlias
+     * @throws NotSupportedException
      */
-    protected function generateRelations()
+    protected function generateRelations(): array
     {
         if (!$this->generateRelations === self::RELATIONS_NONE) {
             return [];
@@ -287,10 +288,11 @@ abstract class BaseGenerator extends \yii\gii\Generator
      * Determines if relation is of has many type.
      *
      * @param TableSchema $table
-     * @param array       $fks
+     * @param array $fks
      *
      * @return bool
      *
+     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
     protected function isHasManyRelation($table, $fks)
@@ -318,9 +320,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
      *
      * @return array relation declarations extended with inverse relation names
      *
+     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
-    protected function addInverseRelations($relations)
+    protected function addInverseRelations($relations): array
     {
         $relationNames = [];
         foreach ($this->getSchemaNames() as $schemaName) {
@@ -360,13 +363,14 @@ abstract class BaseGenerator extends \yii\gii\Generator
      * Generates relations using a junction table by adding an extra viaTable().
      *
      * @param TableSchema the table being checked
-     * @param array       $fks       obtained from the checkPivotTable() method
-     * @param array       $relations
+     * @param array $fks obtained from the checkPivotTable() method
+     * @param array $relations
      * @param TableSchema $table
      *
      * @return array modified $relations
+     * @throws InvalidConfigExceptionAlias
      */
-    private function generateManyManyRelations($table, $fks, $relations)
+    private function generateManyManyRelations($table, $fks, $relations): array
     {
         $db = $this->getDbConnection();
         $table0 = $fks[$table->primaryKey[0]][0];
@@ -419,12 +423,13 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Generates a class name from the specified table name.
      *
-     * @param string $tableName     the table name (which may contain schema prefix)
-     * @param bool   $useSchemaName should schema name be included in the class name, if present
+     * @param string $tableName the table name (which may contain schema prefix)
+     * @param bool $useSchemaName should schema name be included in the class name, if present
      *
      * @return string the generated class name
+     * @throws InvalidConfigExceptionAlias
      */
-    protected function generateClassName($tableName, $useSchemaName = null)
+    protected function generateClassName($tableName, $useSchemaName = null): string
     {
         if (isset($this->classNames[$tableName])) {
             return $this->classNames[$tableName];
