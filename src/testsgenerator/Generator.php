@@ -280,7 +280,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
      *
      * @return string the generated class name
      */
-    protected function generateClassName($tableName, $useSchemaName = null)
+    protected function generateClassName($tableName, $useSchemaName = null): string
     {
         if (isset($this->classNames[$tableName])) {
             return $this->classNames[$tableName];
