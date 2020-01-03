@@ -97,6 +97,7 @@ foreach ($tableSchema->getColumnNames() as $key => $attribute) {
                 "            'label' => '<i class=\"glyphicon glyphicon-book\"></i> ' . Html::encode(" . $generator->generateString($rel[$generator::REL_CLASS]) . "),\n" .
                 "            'content' => \$this->render('_form" . $rel[$generator::FK_FIELD_NAME] . "', [\n" .
                 "                'row' => \\yii\\helpers\\ArrayHelper::toArray(\$model->$name),\n" .
+                "                'parent' => \\yii\\helpers\\ArrayHelper::toArray(\$model),\n" .
                 "            ]),\n" .
                 "        ],\n";
         } else if (isset($rel[$generator::REL_IS_MASTER]) && !$rel[$generator::REL_IS_MASTER]) {
