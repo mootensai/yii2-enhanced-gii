@@ -3,6 +3,7 @@
 namespace inquid\enhancedgii\crud;
 
 use inquid\enhancedgii\docgen\DocumentationGenerator;
+use inquid\enhancedgii\utils\DatabaseUtilsTrait;
 use inquid\enhancedgii\utils\TableUtils;
 use Yii;
 use yii\db\ActiveRecord;
@@ -29,6 +30,8 @@ use yii\web\Controller;
  */
 class Generator extends \inquid\enhancedgii\BaseGenerator
 {
+    use DatabaseUtilsTrait;
+
     public $nameAttribute = 'name, title, username, nombre';
     public $hiddenColumns = 'id, lock';
     public $skippedTables = 'auth_assignment, auth_item, auth_item_child, auth_rule, token,social_account, user, profile, migration';
@@ -331,7 +334,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedColumns = array_filter($this->skippedColumns);
         $this->skippedRelations = array_filter($this->skippedRelations);
         foreach ($this->getTableNames() as $tableName) {
-            $tableCommentName = $tableUtils->getTableComment($tableName);
+            $tableCommentName = $tableUtils->getTableComment($tableName, $this->getDatabase(null));
             if (in_array($tableName, $this->skippedTables)):
                 continue;
             endif;
