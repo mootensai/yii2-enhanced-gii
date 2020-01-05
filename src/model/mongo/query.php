@@ -39,7 +39,11 @@ class <?= $className ?> extends ActiveQuery
      */
     public function all($db = null)
     {
-        return parent::all($db);
+        $result = parent::all($db);
+        foreach ($result as $key => $item) {
+            $result[$key]['_id'] = $result[$key]['_id']->__toString();
+        }
+        return $result;
     }
 
     /**
