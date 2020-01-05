@@ -11,6 +11,7 @@ namespace inquid\enhancedgii\model;
 
 use inquid\enhancedgii\BaseGenerator;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
 use yii\db\ActiveQuery;
 use yii\db\Schema;
@@ -467,7 +468,7 @@ class Generator extends BaseGenerator
     /**
      * Checks if any of the specified columns is auto incremental.
      *
-     * @param \yii\db\TableSchema $table   the table schema
+     * @param TableSchema $table   the table schema
      * @param array               $columns columns to check for autoIncrement property
      *
      * @return bool whether any of the specified columns is auto incremental.
@@ -486,7 +487,7 @@ class Generator extends BaseGenerator
     /**
      * Generates the attribute labels for the specified table.
      *
-     * @param \yii\db\TableSchema $table the table schema
+     * @param TableSchema $table the table schema
      *
      * @return array the generated attribute labels (name => label)
      */
@@ -530,9 +531,10 @@ class Generator extends BaseGenerator
     /**
      * Generates validation rules for the specified table.
      *
-     * @param \yii\db\TableSchema $table the table schema
+     * @param TableSchema $table the table schema
      *
      * @return array the generated validation rules
+     * @throws InvalidConfigException
      */
     public function generateRules($table)
     {
@@ -543,7 +545,7 @@ class Generator extends BaseGenerator
             if ($column->autoIncrement) {
                 continue;
             }
-            if (!$column->allowNull && $column->defaultValue === null) {
+            if (!$column->allowNull && $column->defaultValue === null || $column->isPrimaryKey) {
                 if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl'])) {
                 } else {
                     $types['required'][] = $column->name;

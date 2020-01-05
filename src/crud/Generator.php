@@ -551,9 +551,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         }
         /* @var $class ActiveRecord */
 //        $class = $this->modelClass;
-        $pk = empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
-
-        return $pk;
+        return empty($this->tableSchema->primaryKey) ? $this->tableSchema->getColumnNames()[0] : $this->tableSchema->primaryKey[0];
     }
 
     public function getNameAttributeFK($tableName)
