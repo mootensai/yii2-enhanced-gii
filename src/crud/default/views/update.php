@@ -24,7 +24,7 @@ $this->title = <?php if ($generator->useTableComment) {
         'modelClass' => Inflector::camel2words(StringHelper::basename($generator->modelClass))
     ]);
 } ?> $model-><?= $generator->getNameAttribute() ?>;
-$this->params['breadcrumbs'][] = ['label' => <?= $tableCommentName ?: 'Index' ?>, 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => <?= $tableCommentName ?: '\'Index\'' ?>, 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('Actualizar') ?>;
 ?>
