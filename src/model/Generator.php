@@ -545,8 +545,8 @@ class Generator extends BaseGenerator
             if ($column->autoIncrement) {
                 continue;
             }
-            if (!$column->allowNull && $column->defaultValue === null || $column->isPrimaryKey) {
-                if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl'])) {
+            if (!$column->allowNull && $column->defaultValue === null) {
+                if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl']) || $column->isPrimaryKey) {
                 } else {
                     $types['required'][] = $column->name;
                 }
