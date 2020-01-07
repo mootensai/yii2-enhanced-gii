@@ -542,11 +542,11 @@ class Generator extends BaseGenerator
         $lengths = [];
         $this->fileFields = [];
         foreach ($table->columns as $column) {
-            if ($column->autoIncrement) {
+            if ($column->autoIncrement || ($column->isPrimaryKey && $column->type == Schema::TYPE_STRING)) {
                 continue;
             }
             if (!$column->allowNull && $column->defaultValue === null) {
-                if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl']) || $column->isPrimaryKey) {
+                if ($this->isTree && in_array($column->name, ['lft', 'rgt', 'lvl'])) {
                 } else {
                     $types['required'][] = $column->name;
                 }
