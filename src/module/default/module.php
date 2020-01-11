@@ -38,7 +38,7 @@ class <?= $className ?> extends \yii\base\Module
         parent::init();
         Yii::configure($this, require(__DIR__ . '/config/config.php'));
         if (isset(Yii::$app->user->identity))
-            $this->menu = ['label' => 'Opciones',
+            $this->menu = ['label' => '<?= $generator->moduleID ?>',
                 'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin,
                 'url' => ['/<?= $generator->moduleID ?>/default/index'],
                 'template' => '<a href="{url}">{label}<i class="fa fa-angle-left pull-right"></i></a>',
