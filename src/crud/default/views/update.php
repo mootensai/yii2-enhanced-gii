@@ -18,13 +18,13 @@ use yii\helpers\Html;
 
 $this->title = <?php if ($generator->useTableComment) {
     /** @var string $tableCommentName */
-    echo $tableCommentName;
+    echo "'" . $tableCommentName . "'";
 } else {
-    echo $generator->generateString('Actualizar {modelClass}: ', [
+    echo "'" . $generator->generateString('Actualizar {modelClass}: ', [
         'modelClass' => Inflector::camel2words(StringHelper::basename($generator->modelClass))
-    ]);
+    ]) . "'";
 } ?> $model-><?= $generator->getNameAttribute() ?>;
-$this->params['breadcrumbs'][] = ['label' => <?= $tableCommentName ?: '\'Index\'' ?>, 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => <?= "'" . $tableCommentName . "'" ?: '\'Index\'' ?>, 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model-><?= $generator->getNameAttribute() ?>, 'url' => ['view', <?= $urlParams ?>]];
 $this->params['breadcrumbs'][] = <?= $generator->generateString('Actualizar') ?>;
 ?>
