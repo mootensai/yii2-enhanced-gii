@@ -20,28 +20,33 @@ $items = [
         'content' => $this->render('_detail', [
             'model' => $model,
         ]),
-    ],
+    ]
+];
 <?php foreach ($relations as $name => $rel): ?>
     <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
-    [
-        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
-        'options' => ['id' => "tab_<?= $rel[1] ?>_{$model-><?= $pk ?>}"],
-        'content' => $this->render('_data<?= $rel[1] ?>', [
-            'model' => $model,
-            'row' => $model-><?= $name ?>,
-        ]),
-    ],
+        if (!empty($model-><?= $name ?>)) {
+            $items[] =
+            [
+                'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+                'options' => ['id' => "tab_<?= $rel[1] ?>_{$model-><?= $pk ?>}"],
+                'content' => $this->render('_data<?= $rel[1] ?>', [
+                    'model' => $model,
+                    'row' => $model-><?= $name ?>,
+                ]),
+            ];
+        }
     <?php elseif(isset($rel[$generator::REL_IS_MASTER]) && !$rel[$generator::REL_IS_MASTER]): ?>
-    [
-        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
-        'options' => ['id' => "tab_<?= $rel[1] ?>_{$model-><?= $pk ?>}"],
-        'content' => $this->render('_data<?= $rel[1] ?>', [
-        'model' => $model-><?= $name ?>
-        ]),
-    ],
+        $items[] =
+        [
+            'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+            'options' => ['id' => "tab_<?= $rel[1] ?>_{$model-><?= $pk ?>}"],
+            'content' => $this->render('_data<?= $rel[1] ?>', [
+            'model' => $model-><?= $name ?>
+            ]),
+        ];
     <?php endif; ?>
 <?php endforeach; ?>
-];
+
 echo TabsX::widget([
     'items' => $items,
     'position' => TabsX::POS_ABOVE,
