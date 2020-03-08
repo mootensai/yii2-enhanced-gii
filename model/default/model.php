@@ -100,7 +100,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     {
         return '<?= $generator->generateTableName($tableName) ?>';
     }
-<?php if ($enabled->db !== 'db'): ?>
+<?php if ($generator->db !== 'db'): ?>
 
     /**
      * @return \yii\db\Connection the database connection used by this AR class.
