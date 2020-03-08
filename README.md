@@ -1,3 +1,4 @@
+Just applied outstanding pull requests as at 8 March 2020
 # yii2-enhanced-gii
 Yii2 Gii (generator) with Relation
 
