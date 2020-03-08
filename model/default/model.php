@@ -79,7 +79,7 @@ class <?= $className ?> extends <?= ($isTree) ? '\kartik\tree\models\Tree' . "\n
     * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model
     */
-    public function relationNames()
+    public static function relationNames()
     {
         return [<?= "\n\t\t\t'" . implode("',\n\t\t\t'", array_keys($relations)) . "'\n\t\t" ?>];
     }
