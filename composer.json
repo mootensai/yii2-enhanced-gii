@@ -49,7 +49,6 @@
     "yiisoft/yii2-apidoc": "~2.1.0",
     "yiidoc/yii2-redactor": "*",
     "mikehaertl/php-shellcommand": "dev-master",
-    "knplabs/github-api": "^2.8",
     "drsdre/yii2-wizardwidget": "*",
     "bizley/contenttools": "^1.2",
     "yii2mod/yii2-editable": "*",
