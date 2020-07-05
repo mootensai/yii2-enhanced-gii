@@ -27,11 +27,9 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-//        \Yii::setAlias('@mtengii','@vendor/mootensai/yii2-enhanced-gii');
         if ($app->hasModule('gii')) {
             if (!isset($app->getModule('gii')->generators['enhanced-gii'])) {
                 $app->getModule('gii')->generators['enhanced-gii-repo'] = 'inquid\enhancedgii\repo\Generator';
-                $app->getModule('gii')->generators['enhanced-gii-domain'] = 'inquid\enhancedgii\domain\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-app_template'] = 'inquid\enhancedgii\app_template\Generator';
                 $app->getModule('gii')->generators['enhanced-gii-model'] = [
                     'class'     => 'inquid\enhancedgii\model\Generator',
