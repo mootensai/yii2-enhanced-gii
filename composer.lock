@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8342a54e69766f7f05aff25a46152c12",
+    "content-hash": "c3c0eaaa5b5d9474b3b7125d3d456d9a",
     "packages": [
         {
             "name": "bizley/contenttools",
