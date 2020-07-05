@@ -23,7 +23,7 @@ class m180728_020101_service_columns extends Migration
                     $this->addColumn($tableName, 'deleted_by', $this->integer()->defaultValue(0));
                 }
             } catch (Exception $exception) {
-                Yii::debug('Exception ->'. Json::encode($exception));
+                Yii::debug('Exception ->'.Json::encode($exception));
             }
         }
     }
@@ -44,7 +44,7 @@ class m180728_020101_service_columns extends Migration
                     $this->dropColumn($tableName, 'deleted_by');
                 }
             } catch (Exception $exception) {
-                Yii::debug('Exception ->'. Json::encode($exception));
+                Yii::debug('Exception ->'.Json::encode($exception));
             }
         }
     }
