@@ -1,6 +1,9 @@
 <?php
 
-class m180728_020101_service_columns extends \yii\db\Migration
+use yii\db\Migration;
+use yii\helpers\Json;
+
+class m180728_020101_service_columns extends Migration
 {
     public $skippedTables = ['auth_assignment', 'auth_item', 'auth_item_child', 'auth_rule', 'migration', 'social_account', 'token', 'user'];
 
@@ -20,7 +23,7 @@ class m180728_020101_service_columns extends \yii\db\Migration
                     $this->addColumn($tableName, 'deleted_by', $this->integer()->defaultValue(0));
                 }
             } catch (Exception $exception) {
-                Yii::debug('Exception ->'.\yii\helpers\Json::encode($exception));
+                Yii::debug('Exception ->'. Json::encode($exception));
             }
         }
     }
@@ -41,7 +44,7 @@ class m180728_020101_service_columns extends \yii\db\Migration
                     $this->dropColumn($tableName, 'deleted_by');
                 }
             } catch (Exception $exception) {
-                Yii::debug('Exception ->'.\yii\helpers\Json::encode($exception));
+                Yii::debug('Exception ->'. Json::encode($exception));
             }
         }
     }
