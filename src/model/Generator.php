@@ -103,12 +103,12 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::rules(), [
             [['db', 'dbNoSql', 'nsModel', 'tableName', 'modelClass', 'queryNs', 'nsComponent'], 'filter', 'filter' => 'trim'],
-            ['db', 'required', 'when' => function($model) {
+            ['db', 'required', 'when' => function ($model) {
                 return $model->dbNoSql == null;
             }, 'whenClient' => "
                 return $('#generator-db').css('display') === 'block';
             "],
-            ['dbNoSql', 'required', 'when' => function($model) {
+            ['dbNoSql', 'required', 'when' => function ($model) {
                 return $model->db == null;
             }, 'whenClient' => "
                 return $('#generator-dbnosql').css('display') === 'block';
@@ -152,9 +152,9 @@ class Generator extends BaseGenerator
             'nsSearchModel'  => 'Search Model Namespace',
             'UUIDColumn'     => 'UUID Column',
             'viewPath'       => 'View Path',
-//            'baseControllerClass' => 'Base Controller Class',
-//            'indexWidgetType' => 'Widget Used in Index Page',
-//            'searchModelClass' => 'Search Model Class',
+            //            'baseControllerClass' => 'Base Controller Class',
+            //            'indexWidgetType' => 'Widget Used in Index Page',
+            //            'searchModelClass' => 'Search Model Class',
             'generateBaseOnly'       => 'Generate Base Model Only',
             'deletedBy'              => 'Column',
             'deletedByValue'         => 'Value',
@@ -180,7 +180,7 @@ class Generator extends BaseGenerator
     {
         return array_merge(parent::hints(), [
             'db'         => 'This is the ID of the DB application component.',
-            'dbNoSql'  => 'This is the ID of the MongoDB application component.',
+            'dbNoSql'    => 'This is the ID of the MongoDB application component.',
             'moduleName' => 'The module where the models will be placed',
             'tableName'  => 'This is the name of the DB table that the new ActiveRecord class is associated with, e.g. <code>post</code>.
                 The table name may consist of the DB schema part if needed, e.g. <code>public.post</code>.
@@ -208,9 +208,9 @@ class Generator extends BaseGenerator
                 if "Table Name" ends with asterisk, in which case multiple ActiveRecord classes will be generated.',
             'baseModelClass' => 'This is the base class of the new ActiveRecord class. It should be a fully qualified namespaced class name.',
             'nsSearchModel'  => 'This is the namespace of the search model class to be generated, e.g., <code>app\models</code>',
-//            'searchModelClass' => 'This is the name of the search class to be generated. The class name should not contain
-//                the namespace part as it is specified in "Search Model Namespace". You do not need to specify the class name
-//                if "Table Name" ends with asterisk, in which case multiple search model classes will be generated.',
+            //            'searchModelClass' => 'This is the name of the search class to be generated. The class name should not contain
+            //                the namespace part as it is specified in "Search Model Namespace". You do not need to specify the class name
+            //                if "Table Name" ends with asterisk, in which case multiple search model classes will be generated.',
             'generateQuery'              => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
             'generateLabelsFromComments' => 'This indicates whether the generator should generate attribute labels
                 by using the comments of the corresponding DB columns.',
@@ -273,19 +273,19 @@ class Generator extends BaseGenerator
                 'Empty <code>Info Column</code> field if you want to disable this feature. '.
                 'If <code>Column</code> field is empty, then this field will not work!',
 
-//            'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
-//                the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
-//                if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
+            //            'controllerClass' => 'This is the name of the Controller class to be generated. The class name should not contain
+            //                the namespace part as it is specified in "Controller Namespace". You do not need to specify the class name
+            //                if "Table Name" ends with asterisk, in which case multiple Controller classes will be generated.',
             'viewPath' => 'Specify the directory for storing the view scripts for the controller. You may use path alias here, e.g.,
                 <code>/var/www/basic/controllers/views/post</code>, <code>@app/views/post</code>. If not set, it will default
                 to <code>@app/views/ControllerID</code>',
-//            'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
-//                You should provide a fully qualified class name, e.g., <code>yii\web\Controller</code>.',
-//            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
-//                You can fill multiple relations, separated by comma (,). You do not need to specify the class name
-//                if "Table Name" ends with asterisk, in which case all relations will be generated.',
-//            'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
-//                You may choose either <code>GridView</code> or <code>ListView</code>',
+            //            'baseControllerClass' => 'This is the class that the new CRUD controller class will extend from.
+            //                You should provide a fully qualified class name, e.g., <code>yii\web\Controller</code>.',
+            //            'skippedRelations' => 'Fill this field with the relation name that you dont want to generate CRUD for the table.
+            //                You can fill multiple relations, separated by comma (,). You do not need to specify the class name
+            //                if "Table Name" ends with asterisk, in which case all relations will be generated.',
+            //            'indexWidgetType' => 'This is the widget type to be used in the index page to display list of the models.
+            //                You may choose either <code>GridView</code> or <code>ListView</code>',
             'queryNs'    => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
             'queryClass' => 'This is the name of the ActiveQuery class to be generated. The class name should not contain
                 the namespace part as it is specified in "ActiveQuery Namespace". You do not need to specify the class name
@@ -313,8 +313,8 @@ class Generator extends BaseGenerator
         return array_merge(parent::stickyAttributes(), [
             'db',
             'dbNoSql',
-//            'skippedColumns',
-//            'hiddenColumns',
+            //            'skippedColumns',
+            //            'hiddenColumns',
             'nameAttribute',
             'nsModel',
             'nsSearchModel',
@@ -336,9 +336,9 @@ class Generator extends BaseGenerator
             'deletedByValueRestored',
             'UUIDColumn',
             'generateRelations',
-//            'baseControllerClass',
-//            'indexWidgetType',
-//            'viewPath'
+            //            'baseControllerClass',
+            //            'indexWidgetType',
+            //            'viewPath'
         ]);
     }
 
@@ -395,9 +395,9 @@ class Generator extends BaseGenerator
         }
 
         foreach ($this->getTableNames() as $tableName) {
-            if (in_array($tableName, $this->skippedTables)):
+            if (in_array($tableName, $this->skippedTables)) {
                 continue;
-            endif;
+            }
 
             // preparation :
             if (strpos($this->tableName, '*') !== false) {
@@ -405,7 +405,7 @@ class Generator extends BaseGenerator
             } else {
                 $modelClassName = (!empty($this->modelClass)) ? $this->modelClass : Inflector::id2camel($tableName, '_');
             }
-            $componentClassName = $modelClassName . 'Component';
+            $componentClassName = $modelClassName.'Component';
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $this->modelClass = "{$this->nsModel}\\{$modelClassName}";
@@ -428,15 +428,18 @@ class Generator extends BaseGenerator
             ];
             // model :
             $files[] = new CodeFile(
-                Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/base/'.$modelClassName.'.php', $this->render('model.php', $params)
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/base/'.$modelClassName.'.php',
+                $this->render('model.php', $params)
             );
             if (!$this->generateBaseOnly) {
                 $files[] = new CodeFile(
-                    Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/'.$modelClassName.'.php', $this->render('model-extended.php', $params)
+                    Yii::getAlias('@'.str_replace('\\', '/', $this->nsModel)).'/'.$modelClassName.'.php',
+                    $this->render('model-extended.php', $params)
                 );
             }
             $files[] = new CodeFile(
-                Yii::getAlias('@'.str_replace('\\', '/', $this->nsComponent)).'/'.$componentClassName.'.php', $this->render('component.php', $params)
+                Yii::getAlias('@'.str_replace('\\', '/', $this->nsComponent)).'/'.$componentClassName.'.php',
+                $this->render('component.php', $params)
             );
             // query :
             if ($queryClassName) {
@@ -445,7 +448,8 @@ class Generator extends BaseGenerator
                     'modelClassName' => $modelClassName,
                 ];
                 $files[] = new CodeFile(
-                    Yii::getAlias('@'.str_replace('\\', '/', $this->queryNs)).'/'.$queryClassName.'.php', $this->render('query.php', $params)
+                    Yii::getAlias('@'.str_replace('\\', '/', $this->queryNs)).'/'.$queryClassName.'.php',
+                    $this->render('query.php', $params)
                 );
             }
 
@@ -469,7 +473,7 @@ class Generator extends BaseGenerator
      * Checks if any of the specified columns is auto incremental.
      *
      * @param TableSchema $table   the table schema
-     * @param array               $columns columns to check for autoIncrement property
+     * @param array       $columns columns to check for autoIncrement property
      *
      * @return bool whether any of the specified columns is auto incremental.
      */
@@ -533,8 +537,9 @@ class Generator extends BaseGenerator
      *
      * @param TableSchema $table the table schema
      *
-     * @return array the generated validation rules
      * @throws InvalidConfigException
+     *
+     * @return array the generated validation rules
      */
     public function generateRules($table)
     {
@@ -692,9 +697,10 @@ class Generator extends BaseGenerator
     }
 
     /**
-     * Generates a NoSQLModel
+     * Generates a NoSQLModel.
      *
      * @param array $collection
+     *
      * @return array
      */
     protected function generateNoSqlModel(array $collection): array

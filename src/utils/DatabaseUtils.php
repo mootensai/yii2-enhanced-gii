@@ -42,7 +42,8 @@ class DatabaseUtils
             $result = Yii::$app->db->createCommand(
                 "SELECT value_param
                      FROM {$databaseName}.inquid_params
-                     WHERE key_param='database_nickname';")
+                     WHERE key_param='database_nickname';"
+            )
                 ->queryScalar();
 
             $result = $result ?? 'DATABASE nickname invalid';

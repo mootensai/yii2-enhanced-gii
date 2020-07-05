@@ -109,16 +109,16 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
             [['tableName', 'baseControllerClass', 'indexWidgetType', 'db'], 'required'],
             [['tableName', 'moduleName'], 'match', 'pattern' => '/^(\w+\.)?([\w\*]+)$/', 'message' => 'Only word characters, and optionally an asterisk and/or a dot are allowed.'],
             [['tableName'], 'validateTableName'],
-//            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
+            //            [['searchModelClass'], 'compare', 'compareAttribute' => 'modelClass', 'operator' => '!==', 'message' => 'Search Model Class must not be equal to Model Class.'],
             [['modelClass', 'baseControllerClass', 'searchModelClass', 'db', 'queryClass'], 'match', 'pattern' => '/^[\w\\\\]*$/', 'message' => 'Only word characters and backslashes are allowed.'],
-//            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::class]],
+            //            [['modelClass'], 'validateClass', 'params' => ['extends' => BaseActiveRecord::class]],
             [['baseControllerClass'], 'validateClass', 'params' => ['extends' => Controller::class]],
             [['db'], 'validateDb'],
             [['controllerClass'], 'match', 'pattern' => '/Controller$/', 'message' => 'Controller class name must be suffixed with "Controller".'],
             [['controllerClass'], 'match', 'pattern' => '/(^|\\\\)[A-Z][^\\\\]+Controller$/', 'message' => 'Controller class name must start with an uppercase letter.'],
-//            [['searchModelClass'], 'validateNewClass'],
+            //            [['searchModelClass'], 'validateNewClass'],
             [['indexWidgetType'], 'in', 'range' => ['grid', 'list']],
-//            [['modelClass'], 'validateModelClass'],
+            //            [['modelClass'], 'validateModelClass'],
             [['enableI18N', 'generateRelations', 'generateSearchModel', 'pluralize', 'expandable', 'cancelable', 'pdf', 'loggedUserOnly', 'placeHolders', 'importExcel', 'useTableComment'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
             [['viewPath', 'skippedRelations', 'skippedColumns', 'skippedTables',
@@ -335,9 +335,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $this->skippedRelations = array_filter($this->skippedRelations);
         foreach ($this->getTableNames() as $tableName) {
             $tableCommentName = $tableUtils->getTableComment($tableName, $this->getDatabase(null));
-            if (in_array($tableName, $this->skippedTables)):
+            if (in_array($tableName, $this->skippedTables)) {
                 continue;
-            endif;
+            }
             // model :
             if (strpos($this->tableName, '*') !== false) {
                 $modelClassName = $this->generateClassName($tableName);
@@ -371,8 +371,10 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 }
                 $this->searchModelClass = $this->nsSearchModel.'\\'.$searchModelClassName;
                 $searchModel = Yii::getAlias('@'.str_replace('\\', '/', ltrim($this->searchModelClass, '\\').'.php'));
-                $files[] = new CodeFile($searchModel, $this->render('search.php',
-                    ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]));
+                $files[] = new CodeFile($searchModel, $this->render(
+                    'search.php',
+                    ['relations' => isset($relations[$tableName]) ? $relations[$tableName] : []]
+                ));
             }
 
             //controller
@@ -412,9 +414,10 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
                 if ($this->indexWidgetType != 'list' && $file === '_index.php') {
                     continue;
                 }
-                if ($isTree && ($file === 'index.php' || $file === 'view.php' || $file === '_form.php'
+                if ($isTree && (
+                    $file === 'index.php' || $file === 'view.php' || $file === '_form.php'
                         || $file === 'create.php' || $file === 'update.php'
-                    )) {
+                )) {
                     continue;
                 }
                 if (!$isTree && ($file === 'indexNested.php' || $file === '_formNested.php')) {

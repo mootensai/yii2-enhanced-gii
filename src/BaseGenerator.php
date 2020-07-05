@@ -90,7 +90,7 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * Validate if the module exist in the app
+     * Validate if the module exist in the app.
      *
      * @return bool
      */
@@ -185,9 +185,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
+     * @throws InvalidConfigExceptionAlias
+     *
      * @return string[] all db schema names or an array with a single empty string
      *
-     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
     protected function getSchemaNames()
@@ -213,9 +214,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
     }
 
     /**
-     * @return array the generated relation declarations
      * @throws InvalidConfigExceptionAlias
      * @throws NotSupportedException
+     *
+     * @return array the generated relation declarations
      */
     protected function generateRelations(): array
     {
@@ -288,11 +290,12 @@ abstract class BaseGenerator extends \yii\gii\Generator
      * Determines if relation is of has many type.
      *
      * @param TableSchema $table
-     * @param array $fks
+     * @param array       $fks
+     *
+     * @throws InvalidConfigExceptionAlias
      *
      * @return bool
      *
-     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
     protected function isHasManyRelation($table, $fks)
@@ -318,9 +321,10 @@ abstract class BaseGenerator extends \yii\gii\Generator
      *
      * @param array $relations relation declarations
      *
+     * @throws InvalidConfigExceptionAlias
+     *
      * @return array relation declarations extended with inverse relation names
      *
-     * @throws InvalidConfigExceptionAlias
      * @since 2.0.5
      */
     protected function addInverseRelations($relations): array
@@ -363,12 +367,13 @@ abstract class BaseGenerator extends \yii\gii\Generator
      * Generates relations using a junction table by adding an extra viaTable().
      *
      * @param TableSchema the table being checked
-     * @param array $fks obtained from the checkPivotTable() method
-     * @param array $relations
+     * @param array       $fks       obtained from the checkPivotTable() method
+     * @param array       $relations
      * @param TableSchema $table
      *
-     * @return array modified $relations
      * @throws InvalidConfigExceptionAlias
+     *
+     * @return array modified $relations
      */
     private function generateManyManyRelations($table, $fks, $relations): array
     {
@@ -423,11 +428,12 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Generates a class name from the specified table name.
      *
-     * @param string $tableName the table name (which may contain schema prefix)
-     * @param bool $useSchemaName should schema name be included in the class name, if present
+     * @param string $tableName     the table name (which may contain schema prefix)
+     * @param bool   $useSchemaName should schema name be included in the class name, if present
+     *
+     * @throws InvalidConfigExceptionAlias
      *
      * @return string the generated class name
-     * @throws InvalidConfigExceptionAlias
      */
     protected function generateClassName($tableName, $useSchemaName = null): string
     {
@@ -512,9 +518,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Connection the DB connection as specified by [[db]].
      *
-     * @return object|Component
      * @throws InvalidConfigExceptionAlias
      *
+     * @return object|Component
      */
     public function getDbConnection()
     {
@@ -524,9 +530,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Connection the DB connection as specified by [[db]].
      *
-     * @return object|Component
      * @throws InvalidConfigExceptionAlias
      *
+     * @return object|Component
      */
     public function getDbNoSQLConnection()
     {
@@ -547,9 +553,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
     /**
      * Returns an array of the table names that match the pattern specified by [[tableName]].
      *
-     * @return array
      * @throws InvalidConfigExceptionAlias
      *
+     * @return array
      */
     protected function getTableNames(): array
     {
@@ -599,9 +605,9 @@ abstract class BaseGenerator extends \yii\gii\Generator
      *
      * @param string $tableName the table name (which may contain schema prefix)
      *
-     * @return string the generated table name
      *@throws InvalidConfigExceptionAlias
      *
+     * @return string the generated table name
      */
     public function generateTableName($tableName): string
     {

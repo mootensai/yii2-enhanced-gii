@@ -22,34 +22,34 @@ namespace <?= $generator->nsModel ?>\base;
 use mongosoft\mongodb\MongoDateBehavior;
 use Yii;
 use yii\mongodb\ActiveRecord as ActiveRecordNoSql;
-<?php if ($generator->createdBy || $generator->updatedBy): ?>
+<?php if ($generator->createdBy || $generator->updatedBy) { ?>
 use yii\behaviors\BlameableBehavior;
-<?php endif; ?>
-<?php if ($generator->UUIDColumn): ?>
+<?php } ?>
+<?php if ($generator->UUIDColumn) { ?>
 use inquid\behaviors\UUIDBehaviorUUID4;
 use yii\mongodb\ActiveQuery;
-<?php endif; ?>
+<?php } ?>
 
 /**
  * This is the base model class for table "<?= $generator->generateTableName($tableName) ?>".
  *
-<?php foreach ($tableSchema->columns as $column): ?>
+<?php foreach ($tableSchema->columns as $column) { ?>
  * @property <?= "{$column->phpType} \${$column->name}\n" ?>
-<?php endforeach; ?>
-<?php if (!empty($relations)): ?>
+<?php } ?>
+<?php if (!empty($relations)) { ?>
  *
-<?php foreach ($relations as $name => $relation): ?>
-<?php if (!in_array($name, $generator->skippedRelations)): ?>
- * @property <?= '\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-<?php endif; ?>
-<?php endforeach; ?>
-<?php endif; ?>
+<?php foreach ($relations as $name => $relation) { ?>
+<?php if (!in_array($name, $generator->skippedRelations)) { ?>
+ * @property <?= '\\'.$generator->nsModel.'\\'.$relation[$generator::REL_CLASS].($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '').' $'.lcfirst($name)."\n" ?>
+<?php } ?>
+<?php } ?>
+<?php } ?>
  */
-class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" : ltrim($generator->baseModelClassNoSql, '\\') . "\n" ?>
+class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree'."\n" : ltrim($generator->baseModelClassNoSql, '\\')."\n" ?>
 {
 <?= (!$isTree) ? "\tuse NoSqlRelationTrait;\n" : '' ?>
 
-<?php if($generator->deletedBy): ?>
+<?php if ($generator->deletedBy) { ?>
     private $_rt_softdelete;
     private $_rt_softrestore;
 
@@ -57,19 +57,19 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
         parent::__construct();
         $this->_rt_softdelete = [
             '<?= $generator->deletedBy ?>' => <?= empty($generator->deletedByValue) ? 1 : $generator->deletedByValue ?>,
-<?php if($generator->deletedAt): ?>
+<?php if ($generator->deletedAt) { ?>
             '<?= $generator->deletedAt ?>' => <?= empty($generator->deletedAtValue) ? 1 : $generator->deletedAtValue ?>,
-<?php endif; ?>
+<?php } ?>
         ];
         $this->_rt_softrestore = [
             '<?= $generator->deletedBy ?>' => <?= empty($generator->deletedByValueRestored) ? 0 : $generator->deletedByValueRestored ?>,
-<?php if($generator->deletedAt): ?>
+<?php if ($generator->deletedAt) { ?>
             '<?= $generator->deletedAt ?>' => <?= empty($generator->deletedAtValueRestored) ? 0 : $generator->deletedAtValueRestored ?>,
-<?php endif; ?>
+<?php } ?>
         ];
     }
-<?php endif; ?>
-<?php if (!$isTree): ?>
+<?php } ?>
+<?php if (!$isTree) { ?>
 
     /**
     * This function helps NoSqlRelationTrait runs faster
@@ -77,16 +77,16 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     */
     public function relationNames()
     {
-        return [<?php echo empty($relations)? '' : "\n            '" . implode("',\n            '", array_keys($relations)) . "'\n        " ?>];
+        return [<?php echo empty($relations) ? '' : "\n            '".implode("',\n            '", array_keys($relations))."'\n        " ?>];
     }
 
-<?php endif; ?>
+<?php } ?>
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return [<?= "\n            " . implode(",\n            ", $rules) . "\n        " ?>];
+        return [<?= "\n            ".implode(",\n            ", $rules)."\n        " ?>];
     }
 
     /**
@@ -102,13 +102,13 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
      */
     public function attributes(): array {
         return [
-<?php foreach ($tableSchema->columns as $column): ?>
+<?php foreach ($tableSchema->columns as $column) { ?>
             <?= "'{$column->name}',\n" ?>
-<?php endforeach; ?>
+<?php } ?>
         ];
     }
 
-<?php if (!empty($generator->optimisticLock)): ?>
+<?php if (!empty($generator->optimisticLock)) { ?>
 
     /**
      *
@@ -120,7 +120,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     public function optimisticLock() {
         return '<?= $generator->optimisticLock ?>';
     }
-<?php endif; ?>
+<?php } ?>
 
     /**
      * @inheritdoc
@@ -128,28 +128,28 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     public function attributeLabels()
     {
         return [
-<?php foreach ($labels as $name => $label): ?>
-<?php if (!in_array($name, $generator->skippedColumns)): ?>
-            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-<?php endif; ?>
-<?php endforeach; ?>
+<?php foreach ($labels as $name => $label) { ?>
+<?php if (!in_array($name, $generator->skippedColumns)) { ?>
+            <?= "'$name' => ".$generator->generateString($label).",\n" ?>
+<?php } ?>
+<?php } ?>
         ];
     }
-<?php foreach ($relations as $name => $relation): ?>
-    <?php if(!in_array($name, $generator->skippedRelations)): ?>
+<?php foreach ($relations as $name => $relation) { ?>
+    <?php if (!in_array($name, $generator->skippedRelations)) { ?>
 
     /**
      * @return ActiveQuery
      */
     public function get<?= ucfirst($name) ?>()
     {
-        <?= $relation[0] . "\n" ?>
+        <?= $relation[0]."\n" ?>
     }
-    <?php endif; ?>
-<?php endforeach; ?>
+    <?php } ?>
+<?php } ?>
 <?php if ($generator->createdAt || $generator->updatedAt
         || $generator->createdBy || $generator->updatedBy
-        || $generator->UUIDColumn):
+        || $generator->UUIDColumn) {
     echo "\n"; ?>
     /**
      * @inheritdoc
@@ -158,50 +158,50 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
     public function behaviors()
     {
         return <?= $isTree ? 'array_merge(parent::behaviors(), ' : ''; ?>[
-<?php if ($generator->createdAt || $generator->updatedAt):?>
+<?php if ($generator->createdAt || $generator->updatedAt) { ?>
             'timestamp' => [
                 'class' => MongoDateBehavior::class,
-<?php if (!empty($generator->createdAt)):?>
+<?php if (!empty($generator->createdAt)) { ?>
                 'createdAtAttribute' => '<?= $generator->createdAt?>',
-<?php else :?>
+<?php } else { ?>
                 'createdAtAttribute' => false,
-<?php endif; ?>
-<?php if (!empty($generator->updatedAt)):?>
+<?php } ?>
+<?php if (!empty($generator->updatedAt)) { ?>
                 'updatedAtAttribute' => '<?= $generator->updatedAt?>',
-<?php else :?>
+<?php } else { ?>
                 'updatedAtAttribute' => false,
-<?php endif; ?>
+<?php } ?>
             ],
-<?php endif; ?>
-<?php if ($generator->createdBy || $generator->updatedBy):?>
+<?php } ?>
+<?php if ($generator->createdBy || $generator->updatedBy) { ?>
             'blameable' => [
                 'class' => BlameableBehavior::class,
-<?php if (!empty($generator->createdBy)):?>
+<?php if (!empty($generator->createdBy)) { ?>
                 'createdByAttribute' => '<?= $generator->createdBy?>',
-<?php else :?>
+<?php } else { ?>
                 'createdByAttribute' => false,
-<?php endif; ?>
-<?php if (!empty($generator->updatedBy)):?>
+<?php } ?>
+<?php if (!empty($generator->updatedBy)) { ?>
                 'updatedByAttribute' => '<?= $generator->updatedBy?>',
-<?php else :?>
+<?php } else { ?>
                 'updatedByAttribute' => false,
-<?php endif; ?>
-<?php if (!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id'):?>
+<?php } ?>
+<?php if (!empty($generator->blameableValue) && $generator->blameableValue != '\\Yii::$app->user->id') { ?>
                 'value' => <?= $generator->blameableValue?>,
-<?php endif; ?>
+<?php } ?>
             ],
-<?php endif; ?>
-<?php if ($generator->UUIDColumn):?>
+<?php } ?>
+<?php if ($generator->UUIDColumn) { ?>
             'uuid' => [
                 'class' => UUIDBehaviorUUID4::class,
-<?php if (!empty($generator->UUIDColumn)):?>
+<?php if (!empty($generator->UUIDColumn)) { ?>
                 'column' => '<?= $generator->UUIDColumn?>',
-<?php endif; ?>
+<?php } ?>
             ],
-<?php endif; ?>
+<?php } ?>
 <?php if (count($generator->fileFields) > 0) {
-	foreach ($generator->fileFields as $fileField) {
-		?>
+        foreach ($generator->fileFields as $fileField) {
+            ?>
             [
                 'class' => UploadBehavior::class,
                 'attribute' => '<?= $fileField ?>',
@@ -209,16 +209,18 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
                 'path' => '@webroot/files',
                 'url' => '@web/files',
             ],
-	<?php }
-	} ?>]<?= $isTree ? ')' : '' ?>;
+	<?php
+        }
+    } ?>]<?= $isTree ? ')' : '' ?>;
     }
-<?php endif; ?>
-<?php if ($queryClassName): ?>
 <?php
-    $queryClassFullName = '\\' . $generator->queryNs . '\\' . $queryClassName;
+} ?>
+<?php if ($queryClassName) { ?>
+<?php
+    $queryClassFullName = '\\'.$generator->queryNs.'\\'.$queryClassName;
     echo "\n";
 ?>
-<?php if( $generator->deletedBy): ?>
+<?php if ($generator->deletedBy) { ?>
     /**
      * The following code shows how to apply a default condition for all queries:
      *
@@ -240,7 +242,7 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
      * $customers = Customer::find()->where('age>30')->all();
      * ```
      */
-<?php endif; ?>
+<?php } ?>
 
     /**
      * @inheritdoc
@@ -248,14 +250,14 @@ class <?= $className ?> extends <?= $isTree ? '\kartik\tree\models\Tree' . "\n" 
      */
     public static function find()
     {
-<?php if($generator->deletedBy): ?>
+<?php if ($generator->deletedBy) { ?>
         $query = new <?= $queryClassFullName ?>(get_called_class());
         return $query->where(['<?= $generator->deletedBy ?>' => null]);
-<?php else: ?>
+<?php } else { ?>
         return new <?= $queryClassFullName ?>(get_called_class());
-<?php endif; ?>
+<?php } ?>
     }
-<?php endif; ?>
+<?php } ?>
 
 	/**
      * @param $name string name

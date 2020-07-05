@@ -23,9 +23,9 @@ class <?= $testName ?> extends \Codeception\Test\Unit
         $faker = Factory::create();
         $<?=lcfirst($className)?> = new <?=$className?>();
 
-        <?php foreach ($tableSchema->columns as $column): ?>
+        <?php foreach ($tableSchema->columns as $column) { ?>
             $<?=lcfirst($className)?>-><?= $column->name ?> = <?= $generator->generateFakerType($column) ?>;
-        <?php endforeach; ?>
+        <?php } ?>
 
         $<?=lcfirst($className)?>->save();
         expect_that(empty($<?=lcfirst($className)?>->getErrors()));
@@ -36,9 +36,9 @@ class <?= $testName ?> extends \Codeception\Test\Unit
         $faker = Factory::create();
         $<?=lcfirst($className)?> = new <?=$className?>();
 
-        <?php foreach ($tableSchema->columns as $column): ?>
+        <?php foreach ($tableSchema->columns as $column) { ?>
             $<?=lcfirst($className)?>-><?= $column->name ?> = <?= $generator->generateFakerType($column) ?>;
-        <?php endforeach; ?>
+        <?php } ?>
 
         $<?=lcfirst($className)?>->save();
         expect_that(empty($<?=lcfirst($className)?>->getErrors()));

@@ -148,9 +148,9 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
         $skippedTables = ($this->skippedTables) ? explode(',', str_replace(' ', '', $this->skippedTables)) : [];
 
         foreach ($this->getTableNames() as $tableName) {
-            if (in_array($tableName, $skippedTables)):
+            if (in_array($tableName, $skippedTables)) {
                 continue;
-            endif;
+            }
             $columns = [];
             $tableSchema = $db->getTableSchema($tableName);
             $className = $this->generateClassName($tableName);

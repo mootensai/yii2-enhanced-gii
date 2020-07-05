@@ -43,7 +43,8 @@ class RepoHandler
             true,
             true,
             null,
-            false));
+            false
+        ));
         if ($init_code) {
             exec("git init /{$this->local_path}/{$this->name}/");
             exec("git add -A /{$this->local_path}/{$this->name}/");

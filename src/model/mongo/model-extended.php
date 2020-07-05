@@ -25,9 +25,9 @@ use \<?= $generator->nsComponent ?>\<?= $className ?>Component;
 */
 class <?= $className ?> extends Base<?= $className."\n" ?>
 {
-<?php if ($generator->excelImport): ?>
+<?php if ($generator->excelImport) { ?>
     public $fileExcelImport;
-<?php endif; ?>
+<?php } ?>
 <?php foreach ($generator->tableSchema->columns as $column) {
     if ($generator->containsAnnotation($column, '@file')) {
         echo 'public $'.$column->name."File;\n";
@@ -35,21 +35,21 @@ class <?= $className ?> extends Base<?= $className."\n" ?>
         echo 'public $'.$column->name."Image;\n";
     }
 } ?>
-<?php if ($generator->generateAttributeHints): ?>
+<?php if ($generator->generateAttributeHints) { ?>
     /**
     * @inheritdoc
     */
     public function attributeHints()
     {
     return [
-    <?php foreach ($labels as $name => $label): ?>
-        <?php if (!in_array($name, $generator->skippedColumns)): ?>
+    <?php foreach ($labels as $name => $label) { ?>
+        <?php if (!in_array($name, $generator->skippedColumns)) { ?>
             <?= "'$name' => ".$generator->generateString($label).",\n" ?>
-        <?php endif; ?>
-    <?php endforeach; ?>
+        <?php } ?>
+    <?php } ?>
     ];
     }
-<?php endif; ?>
+<?php } ?>
 
    /**
     * Executed before save

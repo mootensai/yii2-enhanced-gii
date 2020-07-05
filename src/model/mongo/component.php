@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: gogl92
  * Date: 2019-02-24
- * Time: 01:18
+ * Time: 01:18.
  */
 echo "<?php\n";
 
@@ -22,21 +22,21 @@ class <?= $componentClassName ?> extends Component
 <?php
 echo
 "\t/**
-\t * @param " . $className . ' ' . lcfirst($className)."
-\t * @return " . $className . "
+\t * @param ".$className.' '.lcfirst($className)."
+\t * @return ".$className."
 \t */
-\tpublic function beforeSave($" . lcfirst($className) . '): ' . $className . "
+\tpublic function beforeSave($".lcfirst($className).'): '.$className."
 \t{
-        return \$" . lcfirst($className) . ";
+        return \$".lcfirst($className).";
 \t}\n"; ?>
 
 <?php
 echo "\t/**
-\t * @param " . $className . ' ' . lcfirst($className)."
-\t * @return " . $className . "
+\t * @param ".$className.' '.lcfirst($className)."
+\t * @return ".$className."
 \t */
-\tpublic function afterSave($" . lcfirst($className) . '): ' . $className . "
+\tpublic function afterSave($".lcfirst($className).'): '.$className."
 \t{
-        return \$" . lcfirst($className) . ";
+        return \$".lcfirst($className).";
 \t}\n"; ?>
 }
