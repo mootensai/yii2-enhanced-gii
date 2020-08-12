@@ -27,14 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
 
     <div class="row">
-        <div class="<?= ($generator->saveAsNew) ? 'col-sm-8' : 'col-sm-9'; ?>">
+        <div class="col-sm-8">
             <h2><?= '<?= ' ?><?= $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>.' '. Html::encode($this->title) ?></h2>
         </div>
-        <div class="<?= ($generator->saveAsNew) ? 'col-sm-4' : 'col-sm-3'; ?>" style="margin-top: 15px">
+        <div class="col-sm-4" style="margin-top: 15px">
 <?php if ($generator->pdf): ?>
 <?= '<?= ' ?>
             <?= "
-             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . ".$generator->generateString('PDF').",
+             Html::a('<i class=\"fa fa-file-pdf\"></i> ' . ".$generator->generateString('PDF').",
                 ['pdf', $urlParams],
                 [
                     'class' => 'btn btn-danger',
