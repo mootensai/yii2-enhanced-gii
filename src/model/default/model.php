@@ -21,6 +21,14 @@ namespace <?= $generator->nsModel ?>\base;
 <?= (!$isTree) ? "use \\mootensai\\relation\\RelationTrait;\n" : '' ?>
 use Yii;
 use yii\db\ActiveRecord;
+<?php if (!empty($relations)) { ?>
+<?php foreach ($relations as $name => $relation) { ?>
+<?php if (!in_array($name, $generator->skippedRelations)) {
+echo 'use app\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ";\n";
+} ?>
+<?php } ?>
+<?php } ?>
+
 <?php if ($generator->createdAt || $generator->updatedAt): ?>
 use yii\behaviors\TimestampBehavior;
 <?php endif; ?>
@@ -41,7 +49,7 @@ use inquid\behaviors\UUIDBehaviorUUID4;
  *
 <?php foreach ($relations as $name => $relation): ?>
 <?php if (!in_array($name, $generator->skippedRelations)): ?>
- * @property <?= '\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+ * @property <?= $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
 <?php endif; ?>
 <?php endforeach; ?>
 <?php endif; ?>

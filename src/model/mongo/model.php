@@ -22,6 +22,14 @@ namespace <?= $generator->nsModel ?>\base;
 use mongosoft\mongodb\MongoDateBehavior;
 use Yii;
 use yii\mongodb\ActiveRecord as ActiveRecordNoSql;
+<?php if (!empty($relations)) { ?>
+<?php foreach ($relations as $name => $relation) { ?>
+<?php if (!in_array($name, $generator->skippedRelations)) {
+echo 'use app\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ";\n";
+} ?>
+<?php } ?>
+<?php } ?>
+
 <?php if ($generator->createdBy || $generator->updatedBy) { ?>
 use yii\behaviors\BlameableBehavior;
 <?php } ?>
@@ -40,7 +48,7 @@ use yii\mongodb\ActiveQuery;
  *
 <?php foreach ($relations as $name => $relation) { ?>
 <?php if (!in_array($name, $generator->skippedRelations)) { ?>
- * @property <?= '\\'.$generator->nsModel.'\\'.$relation[$generator::REL_CLASS].($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '').' $'.lcfirst($name)."\n" ?>
+ * @property <?= $relation[$generator::REL_CLASS] . ($relation[$generator::REL_IS_MULTIPLE] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
 <?php } ?>
 <?php } ?>
 <?php } ?>
