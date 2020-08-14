@@ -24,7 +24,7 @@ use yii\db\ActiveRecord;
 <?php if (!empty($relations)) { ?>
 <?php foreach ($relations as $name => $relation) { ?>
 <?php if (!in_array($name, $generator->skippedRelations)) {
-echo 'use app\\' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ";\n";
+echo 'use ' . $generator->nsModel . '\\' . $relation[$generator::REL_CLASS] . ";\n";
 } ?>
 <?php } ?>
 <?php } ?>
