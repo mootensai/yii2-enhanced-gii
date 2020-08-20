@@ -46,12 +46,12 @@ class Generator extends BaseGenerator
     public $queryNs = 'app\models';
     public $queryClass;
     public $queryBaseClass = 'yii\db\ActiveQuery';
-    public $generateLabelsFromComments = false;
+    public $generateLabelsFromComments = true;
     public $useTablePrefix = false;
     public $generateRelations = self::RELATIONS_ALL;
     public $generateAttributeHints = false;
     public $generateMigrations = false;
-    public $optimisticLock = 'lock';
+    public $optimisticLock = null;
     public $createdAt = 'created_at';
     public $updatedAt = 'updated_at';
     public $timestampValue = "new \\yii\\db\\Expression('CONVERT_TZ(NOW(),\"+00:00\",\"-05:00\")')";
@@ -65,7 +65,7 @@ class Generator extends BaseGenerator
     public $deletedAtValue = 'date(\'Y-m-d H:i:s\')';
     public $deletedAtValueRestored = 'date(\'Y-m-d H:i:s\')';
     public $generateBaseOnly = false;
-    public $UUIDColumn = 'id';
+    public $UUIDColumn = null;
     public $skipAllExistingTables = true;
     public $nsComponent = 'app\components';
     // Uploaders
