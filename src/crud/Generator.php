@@ -61,12 +61,12 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $deletedAt = 'deleted_at';
     public $nsController = 'app\controllers';
     public $controllerClass;
-    public $pluralize;
-    public $loggedUserOnly;
-    public $expandable;
-    public $cancelable;
-    public $saveAsNew;
-    public $pdf;
+    public $pluralize = false;
+    public $loggedUserOnly = true;
+    public $expandable = true;
+    public $cancelable = true;
+    public $saveAsNew = false;
+    public $pdf = true;
     public $viewPath = '@app/modules/module/views';
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
