@@ -38,7 +38,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $skippedColumns = 'created_at, updated_at, created_by, updated_by, deleted_at, deleted_by, created, modified, deleted';
     public $nsModel = 'app\models';
     public $nsSearchModel = 'app\models';
-    public $generateSearchModel;
+    public $generateSearchModel = true;
     public $searchModelClass;
     public $generateQuery = true;
     public $queryNs = 'app\models';
