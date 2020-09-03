@@ -10,9 +10,10 @@
 namespace inquid\tests;
 
 use Dotenv\Dotenv;
+use Dotenv\Repository\RepositoryBuilder;
 use PHPUnit\Framework\TestCase as PHPUnitBaseTestCase;
 use Yii;
-use yii\db\Schema;
+use yii\db\Connection;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use yii\web\Application;
@@ -27,7 +28,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
 
     protected function setUp(): void
     {
-        $this->env = Dotenv::create(__DIR__)->load();
+        $this->env = Dotenv::create(RepositoryBuilder::create()->make(), '.')->load();
         parent::setUp();
     }
 
@@ -65,9 +66,17 @@ abstract class TestCase extends PHPUnitBaseTestCase
         ], $config));
     }
 
-    protected function mockWebApplication($config = [], $appClass = '\yii\web\Application')
+    /**
+     *
+     *
+     * @param array $config
+     * @param string $appClass
+     * @return Connection
+     */
+    protected function mockWebApplication($config = [], $appClass = '\yii\web\Application'): Connection
     {
-        new $appClass(ArrayHelper::merge([
+        /** @var Application $app */
+        $app = new $appClass(ArrayHelper::merge([
             'id' => 'testapp',
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',
@@ -86,6 +95,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
                 ],
             ],
         ], $config));
+        return $app->getDb();
     }
 
     /**
@@ -121,7 +131,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
      */
     protected function createTestDatabase(): void
     {
-        echo json_encode(Yii::$app->db);
+        /*echo json_encode(Yii::$app->db);
         Yii::$app->db->createCommand()->createTable(
             'inquid_params',
             [
@@ -134,7 +144,7 @@ abstract class TestCase extends PHPUnitBaseTestCase
             ->insert('inquid_params', [
                 'key_param' => 'database_nickname',
                 'value_param' => 'Inquid Test Database',
-            ]);
+            ]);*/
     }
 
     /**

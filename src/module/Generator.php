@@ -13,6 +13,7 @@ namespace inquid\enhancedgii\module;
 use inquid\enhancedgii\BaseGenerator;
 use inquid\enhancedgii\utils\DatabaseUtils;
 use Yii;
+use yii\db\Connection;
 use yii\gii\CodeFile;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
@@ -32,6 +33,14 @@ class Generator extends BaseGenerator
     public $moduleClass;
     public $moduleID;
     public $databaseName = 'N/A';
+
+    /**
+     * @param Connection $dbConnection
+     */
+    public function setDatabaseConnection(Connection $dbConnection): void
+    {
+        $this->dbConnection = $dbConnection;
+    }
 
     /**
      * {@inheritdoc}

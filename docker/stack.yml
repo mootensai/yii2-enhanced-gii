@@ -1,18 +1,36 @@
 # Use root/example as user/password credentials
-version: '3.1'
+version: '3.7'
 
 services:
 
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    image: mysql:5.7
+    container_name: gii-mysql
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: generator
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_PASSWORD: example
+      MYSQL_USER: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
 
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+      PMA_USER: root
+      PMA_PASSWORD: example
+      MYSQL_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: example
     restart: always
     ports:
-      - 8080:8080
+      - 7878:80
+    depends_on:
+      - db

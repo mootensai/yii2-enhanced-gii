@@ -39,12 +39,13 @@ class DatabaseUtils
         $databaseName = $this->getTableName($databaseName);
 
         try {
-            $result = Yii::$app->db->createCommand(
+            $result = $this->dbConnection->createCommand(
                 "SELECT value_param
                      FROM {$databaseName}.inquid_params
                      WHERE key_param='database_nickname';"
             )
                 ->queryScalar();
+            echo 'dbResult -> ' . $result;
 
             $result = $result ?? 'DATABASE nickname invalid';
         } catch (Exception $e) {

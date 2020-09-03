@@ -183,7 +183,8 @@ class ModuleTest extends TestCase
         $this->setUp();
         $this->mockWebApplication();
         $this->createTestDatabase();
-        $this->generator->generate();
+        $this->generator = new Generator();
+        $this->generatedFiles = $this->generateFiles();
 
         $this->assertNotEmpty($this->generateFiles());
         $this->assertCount(5, $this->generateFiles());
@@ -215,7 +216,7 @@ class ".StringHelper::basename($this->generator->moduleClass)." extends \\yii\\b
         parent::init();
         Yii::configure(\$this, require(__DIR__ . '/config/config.php'));
         if (isset(Yii::\$app->user->identity))
-            \$this->menu = ['label' => 'Opciones',
+            \$this->menu = ['label' => 'myCustomModuleId',
                 'visible' => !Yii::\$app->user->isGuest && Yii::\$app->user->identity->isAdmin,
                 'url' => ['/{$this->generator->moduleID}/default/index'],
                 'template' => '<a href=\"{url}\">{label}<i class=\"fa fa-angle-left pull-right\"></i></a>',
@@ -280,7 +281,5 @@ return [
 return [];
 ',
             $this->generateFiles()[4]->content);
-
-        print_r($this->generateFiles());
     }
 }
