@@ -13,12 +13,12 @@
 <?php
 echo $form->field($generator, 'db');
 echo $form->field($generator, 'dbNoSql');
+echo $form->field($generator, 'moduleName');
 echo $form->field($generator, 'skippedTables');
 echo $form->field($generator, 'skipAllExistingTables')->checkbox();
 echo $form->field($generator, 'tableName');
 echo $form->field($generator, 'enableI18N')->checkbox();
 echo $form->field($generator, 'messageCategory');
-echo $form->field($generator, 'moduleName');
 echo $form->field($generator, 'nsModel');
 echo $form->field($generator, 'modelClass');
 echo $form->field($generator, 'baseModelClass');
