@@ -75,7 +75,7 @@ class Generator extends \inquid\enhancedgii\BaseGenerator
     public $generateDocumentation = false;
     /* Bootstrap */
     public $formColumns = 4;
-    public $placeHolders = false;
+    public $placeHolders = true;
     /* Excel */
     public $importExcel = true;
     /* PDF */
