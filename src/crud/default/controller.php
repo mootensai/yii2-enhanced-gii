@@ -45,7 +45,6 @@ use yii\data\ArrayDataProvider;
 <?php if($generator->hasFile($generator->tableSchema)):?>
 use yii\web\UploadedFile;
 <?php endif; ?>
-use inquid\google_debugger\GoogleCloudLogger;
 use dominus77\sweetalert2\Alert;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use inquid\yiireports\ExcelHelper;
@@ -459,7 +458,7 @@ $generator->skippedColumns[] = 'lock';
      */
     private function extractData($data, $test = false)
     {
-        Yii::debug('Data to import to movements' . Json::encode($data), GoogleCloudLogger::INVENTARIOS_LOG);
+        Yii::debug('Data to import to movements' . Json::encode($data));
         unset($data[0]);
         foreach ($data as $datum) {
             $personal = <?= $modelClass ?>::find()->where(['<?= $pks[0] ?>' => (int)$datum[0]])->one();
