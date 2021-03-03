@@ -11,7 +11,7 @@ use yii\helpers\StringHelper;
 //print_r($relations);
 
 $urlParams = $generator->generateUrlParams();
-$tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_CLASS]);
+$tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
