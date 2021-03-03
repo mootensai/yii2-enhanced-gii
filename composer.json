@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "*",
+        "yiisoft/yii2": ">=2.0.38",
         "mootensai/yii2-uuid-behavior": "*",
         "mootensai/yii2-relation-trait": "*",
         "mootensai/yii2-jsblock": "*",
