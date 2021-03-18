@@ -56,7 +56,7 @@ if ($generator->indexWidgetType === 'grid'):
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
 <?php
-    if ($generator->expandable && !empty($fk)):
+    if ($generator->expandable && sizeof($tableSchema->primaryKey) < 2):
 ?>
         [
             'class' => 'kartik\grid\ExpandRowColumn',
