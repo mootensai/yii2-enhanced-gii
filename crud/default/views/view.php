@@ -132,6 +132,7 @@ if($provider<?= $rel[1] ?>->totalCount){
 
     </div>
 <?php elseif(empty($rel[2])): ?>
+<?="<?php if(!is_null(\$model->$name)): ?>\n"?>
     <div class="row">
         <h4><?= $rel[1] ?><?= "<?= " ?>' '. Html::encode($this->title) ?></h4>
     </div>
@@ -161,6 +162,7 @@ if($provider<?= $rel[1] ?>->totalCount){
         'attributes' => $gridColumn<?= $rel[1] ?>
     ]);
     ?>
+    <?="<?php endif; ?>\n"?>
 <?php endif; ?>
 <?php endforeach; ?>
 </div>
