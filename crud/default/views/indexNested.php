@@ -1,10 +1,12 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ */
 
 //$urlParams = $generator->generateUrlParams();
 //$nameAttribute = $generator->getNameAttribute();
@@ -20,13 +22,13 @@ if ($modelClass === $searchModelClass) {
 ?>
 <?= "<?php" ?>
 
-/* @var $this yii\web\View */
+/* @var $this \yii\web\View */
 
-use yii\helpers\Html;
+use \kartik\helpers\Html;
 use <?= ltrim($generator->modelClass, '\\') ?>;
-use kartik\tree\TreeView;
-use kartik\tree\Module;
-use yii\web\View;
+use \kartik\tree\TreeView;
+use \kartik\tree\Module;
+use \yii\web\View;
 
 
 $this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;

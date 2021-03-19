@@ -2,11 +2,11 @@
 
 namespace mootensai\enhancedgii\migration;
 
-use Yii;
-use yii\db\Connection;
-use yii\db\Schema;
-use yii\gii\CodeFile;
-use yii\db\Expression;
+use \Yii;
+use \yii\db\Connection;
+use \yii\db\Schema;
+use \yii\gii\CodeFile;
+use \yii\db\Expression;
 
 /**
  * This generator will generate migration file for the specified database table.

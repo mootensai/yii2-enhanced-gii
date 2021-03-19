@@ -6,22 +6,25 @@
  * Time: 1:10 PM
  */
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ */
 
 $urlParams = $generator->generateUrlParams();
 
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
+use \kartik\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->modelClass, '\\') ?> $model
+*/
 
 $this->title = <?= $generator->generateString('Save As New {modelClass}: ', [
         'modelClass' => Inflector::camel2words(StringHelper::basename($generator->modelClass))

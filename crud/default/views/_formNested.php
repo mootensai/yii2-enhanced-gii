@@ -1,12 +1,14 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
-/* @var $relations array */
-/* @var $isTree boolean */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ * @var boolean $isTree
+ */
 
 $tableSchema = $generator->getTableSchema();
 $fk = $generator->generateFK($tableSchema);
@@ -14,11 +16,13 @@ $model = ($isTree) ? '$node' : '$model';
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use \kartik\helpers\Html;
+use \kartik\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var <?= $model?> <?= ltrim($generator->modelClass, '\\') ?> */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->modelClass, '\\') ?> <?= $model?>
+*/
 
 ?>
 

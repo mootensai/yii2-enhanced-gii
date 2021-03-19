@@ -1,19 +1,22 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ */
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 ?>
 <?= "<?php" ?>
 
-use yii\helpers\Html;
-use kartik\tabs\TabsX;
-use yii\helpers\Url;
+use \kartik\helpers\Html;
+use \kartik\tabs\TabsX;
+use \yii\helpers\Url;
 $items = [
     [
-        'label' => '<i class="glyphicon glyphicon-user"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+        'label' => '<i class="fas fa-book"></i> '. Html::encode(<?= $generator->generateString(StringHelper::basename($generator->modelClass)) ?>),
         'content' => $this->render('_view', [
             'all' => false,
         ]),
@@ -21,7 +24,7 @@ $items = [
 <?php foreach ($relations as $name => $rel): ?>
     <?php if ($rel[2] && isset($rel[3]) && !in_array($name, $generator->skippedRelations)): ?>
     [
-        'label' => '<i class="glyphicon glyphicon-user"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+        'label' => '<i class="fas fa-user"></i> '. Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
         'content' => $this->render('_data<?= $rel[1] ?>', [
             'model' => $model,
             'row' => $model-><?= $name ?>,

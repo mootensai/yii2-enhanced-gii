@@ -1,6 +1,9 @@
 <?php
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
-/* @var $relations array */
+
+/**
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ */
 
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
 $fk = $generator->generateFK($tableSchema);
@@ -9,11 +12,11 @@ $humanize = \yii\helpers\Inflector::humanize($relations[$generator::REL_TABLE], 
 echo "<div class=\"form-group\" id=\"add-$relID\">\n";
 echo "<?php\n";
 ?>
-use kartik\grid\GridView;
-use kartik\builder\TabularForm;
-use yii\data\ArrayDataProvider;
-use yii\helpers\Html;
-use yii\widgets\Pjax;
+use \kartik\grid\GridView;
+use \kartik\builder\TabularForm;
+use \yii\data\ArrayDataProvider;
+use \kartik\helpers\Html;
+use \yii\widgets\Pjax;
 
 $dataProvider = new ArrayDataProvider([
     'allModels' => $row,
@@ -42,7 +45,7 @@ endforeach; ?>
             'value' => function($model, $key) {
                 return
                     Html::hiddenInput('Children[' . $key . '][id]', (!empty($model['id'])) ? $model['id'] : "") .
-                    Html::a('<i class="glyphicon glyphicon-trash"></i>', '#', ['title' =>  <?= $generator->generateString('Delete') ?>, 'onClick' => 'delRow<?= $relations[$generator::REL_CLASS]; ?>(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[$generator::REL_CLASS]) ?>-del-btn']);
+                    Html::a('<i class="far fa-trash-alt"></i>', '#', ['title' =>  <?= $generator->generateString('Delete') ?>, 'onClick' => 'delRow<?= $relations[$generator::REL_CLASS]; ?>(' . $key . '); return false;', 'id' => '<?= yii\helpers\Inflector::camel2id($relations[$generator::REL_CLASS]) ?>-del-btn']);
             },
         ],
     ],
@@ -52,7 +55,7 @@ endforeach; ?>
             'type' => GridView::TYPE_DEFAULT,
             'before' => false,
             'footer' => false,
-            'after' => Html::button('<i class="glyphicon glyphicon-plus"></i>' . <?= $generator->generateString('Add '.$humanize) ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[$generator::REL_CLASS]; ?>()']),
+            'after' => Html::button('<i class="fas fa-plus"></i>' . <?= $generator->generateString('Add '.$humanize) ?>, ['type' => 'button', 'class' => 'btn btn-success kv-batch-create', 'onClick' => 'addRow<?= $relations[$generator::REL_CLASS]; ?>()']),
         ]
     ]
 ]);

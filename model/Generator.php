@@ -8,14 +8,14 @@
 
 namespace mootensai\enhancedgii\model;
 
-use mootensai\enhancedgii\BaseGenerator;
-use Yii;
-use yii\base\NotSupportedException;
-use yii\db\Schema;
-use yii\db\TableSchema;
-use yii\db\ActiveQuery;
-use yii\gii\CodeFile;
-use yii\helpers\Inflector;
+use \mootensai\enhancedgii\BaseGenerator;
+use \Yii;
+use \yii\base\NotSupportedException;
+use \yii\db\Schema;
+use \yii\db\TableSchema;
+use \yii\db\ActiveQuery;
+use \yii\gii\CodeFile;
+use \yii\helpers\Inflector;
 
 /**
  * Generates CRUD

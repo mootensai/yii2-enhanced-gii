@@ -1,14 +1,19 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ * @var array $relName
+ * @var int $count
+ */
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[3]);
 $fk = $generator->generateFK($tableSchema);
 ?>
 <?= "<?php" ?>
 
-use kartik\grid\GridView;
-use yii\data\ArrayDataProvider;
+use \kartik\grid\GridView;
+use \yii\data\ArrayDataProvider;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,
@@ -26,9 +31,10 @@ use yii\data\ArrayDataProvider;
 <?php endif; ?>
     ]);
     $gridColumns = [
-        ['class' => 'yii\grid\SerialColumn'],
+        ['class' => '\kartik\grid\SerialColumn'],
 <?php 
 if ($tableSchema === false) :
+    $count = 0;
     foreach ($generator->getColumnNames() as $name) {
         if ($name == $relations[4]) continue;
         if (++$count < 6) {
@@ -47,7 +53,7 @@ endif;
 endforeach;
 endif; ?>
         [
-            'class' => 'yii\grid\ActionColumn',
+            'class' => '\kartik\grid\ActionColumn',
             'controller' => '<?= \yii\helpers\Inflector::camel2id($relations[1])?>'
         ],
     ];

@@ -1,11 +1,13 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $generator yii\gii\generators\form\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var mootensai\enhancedgii\migration\Generator $generator
+ * @var \kartik\widgets\ActiveForm $form
+ */
 
 echo $form->field($generator, 'tableName');
 echo $form->field($generator, 'migrationPath');
-echo $form->field($generator, 'migrationTime')->widget('yii\widgets\MaskedInput', [
+echo $form->field($generator, 'migrationTime')->widget('\yii\widgets\MaskedInput', [
     'mask' => '999999_999999'
 ]);
 echo $form->field($generator, 'migrationName');

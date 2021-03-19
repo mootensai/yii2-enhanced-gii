@@ -1,16 +1,16 @@
 <?php
 namespace mootensai\enhancedgii\crud;
 
-use Yii;
-use yii\db\ActiveRecord;
-use yii\db\ColumnSchema;
-use yii\db\Schema;
-use yii\db\TableSchema;
-use yii\gii\CodeFile;
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
-use yii\helpers\VarDumper;
-use yii\web\Controller;
+use \Yii;
+use \yii\db\ActiveRecord;
+use \yii\db\ColumnSchema;
+use \yii\db\Schema;
+use \yii\db\TableSchema;
+use \yii\gii\CodeFile;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
+use \yii\helpers\VarDumper;
+use \yii\web\Controller;
 
 /**
  * Generates Relational CRUD

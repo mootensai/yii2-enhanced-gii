@@ -1,22 +1,26 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
-/* @var $relations array */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ */
 $tableSchema = $generator->getTableSchema();
 $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use \kartik\helpers\Html;
+use \kartik\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->modelClass, '\\') ?> $model
+* @var \kartik\widgets\ActiveForm $form
+*/
 
 <?php
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
@@ -55,14 +59,14 @@ foreach ($relations as $name => $rel) {
     $relID = Inflector::camel2id($rel[$generator::FK_FIELD_NAME]);
     if ($rel[$generator::REL_IS_MULTIPLE] && isset($rel[$generator::REL_TABLE]) && !in_array($name, $generator->skippedRelations)) {
         $forms .= "        [\n".
-            "            'label' => '<i class=\"glyphicon glyphicon-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
+            "            'label' => '<i class=\"fas fa-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
             "            'content' => \$this->render('_form".$rel[$generator::FK_FIELD_NAME]."', [\n".
             "                'row' => \\yii\\helpers\\ArrayHelper::toArray(\$model->$name),\n".
             "            ]),\n".
             "        ],\n";
     }else if(isset($rel[$generator::REL_IS_MASTER]) && !$rel[$generator::REL_IS_MASTER]){
         $forms .= "        [\n".
-            "            'label' => '<i class=\"glyphicon glyphicon-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
+            "            'label' => '<i class=\"fas fa-book\"></i> ' . Html::encode(".$generator->generateString($rel[$generator::REL_CLASS])."),\n".
             "            'content' => \$this->render('_form".$rel[$generator::FK_FIELD_NAME]."', [\n" .
             "                'form' => \$form,\n".
             "                '".$rel[$generator::REL_CLASS]."' => is_null(\$model->$name) ? new ".$generator->nsModel."\\".$rel[$generator::REL_CLASS]."() : \$model->$name,\n".

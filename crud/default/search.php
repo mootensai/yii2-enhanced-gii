@@ -5,9 +5,10 @@
 
 use yii\helpers\StringHelper;
 
-
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\model\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ */
 
 $modelClass = StringHelper::basename($generator->modelClass);
 

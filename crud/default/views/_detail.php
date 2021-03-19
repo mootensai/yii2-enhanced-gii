@@ -1,10 +1,13 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var int $count
+ */
 $urlParams = $generator->generateUrlParams();
 $tableSchema = $generator->getTableSchema();
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
@@ -12,12 +15,14 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use kartik\grid\GridView;
+use \kartik\helpers\Html;
+use \kartik\detail\DetailView;
+use \kartik\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->modelClass, '\\') ?> $model
+*/
 
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-view">
@@ -33,6 +38,7 @@ use kartik\grid\GridView;
     $gridColumn = [
 <?php 
 if ($tableSchema === false) {
+    $count = 0;
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";

@@ -1,12 +1,14 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
-/* @var $relations array */
-/* @var $relName string */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ * @var string $relName
+ */
 
 //print_r($relations);
 $tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
@@ -14,15 +16,17 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use \kartik\helpers\Html;
+use \kartik\widgets\ActiveForm;
 <?php
 // @TODO : use namespace of foreign keys & widgets
 ?>
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->nsModel, '\\').'\\'.$relations[$generator::REL_CLASS] ?> */
-/* @var $form yii\widgets\ActiveForm */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->nsModel, '\\').'\\'.$relations[$generator::REL_CLASS] ?> $model
+* $var \kartik\widgets\ActiveForm $form
+*/
 
 <?php
 $pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];

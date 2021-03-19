@@ -1,10 +1,14 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ * @var int $count
+ */
 
 $urlParams = $generator->generateUrlParams();
 $tableSchema = $generator->getTableSchema();
@@ -13,12 +17,14 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use kartik\grid\GridView;
+use \kartik\helpers\Html;
+use \kartik\detail\DetailView;
+use \kartik\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->modelClass, '\\') ?> $model
+*/
 
 $this->title = $model-><?= $generator->getNameAttribute() ?>;
 $this->params['breadcrumbs'][] = ['label' => <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) : $generator->generateString(Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, 'url' => ['index']];
@@ -34,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->pdf): ?>
 <?= "<?= " ?>
             <?= "
-             Html::a('<i class=\"fa glyphicon glyphicon-hand-up\"></i> ' . " . $generator->generateString('PDF') . ", 
+             Html::a('<i class=\"fas fa-hand-point-up\"></i> ' . " . $generator->generateString('PDF') . ", 
                 ['pdf', $urlParams],
                 [
                     'class' => 'btn btn-danger',
@@ -66,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $gridColumn = [
 <?php
 if ($tableSchema === false) {
+    $count = 0;
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
             echo "            '" . $name . "',\n";
@@ -95,7 +102,7 @@ if ($tableSchema === false) {
 <?= "<?php\n" ?>
 if($provider<?= $rel[1] ?>->totalCount){
     $gridColumn<?= $rel[1] ?> = [
-        ['class' => 'yii\grid\SerialColumn'],
+        ['class' => '\kartik\grid\SerialColumn'],
 <?php
         $relTableSchema = $generator->getDbConnection()->getTableSchema($rel[3]);
         $fkRel = $generator->generateFK($relTableSchema);
@@ -120,7 +127,7 @@ if($provider<?= $rel[1] ?>->totalCount){
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id($rel[3])?>']],
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
-            'heading' => '<span class="glyphicon glyphicon-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
+            'heading' => '<span class="fas fa-book"></span> ' . Html::encode(<?= $generator->generateString(Inflector::camel2words($rel[1])) ?>),
         ],
 <?php if(!$generator->pdf): ?>
         'export' => false,

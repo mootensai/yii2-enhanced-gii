@@ -1,22 +1,27 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var int $count
+ */
 
 $fk = $generator->generateFK();
 
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use \kartik\helpers\Html;
+use \kartik\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->searchModelClass, '\\') ?> */
-/* @var $form yii\widgets\ActiveForm */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($generator->searchModelClass, '\\') ?> $model
+* @var \kartik\widgets\ActiveForm $form
+*/
 ?>
 
 <div class="form-<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">

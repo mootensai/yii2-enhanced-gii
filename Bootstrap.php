@@ -9,8 +9,8 @@
 
 namespace mootensai\enhancedgii;
 
-use yii\base\Application;
-use yii\base\BootstrapInterface;
+use \yii\base\Application;
+use \yii\base\BootstrapInterface;
 
 
 /**

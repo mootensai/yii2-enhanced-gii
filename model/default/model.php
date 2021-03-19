@@ -1,18 +1,18 @@
 <?php
 /**
  * This is the template for generating the model class of a specified table.
+ *
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\model\Generator $generator
+ * @var string $tableName full table name
+ * @var string $className class name
+ * @var string $queryClassName query class name
+ * @var yii\db\TableSchema $tableSchema
+ * @var boolean $isTree
+ * @var string[] $labels list of attribute labels (name => label)
+ * @var string[] $rules list of validation rules
+ * @var array $relations list of relations (name => relation declaration)
  */
-
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\model\Generator */
-/* @var $tableName string full table name */
-/* @var $className string class name */
-/* @var $queryClassName string query class name */
-/* @var $tableSchema yii\db\TableSchema */
-/* @var $isTree boolean */
-/* @var $labels string[] list of attribute labels (name => label) */
-/* @var $rules string[] list of validation rules */
-/* @var $relations array list of relations (name => relation declaration) */
 
 // Used to check if a feature is enabled (by the field being filled in) and if the field actually exists in the database
 $enabled = new stdClass();

@@ -1,10 +1,13 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator \mootensai\enhancedgii\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var int $count
+ */
 
 $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
@@ -14,19 +17,19 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-/* @var $this yii\web\View */
+/* @var $this \yii\web\View */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-use yii\helpers\Html;
-use kartik\export\ExportMenu;
-use <?= $generator->indexWidgetType === 'grid' ? "kartik\\grid\\GridView;" : "yii\\widgets\\ListView;" ?>
+use \kartik\helpers\Html;
+use \kartik\export\ExportMenu;
+use <?= $generator->indexWidgetType === 'grid' ? "\\kartik\\grid\\GridView;" : "\\yii\\widgets\\ListView;" ?>
 
 
 $this->title = <?= ($generator->pluralize) ? $generator->generateString(Inflector::pluralize(Inflector::camel2words($baseModelClass))) : $generator->generateString(Inflector::camel2words($baseModelClass)) ?>;
 $this->params['breadcrumbs'][] = $this->title;
 $search = "$('.search-button').click(function(){
-	$('.search-form').toggle(1000);
+	$('.search-form').toggle(500);
 	return false;
 });";
 $this->registerJs($search);
@@ -41,7 +44,7 @@ $this->registerJs($search);
     <p>
         <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words($baseModelClass)) ?>, ['create'], ['class' => 'btn btn-success']) ?>
 <?php if (!empty($generator->searchModelClass)): ?>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advance Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
+        <?= "<?= " ?>Html::a(<?= $generator->generateString('Advanced Search')?>, '#', ['class' => 'btn btn-info search-button']) ?>
 <?php endif; ?>
     </p>
 <?php if (!empty($generator->searchModelClass)): ?>
@@ -54,7 +57,7 @@ if ($generator->indexWidgetType === 'grid'):
 ?>
 <?= "<?php \n" ?>
     $gridColumn = [
-        ['class' => 'yii\grid\SerialColumn'],
+        ['class' => '\kartik\grid\SerialColumn'],
 <?php
     if ($generator->expandable && !empty($fk)):
 ?>
@@ -75,6 +78,7 @@ if ($generator->indexWidgetType === 'grid'):
 ?>
 <?php   
     if ($tableSchema === false) :
+        $count = 0;
         foreach ($generator->getColumnNames() as $name) {
             if (++$count < 6) {
                 echo "            '" . $name . "',\n";
@@ -91,12 +95,12 @@ if ($generator->indexWidgetType === 'grid'):
             endif;
         endforeach; ?>
         [
-            'class' => 'yii\grid\ActionColumn',
+            'class' => '\kartik\grid\ActionColumn',
 <?php if($generator->saveAsNew): ?>
             'template' => '{save-as-new} {view} {update} {delete}',
             'buttons' => [
                 'save-as-new' => function ($url) {
-                    return Html::a('<span class="glyphicon glyphicon-copy"></span>', $url, ['title' => 'Save As New']);
+                    return Html::a('<span class="far fa-copy"></span>', $url, ['title' => 'Save As New']);
                 },
             ],
 <?php endif; ?>
@@ -113,7 +117,7 @@ if ($generator->indexWidgetType === 'grid'):
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-<?= Inflector::camel2id(StringHelper::basename($generator->modelClass))?>']],
         'panel' => [
             'type' => GridView::TYPE_PRIMARY,
-            'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
+            'heading' => '<span class="fas fa-book"></span>  ' . Html::encode($this->title),
         ],
 <?php if(!$generator->pdf) : ?>
         'export' => false,

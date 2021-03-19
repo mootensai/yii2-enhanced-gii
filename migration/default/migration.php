@@ -1,11 +1,12 @@
 <?php
 /**
  * This is the template for generating the model class of a specified table.
+ *
+ * @var \yii\web\View $this
+ * @var mootensai\enhancedgii\migration\Generator $generator
+ * @var string $migrationName migration name
+ * @var array $tables Yii::$app->db->schema->getTableNames()
  */
-
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\migration\Generator */
-/* @var $migrationName string migration name */
 
 echo "<?php\n";
 ?>

@@ -1,7 +1,9 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $generator yii\gii\generators\crud\Generator */
+/**
+ * @var \yii\web\View $this
+ * @var \kartik\widgets\ActiveForm $form
+ * @var \yii\gii\generators\crud\Generator $generator
+ */
 ?>
     <blockquote class="alert-warning" style="font-size: small">
         <strong>Note : </strong><br />

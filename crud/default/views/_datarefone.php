@@ -1,28 +1,32 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
+use \yii\helpers\Inflector;
+use \yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $generator mootensai\enhancedgii\crud\Generator */
-/* @var $relName array */
-/* @var $relations array */
+/**
+ * @var \yii\web\View $this
+ * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var array $relations
+ * @var array $relName
+ * @var int $count
+ */
 
-//print_r($relations);
 
 $urlParams = $generator->generateUrlParams();
-$tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_CLASS]);
+$tableSchema = $generator->getDbConnection()->getTableSchema($relations[$generator::REL_TABLE]);
 $pk = empty($tableSchema->primaryKey) ? $tableSchema->getColumnNames()[0] : $tableSchema->primaryKey[0];
 $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use kartik\grid\GridView;
+use \kartik\helpers\Html;
+use \kartik\detail\DetailView;
+use \kartik\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $model <?= ltrim($relations[$generator::REL_CLASS], '\\') ?> */
+/**
+* @var \yii\web\View $this
+* @var <?= ltrim($relations[$generator::REL_CLASS], '\\') ?> $model
+*/
 
 ?>
 <?= "<?php if(!is_null(\$model)): ?>\n" ?>
@@ -38,21 +42,22 @@ use kartik\grid\GridView;
     <?= "<?php \n" ?>
         $gridColumn = [
 <?php
-        if ($tableSchema === false) {
-            foreach ($tableSchema->getColumnNames() as $name) {
-                if (++$count < 6) {
-                    echo "            '" . $name . "',\n";
-                } else {
-                    echo "            // '" . $name . "',\n";
-                }
+    if ($tableSchema === false) {
+        $count = 0;
+        foreach ($tableSchema->getColumnNames() as $name) {
+            if (++$count < 6) {
+                echo "            '" . $name . "',\n";
+            } else {
+                echo "            // '" . $name . "',\n";
             }
-        } else{
-            foreach($tableSchema->getColumnNames() as $attribute){
-                if(!in_array($attribute, $generator->skippedColumns)) {
-                    echo "            ".$generator->generateDetailViewField($attribute,$fk, $tableSchema);
-                }
+        }
+    } else{
+        foreach($tableSchema->getColumnNames() as $attribute){
+            if(!in_array($attribute, $generator->skippedColumns)) {
+                echo "            ".$generator->generateDetailViewField($attribute,$fk, $tableSchema);
             }
-        }?>
+        }
+    }?>
         ];
         echo DetailView::widget([
             'model' => $model,
