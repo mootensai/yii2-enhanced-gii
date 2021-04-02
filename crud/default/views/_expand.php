@@ -6,19 +6,19 @@
  * @var array $relations
  */
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 $pk = empty($generator->tableSchema->primaryKey) ? $generator->tableSchema->getColumnNames()[0] : $generator->tableSchema->primaryKey[0];
 ?>
 <?= "<?php" ?>
 
-use \kartik\helpers\Html;
-use \kartik\tabs\TabsX;
-use \yii\helpers\Url;
+use kartik\helpers\Html;
+use kartik\tabs\TabsX;
+use yii\helpers\Url;
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 */
 
 $items = [

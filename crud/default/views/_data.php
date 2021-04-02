@@ -1,19 +1,19 @@
 <?php
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  */
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 ?>
 <?= "<?php" ?>
 
-use \kartik\helpers\Html;
-use \kartik\tabs\TabsX;
-use \yii\helpers\Url;
+use kartik\helpers\Html;
+use kartik\tabs\TabsX;
+use yii\helpers\Url;
 $items = [
     [
         'label' => '<i class="fas fa-book"></i> '. Html::encode(<?= $generator->generateString(StringHelper::basename($generator->modelClass)) ?>),

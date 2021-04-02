@@ -1,11 +1,11 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  * @var boolean $isTree
  */
@@ -16,11 +16,11 @@ $model = ($isTree) ? '$node' : '$model';
 echo "<?php\n";
 ?>
 
-use \kartik\helpers\Html;
-use \kartik\widgets\ActiveForm;
+use kartik\helpers\Html;
+use kartik\widgets\ActiveForm;
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 * @var <?= ltrim($generator->modelClass, '\\') ?> <?= $model?>
 */
 

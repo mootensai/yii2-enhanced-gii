@@ -8,11 +8,11 @@
 
 namespace mootensai\enhancedgii;
 
-use \Yii;
-use \yii\base\NotSupportedException;
-use \yii\db\Connection;
-use \yii\db\TableSchema;
-use \yii\helpers\Inflector;
+use Yii;
+use yii\base\NotSupportedException;
+use yii\db\Connection;
+use yii\db\TableSchema;
+use yii\helpers\Inflector;
 
 
 abstract class BaseGenerator extends \yii\gii\Generator

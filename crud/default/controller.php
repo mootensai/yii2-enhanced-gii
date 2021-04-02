@@ -6,8 +6,8 @@
 use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  */
 
@@ -29,16 +29,16 @@ echo "<?php\n";
 
 namespace <?= StringHelper::dirname(ltrim($generator->controllerClass, '\\')) ?>;
 
-use \Yii;
+use Yii;
 use <?= ltrim($generator->modelClass, '\\') ?>;
 <?php if (!empty($generator->searchModelClass)): ?>
 use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? " as $searchModelAlias" : "") ?>;
 <?php else : ?>
-use \yii\data\ActiveDataProvider;
+use yii\data\ActiveDataProvider;
 <?php endif; ?>
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
-use \yii\web\NotFoundHttpException;
-use \yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.

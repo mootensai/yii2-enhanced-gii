@@ -1,8 +1,8 @@
 <?php
 /**
- * @var \yii\web\View $this
+ * @var yii\web\View $this
  * @var mootensai\enhancedgii\migration\Generator $generator
- * @var \kartik\widgets\ActiveForm $form
+ * @var kartik\widgets\ActiveForm $form
  */
 
 echo $form->field($generator, 'tableName');

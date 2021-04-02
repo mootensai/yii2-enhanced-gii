@@ -1,11 +1,11 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  * @var string $relName
  */
@@ -16,16 +16,16 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use \kartik\helpers\Html;
-use \kartik\widgets\ActiveForm;
+use kartik\helpers\Html;
+use kartik\widgets\ActiveForm;
 <?php
 // @TODO : use namespace of foreign keys & widgets
 ?>
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 * @var <?= ltrim($generator->nsModel, '\\').'\\'.$relations[$generator::REL_CLASS] ?> $model
-* $var \kartik\widgets\ActiveForm $form
+* $var kartik\widgets\ActiveForm $form
 */
 
 <?php

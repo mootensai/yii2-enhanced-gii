@@ -1,11 +1,11 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var int $count
  */
 
@@ -17,12 +17,12 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-/* @var $this \yii\web\View */
+/* @var $this yii\web\View */
 <?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-use \kartik\helpers\Html;
-use \kartik\export\ExportMenu;
+use kartik\helpers\Html;
+use kartik\export\ExportMenu;
 use <?= $generator->indexWidgetType === 'grid' ? "\\kartik\\grid\\GridView;" : "\\yii\\widgets\\ListView;" ?>
 
 

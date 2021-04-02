@@ -1,11 +1,11 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var int $count
  */
 $urlParams = $generator->generateUrlParams();
@@ -15,12 +15,12 @@ $fk = $generator->generateFK($tableSchema);
 echo "<?php\n";
 ?>
 
-use \kartik\helpers\Html;
-use \kartik\detail\DetailView;
-use \kartik\grid\GridView;
+use kartik\helpers\Html;
+use kartik\detail\DetailView;
+use kartik\grid\GridView;
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 * @var <?= ltrim($generator->modelClass, '\\') ?> $model
 */
 

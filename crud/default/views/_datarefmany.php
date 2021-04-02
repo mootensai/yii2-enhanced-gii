@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  * @var array $relName
  * @var int $count
@@ -12,8 +12,8 @@ $fk = $generator->generateFK($tableSchema);
 ?>
 <?= "<?php" ?>
 
-use \kartik\grid\GridView;
-use \yii\data\ArrayDataProvider;
+use kartik\grid\GridView;
+use yii\data\ArrayDataProvider;
 
     $dataProvider = new ArrayDataProvider([
         'allModels' => $model-><?= $relName; ?>,

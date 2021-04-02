@@ -1,11 +1,11 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var int $count
  */
 
@@ -14,13 +14,13 @@ $fk = $generator->generateFK();
 echo "<?php\n";
 ?>
 
-use \kartik\helpers\Html;
-use \kartik\widgets\ActiveForm;
+use kartik\helpers\Html;
+use kartik\widgets\ActiveForm;
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 * @var <?= ltrim($generator->searchModelClass, '\\') ?> $model
-* @var \kartik\widgets\ActiveForm $form
+* @var kartik\widgets\ActiveForm $form
 */
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var int $count
  */
 $tableSchema = $generator->getTableSchema();
@@ -9,8 +9,8 @@ $urlParams = $generator->generateUrlParams();
 $nameAttribute = $generator->getNameAttribute();
 ?>
 <?= "<?php \n" ?>
-use \kartik\helpers\Html;
-use \kartik\detail\DetailView;
+use kartik\helpers\Html;
+use kartik\detail\DetailView;
 ?>
 
 <div class="row">

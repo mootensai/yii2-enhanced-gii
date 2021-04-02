@@ -4,8 +4,8 @@
  */
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var string $className class name
  * @var string $modelClassName related model class name
  */

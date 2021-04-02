@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var mootensai\enhancedgii\crud\Generator $generator
  * @var array $relations
  */
 
@@ -12,11 +12,11 @@ $humanize = \yii\helpers\Inflector::humanize($relations[$generator::REL_TABLE], 
 echo "<div class=\"form-group\" id=\"add-$relID\">\n";
 echo "<?php\n";
 ?>
-use \kartik\grid\GridView;
-use \kartik\builder\TabularForm;
-use \yii\data\ArrayDataProvider;
-use \kartik\helpers\Html;
-use \yii\widgets\Pjax;
+use kartik\grid\GridView;
+use kartik\builder\TabularForm;
+use yii\data\ArrayDataProvider;
+use kartik\helpers\Html;
+use yii\widgets\Pjax;
 
 $dataProvider = new ArrayDataProvider([
     'allModels' => $row,

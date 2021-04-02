@@ -1,8 +1,8 @@
 <?php
 /**
- * @var \yii\web\View $this
- * @var \kartik\widgets\ActiveForm $form
- * @var \yii\gii\generators\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var kartik\widgets\ActiveForm $form
+ * @var yii\gii\generators\crud\Generator $generator
  */
 ?>
     <blockquote class="alert-warning" style="font-size: small">

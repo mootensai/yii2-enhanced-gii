@@ -1,20 +1,20 @@
 <?php
 
-use \yii\helpers\Inflector;
-use \yii\helpers\StringHelper;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
- * @var \yii\web\View $this
- * @var \mootensai\enhancedgii\crud\Generator $generator
+ * @var yii\web\View $this
+ * @var mootensai\enhancedgii\crud\Generator $generator
  */
 
 echo "<?php\n";
 ?>
 
-use \kartik\helpers\Html;
+use kartik\helpers\Html;
 
 /**
-* @var \yii\web\View $this
+* @var yii\web\View $this
 * @var <?= ltrim($generator->modelClass, '\\') ?> $model
 */
 
