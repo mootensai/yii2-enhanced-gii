@@ -426,6 +426,7 @@ class Generator extends BaseGenerator {
     public function generateRules($table) {
         $types = [];
         $lengths = [];
+        $emails = [];
         foreach ($table->columns as $column) {
             if ($column->autoIncrement) {
                 continue;
@@ -465,6 +466,9 @@ class Generator extends BaseGenerator {
                         $types['string'][] = $column->name;
                     }
             }
+            if (stripos($column->name, 'email') !== false) {
+                 $emails[] = $column->name;
+            }
         }
         $rules = [];
         foreach ($types as $type => $columns) {
@@ -472,6 +476,9 @@ class Generator extends BaseGenerator {
         }
         foreach ($lengths as $length => $columns) {
             $rules[] = "[['" . implode("', '", $columns) . "'], 'string', 'max' => $length]";
+        }
+        if (count($emails)) {
+            $rules[] = "[['" . implode("', '", $emails) . "'], 'email']";
         }
 
         // Unique indexes rules
